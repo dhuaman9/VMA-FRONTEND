@@ -1,0 +1,121 @@
+<router-outlet></router-outlet>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-12 border rounded p-4">
+      <h2 class="text-center mb-4">Edición de Usuarios</h2>
+      <form [formGroup]="registroForm">
+        <div style="width:100%; text-align: center;">
+          <label class="form-label">Tipo de Usuario:</label>
+        </div>
+        <div class="p-fluid grid formgrid">
+          <div class="field col-12 flex  justify-content-center">
+            <p-radioButton name="tipo" value="SUNASS" formControlName="tipo" label="Sunass" (onClick)="onTipoUsuarioChange()"
+           ></p-radioButton>  <!--  style="margin-right: 50px" , pendiente de ubicar este style en el css. sale error en la consola-->
+            <p-radioButton name="tipo" value="EPS" formControlName="tipo" label="Empresa EPS" (onClick)="onTipoUsuarioChange()"></p-radioButton>
+          </div>
+         
+          <div class="field col-12 md:col-4">
+            <label>Perfil:</label>
+                <p-dropdown inputId="perfil" [options]="perfiles" optionLabel="description"
+                    optionValue="id" placeholder="Seleccionar" formControlName="perfil"
+                    [showClear]="true">
+                </p-dropdown>
+                <app-validate-inputs-form [form]="registroForm" formInput='perfil' labelInput="Perfil">
+                </app-validate-inputs-form>
+          </div>
+          <div class="field col-12 md:col-4" >
+            <label>Usuario:</label>
+            <p-dropdown inputId="usuario" [options]="usuariosSunass" placeholder="Seleccionar"
+              formControlName="usuario" [showClear]="true" [disabled]="isDropUsersDisable" 
+              [filter]="true" (onChange)="onUserChange($event)">
+            </p-dropdown>
+            <app-validate-inputs-form [form]="registroForm" formInput='usuario' labelInput="Usuario">
+            </app-validate-inputs-form>
+          </div>
+          <div class="field col-12 md:col-4" >
+            <label>Unidad Orgánica:</label>
+            <input id="unidadOrganica" type="text" pInputText   formControlName="unidadOrganica" maxlength="30"  />
+            <app-validate-inputs-form [form]="registroForm" formInput='unidadOrganica' labelInput="Unidad Orgánica">
+            </app-validate-inputs-form>
+          </div>
+          <div class="field col-12 md:col-4">
+            <label>Nombres:</label>
+            <input id="nombre" type="text" pInputText formControlName="nombres" maxlength="30" dirAlphabeticInput/>
+            <app-validate-inputs-form [form]="registroForm" formInput='nombres' labelInput="Nombres">
+            </app-validate-inputs-form>
+          </div>
+          <div class="field col-12 md:col-4">
+            <label>Apellidos:</label>
+            <input id="apellidos" type="text" pInputText   formControlName="apellidos" maxlength="30" dirAlphabeticInput/>
+            <app-validate-inputs-form [form]="registroForm" formInput='apellidos' labelInput="Apellidos">
+            </app-validate-inputs-form>
+          </div>
+          <div class="field col-12 md:col-4">
+            <label>Correo Electrónico:</label>
+            <input id="correo" type="text" pInputText   formControlName="correo" maxlength="100"  />
+            <app-validate-inputs-form [form]="registroForm" formInput='correo' labelInput="Correo">
+            </app-validate-inputs-form>
+          </div>
+          <div *ngIf="mostrarCampo" class="field col-12 md:col-4" >
+            <label>EPS:</label>
+            <p-dropdown inputId="selEmpresa" [options]="empresasLista" placeholder="Seleccionar" formControlName="selEmpresa" 
+              [showClear]="true" [filter]="true">
+            </p-dropdown>
+            <app-validate-inputs-form [form]="registroForm" formInput='selEmpresa' labelInput="Empresa"></app-validate-inputs-form>
+          </div>
+          <div *ngIf="mostrarCampo" class="field col-12 md:col-4">
+            <label>Usuario:</label>
+            <input id="username" type="text" pInputText   formControlName="username" maxlength="30" dirUserNameInput/>
+            <app-validate-inputs-form [form]="registroForm" formInput='username' labelInput="Usuario">
+            </app-validate-inputs-form>
+          </div>
+          <div class="field col-12 md:col-4">
+            <label>Contraseña:</label>
+            <input id="password" type="password" pInputText formControlName="password" maxlength="255"  />
+            <app-validate-inputs-form [form]="registroForm" formInput='password' labelInput="Contraseña">
+            </app-validate-inputs-form>
+          </div>
+          <div class="field col-12 md:col-4">
+            <label>Teléfono:</label>
+            <input id="telefono" type="text" pInputText pKeyFilter="int" formControlName="telefono" maxlength="30" dirTelefonoInput/>
+            <app-validate-inputs-form [form]="registroForm" formInput='telefono' labelInput="Teléfono">
+            </app-validate-inputs-form>
+          </div>
+          <div class=" col-12 md:col-8">
+            <p><label>Estado:</label></p>
+            <p-inputSwitch formControlName="estado" id="estado"></p-inputSwitch>
+          </div>
+          <div class="col-12 flex  justify-content-center">
+            <p-button type="button" label="Guardar" icon="pi pi-save" iconPos="left" class="p-button-secondary ml-1"
+              (click)="onGuardar()"> 
+            </p-button>
+            <p-button type="button" label="Cancelar" icon="pi pi-times" iconPos="left" class="ml-1" [styleClass]="'p-button-danger'"
+              (click)="onCancelEdit()">
+            </p-button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+   <!-- <p-dialog [(visible)]="displayModaAdvice"  [modal]="true" [style]="{width: '40vw', height:'30vw'}">
+    <div style="text-align: center;">
+      <img  [src]="modalImage" style="width:50%"/>
+    </div>
+    <div style="text-align: center; font-weight: 600;">
+      {{modalMessage}}
+    </div>
+      
+      <ng-template pTemplate="footer">
+        <div style="text-align: center;">
+          <p-button type="button" label="Aceptar" class="ml-1 p-button-success" 
+            (click)="onAceptar()" *ngIf="isEdit">
+          </p-button>
+          <p-button type="button" label="Aceptar" class="ml-1 p-button-success" 
+            (click)="onCancel()" *ngIf="!isEdit">
+          </p-button>  
+        </div>
+        
+      </ng-template>
+   </p-dialog>  -->
+</div>

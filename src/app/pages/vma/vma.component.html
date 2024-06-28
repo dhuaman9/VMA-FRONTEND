@@ -1,0 +1,77 @@
+<router-outlet></router-outlet>
+<div [hidden]="route.children.length!==0">
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 mt-2">
+                    <div class="card pdn-15">
+                        <div class="card-header border-0">
+                          <button class="btn btn-success mt-3 mr-3" (click)="redirectToForm()">Registrar</button>
+                        </div>
+                    </div>
+
+                    <div class="card pdn-15" *ngIf="showResultados">
+                        
+                        <div class="content">
+                            <div class="col-md-12">
+                              <div class="card-body table-responsive p-0">
+                                
+                                <p-table #dt1 [value]="ListRegistroVMA" 
+                                dataKey="id"
+                                [globalFilterFields]="['empresa.nombre', 'estado', 'created_at', 'updated_at']"
+                                responsiveLayout="scroll" 
+                                [paginator]="true"
+                                [rows]="10"
+                                [showCurrentPageReport]="true"
+                                [rowsPerPageOptions]="[10, 25, 50, 100]"
+                                currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+                                styleClass="p-datatable-customers p-datatable-gridlines"
+                                >
+
+                                <ng-template pTemplate="caption">
+                                  Buscar:  
+                                  <span class="p-input-icon-left p-ml-auto">
+                                      <i class="pi pi-search"></i>
+                                      <input pInputText type="text" (input)="onFilterTableGlobal(dt1, $event)" placeholder="Ingresar texto" />
+                                  </span>
+                                </ng-template> 
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="width: 5%;">N°</th>
+                                        <th style="width: 30%;">Empresa EPS</th>
+                                        <th style="width: 20%;">Fecha de registro</th>
+                                        <th style="width: 20%;">Fecha de edicion</th>
+                                        <th style="width: 15%;">Estado</th>
+                                        <!--<th style="width: 20%;">Archivos</th> -->
+                                        <!--<th style="width: 20%;">Avance(%)</th> --> <!--aun no esta en la bd--> 
+                                        <th style="width: 10%;">Editar</th>
+                                    </tr> 
+                                </ng-template>
+                                   <ng-template pTemplate="body" let-item let-ri="rowIndex">
+                                      <tr>
+                                          <td>{{item.idRegistroVma}}</td>
+                                          <td>{{item.empresa.nombre}}</td>
+                                          <td>{{item.created_at}}</td>
+                                          <td>{{item.updated_at}}</td>
+                                          <td>{{item.estado }}</td>
+                                          <td style="text-align:center">
+                                              <button pButton type="button" icon="pi pi-pencil" class="ml-2 p-button-rounded"
+                                                  pTooltip="Editar registro" tooltipPosition="top"
+                                                  (click)="redirectToFormUpdate()">
+                                              </button>
+                                          </td>
+                                      </tr>
+                                  </ng-template>
+                                 
+                                  </p-table>
+                                </div>
+                             </div>   
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-loading *ngIf="isLoading"></app-loading>

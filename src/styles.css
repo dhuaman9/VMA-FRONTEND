@@ -1,0 +1,20 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+input:disabled {
+    background-color: #e7dedeec;
+    border: 1px solid #8b8989;
+    color: #000000;
+  }
+
+  /*Estilos para modificar el alto del modal (pantalla empredad)*/
+  .dialog-for-display-default {
+      height: 40%;
+  }
+
+/*Estilos para componente Dialog de Primeng*/
+.p-dialog .p-dialog-header {
+    display: none;
+}

@@ -1,0 +1,9 @@
+<div
+  *ngIf="message"
+  class="validation"
+  [class.section]="type == 'section'"
+  [class.letter-blank]="type == 'letter-blank'"
+  [class.letter-danger]="type == 'letter-danger'"
+>
+  <label>{{ message }}</label>
+</div>

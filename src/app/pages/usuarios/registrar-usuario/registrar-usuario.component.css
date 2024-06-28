@@ -1,0 +1,54 @@
+/*.container {
+    margin: 20px; /* Puedes ajustar el valor según sea necesario 
+  }*/
+
+  .container {
+    /*max-width: 600px;*/
+    width: 100%;
+  }
+  
+  .custom-form-container {
+   /* margin-bottom: 20px; /* Ajusta el margen inferior según sea necesario */
+    margin-bottom: 0; /* Elimina el margen inferior */
+    /* background-color: #fff; /* Fondo blanco para el formulario */
+  }
+  
+  
+  h2 {
+    margin-bottom: 20px;
+  }
+  
+  .modal {
+    display: block; /* Forzar la visualización del modal */
+  }
+  
+  .modal-dialog {
+    margin-top: 10%;
+  }
+  
+  button.mx-1 {
+    margin: 0 6px; /* Espacio corto entre los botones */
+  }
+
+
+  .green-button {
+    background-color: green !important;
+    border-color: green !important;
+    color: white !important; /* Para que el texto del botón sea visible */
+  }
+  
+  .green-button:hover {
+    background-color: darkgreen !important; /* Color del botón al pasar el cursor por encima */
+    border-color: darkgreen !important;
+  }
+
+  .red-button {
+    background-color: red !important;
+    border-color: red !important;
+    color: white !important; /* Para que el texto del botón sea visible */
+  }
+  
+  .red-button:hover {
+    background-color: darkred; /* Color del botón al pasar el cursor por encima */
+    border-color: darkred;
+  }

@@ -1,0 +1,215 @@
+h5#tituloModulo{
+	font-size: 1.15rem;
+	color: #4F4E4E;
+}
+
+.wrapper .content-wrapper {
+    min-height: calc(100vh - calc(0.5rem + 1px) - calc(3.5rem + 1px));
+}
+
+.content-wrapper {
+	background-color: #FFFFFF;/*antes #ECEEF1*/
+	height: 100%;
+}
+
+.navbar-light-custom{
+	background-color: #fff;
+}
+
+.navbar-light-custom .navbar-nav .nav-link:focus {
+    color: #0083c9;
+}
+.li-user a.link-user-custom{
+	color: #0083c9;
+}
+
+.li-user a.link-user-custom:hover{
+	color: #0083c9;
+}
+
+.sidebar-light-custom{
+	background-color: #066EC8;
+}
+
+.sidebar-light-custom a{
+	color: #ffffff !important;
+}
+
+.sidebar-content-custom{
+	/*
+	height: 100vh!important;
+	*/
+	height: 90vh;
+}
+
+.brand-link-custom{
+	padding-bottom: 8px;
+	padding-top: 8px;
+	background-color: #fff;
+}
+
+.brand-image-custom{
+	padding-left: 8px;
+}
+
+.mainmenu, .submenu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.mainmenu a {
+  display: block;
+	/*
+  background-color: #CCC;
+	*/
+  text-decoration: none;
+  padding: 8px 10px;
+  color: #000;
+}
+
+.mainmenu a:hover {
+  /*
+	background-color: #C5C5C5;
+	*/
+}
+
+.mainmenu li:hover .submenu {
+  display: block;
+  max-height: 200px;
+}
+
+.submenu a {
+	padding-top: 0.25rem;
+	padding-bottom: 0.25rem;
+}
+
+.submenu a:hover {
+  background-color: rgba(199, 216, 255, 0.75);
+	border-radius: 0.5rem;
+}
+
+.submenu {
+  /*
+  overflow: hidden;
+  max-height: 0;
+  
+  -webkit-transition: all 0.5s ease-out;
+	*/
+}
+
+.submenu li.submenu-option.active a {
+  background-color: rgba(81, 134, 248, 0.603);
+  border-radius: 0.5rem;
+}
+
+.pr-5-txt{
+	padding-right: 5px;
+}
+
+.pr-8-txt{
+	padding-right: 8px;
+}
+
+.pr-15-txt{
+	padding-right: 1.5rem;
+}
+
+.pl-5-txt{
+	padding-left: 5px;
+}
+
+.pl-8-txt{
+	padding-left: 8px;
+}
+
+.pl-15-txt{
+	padding-left: 1.5rem;
+}
+
+.pl-075-txt{
+	padding-left: 0.75rem;
+}
+
+.icon-circle-list{
+	font-size: 0.45em;
+    line-height: .05em;
+    vertical-align: 0.4001em;
+    padding-left: 12px;
+	color: transparent;
+}
+
+.submenu li.submenu-option.active a i.icon-circle-list{
+	color: #FFFFFF;
+}
+
+/*dhr*/
+
+.custom-nav-link {
+    color: inherit; /* Color por defecto */
+    text-decoration: none; /* Sin subrayado */
+    padding: 10px 15px; /* Espaciado interno */
+    display: block; /* Hacer que ocupe todo el ancho disponible */
+}
+
+.mainmenu .nav-item a:hover {
+    background-color: #fff; /* Fondo blanco al pasar el mouse */
+    color: #007bff; /* Texto azul al pasar el mouse */
+}
+
+.mainmenu .nav-item {
+    list-style: none; /* Quitar viñetas */
+}
+
+.mainmenu .nav-item a {
+    display: block;
+    padding: 10px 15px; /* Espaciado interno */
+    color: #333; /* Color del texto por defecto */
+    text-decoration: none; /* Sin subrayado */
+}
+
+.mainmenu .nav-item a:hover {
+    background-color: #fff; /* Fondo blanco al pasar el mouse */
+    color: #007bff; /* Texto azul al pasar el mouse */
+}
+
+.nav-item a span {
+    padding-left: 5px;
+}
+
+
+/* Cambiar color del texto a azul al pasar el mouse */
+.nav-link.custom-nav-link:hover {
+	color: blue; /* Cambiar el color del texto a azul */
+  }
+  
+  /* Estilo para el ícono y texto juntos */
+  .nav-link.custom-nav-link i, .nav-link.custom-nav-link .pl-5-txt {
+	transition: color 0.3s; /* Añadir una transición suave al color */
+  }
+  
+  /* Asegurar que el ícono también cambie de color */
+  .nav-link.custom-nav-link:hover i {
+	color: blue; /* Cambiar el color del ícono a azul */
+  }
+ 
+  
+  /* Cambiar color del texto y el ícono a azul al pasar el mouse sobre el nav-item */
+.nav-item:hover .custom-nav-link, 
+.nav-item:hover .custom-nav-link i, 
+.nav-item:hover .custom-nav-link .pl-5-txt {
+  color: #5290E5; /* Cambiar el color del texto a azul */
+}
+
+/* Separar cada nav-item con una barra de color blanco */
+.nav-item {
+	border-bottom: 1px solid white; /* Añadir borde inferior blanco */
+  }
+
+  .nav-item:last-child {
+	border-bottom: none; /* Quitar borde del último elemento */
+  }
+/*
+.pl-5-txt:hover {
+    color: blue;
+}*/

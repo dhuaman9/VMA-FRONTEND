@@ -1,0 +1,63 @@
+<router-outlet></router-outlet>
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 mt-2">
+                <div class="card pdn-15">
+                    <div class="content">
+                        <div class="col-md-12">
+                            <h2>Registrar Valores Maximos Admisibles</h2>
+                            <!-- dynamic-form.component.html -->
+                            <form [formGroup]="formularioGeneral" *ngIf="formularioGeneral">
+                                <p-accordion  formArrayName="secciones">
+                                  <p-accordionTab *ngFor="let seccion of seccionesForm().controls; let i = index" [formGroupName]="i" [header]="seccion.get('titulo').value">
+                                    <div formArrayName="preguntas">
+                                      <div class="d-flex flex-column mb-3" *ngFor="let pregunta of preguntasForm(seccion).controls; let j = index" [formGroupName]="j">
+                                        <label class="mb-3">{{pregunta.get('texto').value}}</label>
+                                        <ng-container [ngSwitch]="pregunta.value.tipoPregunta">
+                                            <input *ngSwitchCase="'TEXTO'" type="text" class="input-text" pInputText formControlName="respuesta">
+                                            <ng-container *ngSwitchCase="'NUMERICO'">
+                                                <div class="d-flex gap-2 mb-4" *ngIf="alternativasForm(pregunta).controls.length > 0; else inputNumericoUnico">
+                                                    <ng-container formArrayName="alternativas">
+                                                        <div class="d-flex gap-2 align-items-center" *ngFor="let alternativa of alternativasForm(pregunta).controls; let k = index" [formGroupName]="k">
+                                                          <label class="mb-0" >{{alternativa.get('nombreCampo').value}}</label>
+                                                          <p-inputNumber class="input-number" formControlName="respuesta"></p-inputNumber>
+                                                        </div>
+                                                      </ng-container>
+                                                </div>
+                                                <ng-template #inputNumericoUnico>
+                                                    <p-inputNumber class="input-number" formControlName="respuesta"></p-inputNumber>
+                                                </ng-template>
+                                            </ng-container>
+                                            <ng-container *ngSwitchCase="'RADIO'">
+                                                <div class="d-flex gap-3" >
+                                                    <div class="d-flex align-items-center gap-1" *ngFor="let alternativa of alternativasForm(pregunta).controls; let j = index">
+                                                        <p-radioButton [value]="alternativa.value.nombreCampo" [formControlName]="'respuesta'" [inputId]="alternativa.value.nombreCampo+i+j"></p-radioButton>
+                                                        <label class="mb-0" [for]="alternativa.value.nombreCampo+i+j">{{alternativa.value.nombreCampo}}</label>
+                                                    </div>
+                                                </div>
+                                            </ng-container>
+                                        </ng-container>
+                                      </div>
+                                    </div>
+                                  </p-accordionTab>
+                                </p-accordion >
+                                <div class="col-12 flex  justify-content-center">
+                                    <p-button type="button" label="Guardar" class="p-button-success p-button-secondary green-button ml-1"
+                                      (click)="guardar()"> <!--guardado progresivo, donde ningun campo es requerido, pero si el usuario no llena ningun dato, dar el aviso que no lleno nada, por ende no se guarda nada ni las fechas de registro-->
+                                    </p-button>
+                                    <p-button type="button" label="Registrar" class="p-button-success p-button-secondary green-button ml-1"
+                                    (click)="registrarFinal()">  <!--guardado final, donde todos los campos son requeridos , exceptos algunos botones de adjuntar archivos-->
+                                  </p-button>
+                                    <p-button type="button" label="Cancelar" class="p-button-danger red-button ml-1"
+                                      (click)="onCancelEdit()">
+                                    </p-button>
+                                  </div>
+                              </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

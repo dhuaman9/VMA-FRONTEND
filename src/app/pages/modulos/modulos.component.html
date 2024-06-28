@@ -1,0 +1,88 @@
+<div class="wrapper">
+  <nav class="main-header navbar navbar-expand navbar-sky-blue navbar-light" style="margin-left: 0px !important; margin-bottom: 0px !important;">
+    <ul class="navbar-nav">
+      <li class="margint-8">
+        <span class="brand-text font-weight-light">
+          <img src="./assets/images/icon-sunass.png" alt="Icono Sunass" class="brand-image"> 
+          <img src="./assets/images/txt-logo-sunass.png" alt="Sunass Logo" class="brand-image">
+        </span>
+      </li>
+    </ul>
+    <ul class="navbar-nav ml-auto">
+      <li class="dropdown li-user">
+          <a href="#" class="dropdown-toggle link-user" data-toggle="dropdown">
+            <img src="./assets/images/icon-user.png" alt="Icon user" class="icon-user">
+            <span class="txt-user">{{userName}}</span>
+            <b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu user-detalle">
+            <a style="cursor: pointer" (click)="cerrarSession()"><i  aria-hidden="true"></i> Cerrar Sesión</a>
+          </ul>
+      </li>
+    </ul>
+  </nav>
+  <div class="content-wrapper" style="margin-left: 0px !important;">
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-12 mb-3 mt-3">
+            <h1 class="m-0 text-title-modulo"> Bienvenidos al Sistema de Valores Máximos Admisibles.</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="content-header bg-sistema-modular">
+      <div class="container-fluid">
+        <div class="row mt-5">
+          <div class="col-sm-12 mt-5">
+            <img src="./assets/images/icon-modulo.png" alt="Icon modulo" class="icon-modulo">
+            <h1 class="text-title-modulo2"> Sistema de Valores Máximos Admisibles</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="content">
+      <div class="container-fluid">
+        <div class="row mt-4 mb-4">
+          <div class="col-lg-12">
+            <h2 class="text-titulo-modulo">Módulos</h2>
+          </div>
+        </div>
+      </div>
+      <div class="container-fluid">
+        <div class="">
+          <div class="row">
+            <div class="col-xs-11 col-md-10 col-centered">
+              <div id="carousel" class="carousel slide" data-ride="carousel" data-type="multi" data-interval="7000">
+                <div class="carousel-inner">
+                  <div class="item" *ngFor="let m of modules">                      
+                    <div class="carousel-col" *ngIf="m.id == 1">
+                      <div class="block img-responsive">
+                        <div class="block-modulo text-center" style="cursor: pointer">
+                          <a  [routerLink]="['/inicio/usuarios']" routerLinkActive="router-link-active">
+                              <img src="./assets/images/icon-admin-usuarios.png" alt="icon modulo">
+                              <p>ADMINISTRACIÓN DE USUARIOS</p>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="carousel-col" *ngIf="m.id == 2">
+                      <div class="block img-responsive">
+                        <div class="block-modulo text-center" style="cursor: pointer">
+                          <a [routerLink]="['/inicio/reportes']" routerLinkActive="router-link-active" >
+                              <img src="./assets/images/icon-gestion-emergencias.png" alt="icon modulo">
+                              <p>REPORTES</p>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

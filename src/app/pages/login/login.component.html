@@ -1,0 +1,66 @@
+<div class="container">
+  <div class="row">
+    
+    <div class="d-none d-sm-none d-md-none d-lg-block col-lg-5 background">
+      <div class="pfixed">
+         <img src="./assets/images/logo-blanco.svg" style="height: 40px;">
+      </div>
+      <div class="titulo-centrado-v2 div-contenedor-to-center">
+        <div class="contenedor-my-titulo">
+          <h1 class="my-titulo col-md-12 col-lg-10 col-xl-10 offset-xl-1 offset-lg-1 text-center" >
+            Sistema de Valores Máximos Admisibles
+          </h1>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-sm-12 col-lg-7 div-contenedor-to-center">
+
+      <div class="col-lg-6 col-lg-offset-3 col-sm-9 block-sesion">
+
+        <div id="contenedorCabLogin">
+          <div class="login-logo">
+            <img src="./assets/images/isotipo-sunass.png" alt="isotipo sunass" style="max-width: 90px;">
+          </div>
+          <h3 class="text-center txt-colorblue">Inicio de Sesión</h3>
+         
+        </div>
+
+        <form (ngSubmit)="iniciarSesion()">
+
+          <div class="form-outline mb-to-login-v1 inputWithIcon">
+            <input type="text" [(ngModel)]="user" name="user" class="form-control form-control-lg input-form-login" autofocus="autofocus" placeholder="Usuario" autocomplete="new-password" data-1p-ignore data-bwignore
+            data-lpignore="true" data-form-type="other">
+            <i class="fa fa-user fa-lg fa-fw" aria-hidden="true"></i>
+          </div>
+
+          <div class="form-outline mb-to-login-v2 inputWithIcon" id="show_hide_password">
+            <input type="password" [(ngModel)]="password" name="password" class="form-control form-control-lg input-form-login" (keyup.enter)="iniciarSesion()" placeholder="Contraseña" autocomplete="new-password" data-1p-ignore data-bwignore
+            data-lpignore="true" data-form-type="other">
+            <i class="fa fa-lock fa-lg fa-fw" aria-hidden="true"></i>
+          </div>
+
+          
+          <button class="btn btn-blue btn-custom-login btn-md btn-block paddinglr3 mt-5" type="submit" *ngIf="!spinnerLogin">Iniciar sesión</button>
+          
+        </form>
+
+        <div class="text-center pt-4">
+          <div class="spinner-border text-primary" role="status" *ngIf="spinnerLogin">
+            <span class="sr-only">Cargando...</span>
+          </div>
+        </div>
+  
+        <div id="msjFailed" class="alert alert-danger text-center alert-error-form" *ngIf="msjError">
+          {{msjError}}
+        </div>
+
+      </div>
+
+      
+      
+    </div>
+
+  </div>
+
+</div>

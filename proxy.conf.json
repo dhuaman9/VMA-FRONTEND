@@ -1,0 +1,8 @@
+{
+    "/sieps-consulta/*":{
+        "target" : "http://localhost:8580" ,
+        "secure" : false,
+        "logLevel" : "debug",
+        "changeOrigin" : true
+    }
+}

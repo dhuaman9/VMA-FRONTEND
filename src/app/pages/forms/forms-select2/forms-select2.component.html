@@ -1,0 +1,20 @@
+<div [style]="'display: flex'">
+    <label [for]="forLabel" [innerHTML]="formatHtmlTolabel()" [ngClass]="classForLabel"></label>
+
+    <ng-select 
+            [id]="id"  
+            [(ngModel)]="selectedOption"
+            (change)="onChange($event)"
+            [placeholder]="placeholder"
+            [ngClass]="classForNgSelect"
+            (keypress)="onKeyPress($event)"
+        >
+        <ng-option *ngFor="let option of options" [value]="option.code || option.id">
+            {{ option.desc || option.name }}
+        </ng-option>
+    </ng-select>
+</div>
+<div class="validation">
+    <app-error-validation [message]="messageError" [type]="typeError">
+    </app-error-validation>
+</div>

@@ -1,0 +1,9 @@
+:host {
+    .input-text {
+        width: 350px;
+    }
+
+    .input-number {
+        width: 200px;;
+    }
+}
