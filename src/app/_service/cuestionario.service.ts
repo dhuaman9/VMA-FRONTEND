@@ -30,6 +30,10 @@ export class CuestionarioService {
     findCuestionarioByIdMax(): Observable<Cuestionario> {
       return this.http.get<Cuestionario>(`${this.url}/lastId`);
     }
+
+    cuestionarioConRespuestas(registroId: number): Observable<Cuestionario> {
+      return this.http.get<Cuestionario>(`${this.url}/respuestas/${registroId}`);
+    }
   
   }
   

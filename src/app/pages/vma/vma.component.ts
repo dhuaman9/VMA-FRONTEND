@@ -7,6 +7,7 @@ import { Empresa } from 'src/app/_model/empresa';
 import { RegistroVMA } from 'src/app/_model/registroVMA';
 import { RegistroVMAService } from 'src/app/_service/registroVMA.service';
 import { Table } from 'primeng/table';
+import { VmaService } from 'src/app/_service/vma.service';
 
 
 
@@ -36,6 +37,8 @@ export class VmaComponent implements OnInit {
   rows = 10;
   totalRecords = 0;
 
+  registroCompleto: boolean = false;
+
  // displayModaAdvice = false;
 
  //paginacion
@@ -46,6 +49,7 @@ export class VmaComponent implements OnInit {
   constructor(  public route : ActivatedRoute,
     private router: Router,
     private registroVMAService : RegistroVMAService,
+    private vmaService: VmaService,
     private fb: FormBuilder) {
 
   }
@@ -53,6 +57,8 @@ export class VmaComponent implements OnInit {
   ngOnInit(): void {
     this.initListRegistroVMA();
   //  this.empresa = new Empresa();
+  this.vmaService.isRegistroCompleto().subscribe(response => this.registroCompleto = response);
+  this.vmaService.registroCompleto$.subscribe(response => this.registroCompleto = response)
   }
 
   initListRegistroVMA() {
@@ -120,8 +126,8 @@ export class VmaComponent implements OnInit {
     alert("editar empresa");
   }
 
-  redirectToFormUpdate(){
-    this.router.navigate(['/inicio/vma/registrar-vma']);// temporal, luego se setea el ID del registro , en el metodo anterior redirectToForm
+  redirectToFormUpdate(id: number){
+    this.router.navigate(['/inicio/vma/registrar-vma', id]);// temporal, luego se setea el ID del registro , en el metodo anterior redirectToForm
   }
 
 }

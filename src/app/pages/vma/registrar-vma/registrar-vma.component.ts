@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {MessageService} from 'primeng/api';
-import { FileUploadModule } from 'primeng/fileupload';
 import { RegistroVmaRequest } from 'src/app/_model/registroVMARequest';
 import { RespuestaDTO } from 'src/app/_model/respuestaRequest';
 import { Alternativa } from 'src/app/_model/alternativa';
@@ -10,8 +9,9 @@ import { Pregunta } from 'src/app/_model/pregunta';
 import { Seccion } from 'src/app/_model/seccion';
 import { TipoPregunta } from 'src/app/_model/tipo-pregunta';
 import { CuestionarioService } from 'src/app/_service/cuestionario.service';
-import { SeccionesService } from 'src/app/_service/secciones.service';
 import { VmaService } from 'src/app/_service/vma.service';
+import Swal from 'sweetalert2';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 @Component({
@@ -27,17 +27,19 @@ export class RegistrarVmaComponent implements OnInit {
   registroForm: FormGroup;
   formAdjuntar: FormGroup;// sera un form estatico con los botones de adjuntar archivos
   secciones: Seccion[] = [];
-  //cuestionarioForm: FormGroup;  // form padre
+  //cuestionarioForm: FormGroup;  // fosrm padre
   formularioGeneral: FormGroup;
+  idRegistroVMA: number = null;
+  formularioValido: boolean = false;
 
   constructor(
-    private seccionesService: SeccionesService,
+    private router: Router,
     private fb: FormBuilder, 
     private cuestionarioService: CuestionarioService,
-    private vmaService: VmaService) {}
+    private vmaService: VmaService,
+    private activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
-
   this.registroForm = this.fb.group({
     tipo: ['EPS', Validators.required],
     perfil: ['', Validators.required],
@@ -57,55 +59,97 @@ export class RegistrarVmaComponent implements OnInit {
 
   })
 
-  this.cuestionarioService.findCuestionarioByIdMax().subscribe((response: any) => {
-    this.cuestionario = response.item;
-    this.buildForm();
+  this.activatedRoute.params.subscribe(params => {
+    this.idRegistroVMA = params['id'];
+
+    if(this.idRegistroVMA) {
+      this.cuestionarioService.cuestionarioConRespuestas(this.idRegistroVMA).subscribe((response: any) => {
+        this.cuestionario = response.item;
+        this.buildForm();
+      })
+    } else {
+      this.cuestionarioService.findCuestionarioByIdMax().subscribe((response: any) => {
+        this.cuestionario = response.item;
+        this.buildForm();
+      })
+    }
   })
- 
   }
 
-  submitForm() {
-    console.log("this.registroForm.value-",this.registroForm.value);
-  }
-
-  guardar(){
-    
+  guardar(isGuardadoCompleto: boolean){
     const preguntasArray = this.formularioGeneral.value.secciones.map(seccion => seccion.preguntas);
-    const preguntas: Pregunta[] = preguntasArray.reduce((acc, cur) => acc.concat(cur), []);
+    let preguntas: Pregunta[] = preguntasArray.reduce((acc, cur) => acc.concat(cur), []);
     const respuestas: RespuestaDTO[] = [];
-
+    preguntas = preguntas.filter(pregunta => pregunta.respuesta || (pregunta.tipoPregunta === TipoPregunta.NUMERICO && pregunta.alternativas.length > 0))
     preguntas.forEach(pregunta => {
       if(pregunta.tipoPregunta === TipoPregunta.NUMERICO && pregunta.alternativas.length > 0) {
         pregunta.alternativas.forEach(alternativa => {
-          const respuesta = new RespuestaDTO();
-          respuesta.idPregunta = pregunta.idPregunta;
-          respuesta.respuesta = alternativa.respuesta;
-          respuesta.idAlternativa = alternativa.idAlternativa;
-          respuestas.push(respuesta);
+          if(alternativa.respuesta) {
+            const respuesta = new RespuestaDTO();
+            respuesta.idRespuesta = alternativa.respuestaDTO?.idRespuesta;
+            respuesta.idPregunta = pregunta.idPregunta;
+            respuesta.respuesta = alternativa.respuesta;
+            respuesta.idAlternativa = alternativa.idAlternativa;
+            respuesta.idRegistroVMA = this.idRegistroVMA;
+            respuestas.push(respuesta);
+          }
         })
       } else {
         respuestas.push(this.mapToRespuestaDTO(pregunta));
       }
     })
 
+    if(respuestas.length === 0) {
+      Swal.fire('Guardado parcial', 'Debe responder al menos una pregunta','info');
+      return;
+    }
+
     const registroVMA = new RegistroVmaRequest();
+    registroVMA.registroValido = isGuardadoCompleto;
     registroVMA.idEmpresa = 1;   //temporal, hasta definir
     registroVMA.respuestas = respuestas;
+    
+    if(this.idRegistroVMA) {
+      this.vmaService.updateRegistroVMA(this.idRegistroVMA, registroVMA)
+          .subscribe(
+            () => {
+              Swal.fire('Registro actualizado', isGuardadoCompleto ? 'Se registro completamente el formulario' : 'Registro guardado parcialmente','success');
+              this.router.navigate(['/inicio/vma']);
+            }
+          );
+    } else {
+      this.vmaService.saveRegistroVMA(registroVMA).subscribe(
+        () => {
+          Swal.fire('Registro guardado',  isGuardadoCompleto? 'Se registro completamente el formulario' : 'Registrado guardado parciamente','success');
+          this.router.navigate(['/inicio/vma']);
+          this.vmaService.sendRegistroCompleto(true);
+        }
+      );
+    }
+  }
 
-    this.vmaService.saveRegistroVMA(registroVMA).subscribe(
-      () => console.log("exito")
-    );
+  guardadoCompleto(): void {
+    this.addValidatorsToRespuesta(true);
+    if(this.formularioValido) {
+      this.guardar(true);
+    } else {
+      this.formularioGeneral.markAllAsTouched();
+      Swal.fire('Campos requeridos','Todos los campos son obligatorios','info')
+    }
+  }
+
+  guardadoParcial(): void {
+    this.addValidatorsToRespuesta(false);
+    this.guardar(false);
   }
 
   private mapToRespuestaDTO(pregunta: Pregunta): RespuestaDTO {
     const respuesta = new RespuestaDTO();
+        respuesta.idRespuesta = pregunta.respuestaDTO?.idRespuesta;
         respuesta.idPregunta = pregunta.idPregunta;
         respuesta.respuesta = pregunta.respuesta;
+        respuesta.idRegistroVMA = this.idRegistroVMA;
     return respuesta;
-  }
-
-  onCancelEdit(){
-
   }
 
   buildForm() {
@@ -118,7 +162,8 @@ export class RegistrarVmaComponent implements OnInit {
           alternativas: this.fb.array(
             pregunta.alternativas.map(alternativa => this.buildAlternativas(alternativa, pregunta.tipoPregunta))
           ),
-          respuesta: this.getControlForPregunta(pregunta.tipoPregunta)
+          respuesta: [pregunta.respuestaDTO?.respuesta],
+          respuestaDTO: this.buildRespuestaForm(pregunta.respuestaDTO)
         });
       });
   
@@ -134,6 +179,53 @@ export class RegistrarVmaComponent implements OnInit {
     });
   }
 
+  private addValidatorsToRespuesta(agregarValidacion: boolean) {
+    const secciones = this.formularioGeneral.get('secciones') as FormArray;
+    this.formularioValido = agregarValidacion;
+    secciones.controls.forEach(seccion => {
+      const preguntas = seccion.get('preguntas') as FormArray;
+      
+      preguntas.controls.forEach(pregunta => {
+        const respuestaControl = pregunta.get('respuesta');
+        const alternativasControl = pregunta.get('alternativas').value as FormArray;
+        if ((pregunta.get('tipoPregunta').value !== TipoPregunta.NUMERICO && alternativasControl.length === 0) && respuestaControl) {
+          respuestaControl.setValidators(agregarValidacion ? [Validators.required] : []);
+          respuestaControl.updateValueAndValidity();
+
+          if (!respuestaControl.valid) {
+            this.formularioValido = false;
+          }
+        }
+
+        const alternativas = pregunta.get('alternativas') as FormArray;
+        alternativas.controls.forEach(alternativa => {
+          const respuestaAlternativaControl = alternativa.get('respuesta');
+          if (pregunta.get('tipoPregunta').value === TipoPregunta.NUMERICO && respuestaAlternativaControl) {
+            respuestaAlternativaControl.setValidators(agregarValidacion ? [Validators.required] : []);
+            respuestaAlternativaControl.updateValueAndValidity();
+  
+            if (!respuestaAlternativaControl.valid) {
+              this.formularioValido = false;
+            }
+          }
+        })
+      });
+  
+      seccion.updateValueAndValidity();
+    });
+  
+    this.formularioGeneral.updateValueAndValidity();
+  }
+
+  private buildRespuestaForm(respuesta: RespuestaDTO) {
+    return !respuesta ? null : this.fb.group({
+      idRespuesta: [respuesta.idRespuesta],
+      idPregunta: [respuesta.idPregunta],
+      idAlternativa: [respuesta.idAlternativa],
+      idRegistroVMA: [respuesta.idRegistroVMA]
+    })
+  }
+
 
   private buildAlternativas(alternativa: Alternativa, tipoPregunta: TipoPregunta) {
     switch (tipoPregunta) {
@@ -141,7 +233,8 @@ export class RegistrarVmaComponent implements OnInit {
         return this.fb.group({
           idAlternativa: [alternativa.idAlternativa],
           nombreCampo: [alternativa.nombreCampo],
-          respuesta: [null]
+          respuesta: [alternativa.respuestaDTO?.respuesta],
+          respuestaDTO: this.buildRespuestaForm(alternativa.respuestaDTO)
         });
       case TipoPregunta.RADIO:
         return this.fb.group({
@@ -150,19 +243,6 @@ export class RegistrarVmaComponent implements OnInit {
         });
         default:
         return null;
-    }
-  }
-  
-  getControlForPregunta(tipoPregunta: TipoPregunta) {
-    switch (tipoPregunta) {
-      case TipoPregunta.TEXTO:
-        return [null, Validators.required];
-      case TipoPregunta.NUMERICO:
-        return [null, [Validators.required, Validators.pattern('^[0-9]+$')]];
-      case TipoPregunta.RADIO:
-        return [null, Validators.required];
-      default:
-        return [''];
     }
   }
 
@@ -176,9 +256,5 @@ export class RegistrarVmaComponent implements OnInit {
 
   alternativasForm(pregunta: AbstractControl): FormArray {
     return pregunta.get('alternativas') as FormArray;
-  }
-
-  registrarFinal(){
-
   }
 }

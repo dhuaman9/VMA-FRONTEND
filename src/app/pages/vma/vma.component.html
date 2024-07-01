@@ -6,7 +6,7 @@
                 <div class="col-lg-12 mt-2">
                     <div class="card pdn-15">
                         <div class="card-header border-0">
-                          <button class="btn btn-success mt-3 mr-3" (click)="redirectToForm()">Registrar</button>
+                          <button class="btn btn-success mt-3 mr-3" *ngIf="!registroCompleto" (click)="redirectToForm()">Registrar</button>
                         </div>
                     </div>
 
@@ -42,6 +42,7 @@
                                         <th style="width: 20%;">Fecha de registro</th>
                                         <th style="width: 20%;">Fecha de edicion</th>
                                         <th style="width: 15%;">Estado</th>
+                                        <th style="width: 15%;">Username</th>
                                         <!--<th style="width: 20%;">Archivos</th> -->
                                         <!--<th style="width: 20%;">Avance(%)</th> --> <!--aun no esta en la bd--> 
                                         <th style="width: 10%;">Editar</th>
@@ -50,14 +51,15 @@
                                    <ng-template pTemplate="body" let-item let-ri="rowIndex">
                                       <tr>
                                           <td>{{item.idRegistroVma}}</td>
-                                          <td>{{item.empresa.nombre}}</td>
+                                          <td>{{item.empresa?.nombre}}</td>
                                           <td>{{item.created_at}}</td>
                                           <td>{{item.updated_at}}</td>
                                           <td>{{item.estado }}</td>
+                                          <td>{{item.username }}</td>
                                           <td style="text-align:center">
                                               <button pButton type="button" icon="pi pi-pencil" class="ml-2 p-button-rounded"
-                                                  pTooltip="Editar registro" tooltipPosition="top"
-                                                  (click)="redirectToFormUpdate()">
+                                                  pTooltip="Editar registro"
+                                                  (click)="redirectToFormUpdate(item.idRegistroVma)">
                                               </button>
                                           </td>
                                       </tr>

@@ -1,4 +1,5 @@
 import { Alternativa } from "./alternativa";
+import { RespuestaDTO } from "./respuestaRequest";
 import { TipoPregunta } from "./tipo-pregunta";
 
 export class Pregunta {
@@ -10,4 +11,5 @@ export class Pregunta {
     requerido: boolean;
     tipoPregunta: TipoPregunta;
     alternativas: Alternativa[];
+    respuestaDTO: RespuestaDTO
 }

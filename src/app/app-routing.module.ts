@@ -43,6 +43,7 @@ const routes : Routes =
         path : 'vma', component : VmaComponent, canActivate : [GuardService] , children :
         [
           { path: "registrar-vma", component : RegistrarVmaComponent, data: { tituloModulo : 'Sistema de Valores Maximos Admisibles' } },
+          { path: "registrar-vma/:id", component : RegistrarVmaComponent, data: { tituloModulo : 'Sistema de Valores Maximos Admisibles' } }
         ]
       },
       {
