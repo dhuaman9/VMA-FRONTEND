@@ -25,21 +25,32 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class RegistrarVmaComponent implements OnInit {
   cuestionario: Cuestionario;
   registroForm: FormGroup;
-  formAdjuntar: FormGroup;// sera un form estatico con los botones de adjuntar archivos
+  //formAdjuntar: FormGroup;// sera un form estatico con los botones de adjuntar archivos
   secciones: Seccion[] = [];
-  //cuestionarioForm: FormGroup;  // fosrm padre
+
   formularioGeneral: FormGroup;
   idRegistroVMA: number = null;
   formularioValido: boolean = false;
+  seccionActiva: number; // Variable para almacenar el índice de la sección activa
+
+  isGreenTab = true; // para cambiar al color verde en el tab
+
 
   constructor(
     private router: Router,
     private fb: FormBuilder, 
     private cuestionarioService: CuestionarioService,
     private vmaService: VmaService,
-    private activatedRoute: ActivatedRoute) {}
+    private activatedRoute: ActivatedRoute
+  ) {
+    this.formularioGeneral = this.fb.group({
+      secciones: this.fb.array([])
+    });
+
+  }
 
   ngOnInit(): void {
+
   this.registroForm = this.fb.group({
     tipo: ['EPS', Validators.required],
     perfil: ['', Validators.required],
@@ -55,9 +66,9 @@ export class RegistrarVmaComponent implements OnInit {
     estado: [true]
   });
 
-  this.formAdjuntar = new FormGroup({
+ /* this.formAdjuntar = new FormGroup({
 
-  })
+  })*/
 
   this.activatedRoute.params.subscribe(params => {
     this.idRegistroVMA = params['id'];
@@ -100,28 +111,31 @@ export class RegistrarVmaComponent implements OnInit {
     })
 
     if(respuestas.length === 0) {
-      Swal.fire('Guardado parcial', 'Debe responder al menos una pregunta','info');
+      
+      Swal.fire('Guardado progresivo', 'Debe responder al menos una pregunta','info');
       return;
     }
 
     const registroVMA = new RegistroVmaRequest();
     registroVMA.registroValido = isGuardadoCompleto;
-    registroVMA.idEmpresa = 1;   //temporal, hasta definir
+   // registroVMA.idEmpresa = 1;   //temporal, hasta definir
     registroVMA.respuestas = respuestas;
     
     if(this.idRegistroVMA) {
       this.vmaService.updateRegistroVMA(this.idRegistroVMA, registroVMA)
           .subscribe(
             () => {
-              Swal.fire('Registro actualizado', isGuardadoCompleto ? 'Se registro completamente el formulario' : 'Registro guardado parcialmente','success');
-              this.router.navigate(['/inicio/vma']);
+              Swal.fire('Registro actualizado', isGuardadoCompleto ? 'Su información ha sido registrada y enviada.' : 'Se ha realizado el guardado progresivo','success');
+              //this.router.navigate(['/inicio/vma']); recomendable
+              this.onBackToList();//temporal, no  recomendable
             }
           );
     } else {
       this.vmaService.saveRegistroVMA(registroVMA).subscribe(
         () => {
-          Swal.fire('Registro guardado',  isGuardadoCompleto? 'Se registro completamente el formulario' : 'Registrado guardado parciamente','success');
-          this.router.navigate(['/inicio/vma']);
+          Swal.fire('Cuestionario guardado',  isGuardadoCompleto? 'Su información ha sido registrada y enviada.' : 'Registrado guardado parciamente','success');
+          // this.router.navigate(['/inicio/vma']);
+          this.onBackToList();//temporal, no  recomendable
           this.vmaService.sendRegistroCompleto(true);
         }
       );
@@ -134,7 +148,7 @@ export class RegistrarVmaComponent implements OnInit {
       this.guardar(true);
     } else {
       this.formularioGeneral.markAllAsTouched();
-      Swal.fire('Campos requeridos','Todos los campos son obligatorios','info')
+      Swal.fire('Registrado final','Para registrar todo, debe llenar el cuestionario.','info')
     }
   }
 
@@ -256,5 +270,65 @@ export class RegistrarVmaComponent implements OnInit {
 
   alternativasForm(pregunta: AbstractControl): FormArray {
     return pregunta.get('alternativas') as FormArray;
+  }
+
+  onCancelSave(){
+    Swal.fire({
+      title: "Desea cancelar el registro?",
+      text: "Si cancela el registro toda la información ingresada y/o seleccionada será borrada!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DF2A3D",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "SI",
+      cancelButtonText: "No"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Cancelado.",
+          text: "No se ha registrado o actualizado.",
+          icon: "error"
+        });
+        //this.backTo();
+        this.router.navigate(['/inicio/vma']);
+      }
+    });
+  }
+
+  onBackToList(){
+    this.router.navigate(['/inicio/vma']).then(() => {
+      // es para forzar la recarga del listado por el momento.
+     window.location.reload();
+    });
+    this.router.navigate(['/inicio/vma']);
+    
+  }
+  
+  onRadioButtonChange(seccion: AbstractControl, valor: string): void {
+    console.log('valor -' , valor);
+    if (valor === 'No') {
+      this.deshabilitarCamposDeTexto(seccion as FormGroup);
+    } else {
+      this.habilitarCamposDeTexto(seccion as FormGroup);
+    }
+  }
+  
+  deshabilitarCamposDeTexto(seccion: FormGroup): void {
+    const preguntas = this.preguntasForm(seccion);
+    preguntas.controls.forEach(pregunta => {
+      console.log('pregunta.get(tipoPregunta).value -' , pregunta.get('tipoPregunta').value);
+      if (pregunta.get('tipoPregunta').value === 'NUMERICO' || pregunta.get('tipoPregunta').value === 'TEXTO' ) {
+        pregunta.get('respuesta').disable();
+      }
+    });
+  }
+
+  habilitarCamposDeTexto(seccion: FormGroup): void {
+    const preguntas = this.preguntasForm(seccion);
+    preguntas.controls.forEach(pregunta => {
+      if (pregunta.get('tipoPregunta').value === 'NUMERICO' || pregunta.get('tipoPregunta').value === 'TEXTO' ) {
+        pregunta.get('respuesta').enable();
+      }
+    });
   }
 }

@@ -6,4 +6,17 @@
     .input-number {
         width: 200px;;
     }
+    p-accordion p-accordiontab .p-accordion-header-link
+    {
+            background-color: #1087E5 !important;
+            /*border: 1px solid green !important;*/
+    }
 }
+
+
+.green-tab {
+    background-color: green;
+  }
+
+
+  

@@ -147,6 +147,16 @@ export class ValidateInputs {
   }
   
   }
-  
-  
-  
+
+  export function validateInput(formControlName: AbstractControl, validationType: string): void {
+    let cleanedValue = formControlName.value.replace(/^\s+/, '');
+    switch(validationType){
+      case 'alfabetico':
+        cleanedValue = cleanedValue.replace(/[^a-zA-ZáéíóúÁÉÍÓÚüÜñÑ ]/g, '');
+        break
+      case 'numerico':
+        cleanedValue = cleanedValue.replace(/[^0-9]/g, '');
+        break;
+    }
+    formControlName.setValue(cleanedValue, { emitEvent: false });
+  }

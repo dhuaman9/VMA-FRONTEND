@@ -4,9 +4,59 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12 mt-2">
-                    <div class="card pdn-15">
+                      
+                      <!-- Filtros -->
+                      <div class="card pdn-15 mb-3">
+                        <div class="card-header border-0 text-center">
+                            <h2>Filtros de búsqueda</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                
+                                <div class="col-md-2 mb-3">
+                                    <span class="p-float-label">
+                                        <input id="eps" pInputText type="text" /><!--[(ngModel)]="eps"-->
+                                        <label for="eps">EPS</label>
+                                    </span>
+                                </div>
+                                <div class="col-md-2 mb-3">
+                                    <span class="p-float-label">
+                                        <p-dropdown  placeholder="Seleccione un estado"></p-dropdown> <!-- [options]="estadoOptions" [(ngModel)]="estado"-->
+                                        
+                                    </span>
+                                </div>
+                                <div class="col-md-2 mb-3">
+                                    <span class="p-float-label">
+                                        <p-calendar id="fechaDesde"  dateFormat="yy-mm-dd"></p-calendar><!-- [(ngModel)]="fechaDesde"-->
+                                        <label for="fechaDesde">Fecha Desde</label>
+                                    </span>
+                                </div>
+                                <div class="col-md-2 mb-3">
+                                    <span class="p-float-label">
+                                        <p-calendar id="fechaHasta"  dateFormat="yy-mm-dd"></p-calendar><!--[(ngModel)]="fechaHasta"-->
+                                        <label for="fechaHasta">Fecha Hasta</label>
+                                    </span>
+                                </div>
+                                <div class="col-md-2 mb-3">
+                                    <span class="p-float-label">
+                                        <p-dropdown  placeholder="Seleccione un año"></p-dropdown><!--[options]="anioOptions" [(ngModel)]="anio" -->
+                                        
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-12">
+                                    <button pButton type="button" label="Buscar" icon="pi pi-search" style="margin-right: 50px"  (click)="buscar()"></button>
+                                    <button pButton type="button" label="Limpiar" icon="pi pi-times"  (click)="limpiar()"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                     <!-- Botón Registrar -->
+                    <div class="card pdn-15 mb-1">
                         <div class="card-header border-0">
-                          <button class="btn btn-success mt-3 mr-3" *ngIf="!registroCompleto" (click)="redirectToForm()">Registrar</button>
+                            <button class="btn btn-success mt-2 mr-2" *ngIf="!registroCompleto" (click)="redirectToForm()">Registrar</button>
                         </div>
                     </div>
 
@@ -18,7 +68,7 @@
                                 
                                 <p-table #dt1 [value]="ListRegistroVMA" 
                                 dataKey="id"
-                                [globalFilterFields]="['empresa.nombre', 'estado', 'created_at', 'updated_at']"
+                                [globalFilterFields]="['username','empresa.nombre', 'estado', 'created_at', 'updated_at']"
                                 responsiveLayout="scroll" 
                                 [paginator]="true"
                                 [rows]="10"
@@ -39,29 +89,32 @@
                                     <tr>
                                         <th style="width: 5%;">N°</th>
                                         <th style="width: 30%;">Empresa EPS</th>
-                                        <th style="width: 20%;">Fecha de registro</th>
-                                        <th style="width: 20%;">Fecha de edicion</th>
+                                        <th style="width: 20%;">Tamaño de la EPS</th>
+                                        <th style="width: 20%;">Régimen</th>
                                         <th style="width: 15%;">Estado</th>
+                                        <th style="width: 20%;">Fecha de registro</th>
                                         <th style="width: 15%;">Username</th>
-                                        <!--<th style="width: 20%;">Archivos</th> -->
+                                        <!--<th style="width: 15%;">Año</th>-->
                                         <!--<th style="width: 20%;">Avance(%)</th> --> <!--aun no esta en la bd--> 
                                         <th style="width: 10%;">Editar</th>
                                     </tr> 
                                 </ng-template>
                                    <ng-template pTemplate="body" let-item let-ri="rowIndex">
                                       <tr>
-                                          <td>{{item.idRegistroVma}}</td>
-                                          <td>{{item.empresa?.nombre}}</td>
-                                          <td>{{item.created_at}}</td>
-                                          <td>{{item.updated_at}}</td>
-                                          <td>{{item.estado }}</td>
-                                          <td>{{item.username }}</td>
-                                          <td style="text-align:center">
-                                              <button pButton type="button" icon="pi pi-pencil" class="ml-2 p-button-rounded"
-                                                  pTooltip="Editar registro"
-                                                  (click)="redirectToFormUpdate(item.idRegistroVma)">
-                                              </button>
-                                          </td>
+                                        <td>{{item.idRegistroVma}}</td>
+                                        <td>{{item.empresa?.nombre}}</td>
+                                        <td>{{item.empresa.tipo}}</td>
+                                        <td>{{item.empresa.regimen}}</td>
+                                        <td>{{item.estado}}</td>
+                                        <td>{{item.created_at}}</td>
+                                        <td>{{item.username }}</td>
+                                        <!--<td> {{item.username }}</td>-->
+                                        <td style="text-align:center">
+                                            <button pButton type="button" icon="pi pi-pencil" class="ml-2 p-button-rounded"
+                                                pTooltip="Editar registro"
+                                                (click)="redirectToFormUpdate(item.idRegistroVma)">
+                                            </button>
+                                        </td>
                                       </tr>
                                   </ng-template>
                                  

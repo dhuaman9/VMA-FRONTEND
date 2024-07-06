@@ -199,11 +199,7 @@ export class InicioComponent implements OnInit {
    else if(rol ==="Consultor"){
 
     this.modules = [ 
-      {
-        route : "vma",
-        label : "Registrar VMA",
-        icon : ""
-      },
+     
       {
         route : "reporte",
         label : "Reportes e Indicadores",

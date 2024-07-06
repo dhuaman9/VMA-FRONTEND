@@ -9,9 +9,8 @@
         </div>
         <div class="p-fluid grid formgrid">
           <div class="field col-12 flex  justify-content-center">
-            <p-radioButton name="tipo" value="SUNASS" formControlName="tipo" label="Sunass" (onClick)="onTipoUsuarioChange()"
-           ></p-radioButton>  <!--  style="margin-right: 50px" , pendiente de ubicar este style en el css. sale error en la consola-->
-            <p-radioButton name="tipo" value="EPS" formControlName="tipo" label="Empresa EPS" (onClick)="onTipoUsuarioChange()"></p-radioButton>
+            <p-radioButton name="tipo" value="SUNASS" formControlName="tipo" label="Sunass" (onClick)="onTipoUsuarioChange()" class="mr-4"></p-radioButton>  <!--  style="margin-right: 50px" , pendiente de ubicar este style en el css. sale error en la consola-->
+            <p-radioButton name="tipo" value="EPS" formControlName="tipo" label="Empresa EPS" (onClick)="onTipoUsuarioChange()" class="ml-4"></p-radioButton>
           </div>
          
           <div class="field col-12 md:col-4">
@@ -40,13 +39,13 @@
           </div>
           <div class="field col-12 md:col-4">
             <label>Nombres:</label>
-            <input id="nombre" type="text" pInputText formControlName="nombres" maxlength="30" dirAlphabeticInput/>
+            <input id="nombre" type="text" pInputText (input)="validateInputForm('nombres','alfabetico')" formControlName="nombres" maxlength="30" dirAlphabeticInput/>
             <app-validate-inputs-form [form]="registroForm" formInput='nombres' labelInput="Nombres">
             </app-validate-inputs-form>
           </div>
           <div class="field col-12 md:col-4">
             <label>Apellidos:</label>
-            <input id="apellidos" type="text" pInputText   formControlName="apellidos" maxlength="30" dirAlphabeticInput/>
+            <input id="apellidos" type="text" pInputText (input)="validateInputForm('apellidos','alfabetico')" formControlName="apellidos" maxlength="30" dirAlphabeticInput/>
             <app-validate-inputs-form [form]="registroForm" formInput='apellidos' labelInput="Apellidos">
             </app-validate-inputs-form>
           </div>
@@ -77,9 +76,10 @@
           </div>
           <div class="field col-12 md:col-4">
             <label>Teléfono:</label>
-            <input id="telefono" type="text" pInputText pKeyFilter="int" formControlName="telefono" maxlength="30" dirTelefonoInput/>
-            <app-validate-inputs-form [form]="registroForm" formInput='telefono' labelInput="Teléfono">
-            </app-validate-inputs-form>
+            <input id="telefono" formControlName="telefono" (input)="validateInputForm('telefono','numerico')" maxlength="9" dirTelefonoInput
+              pInputText pKeyFilter="int" placeholder="Ingrese su número de teléfono"  type="text"/>
+              <app-validate-inputs-form [form]="registroForm" formInput='telefono' labelInput="Teléfono">
+              </app-validate-inputs-form>
           </div>
           <div class=" col-12 md:col-8">
             <p><label>Estado:</label></p>

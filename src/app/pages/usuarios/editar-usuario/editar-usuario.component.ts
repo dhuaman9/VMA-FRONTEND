@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GenericCombo } from 'src/app/_dto/generic-combo';
 import { Role } from 'src/app/_model/role';
 import { User } from 'src/app/_model/user';
 import { UserService } from 'src/app/_service/user.service';
-import { ValidateInputs } from 'src/app/utils/validate-inputs';
+import { ValidateInputs, validateInput } from 'src/app/utils/validate-inputs';
 import { EmpresaService } from 'src/app/_service/empresa.service';
 import { Empresa } from 'src/app/_model/empresa';
 import Swal from 'sweetalert2'
+
 
 
 @Component({
@@ -55,7 +56,7 @@ export class EditarUsuarioComponent implements OnInit {
       usuario: [''],
       username: [''],
       password: [''],
-      telefono: ['', Validators.required],
+      telefono: ['', [Validators.required, Validators.minLength(9)]],
       estado: [true, Validators.required],
       selEmpresa : ['', Validators.required],
     });
@@ -65,6 +66,13 @@ export class EditarUsuarioComponent implements OnInit {
       this.getDataUser(idUser);
     });
 
+  }
+
+  validateInputForm(formControlName: string, validationType: string): void {
+    const control = this.registroForm.get(formControlName);
+    if (control) {
+      validateInput(control, validationType);
+    }
   }
 
   getDataUser(idUser: number) {
@@ -173,10 +181,12 @@ export class EditarUsuarioComponent implements OnInit {
           title: 'Se actualizó el usuario correctamente',
           showConfirmButton: true,
           confirmButtonText: 'Aceptar',
-          confirmButtonColor: '#28a745', // color verde
-          timer: 4000
+          confirmButtonColor: '#28a745' // color verde
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.onAceptar(); // se redirige al listado de usuarios
+          }
         });
-        this.onAceptar();
       },  error => {  
           Swal.fire({
             title: 'Error',
@@ -199,7 +209,7 @@ export class EditarUsuarioComponent implements OnInit {
     this.isEdit = false;
     this.modalImage = './assets/images/cancel-icon.png';
     this.modalMessage = 'Registro cancelado';*/
-    this.onAceptar();
+     this.router.navigate(['/inicio/usuarios']);
   }
 
   onAceptar(){
@@ -213,9 +223,9 @@ export class EditarUsuarioComponent implements OnInit {
     
   }
 
-  onCancel() {
+  /*onCancel() {
     this.router.navigate(['/inicio/usuarios']);
-  }
+  }*/
 
   validateAlfabetico(event: Event) {
     const inputElement = event.target as HTMLInputElement;
@@ -255,7 +265,7 @@ export class EditarUsuarioComponent implements OnInit {
       this.registroForm.get('password').enable();
 
      // this.registroForm.get('eps').setValidators([Validators.required]);
-      this.registroForm.get('telefono').setValidators([Validators.required]);
+     this.registroForm.get('telefono').setValidators([Validators.required, Validators.minLength(9)]);
      // this.registroForm.get('eps').updateValueAndValidity();
       this.registroForm.get('telefono').updateValueAndValidity();
 

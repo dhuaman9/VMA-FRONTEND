@@ -10,7 +10,7 @@ input:disabled {
   }
 
   /*Estilos para modificar el alto del modal (pantalla empredad)*/
-  .dialog-for-display-default {
+.dialog-for-display-default {
       height: 40%;
   }
 
@@ -18,3 +18,8 @@ input:disabled {
 .p-dialog .p-dialog-header {
     display: none;
 }
+
+/*Estilos para el accordion tab , al dar click*/
+/* .ui-accordion .custom-active-tab .p-accordion-tab-header {
+    background-color: #0DC738 !important;
+}*/

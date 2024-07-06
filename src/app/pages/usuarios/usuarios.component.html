@@ -6,7 +6,7 @@
                 <div class="col-lg-12 mt-2">
                     <div class="card pdn-15">
                         <div class="card-header border-0">
-                            <button class="btn btn-success mt-3 mr-3" (click)="redirectToForm()">Registrar</button>
+                            <button class="btn btn-success mt-3 mr-3" (click)="redirectToForm()"><i class="pi pi-plus"></i>  Registrar</button>
                         </div>
                     </div>
 
@@ -25,7 +25,7 @@
                                         [showCurrentPageReport]="true"
                                         [rowsPerPageOptions]="[10, 25, 50, 100]"
                                         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
-                                        styleClass="p-datatable-customers p-datatable-gridlines"
+                                        styleClass="p-datatable-customers p-datatable-gridlines p-datatable-sm"
                                     >
                                         <ng-template pTemplate="caption">
                                             Buscar:
@@ -36,29 +36,28 @@
                                         </ng-template>
                                         <ng-template pTemplate="header">
                                             <tr>
-                                                <th style="width: 4.7%;">N°</th>
-                                                <th style="width: 13%;">Usuario</th>
-                                                <th style="width: 17%;">Perfil</th>
+                                                <th style="width: 4.7%;text-align:center;">N°</th>
+                                                <th style="width: 12%;">Usuario</th>
+                                                <th style="width: 14%;">Perfil</th>
                                                 <th style="width: 17%;">Entidad</th>
-                                                <th style="width: 16%;">Apellidos</th>
-                                                <th style="width: 15%;">Nombres</th>
-                                                <th style="width: 8%;">Estado</th>
-                                                <th style="width: 7%;">Editar</th>
+                                                <th>Apellidos</th>
+                                                <th style="width: 19%;">Nombres</th>
+                                                <th style="width: 7%;text-align:center;">Estado</th>
+                                                <th style="width: 5%;text-align:center;">Editar</th>
                                             </tr>
                                         </ng-template>
                                         <ng-template pTemplate="body" let-item let-ri="rowIndex">
                                             <tr>
-                                                <td>{{ item.id }}</td>
+                                                <td style="text-align: center;">{{ item.id }}</td>
                                                 <td>{{ item.username }}</td>
                                                 <td>{{ item.role.nombre }}</td>
-                                                <td>{{ item.eps }}</td>
+                                                <td>{{ item.empresa.nombre }}</td>
                                                 <td>{{ item.apellidos }}</td>
                                                 <td>{{ item.nombres }}</td>
-                                                <td>{{ item.estado === true ? 'activo' : 'inactivo' }}</td>
+                                                <td>{{ item.estado === true ? 'Activo' : 'Inactivo' }}</td>
                                                 <td style="text-align:center">
-                                                    <button pButton type="button" icon="pi pi-pencil" class="ml-2 p-button-rounded"
-                                                        pTooltip="Editar registro" tooltipPosition="top"
-                                                        (click)="redirectToFormUpdate(item.id)">
+                                                    <button pButton type="button" icon="pi pi-pencil" style="width: 30px; height: 20px;"
+                                                        pTooltip="Editar registro" tooltipPosition="top" (click)="redirectToFormUpdate(item.id)">
                                                     </button>
                                                 </td>
                                             </tr>

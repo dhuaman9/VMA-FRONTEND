@@ -6,10 +6,11 @@ import { GenericCombo } from 'src/app/_dto/generic-combo';
 import { Role } from 'src/app/_model/role';
 import { User } from 'src/app/_model/user';
 import { UserService } from 'src/app/_service/user.service';
-import { ValidateInputs } from 'src/app/utils/validate-inputs';
+import { ValidateInputs, validateInput } from 'src/app/utils/validate-inputs';
 import { Empresa } from 'src/app/_model/empresa';
 import { EmpresaService } from 'src/app/_service/empresa.service';
 import Swal from 'sweetalert2';
+
 
 
 @Component({
@@ -139,10 +140,13 @@ export class RegistrarUsuarioComponent implements OnInit {
           title: 'Se registró el usuario correctamente',
           showConfirmButton: true,
           confirmButtonText: 'Aceptar',
-          confirmButtonColor: '#28a745', // color verde
-          timer: 4000
+          confirmButtonColor: '#28a745' // color verde
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.onAceptar(); // se redirige al listado de usuarios
+          }
         });
-        this.onAceptar();
+        
       },
        error => {  
           Swal.fire({
@@ -164,7 +168,7 @@ export class RegistrarUsuarioComponent implements OnInit {
     this.isEdit = false;
     this.modalImage = './assets/images/cancel-icon.png';
     this.modalMessage = 'Registro cancelado';*/
-    this.onAceptar();
+    this.onCancel();
   }
 
   onAceptar(){
@@ -214,7 +218,7 @@ export class RegistrarUsuarioComponent implements OnInit {
 
      // this.registroForm.get('eps').setValidators([Validators.nullValidator]);
       this.registroForm.get('selEmpresa').setValidators([Validators.nullValidator]);
-      this.registroForm.get('telefono').setValidators([Validators.nullValidator]);
+      this.registroForm.get('telefono').setValidators([Validators.required,Validators.minLength(9)]);
       this.registroForm.get('password').setValidators([Validators.nullValidator]);
 
       //this.registroForm.get('eps').updateValueAndValidity();
@@ -234,7 +238,7 @@ export class RegistrarUsuarioComponent implements OnInit {
       this.registroForm.get('password').enable();
      // this.registroForm.get('eps').setValidators([Validators.required]);
       this.registroForm.get('selEmpresa').setValidators([Validators.required])
-      this.registroForm.get('telefono').setValidators([Validators.required]);
+      this.registroForm.get('telefono').setValidators([Validators.required,Validators.minLength(9)]);
       //this.registroForm.get('eps').updateValueAndValidity();
       this.registroForm.get('selEmpresa').updateValueAndValidity();
       this.registroForm.get('telefono').updateValueAndValidity();
@@ -255,6 +259,14 @@ export class RegistrarUsuarioComponent implements OnInit {
       }
     );
   }
+
+  validateInputForm(formControlName: string, validationType: string): void {
+    const control = this.registroForm.get(formControlName);
+    if (control) {
+      validateInput(control, validationType);
+    }
+  }
+
 
 }
 @Component({

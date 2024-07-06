@@ -130,4 +130,12 @@ export class VmaComponent implements OnInit {
     this.router.navigate(['/inicio/vma/registrar-vma', id]);// temporal, luego se setea el ID del registro , en el metodo anterior redirectToForm
   }
 
+
+  buscar(){
+
+  }
+
+  limpiar(){
+    
+  }
 }
