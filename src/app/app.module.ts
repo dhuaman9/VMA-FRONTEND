@@ -64,8 +64,7 @@ import { ToastModule } from 'primeng/toast';
 import { SplitterModule } from 'primeng/splitter';
 import { CalendarModule } from 'primeng/calendar';
 import { FileUploadModule } from 'primeng/fileupload';
-
-
+import {TooltipModule} from 'primeng/tooltip';
 
 const PRIMENG_COMPONENTS = [
   TableModule,
@@ -86,7 +85,7 @@ const PRIMENG_COMPONENTS = [
   ToastModule,
   SplitterModule,
   FileUploadModule,
-
+  TooltipModule
 ]
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
 

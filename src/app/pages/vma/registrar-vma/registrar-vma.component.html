@@ -1,7 +1,7 @@
 <router-outlet></router-outlet>
 <div class="content">
-    <div class="container-fluid">
-        <div class="row">
+    <div class="container-fluid" >
+        <div class="row" >
             <div class="col-lg-12 mt-2">
                 <div class="card pdn-15">
                     <div class="content">
@@ -54,20 +54,20 @@
                                           <div class="row">
                                               <div class="col-md-6">
                                                   <div class="form-group">
-                                                      <div class="mb-3">
+                                                      <!-- <div class="mb-3">
                                                           <label for="formFile1" class="form-label">Adjuntar (PDF)</label>
                                                           <input class="form-control" type="file" id="formFile1" accept=".pdf">
-                                                      </div>
+                                                      </div> -->
                                                       <p class="mt-2 text-muted">El tamaño máximo del archivo es de 5MB.</p>
                                                   </div>
                                               </div>
                                       
                                               <div class="col-md-6">
                                                   <div class="form-group">
-                                                      <div class="mb-3">
+                                                      <!-- <div class="mb-3">
                                                           <label for="formFile2" class="form-label">Adjuntar Informe Técnico (PDF/WORD) (Opcional)</label>
                                                           <input class="form-control" type="file" id="formFile2" accept=".pdf,.doc,.docx">
-                                                      </div>
+                                                      </div> -->
                                                       <p class="mt-2 text-muted">El tamaño máximo del archivo es de 20MB.</p>
                                                   </div>
                                               </div>
@@ -76,10 +76,10 @@
                                           <div class="row">
                                               <div class="col-md-6">
                                                   <div class="form-group">
-                                                      <div class="mb-3">
+                                                      <!-- <div class="mb-3">
                                                           <label for="formFile3" class="form-label">Adjuntar formato (EXCEL)</label>
                                                           <input class="form-control" type="file" id="formFile3" accept=".xls,.xlsx">
-                                                      </div>
+                                                      </div> -->
                                                       <p class="mt-2 text-muted">El tamaño máximo del archivo es de 10MB.</p>
                                                   </div>
                                               </div>
@@ -93,7 +93,7 @@
                                     </div>
                                   </p-accordionTab>
                                 </p-accordion >
-                                <div class="col-12 flex  justify-content-center">
+                                <div class="col-12 flex  justify-content-center" *ngIf="this.isRoleRegistrador; else botonAdmin">
                                     <p-button type="button" label="Guardar Progresivamente" class="p-button-success p-button-secondary green-button ml-1"
                                       (click)="guardadoParcial()"> <!--guardado progresivo, donde ningun campo es requerido, pero si el usuario no llena ningun dato, dar el aviso que no lleno nada, por ende no se guarda nada ni las fechas de registro-->
                                     </p-button>
@@ -103,7 +103,14 @@
                                     <p-button type="button" label="Cancelar" class="p-button-danger red-button ml-1"
                                     (click)="onCancelSave()" >
                                     </p-button>
-                                  </div>
+                                </div>
+                                <ng-template #botonAdmin>
+                                    <div class="col-12 flex  justify-content-center">
+                                        <p-button type="button" label="Regresar" class="p-button-secondary"
+                                    (click)="onRegresar()" >
+                                    </p-button>
+                                    </div>
+                                </ng-template>
                               </form>
                         </div>
                     </div>

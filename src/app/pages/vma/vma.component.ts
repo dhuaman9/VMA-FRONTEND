@@ -8,6 +8,7 @@ import { RegistroVMA } from 'src/app/_model/registroVMA';
 import { RegistroVMAService } from 'src/app/_service/registroVMA.service';
 import { Table } from 'primeng/table';
 import { VmaService } from 'src/app/_service/vma.service';
+import { SessionService } from 'src/app/_service/session.service';
 
 
 
@@ -38,6 +39,7 @@ export class VmaComponent implements OnInit {
   totalRecords = 0;
 
   registroCompleto: boolean = false;
+  isRoleRegistrador: boolean = this.sessionService.obtenerRoleJwt().toUpperCase() === 'REGISTRADOR';
 
  // displayModaAdvice = false;
 
@@ -50,6 +52,7 @@ export class VmaComponent implements OnInit {
     private router: Router,
     private registroVMAService : RegistroVMAService,
     private vmaService: VmaService,
+    private sessionService: SessionService,
     private fb: FormBuilder) {
 
   }
@@ -57,6 +60,7 @@ export class VmaComponent implements OnInit {
   ngOnInit(): void {
     this.initListRegistroVMA();
   //  this.empresa = new Empresa();
+  
   this.vmaService.isRegistroCompleto().subscribe(response => this.registroCompleto = response);
   this.vmaService.registroCompleto$.subscribe(response => this.registroCompleto = response)
   }

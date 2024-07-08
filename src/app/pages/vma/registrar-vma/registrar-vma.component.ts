@@ -12,6 +12,9 @@ import { CuestionarioService } from 'src/app/_service/cuestionario.service';
 import { VmaService } from 'src/app/_service/vma.service';
 import Swal from 'sweetalert2';
 import { ActivatedRoute, Router } from '@angular/router';
+import { EMPTY, Observable } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
+import { SessionService } from 'src/app/_service/session.service';
 
 
 @Component({
@@ -26,7 +29,6 @@ export class RegistrarVmaComponent implements OnInit {
   cuestionario: Cuestionario;
   registroForm: FormGroup;
   //formAdjuntar: FormGroup;// sera un form estatico con los botones de adjuntar archivos
-  secciones: Seccion[] = [];
 
   formularioGeneral: FormGroup;
   idRegistroVMA: number = null;
@@ -34,14 +36,18 @@ export class RegistrarVmaComponent implements OnInit {
   seccionActiva: number; // Variable para almacenar el índice de la sección activa
 
   isGreenTab = true; // para cambiar al color verde en el tab
-
-
+  registroCompletoPorEPS: Observable<boolean>;
+  isRoleRegistrador: boolean = this.sessionService.obtenerRoleJwt().toUpperCase() === 'REGISTRADOR';
+  formGroupPregunta: FormGroup;
+  secciones: FormArray;
+  readonly INDEX_PRIMERA_SECCION = 0;
   constructor(
     private router: Router,
     private fb: FormBuilder, 
     private cuestionarioService: CuestionarioService,
     private vmaService: VmaService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private sessionService: SessionService
   ) {
     this.formularioGeneral = this.fb.group({
       secciones: this.fb.array([])
@@ -144,6 +150,9 @@ export class RegistrarVmaComponent implements OnInit {
 
   guardadoCompleto(): void {
     this.addValidatorsToRespuesta(true);
+    if(this.formGroupPregunta) {
+      this.onRadioButtonChange(this.secciones.controls[this.INDEX_PRIMERA_SECCION], this.formGroupPregunta.value.respuesta);
+    }
     if(this.formularioValido) {
       this.guardar(true);
     } else {
@@ -169,7 +178,7 @@ export class RegistrarVmaComponent implements OnInit {
   buildForm() {
     const formGroup = this.cuestionario.secciones.map(seccion => {
       const preguntasFormGroup = seccion.preguntas.map(pregunta => {
-        return this.fb.group({
+        const preguntaFormGroup = this.fb.group({
           idPregunta: [pregunta.idPregunta],
           texto: [pregunta.descripcion],
           tipoPregunta: [pregunta.tipoPregunta],
@@ -179,6 +188,16 @@ export class RegistrarVmaComponent implements OnInit {
           respuesta: [pregunta.respuestaDTO?.respuesta],
           respuestaDTO: this.buildRespuestaForm(pregunta.respuestaDTO)
         });
+
+        if(pregunta.tipoPregunta === 'RADIO') {
+          this.formGroupPregunta = preguntaFormGroup;
+        }
+
+        if (!this.isRoleRegistrador) {
+          preguntaFormGroup.disable();
+        }
+
+        return preguntaFormGroup;
       });
   
       return this.fb.group({
@@ -188,9 +207,15 @@ export class RegistrarVmaComponent implements OnInit {
       });
     });
   
+    this.secciones = this.fb.array(formGroup) as FormArray;
+    
     this.formularioGeneral = this.fb.group({
-      secciones: this.fb.array(formGroup)
-    });
+      secciones: this.secciones
+    });    
+
+    if(this.formGroupPregunta) {
+      this.onRadioButtonChange(this.secciones.controls[this.INDEX_PRIMERA_SECCION], this.formGroupPregunta.value.respuesta);
+    }
   }
 
   private addValidatorsToRespuesta(agregarValidacion: boolean) {
@@ -205,7 +230,6 @@ export class RegistrarVmaComponent implements OnInit {
         if ((pregunta.get('tipoPregunta').value !== TipoPregunta.NUMERICO && alternativasControl.length === 0) && respuestaControl) {
           respuestaControl.setValidators(agregarValidacion ? [Validators.required] : []);
           respuestaControl.updateValueAndValidity();
-
           if (!respuestaControl.valid) {
             this.formularioValido = false;
           }
@@ -272,6 +296,10 @@ export class RegistrarVmaComponent implements OnInit {
     return pregunta.get('alternativas') as FormArray;
   }
 
+  onRegresar(): void {
+    this.router.navigate(['/inicio/vma']);
+  }
+
   onCancelSave(){
     Swal.fire({
       title: "Desea cancelar el registro?",
@@ -306,7 +334,7 @@ export class RegistrarVmaComponent implements OnInit {
   
   onRadioButtonChange(seccion: AbstractControl, valor: string): void {
     console.log('valor -' , valor);
-    if (valor === 'No') {
+    if (valor === 'No' || !valor) {
       this.deshabilitarCamposDeTexto(seccion as FormGroup);
     } else {
       this.habilitarCamposDeTexto(seccion as FormGroup);
@@ -319,6 +347,7 @@ export class RegistrarVmaComponent implements OnInit {
       console.log('pregunta.get(tipoPregunta).value -' , pregunta.get('tipoPregunta').value);
       if (pregunta.get('tipoPregunta').value === 'NUMERICO' || pregunta.get('tipoPregunta').value === 'TEXTO' ) {
         pregunta.get('respuesta').disable();
+        pregunta.get('respuesta').setValue(null);
       }
     });
   }

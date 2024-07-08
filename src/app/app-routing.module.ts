@@ -16,6 +16,7 @@ import { RegistrarUsuarioComponent } from './pages/usuarios/registrar-usuario/re
 import { EditarUsuarioComponent } from './pages/usuarios/editar-usuario/editar-usuario.component';
 import { VmaComponent } from './pages/vma/vma.component';
 import { RegistrarVmaComponent } from './pages/vma/registrar-vma/registrar-vma.component';
+import { RegistradorVmaGuard } from './_service/registrador-vma.guard';
 
 
 
@@ -42,7 +43,7 @@ const routes : Routes =
       {
         path : 'vma', component : VmaComponent, canActivate : [GuardService] , children :
         [
-          { path: "registrar-vma", component : RegistrarVmaComponent, data: { tituloModulo : 'Sistema de Valores Maximos Admisibles' } },
+          { path: "registrar-vma", component : RegistrarVmaComponent, data: { tituloModulo : 'Sistema de Valores Maximos Admisibles', expectedRole: 'REGISTRADOR' }, canActivate: [RegistradorVmaGuard] },
           { path: "registrar-vma/:id", component : RegistrarVmaComponent, data: { tituloModulo : 'Sistema de Valores Maximos Admisibles' } }
         ]
       },

@@ -54,9 +54,9 @@
                     </div>
 
                      <!-- Botón Registrar -->
-                    <div class="card pdn-15 mb-1">
+                    <div class="card pdn-15 mb-1" *ngIf="isRoleRegistrador">
                         <div class="card-header border-0">
-                            <button class="btn btn-success mt-2 mr-2" *ngIf="!registroCompleto" (click)="redirectToForm()">Registrar</button>
+                            <button class="btn btn-success mt-2 mr-2" (click)="redirectToForm()" [disabled]="registroCompleto" [pTooltip]="registroCompleto ? 'Ya existe un registro VMA en curso' : 'Registrar nuevo VMA'" tooltipPosition="top">Registrar</button>
                         </div>
                     </div>
 
@@ -110,8 +110,8 @@
                                         <td>{{item.username }}</td>
                                         <!--<td> {{item.username }}</td>-->
                                         <td style="text-align:center">
-                                            <button pButton type="button" icon="pi pi-pencil" class="ml-2 p-button-rounded"
-                                                pTooltip="Editar registro"
+                                            <button pButton type="button" [icon]="isRoleRegistrador ? 'pi pi-pencil' : 'pi pi-eye'" class="ml-2 p-button-rounded"
+                                                [pTooltip]="isRoleRegistrador ? 'Editar registro' : 'Visualizar registro'" tooltipPosition="top"
                                                 (click)="redirectToFormUpdate(item.idRegistroVma)">
                                             </button>
                                         </td>
