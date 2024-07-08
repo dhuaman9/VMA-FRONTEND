@@ -40,7 +40,6 @@ export class RegistrarVmaComponent implements OnInit {
   isRoleRegistrador: boolean = this.sessionService.obtenerRoleJwt().toUpperCase() === 'REGISTRADOR';
   formGroupPregunta: FormGroup;
   secciones: FormArray;
-  readonly INDEX_PRIMERA_SECCION = 0;
   constructor(
     private router: Router,
     private fb: FormBuilder, 
@@ -150,9 +149,6 @@ export class RegistrarVmaComponent implements OnInit {
 
   guardadoCompleto(): void {
     this.addValidatorsToRespuesta(true);
-    if(this.formGroupPregunta) {
-      this.onRadioButtonChange(this.secciones.controls[this.INDEX_PRIMERA_SECCION], this.formGroupPregunta.value.respuesta);
-    }
     if(this.formularioValido) {
       this.guardar(true);
     } else {
@@ -212,10 +208,6 @@ export class RegistrarVmaComponent implements OnInit {
     this.formularioGeneral = this.fb.group({
       secciones: this.secciones
     });    
-
-    if(this.formGroupPregunta) {
-      this.onRadioButtonChange(this.secciones.controls[this.INDEX_PRIMERA_SECCION], this.formGroupPregunta.value.respuesta);
-    }
   }
 
   private addValidatorsToRespuesta(agregarValidacion: boolean) {
