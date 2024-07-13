@@ -9,6 +9,7 @@ import { RegistroVMAService } from 'src/app/_service/registroVMA.service';
 import { Table } from 'primeng/table';
 import { VmaService } from 'src/app/_service/vma.service';
 import { SessionService } from 'src/app/_service/session.service';
+import { EmpresaService } from 'src/app/_service/empresa.service';
 
 
 
@@ -21,16 +22,22 @@ export class VmaComponent implements OnInit {
 
   activeState: boolean[] = [true, false, false];
 
+  // Definir un arreglo con los estados disponibles
+  estados: string[];
+
   value1: number = 0;
   inputFilterTable: string="";
-  
+  filtroForm: FormGroup;
 
   isLoading = false;
   showResultados = false;
   isEdition = false;
   empresa : Empresa;
-  ListEmpresa: Empresa[];  // x quedar en desuso
+
+  empresasLista: {label: string, value: any}[] = [];
+
   ListRegistroVMA: RegistroVMA[];  //pendiente
+
   registroForm: FormGroup;
 
 
@@ -53,14 +60,34 @@ export class VmaComponent implements OnInit {
     private registroVMAService : RegistroVMAService,
     private vmaService: VmaService,
     private sessionService: SessionService,
-    private fb: FormBuilder) {
+    private fb: FormBuilder,
+    private empresaService : EmpresaService) {
 
+      this.filtroForm = this.fb.group({  //filtros
+        estado: [''], // valor x defecto
+        eps: [''], 
+        fechaDesde: [''],
+        fechaHasta: [''],
+        anio: ['']
+      });
   }
 
   ngOnInit(): void {
+
+    this.filtroForm = this.fb.group({
+      eps: [''],
+      estado: [''],
+      fechaDesde: [''],
+      fechaHasta: [''],
+      anio: ['']
+    });
+
+    this.estados = ['COMPLETO', 'INCOMPLETO'];
+
     this.initListRegistroVMA();
   //  this.empresa = new Empresa();
-  
+  this.cargarListaEmpresas(); //carga el listdo de empresas
+
   this.vmaService.isRegistroCompleto().subscribe(response => this.registroCompleto = response);
   this.vmaService.registroCompleto$.subscribe(response => this.registroCompleto = response)
   }
@@ -142,4 +169,21 @@ export class VmaComponent implements OnInit {
   limpiar(){
     
   }
+
+
+  cargarListaEmpresas(): void {
+    this.empresaService.findAll().subscribe(
+      
+      (data: any[]) => {        
+        this.empresasLista = data.map(emp => ({
+          label: emp.nombre,
+          value: emp.idEmpresa
+        }));
+      },
+      (error) => {
+        console.error('Error al obtener la lista de las empresas', error);
+      }
+    );
+  }
+
 }

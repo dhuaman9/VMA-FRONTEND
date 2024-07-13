@@ -34,7 +34,7 @@ export class RegistradorVmaGuard implements CanActivate {
     const userRole = this.sessionService.obtenerRoleJwt();
     console.log(expectedRole.toUpperCase(), userRole.toUpperCase())
     if (isRegistroCreado || expectedRole.toUpperCase() !== userRole.toUpperCase()) {
-      Swal.fire('Permiso denegado', 'No tiene permisos para registrar un nuevo VMA', 'info');
+      Swal.fire('Permiso denegado', 'No tiene permisos para registrar  VMA', 'info');
       this.router.navigate(['/inicio/vma']);
       return false;
     }

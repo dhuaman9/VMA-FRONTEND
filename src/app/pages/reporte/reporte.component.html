@@ -1,16 +1,63 @@
 <router-outlet></router-outlet>
-<div [hidden]="route.children.length!==0">
-    <div class="content">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-12 mt-2">
-                    <div class="card pdn-15">
-                        <div class="card-header border-0">
-                            <p>reporte works! reporte</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div style="text-align: center; margin-bottom: 20px;">
+    <h2 style="margin-bottom: 20px;">Gráficos estadisticos VMA</h2>
+    <p-dropdown 
+      [options]="years" 
+      [(ngModel)]="selectedYear" 
+      placeholder="Seleccionar año" 
+      class="combobox-anio">
+    </p-dropdown>
+    <button pButton 
+      type="button" 
+      label="Aplicar" 
+      (click)="applyFilter()" 
+      style="margin-left: 10px;">
+    </button>
+  </div>
+
+<div id="GFG"> 
+   
+    <h3>Angular PrimeNG Bar Chart Horizontal</h3> 
+    <div style="width:60%;"> 
+        <p-chart type="bar" [data]="barChartData1"  
+                 [options]="horizontalOptions"> 
+       </p-chart> 
+    </div> 
+</div>
+
+<!-- 
+ <div class="grid p-fluid margin-container">
+    <div class="col-12 lg:col-6">
+      <div class="card chart-card">
+        <h4>Grafico N°01: Remisión de Información VMA Año actual, Según tamaño de la empresa</h4>
+        <p-chart type="bar" [data]="barChartData1" [style]="{'height': '300px'}"></p-chart>
+      </div>
     </div>
-</div>        
+    <div class="col-12 lg:col-6">
+      <div class="card flex flex-column align-items-center chart-card">
+        <h4 class="text-left w-full">Grafico N°02: Número de EP que implementaron la normativa VMA, Según tamaño</h4>
+        <p-chart type="pie" [data]="pieChartData1" [style]="{'height': '300px'}"></p-chart>
+      </div>
+    </div>
+    
+
+    <div class="col-12 lg:col-6">
+        <div class="card flex flex-column align-items-center chart-card">
+          <h4 class="text-left w-full">Grafico N°03: Porcentaje de EP con área dedicada al monitoreo y control de los VMA, según tamaño de la EP.</h4>
+          <p-chart type="bar" [data]="barChartData2" [options]="chartOptions"  [style]="{'height': '300px'}"></p-chart>
+        </div>
+      </div>
+
+
+    <div class="col-12 lg:col-6">
+      <div class="card flex flex-column align-items-center chart-card">
+        <h4 class="text-left w-full">Grafico N°04: Número promedio de trabajadores dedicados a la implementación de los VMA, según tamaño de la EP. </h4>
+        <p-chart type="pie" [data]="pieChartData2" [style]="{'height': '300px'}"></p-chart>
+      </div>
+    </div>
+  </div>
+
+-->
+
+
+  <!-- <app-loading *ngIf="isLoading"></app-loading> -->

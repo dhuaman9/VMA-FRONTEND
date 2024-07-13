@@ -48,51 +48,50 @@
                                     </div>
                                     <!-- Botónes adjuntar en bootstrap-->
                                     <div *ngIf="i === seccionesForm().controls.length - 1" class="container mt-4">
-                                      <form>
-                                                          
+                                      <form>                 
                                         <div class="container">
-                                          <div class="row">
-                                              <div class="col-md-6">
-                                                  <div class="form-group">
-                                                      <!-- <div class="mb-3">
-                                                          <label for="formFile1" class="form-label">Adjuntar (PDF)</label>
-                                                          <input class="form-control" type="file" id="formFile1" accept=".pdf">
-                                                      </div> -->
-                                                      <p class="mt-2 text-muted">El tamaño máximo del archivo es de 5MB.</p>
-                                                  </div>
-                                              </div>
-                                      
-                                              <div class="col-md-6">
-                                                  <div class="form-group">
-                                                      <!-- <div class="mb-3">
-                                                          <label for="formFile2" class="form-label">Adjuntar Informe Técnico (PDF/WORD) (Opcional)</label>
-                                                          <input class="form-control" type="file" id="formFile2" accept=".pdf,.doc,.docx">
-                                                      </div> -->
-                                                      <p class="mt-2 text-muted">El tamaño máximo del archivo es de 20MB.</p>
-                                                  </div>
-                                              </div>
-                                          </div>
-                                      
-                                          <div class="row">
-                                              <div class="col-md-6">
-                                                  <div class="form-group">
-                                                      <!-- <div class="mb-3">
-                                                          <label for="formFile3" class="form-label">Adjuntar formato (EXCEL)</label>
-                                                          <input class="form-control" type="file" id="formFile3" accept=".xls,.xlsx">
-                                                      </div> -->
-                                                      <p class="mt-2 text-muted">El tamaño máximo del archivo es de 10MB.</p>
-                                                  </div>
-                                              </div>
-                                      
-                                              <div class="col-md-6">
-                                                  <!-- Deja este espacio vacío para completar el diseño de 2x2 columnas -->
-                                              </div>
-                                          </div>
-                                      </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <div class="mb-3">
+                                                            <label for="formFile1" class="form-label">Adjuntar PDF (*)</label>
+                                                            <input class="form-control" type="file" id="formFile1" accept=".pdf">
+                                                        </div>
+                                                        <p class="mt-2 text-muted">El tamaño máximo del archivo es de 5MB.</p>
+                                                    </div>
+                                                </div>
+                                        
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <div class="mb-3">
+                                                            <label for="formFile2" class="form-label">Adjuntar Informe Técnico PDF o WORD (Opcional)</label>
+                                                            <input class="form-control" type="file" id="formFile2" accept=".pdf,.doc,.docx">
+                                                        </div>
+                                                        <p class="mt-2 text-muted">El tamaño máximo del archivo es de 20MB.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <div class="mb-3">
+                                                            <label for="formFile3" class="form-label">Adjuntar formato EXCEL (*)</label>
+                                                            <input class="form-control" type="file" id="formFile3" accept=".xls,.xlsx">
+                                                        </div>
+                                                        <p class="mt-2 text-muted">El tamaño máximo del archivo es de 10MB.</p>
+                                                    </div>
+                                                </div>
+                                                <!--<div class="col-md-6">
+                                                    Deja este espacio vacío para completar el diseño de 2x2 columnas
+                                                </div> -->
+                                            </div>
+                                         </div>
                                       </form>
                                     </div>
                                   </p-accordionTab>
                                 </p-accordion >
+
                                 <div class="col-12 flex  justify-content-center" *ngIf="this.isRoleRegistrador; else botonAdmin">
                                     <p-button type="button" label="Guardar Progresivamente" class="p-button-success p-button-secondary green-button ml-1"
                                       (click)="guardadoParcial()"> <!--guardado progresivo, donde ningun campo es requerido, pero si el usuario no llena ningun dato, dar el aviso que no lleno nada, por ende no se guarda nada ni las fechas de registro-->
@@ -101,7 +100,7 @@
                                     (click)="guardadoCompleto()">  <!--guardado final, donde todos los campos son requeridos , exceptos algunos botones de adjuntar archivos-->
                                   </p-button>
                                     <p-button type="button" label="Cancelar" class="p-button-danger red-button ml-1"
-                                    (click)="onCancelSave()" >
+                                    (click)="onCancelSave()" > 
                                     </p-button>
                                 </div>
                                 <ng-template #botonAdmin>

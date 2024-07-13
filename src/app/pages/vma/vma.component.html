@@ -6,50 +6,45 @@
                 <div class="col-lg-12 mt-2">
                       
                       <!-- Filtros -->
-                      <div class="card pdn-15 mb-3">
+                    <div class="card pdn-15 mb-3">
                         <div class="card-header border-0 text-center">
-                            <h2>Filtros de búsqueda</h2>
+                        <h2>Filtros de búsqueda</h2>
                         </div>
                         <div class="card-body">
+                        <form [formGroup]="filtroForm">
                             <div class="row">
-                                
-                                <div class="col-md-2 mb-3">
-                                    <span class="p-float-label">
-                                        <input id="eps" pInputText type="text" /><!--[(ngModel)]="eps"-->
-                                        <label for="eps">EPS</label>
-                                    </span>
+                            <div class="col-md-4 mb-3" *ngFor="let field of ['eps', 'estado', 'fechaDesde', 'fechaHasta', 'anio']; let i = index">
+                                <div class="form-group" [ngSwitch]="field">
+                                <span class="p-float-label" *ngSwitchCase="'eps'">
+                                    <p-dropdown inputId="selEmpresa" [options]="empresasLista" placeholder="Seleccionar" formControlName="eps" 
+                                    [showClear]="true" [filter]="true"></p-dropdown>
+                                </span>
+                                <span class="p-float-label" *ngSwitchCase="'estado'">
+                                    <p-dropdown formControlName="estado" placeholder="Seleccione un estado">
+                                        <option *ngFor="let estado of estados" [value]="estado">{{ estado }}</option>
+                                      </p-dropdown>
+                                </span>
+                                <span class="p-float-label" *ngSwitchCase="'fechaDesde'">
+                                    <p-calendar id="fechaDesde" dateFormat="yy-mm-dd" formControlName="fechaDesde"></p-calendar>
+                                    <label for="fechaDesde">Fecha Desde</label>
+                                </span>
+                                <span class="p-float-label" *ngSwitchCase="'fechaHasta'">
+                                    <p-calendar id="fechaHasta" dateFormat="yy-mm-dd" formControlName="fechaHasta"></p-calendar>
+                                    <label for="fechaHasta">Fecha Hasta</label>
+                                </span>
+                                <span class="p-float-label" *ngSwitchCase="'anio'">
+                                    <p-dropdown formControlName="anio" placeholder="Seleccione un año"></p-dropdown>
+                                </span>
                                 </div>
-                                <div class="col-md-2 mb-3">
-                                    <span class="p-float-label">
-                                        <p-dropdown  placeholder="Seleccione un estado"></p-dropdown> <!-- [options]="estadoOptions" [(ngModel)]="estado"-->
-                                        
-                                    </span>
-                                </div>
-                                <div class="col-md-2 mb-3">
-                                    <span class="p-float-label">
-                                        <p-calendar id="fechaDesde"  dateFormat="yy-mm-dd"></p-calendar><!-- [(ngModel)]="fechaDesde"-->
-                                        <label for="fechaDesde">Fecha Desde</label>
-                                    </span>
-                                </div>
-                                <div class="col-md-2 mb-3">
-                                    <span class="p-float-label">
-                                        <p-calendar id="fechaHasta"  dateFormat="yy-mm-dd"></p-calendar><!--[(ngModel)]="fechaHasta"-->
-                                        <label for="fechaHasta">Fecha Hasta</label>
-                                    </span>
-                                </div>
-                                <div class="col-md-2 mb-3">
-                                    <span class="p-float-label">
-                                        <p-dropdown  placeholder="Seleccione un año"></p-dropdown><!--[options]="anioOptions" [(ngModel)]="anio" -->
-                                        
-                                    </span>
-                                </div>
+                            </div>
                             </div>
                             <div class="row mt-3">
-                                <div class="col-md-12">
-                                    <button pButton type="button" label="Buscar" icon="pi pi-search" style="margin-right: 50px"  (click)="buscar()"></button>
-                                    <button pButton type="button" label="Limpiar" icon="pi pi-times"  (click)="limpiar()"></button>
-                                </div>
+                            <div class="col-md-12">
+                                <button pButton type="button" label="Buscar" icon="pi pi-search" style="margin-right: 50px" (click)="buscar()"></button>
+                                <button pButton type="button" label="Limpiar" icon="pi pi-times" (click)="limpiar()"></button>
                             </div>
+                            </div>
+                        </form>
                         </div>
                     </div>
 

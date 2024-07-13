@@ -43,10 +43,10 @@ export class EmpresaComponent implements OnInit {
     { label: 'NO RAT', value: 'NO RAT' }
   ];
   tipoOptions: any[] = [
-    { label: 'Pequeña', value: 'Pequeña' },
-    { label: 'Mediana', value: 'Mediana' },
-    { label: 'Grande', value: 'Grande' },
-    { label: 'Sedapal', value: 'Sedapal' }
+    { label: 'PEQUEÑA', value: 'PEQUEÑA' },
+    { label: 'MEDIANA', value: 'MEDIANA' },
+    { label: 'GRANDE', value: 'GRANDE' },
+    { label: 'SEDAPAL', value: 'SEDAPAL' }
   ];
 
    constructor(

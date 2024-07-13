@@ -126,21 +126,43 @@ export class RegistrarVmaComponent implements OnInit {
    // registroVMA.idEmpresa = 1;   //temporal, hasta definir
     registroVMA.respuestas = respuestas;
     
+    console.log("this.idRegistroVMA -",this.idRegistroVMA);
+    console.log("registroVMA -",registroVMA.respuestas);
+
     if(this.idRegistroVMA) {
       this.vmaService.updateRegistroVMA(this.idRegistroVMA, registroVMA)
           .subscribe(
             () => {
-              Swal.fire('Registro actualizado', isGuardadoCompleto ? 'Su información ha sido registrada y enviada.' : 'Se ha realizado el guardado progresivo','success');
-              //this.router.navigate(['/inicio/vma']); recomendable
-              this.onBackToList();//temporal, no  recomendable
+              Swal.fire({
+                title: 'Registro actualizado',
+                text: isGuardadoCompleto ? 'Su información ha sido registrada y enviada.' : 'Se ha realizado el guardado progresivo',
+                icon: 'success',
+                confirmButtonText: 'Aceptar',
+                allowOutsideClick: false  //evita hacer click fuera del alert
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  this.router.navigate(['/inicio/vma']).then(() => {
+                    window.location.reload();//temporal, no  recomendable
+                  });
+                }
+              });
             }
           );
     } else {
       this.vmaService.saveRegistroVMA(registroVMA).subscribe(
         () => {
-          Swal.fire('Cuestionario guardado',  isGuardadoCompleto? 'Su información ha sido registrada y enviada.' : 'Registrado guardado parciamente','success');
-          // this.router.navigate(['/inicio/vma']);
-          this.onBackToList();//temporal, no  recomendable
+          Swal.fire({
+            title: 'Registro actualizado',
+            text:  isGuardadoCompleto? 'Su información ha sido registrada y enviada.' : 'Registrado guardado parciamente',
+            icon: 'success',
+            confirmButtonText: 'Aceptar',
+            allowOutsideClick: false    //evita hacer click fuera del alert
+          });
+       //   this.onBackToList();//temporal, no  recomendable
+          this.router.navigate(['/inicio/vma']).then(() => {
+                // Es para forzar la recarga del listado por el momento.
+                window.location.reload();
+              });
           this.vmaService.sendRegistroCompleto(true);
         }
       );
@@ -295,7 +317,7 @@ export class RegistrarVmaComponent implements OnInit {
   onCancelSave(){
     Swal.fire({
       title: "Desea cancelar el registro?",
-      text: "Si cancela el registro toda la información ingresada y/o seleccionada será borrada!",
+      text: "Si cancela el registro toda la información ingresada temporal, será borrada!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#DF2A3D",
@@ -320,7 +342,7 @@ export class RegistrarVmaComponent implements OnInit {
       // es para forzar la recarga del listado por el momento.
      window.location.reload();
     });
-    this.router.navigate(['/inicio/vma']);
+  //  this.router.navigate(['/inicio/vma']);
     
   }
   
