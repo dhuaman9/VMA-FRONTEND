@@ -11,5 +11,6 @@ export class Pregunta {
     requerido: boolean;
     tipoPregunta: TipoPregunta;
     alternativas: Alternativa[];
-    respuestaDTO: RespuestaDTO
+    respuestaDTO: RespuestaDTO;
+    preguntaDependiente: Pregunta;
 }

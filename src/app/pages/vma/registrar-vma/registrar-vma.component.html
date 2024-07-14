@@ -48,14 +48,16 @@
                                     </div>
                                     <!-- Botónes adjuntar en bootstrap-->
                                     <div *ngIf="i === seccionesForm().controls.length - 1" class="container mt-4">
-                                      <form>                 
+                                      <form [formGroup]="filesFormGroup">                 
                                         <div class="container">
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <div class="mb-3">
                                                             <label for="formFile1" class="form-label">Adjuntar PDF (*)</label>
-                                                            <input class="form-control" type="file" id="formFile1" accept=".pdf">
+                                                            <input class="form-control"  (change)="onFileChange($event, 'pdf')" type="file" id="formFile1" accept=".pdf">
+                                                            <small *ngIf="filesFormGroup.get('pdf').errors?.required" style="color: red;">Archivo requerido</small>
+                                                            <small *ngIf="filesFormGroup.get('pdf').errors?.maxSize" style="color: red;">El archivo no puede ser mayor a 5MB</small>
                                                         </div>
                                                         <p class="mt-2 text-muted">El tamaño máximo del archivo es de 5MB.</p>
                                                     </div>
@@ -65,7 +67,8 @@
                                                     <div class="form-group">
                                                         <div class="mb-3">
                                                             <label for="formFile2" class="form-label">Adjuntar Informe Técnico PDF o WORD (Opcional)</label>
-                                                            <input class="form-control" type="file" id="formFile2" accept=".pdf,.doc,.docx">
+                                                            <input class="form-control" (change)="onFileChange($event, 'pdfWord')" type="file" id="formFile2" accept=".pdf,.doc,.docx">
+                                                            <small *ngIf="filesFormGroup.get('pdfWord').errors?.maxSize" style="color: red;">El archivo no puede ser mayor a 20MB</small>
                                                         </div>
                                                         <p class="mt-2 text-muted">El tamaño máximo del archivo es de 20MB.</p>
                                                     </div>
@@ -77,7 +80,9 @@
                                                     <div class="form-group">
                                                         <div class="mb-3">
                                                             <label for="formFile3" class="form-label">Adjuntar formato EXCEL (*)</label>
-                                                            <input class="form-control" type="file" id="formFile3" accept=".xls,.xlsx">
+                                                            <input class="form-control" (change)="onFileChange($event, 'excel')" type="file" id="formFile3" accept=".xls,.xlsx">
+                                                            <small *ngIf="filesFormGroup.get('excel').errors?.required" style="color: red;">Archivo requerido</small>
+                                                            <small *ngIf="filesFormGroup.get('excel').errors?.maxSize" style="color: red;">El archivo no puede ser mayor a 5MB</small>
                                                         </div>
                                                         <p class="mt-2 text-muted">El tamaño máximo del archivo es de 10MB.</p>
                                                     </div>
