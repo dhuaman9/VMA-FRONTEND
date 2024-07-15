@@ -314,7 +314,7 @@ export class RegistrarVmaComponent implements OnInit {
         this.preguntasAuxiliar = preguntasDependientes;
       }
       
-      seccion.preguntas = seccion.preguntas.filter(pregunta => !pregunta.preguntaDependiente || pregunta.preguntaDependiente?.respuestaDTO?.respuesta === "Sí");
+      seccion.preguntas = seccion.preguntas.filter(pregunta => !pregunta.preguntaDependiente || (pregunta.preguntaDependiente && pregunta.preguntaDependiente.respuestaDTO?.respuesta === "Sí"));
 
       const preguntasFormGroup = seccion.preguntas.map(this.buildPregunta);
   
