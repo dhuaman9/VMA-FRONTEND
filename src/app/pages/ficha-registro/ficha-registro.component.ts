@@ -71,7 +71,10 @@ export class FichaRegistroComponent implements OnInit {
     this.fichaRegistroService.findAll().subscribe(
      
       (data:any) => {
-      this.ListFichasRegistro= data.content || data;
+      this.ListFichasRegistro= (data.content || data).map((item: FichaRegistro,index: number)=>({
+        ...item,
+        index: index + 1
+      }));
       this.showResultados = true;
       this.totalRecords = data.totalElements || this.ListFichasRegistro.length;
       this.isLoading = false;

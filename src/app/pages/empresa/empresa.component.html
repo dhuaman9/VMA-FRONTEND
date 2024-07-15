@@ -4,16 +4,11 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12 mt-2">
-                    <div class="card pdn-15">
-                        <div class="card-header border-0">
-                            <button class="btn btn-success mt-3 mr-3" (click)="onAddEmpresa()">Registrar</button><!-- redirectToForm() showModalDialog()-->
-                        </div>
-                    </div>
-
                     <div class="card pdn-15" *ngIf="showResultados">
                         <div class="content">
                             <div class="col-md-12">
                                 <div class="card-body table-responsive p-0">
+                                        <button class="btn btn-success mt-3 mb-4" (click)="onAddEmpresa()"><i class="pi pi-plus"></i>  Registrar</button><!-- redirectToForm() showModalDialog()-->
                                     <p-table #dt1 
                                         [value]="ListEmpresa" 
                                         dataKey="id"
@@ -21,10 +16,11 @@
                                         responsiveLayout="scroll"
                                         [paginator]="true"
                                         [rows]="10"
+                                        [rowHover]="true"
                                         [showCurrentPageReport]="true"
                                         [rowsPerPageOptions]="[10, 25, 50, 100]"
                                         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
-                                        styleClass="p-datatable-customers p-datatable-gridlines"
+                                        styleClass="p-datatable-customers p-datatable-gridlines p-datatable-sm"
                                     >
                                         <ng-template pTemplate="caption">
                                             Buscar:  
@@ -36,25 +32,24 @@
 
                                         <ng-template pTemplate="header">
                                             <tr>
-                                                <th style="width: 5%;">N°</th>
-                                                <th style="width: 30%;">EPS</th>
-                                                <th style="width: 25%;">Regimen</th>
-                                                <th style="width: 30%;">Tipo</th>
-                                                <th style="width: 10%;">Editar</th>
+                                                <th style="width: 5%;text-align: center;">N°</th>
+                                                <th>EPS</th>
+                                                <th style="width: 20%;">Regimen</th>
+                                                <th style="width: 20%;">Tipo</th>
+                                                <th style="width: 10%;text-align: center;">Editar</th>
                                             </tr>
                                         </ng-template>
 
                                         <ng-template pTemplate="body" let-item let-ri="rowIndex">
                                             <tr>
                                                 <!--<td>{{((currentPage * paramsPagination.rows) + ri + 1)}}</td> -->
-                                                <td>{{item.idEmpresa}}</td>
+                                                <td style="text-align: center;">{{item.index}}</td>
                                                 <td>{{item.nombre}}</td>
                                                 <td>{{item.regimen}}</td>
                                                 <td>{{item.tipo}}</td>
                                                 <td style="text-align:center">
-                                                    <button pButton type="button" icon="pi pi-pencil" class="ml-2 p-button-rounded"
-                                                        pTooltip="Editar registro" tooltipPosition="top"
-                                                        (click)="onEditEmpresa(item.idEmpresa)">
+                                                    <button pButton type="button" icon="pi pi-pencil" style="width: 30px; height: 20px;"
+                                                        pTooltip="Editar registro" tooltipPosition="top" (click)="onEditEmpresa(item.idEmpresa)">
                                                     </button>
                                                 </td>
                                             </tr>
@@ -80,10 +75,10 @@
     <ng-template pTemplate="footer">
       <div style="text-align: center;">
         <p-button type="button" label="Aceptar" class="ml-1 p-button-success" 
-          (click)="onAccept()" *ngIf="isEdition">
+          (click)="onAccept()" icon="pi pi-save" iconPos="left" *ngIf="isEdition">
         </p-button>
-        <p-button type="button" label="Aceptar" class="ml-1 p-button-success" 
-          (click)="onCancel()" *ngIf="!isEdition">
+        <p-button type="button" icon="pi pi-times" iconPos="left" label="Aceptar" class="ml-1 p-button-success" 
+        [styleClass]="'p-button-danger'" (click)="onCancel()" *ngIf="!isEdition">
         </p-button>  
       </div>
       

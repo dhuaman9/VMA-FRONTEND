@@ -109,7 +109,7 @@ basicOptions = {
     this.barChartDataSiNo = {
       labels: labels,
       datasets: [{
-        label: 'Porcentaje de EP con área dedicada al monitoreo y control de los VMA',
+        label: 'Porcentaje de las EPS, con área dedicada al monitoreo y control de los VMA',
         data: percentages,
         backgroundColor: '#6fd76f',
         borderColor: '#6fd76f',

@@ -18,7 +18,7 @@ export class ValidateInputs {
           }
       });
   
-    }
+  }
   }
   
   @Directive({
@@ -160,3 +160,19 @@ export class ValidateInputs {
     }
     formControlName.setValue(cleanedValue, { emitEvent: false });
   }
+
+  export function trimSpaces(str: string): string {
+    return str.trim();
+  }
+  
+  export function cleanSpaces(form: FormGroup): void {
+    Object.keys(form.controls).forEach(key => {
+      const control = form.get(key);
+      if (control && control.value && typeof control.value === 'string') {
+        control.setValue(trimSpaces(control.value), { emitEvent: false });
+      }
+    });
+  }
+  
+  
+  

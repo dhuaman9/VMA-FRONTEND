@@ -1,28 +1,27 @@
 :host {
-    .input-text {
-        width: 350px;
-    }
+  .input-text {
+      width: 350px;
+  }
 
-    .input-number {
-        width: 200px;;
-    }
-    p-accordion p-accordiontab .p-accordion-header-link
-    {
-            background-color: #1087E5 !important;
-            /*border: 1px solid green !important;*/
-    }
+  .input-number {
+      width: 200px;;
+  }
 }
 
+:host ::ng-deep .p-accordion .p-accordion-header:not(.p-highlight):not(.p-disabled):hover .p-accordion-header-link {
+  background-color: #27a0ff;
+  border-color: #27a0ff;
+  color: #ffffff;
+}
 
-.green-tab {
-    background-color: green;
-  }
+:host ::ng-deep .p-accordion .p-accordion-header:not(.p-disabled).p-highlight:hover .p-accordion-header-link {
+  background: #27a0ff;
+  border-color: #27a0ff;
+  color: #ffffff;
+}
 
-
-  @media (max-width: 768px) {
-    .form-group {
-      margin-bottom: 1rem;
-    }
-  }
-
-  
+:host ::ng-deep .p-accordion .p-accordion-header:not(.p-disabled).p-highlight .p-accordion-header-link {
+  background: #27a0ff;
+  border-color: #27a0ff;
+  color: #ffffff;
+}
