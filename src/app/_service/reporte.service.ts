@@ -21,6 +21,14 @@ export class ReporteService {
         private http : HttpClient
     ) { }
 
+    reporteRegistros(anio: number): Observable<any> {
+        return this.http.get(`${this.url}/api/reporte/registros?anio=${anio}`);
+    }
+
+    reporteRespuestaSiNo(anio: number): Observable<any> {
+        return this.http.get(`${this.url}/api/reporte/respuesta-si-no?anio=${anio}`);
+    }
+
     fechaprocesa(): Observable<any>{
 
         //'Authorization': 'Bearer '+this.token

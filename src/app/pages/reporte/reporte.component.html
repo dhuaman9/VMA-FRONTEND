@@ -18,8 +18,18 @@
 <div id="GFG"> 
    
     <h3>Angular PrimeNG Bar Chart Horizontal</h3> 
+
+    <div style="width:60%;">
+      <h3>Reporte de registros</h3>
+      <p-chart type="bar" [data]="basicData1" [options]="basicOptions"></p-chart>
+    </div>
+    <div class="card">
+        <h3>Horizontal</h3>
+        <p-chart type="pie" [data]="pieChartData1" [options]="chartOptions"  [style]="{'width': '40%'}"></p-chart>
+    </div>
+
     <div style="width:60%;"> 
-        <p-chart type="bar" [data]="barChartData1"  
+        <p-chart type="bar" [data]="barChartDataSiNo"  
                  [options]="horizontalOptions"> 
        </p-chart> 
     </div> 
