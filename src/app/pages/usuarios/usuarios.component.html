@@ -4,16 +4,11 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12 mt-2">
-                    <div class="card pdn-15">
-                        <div class="card-header border-0">
-                            <button class="btn btn-success mt-3 mr-3" (click)="redirectToForm()"><i class="pi pi-plus"></i>  Registrar</button>
-                        </div>
-                    </div>
-
                     <div class="card pdn-15" *ngIf="showResultados">
                         <div class="content">
                             <div class="col-md-12">
                                 <div class="card-body table-responsive p-0">
+                                    <button class="btn btn-success mt-3 mb-4" (click)="redirectToForm()"><i class="pi pi-plus"></i>  Registrar</button>
                                     <p-table 
                                         #dt1 
                                         [value]="ListUser" 
@@ -22,6 +17,7 @@
                                         responsiveLayout="scroll" 
                                         [paginator]="true"
                                         [rows]="10"
+                                        [rowHover]="true"
                                         [showCurrentPageReport]="true"
                                         [rowsPerPageOptions]="[10, 25, 50, 100]"
                                         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
@@ -48,7 +44,7 @@
                                         </ng-template>
                                         <ng-template pTemplate="body" let-item let-ri="rowIndex">
                                             <tr>
-                                                <td style="text-align: center;">{{ item.id }}</td>
+                                                <td style="text-align: center;">{{ item.index }}</td>
                                                 <td>{{ item.username }}</td>
                                                 <td>{{ item.role.nombre }}</td>
                                                 <td>{{ item.empresa.nombre }}</td>

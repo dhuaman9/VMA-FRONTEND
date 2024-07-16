@@ -12,11 +12,11 @@ export class ReporteComponent implements OnInit {
   basicData: any;
   barChartOptions: any;
   title = 'GFG';
-  
+
   isLoading = false;
   years: any[];
   selectedYear: number;
-  
+
 
   chartData: any;
 
@@ -28,7 +28,7 @@ export class ReporteComponent implements OnInit {
   registrosDatosBarAndPieChart: any[] = [];
   registrosSiNoChart: any[] = [];
   barChartDataSiNo: any;
-  
+
 horizontalOptions = {
   indexAxis: 'y', // This makes the bars horizontal
   plugins: {
@@ -86,9 +86,9 @@ basicOptions = {
   constructor(
     public route : ActivatedRoute,
     private reporteService: ReporteService
-  ) { 
+  ) {
 
-    
+
     this.initializeYears();
     this.initializeCharts();
   }
@@ -109,7 +109,7 @@ basicOptions = {
     this.barChartDataSiNo = {
       labels: labels,
       datasets: [{
-        label: 'Porcentaje de EP con área dedicada al monitoreo y control de los VMA',
+        label: 'Porcentaje de las EPS, con área dedicada al monitoreo y control de los VMA',
         data: percentages,
         backgroundColor: '#6fd76f',
         borderColor: '#6fd76f',
@@ -130,7 +130,7 @@ basicOptions = {
     const labels = [];
     const cantidadRegistradosPorEmpresa = [];
     const cantidadRegistradosPorEmpresaTotal = [];
-    
+
     this.registrosDatosBarAndPieChart.forEach(item => {
       labels.push(item.tipo)
       cantidadRegistradosPorEmpresa.push(item.cantidadRegistradoPorEmpresa)
@@ -250,7 +250,7 @@ basicOptions = {
   }
 
 
-  
+
   initializeChartOptions() {
 
     this.chartOptions = {

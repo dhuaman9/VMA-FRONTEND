@@ -3,7 +3,11 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Empresa } from 'src/app/_model/empresa';
 import { EmpresaService } from 'src/app/_service/empresa.service';
-import { ValidateInputs } from 'src/app/utils/validate-inputs';
+import { ValidateInputs, cleanSpaces, validateInput  } from 'src/app/utils/validate-inputs';
+import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
+
+
 
 @Component({
   selector: 'app-alta-edit-empresa',
@@ -22,19 +26,21 @@ export class AltaEditEmpresaComponent implements OnInit {
     { label: 'NO RAT', value: 'NO RAT' }
   ];
   tipoOptions: any[] = [
-    { label: 'Pequeña', value: 'Pequeña' },
-    { label: 'Mediana', value: 'Mediana' },
-    { label: 'Grande', value: 'Grande' },
-    { label: 'Sedapal', value: 'Sedapal' }
+    { label: 'PEQUEÑA', value: 'PEQUEÑA' },
+    { label: 'MEDIANA', value: 'MEDIANA' },
+    { label: 'GRANDE', value: 'GRANDE' },
+    { label: 'SEDAPAL', value: 'SEDAPAL' }
   ];
 
+  
   titleHeader: string;
   isEdition: boolean;
   
   constructor(
     private ref: DynamicDialogRef,
     private config: DynamicDialogConfig,
-    private empresaService : EmpresaService) {
+    private empresaService : EmpresaService,
+    private router: Router) {
 
       this.titleHeader = this.config.data.titleHeader;
       this.isEdition = false;
@@ -48,27 +54,92 @@ export class AltaEditEmpresaComponent implements OnInit {
       this.setValuesFormGroup(this.config.data.idEmpresa);
     } 
   }
-
   /**
    * Funcion para el alta o edicion de una empresa
    */
   onCreateEmpresa() {
     console.log('this.registroForm.valid',this.registroForm.valid, this.registroForm.value);
+    cleanSpaces(this.registroForm);
     if(this.registroForm.valid){
       const empresa = this.registroForm.value as Empresa;
       if(this.isEdition){
         empresa.idEmpresa = this.config.data.idEmpresa;
+        //empresa.nombre = this.registroForm.get('nombre').value.trimEnd();
         this.empresaService.update(empresa).subscribe(data =>{
           this.closeDialog(true);
+          Swal.fire({
+            icon: "success",
+            title: 'Se actualizó la empresa correctamente',
+            showConfirmButton: true,
+            confirmButtonText: 'Aceptar',
+            confirmButtonColor: '#28a745',
+            allowOutsideClick: false
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.onAceptar();
+            }
+          });
+
+        },
+        error => {  
+          this.closeDialog(true);
+           Swal.fire({
+             title: 'Error',
+             text: error,
+             icon: 'error',
+             confirmButtonText: 'Aceptar',
+             confirmButtonColor: '#d22c21'
+           });
         });
       } else {
+        empresa.nombre = this.registroForm.get('nombre').value.trimEnd();
         this.empresaService.create(empresa).subscribe(data =>{
           this.closeDialog(true);
+          Swal.fire({
+            icon: "success",
+            title: 'Se registró la empresa correctamente',
+            showConfirmButton: true,
+            confirmButtonText: 'Aceptar',
+            confirmButtonColor: '#28a745', // color verde
+            allowOutsideClick: false
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.onAceptar(); // se redirige al listado de empresas
+            }
+          });
+        },
+        error => {  
+          this.closeDialog(true);
+           Swal.fire({
+             title: 'Error',
+             text: error,
+             icon: 'error',
+             confirmButtonText: 'Aceptar',
+             confirmButtonColor: '#d22c21'
+           });
         });
       }
     } else {
       ValidateInputs.touchedAllFormFields(this.registroForm);
     }
+  }
+
+  validateInputForm(formControlName: string, validationType: string): void {
+    const control = this.registroForm.get(formControlName);
+    if (control) {
+      validateInput(control, validationType);
+    }
+  }
+
+  onAceptar(){
+    // this.userService.page(1,10).subscribe();
+    //this.userService.findAll().subscribe();
+    this.router.navigate(['/inicio/empresa']).then(() => {
+      // Aquí puedes forzar la recarga de la lista de usuarios si es necesario
+     window.location.reload();
+    });
+  //  this.router.navigate(['/inicio/usuarios']);
+    
   }
 
   onCancelAction(){

@@ -59,9 +59,6 @@
           </div>
           <div  *ngIf="mostrarCampo" class="field col-12 md:col-4" >
             <label>EPS:</label>
-            <!--<input id="eps" type="text" pInputText formControlName="eps" maxlength="255"  />
-            <app-validate-inputs-form [form]="registroForm" formInput='eps' labelInput="EPS">
-            </app-validate-inputs-form>-->
             <p-dropdown inputId="selEmpresa" [options]="empresasLista" placeholder="Seleccionar" formControlName="selEmpresa" 
               [showClear]="true" [filter]="true">
             </p-dropdown>
@@ -70,19 +67,19 @@
           </div>
           <div class="field col-12 md:col-4">
             <label>Usuario:</label>
-            <input id="username" type="text" pInputText   formControlName="username" maxlength="30" dirUserNameInput/>
+            <input id="username" type="text" pInputText formControlName="username" maxlength="30" dirUserNameInput/>
             <app-validate-inputs-form [form]="registroForm" formInput='username' labelInput="Usuario">
             </app-validate-inputs-form>
           </div>
           <div class="field col-12 md:col-4">
             <label>Contraseña:</label>
-            <input id="password" type="password" pInputText formControlName="password" maxlength="255"  />
+            <input id="password" type="password" pInputText formControlName="password" maxlength="255" minlength="8"/>
             <app-validate-inputs-form [form]="registroForm" formInput='password' labelInput="Contraseña">
             </app-validate-inputs-form>
           </div>
           <div class="field col-12 md:col-4">
             <label>Teléfono:</label>
-            <input id="telefono" type="text" pInputText pKeyFilter="int" formControlName="telefono" (input)="validateInputForm('telefono','numerico')" minlength="9" dirTelefonoInput/>
+            <input id="telefono" type="text" pInputText pKeyFilter="int" formControlName="telefono" (input)="validateInputForm('telefono','numerico')" minlength="9" maxlength="9" dirTelefonoInput/>
             <app-validate-inputs-form [form]="registroForm" formInput='telefono' labelInput="Teléfono">
             </app-validate-inputs-form>
           </div>

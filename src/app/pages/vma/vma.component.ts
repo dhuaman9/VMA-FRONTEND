@@ -73,7 +73,7 @@ export class VmaComponent implements OnInit {
   /* currentPage: number= 0;
    paramsPagination: ParamsPagination;
    numeroPagina: number = 0;*/
-  
+
   constructor(  public route : ActivatedRoute,
     private router: Router,
     private registroVMAService : RegistroVMAService,
@@ -84,7 +84,7 @@ export class VmaComponent implements OnInit {
 
       this.filtroForm = this.fb.group({  //filtros
         estado: [''], // valor x defecto
-        eps: [''], 
+        eps: [''],
         fechaDesde: [''],
         fechaHasta: [''],
         anio: ['']
@@ -153,7 +153,7 @@ export class VmaComponent implements OnInit {
       this.messageService.add({severity:'info', summary:'Tab Expanded', detail: 'Index: ' + event.index});
   }*/
 
-   
+
    onQueryListRegistroVMA(event?: any) {
 
    // this.isLoading = true;
@@ -161,7 +161,7 @@ export class VmaComponent implements OnInit {
     const size = event ? event.rows : this.rows;
     //console.log("paramsPag",paramsPag);
     this.registroVMAService.findAll().subscribe(
-     
+
       (data:any) => {
         console.log("params ",data);
       this.ListRegistroVMA= data.content || data;
@@ -175,14 +175,14 @@ export class VmaComponent implements OnInit {
     );
   }
 
- 
-  
+
+
   onFilterTableGlobal(table: Table, event:any){
 
     const filterValue = (event.target as HTMLInputElement).value;
     if (table) {
       table.filterGlobal(filterValue, 'contains');
-      
+
     }
   console.log("filterValue-",filterValue);
   }
@@ -190,8 +190,8 @@ export class VmaComponent implements OnInit {
    *   onFilterTableGlobal(dt: any, event: Event): void {
     dt.filterGlobal((event.target as HTMLInputElement).value, 'contains');
   }
-   * 
-   * 
+   *
+   *
    */
 
 
@@ -214,9 +214,9 @@ export class VmaComponent implements OnInit {
       const formValues = this.filtroForm.value;
       this.registroVMAService.searchRegistroVmas(
         formValues.eps,
-        formValues.estado, 
-        formValues.fechaDesde, 
-        formValues.fechaHasta, 
+        formValues.estado,
+        formValues.fechaDesde,
+        formValues.fechaHasta,
         formValues.anio
       ).subscribe(response => {
         this.ListRegistroVMA= response;
@@ -234,8 +234,8 @@ export class VmaComponent implements OnInit {
 
   cargarListaEmpresas(): void {
     this.empresaService.findAll().subscribe(
-      
-      (data: any[]) => {        
+
+      (data: any[]) => {
         this.empresasLista = data.map(emp => ({
           label: emp.nombre,
           value: emp.idEmpresa

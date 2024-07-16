@@ -12,7 +12,6 @@ import { EmpresaService } from 'src/app/_service/empresa.service';
 import Swal from 'sweetalert2';
 
 
-
 @Component({
   selector: 'app-registrar-usuario',
   templateUrl: './registrar-usuario.component.html',
@@ -49,7 +48,8 @@ export class RegistrarUsuarioComponent implements OnInit {
   ngOnInit(): void {
 
     this.cargarUsuariosLDAP();
-
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&.,#-_;])([A-Za-z\d$@$!%*?&.,#-_;]|[^ ]){8,15}$/;
+    //Entre 8 a 15 caracteres, no espacios, al menos una mayúscula, una minúscula, un número y un caracter especial (@$!%*?&.,#-_;)
     this.registroForm = this.formBuilder.group({
       tipo: ['EPS', Validators.required],
       perfil: ['', Validators.required],
@@ -60,9 +60,9 @@ export class RegistrarUsuarioComponent implements OnInit {
       //eps: ['', Validators.required],
       selEmpresa : ['', Validators.required],
       usuario: [''],
-      username: [''],
-      password: ['', Validators.required],
-      telefono: ['', Validators.required],
+      username: ['', Validators.required],
+      password: ['', [Validators.required,Validators.pattern(regex)]],
+      telefono: ['', [Validators.required,Validators.minLength(9)]],
       estado: [true]
     });
     
@@ -140,7 +140,8 @@ export class RegistrarUsuarioComponent implements OnInit {
           title: 'Se registró el usuario correctamente',
           showConfirmButton: true,
           confirmButtonText: 'Aceptar',
-          confirmButtonColor: '#28a745' // color verde
+          confirmButtonColor: '#28a745', // color verde
+          allowOutsideClick: false
         }).then((result) => {
           if (result.isConfirmed) {
             this.onAceptar(); // se redirige al listado de usuarios
@@ -153,10 +154,10 @@ export class RegistrarUsuarioComponent implements OnInit {
             title: 'Error',
             text: error,
             icon: 'error',
-            confirmButtonText: 'Aceptar'
+            confirmButtonText: 'Aceptar',
+            confirmButtonColor: '#d22c21'
           });
-       }
-     );
+       });
     } else {
       this.setEnableDisableIputs();
       ValidateInputs.touchedAllFormFields(this.registroForm);
@@ -266,7 +267,6 @@ export class RegistrarUsuarioComponent implements OnInit {
       validateInput(control, validationType);
     }
   }
-
 
 }
 @Component({

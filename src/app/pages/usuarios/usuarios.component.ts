@@ -113,7 +113,10 @@ export class UsuariosComponent implements OnInit {
       this.currentPage = paramsPag.page!;*/
       (data:any) => {
         console.log("params ",data);
-      this.ListUser= data.content || data;
+      this.ListUser= (data.content || data).map((item: User,index: number)=>({
+        ...item,
+        index: index + 1
+      }));;
       this.showResultados = true;
       this.totalRecords = data.totalElements || this.ListUser.length;
       this.isLoading = false;

@@ -1,46 +1,46 @@
 <div class="grid">
-    <div class="col-12">
-      <p-fieldset [legend]="titleHeader" [toggleable]="false"
-      [style]="{'min-width': '40rem', 'height':'auto'}" [collapsed]="false" class="large-modal" >
-        <form [formGroup]="registroForm">
-            <div class="p-fluid grid formgrid">
-                <div class="field col-12 md:col-4">
-                    <label for="anio" class="font-semibold w-6rem">Año</label>
-                    <p-dropdown [options]="years" formControlName="anio" placeholder="Seleccionar el año">
-                        <ng-template let-year pTemplate="item">
-                        {{ year }}
-                        </ng-template>
-                    </p-dropdown>
-                    <app-validate-inputs-form [form]="registroForm" formInput='anio' labelInput="Regimen">
-                    </app-validate-inputs-form>
-                </div>
+  <div class="col-12">
+    <p-fieldset [legend]="titleHeader" [toggleable]="false"
+    [style]="{'min-width': '40rem', 'height':'auto'}" [collapsed]="false" class="large-modal" >
+      <form [formGroup]="registroForm">
+          <div class="p-fluid grid formgrid">
+              <div class="field col-12 md:col-4">
+                  <label for="anio" class="font-semibold w-6rem">Año</label>
+                  <p-dropdown [options]="years" formControlName="anio" placeholder="Seleccionar el año">
+                      <ng-template let-year pTemplate="item">
+                      {{ year }}
+                      </ng-template>
+                  </p-dropdown>
+                  <app-validate-inputs-form [form]="registroForm" formInput='anio' labelInput="Regimen">
+                  </app-validate-inputs-form>
+              </div>
 
-                <div class="field col-12 md:col-4">
-                    <label for="fechaInicio" class="font-semibold w-10rem">Fecha de inicio</label>
-                    <p-calendar formControlName="fechaInicio"  (onSelect)="onStartDateSelect()" dateFormat="dd/mm/yy" inputId="fechaInicio" appendTo="body" [locale]="es" ></p-calendar>
-                    <app-validate-inputs-form [form]="registroForm" formInput='fechaInicio' labelInput="fechaInicio">
-                    </app-validate-inputs-form>
-                </div>
+              <div class="field col-12 md:col-4">
+                  <label for="fechaInicio" class="font-semibold w-10rem">Fecha de inicio</label>
+                  <p-calendar formControlName="fechaInicio"  (onSelect)="onStartDateSelect()" dateFormat="dd/mm/yy" inputId="fechaInicio" appendTo="body" [locale]="es" ></p-calendar>
+                  <app-validate-inputs-form [form]="registroForm" formInput='fechaInicio' labelInput="fechaInicio">
+                  </app-validate-inputs-form>
+              </div>
 
-                <div class="field col-12 md:col-4">
-                    <label for="fechaFin" class="font-semibold w-6rem">Fecha Fin</label>
-                    <p-calendar formControlName="fechaFin"  [minDate]="minEndDate"  [maxDate]="maxEndDate"  dateFormat="dd/mm/yy" inputId="fechaFin" appendTo="body" [locale]="es"></p-calendar>
-                    <app-validate-inputs-form [form]="registroForm" formInput='fechaFin' labelInput="fechaFin">
-                    </app-validate-inputs-form>
-                </div>
+              <div class="field col-12 md:col-4">
+                  <label for="fechaFin" class="font-semibold w-6rem">Fecha Fin</label>
+                  <p-calendar formControlName="fechaFin"  [minDate]="minEndDate"  [maxDate]="maxEndDate"  dateFormat="dd/mm/yy" inputId="fechaFin" appendTo="body" [locale]="es"></p-calendar>
+                  <app-validate-inputs-form [form]="registroForm" formInput='fechaFin' labelInput="fechaFin">
+                  </app-validate-inputs-form>
+              </div>
 
-            </div>
+          </div>
 
-            <div class="col-12 flex justify-content-center">
-                <p-button type="button" label="Guardar" class="p-button-secondary green-button ml-1"
-                  (click)="onCreateFicha()">
-                </p-button>
-                <p-button type="button" label="Cancelar" class="red-button ml-1 p-button-danger" [styleClass]="'p-button-danger'"
-                  (click)="onCancelAction()">
-                </p-button>
-            </div>
-          </form>
-          
-        </p-fieldset>
-    </div>
+          <div class="col-12 flex justify-content-center">
+              <p-button type="button" label="Guardar" class="p-button-secondary green-button ml-1" icon="pi pi-save" iconPos="left"
+                (click)="onCreateFicha()">
+              </p-button>
+              <p-button type="button" label="Cancelar" class="red-button ml-1 p-button-danger" [styleClass]="'p-button-danger'"
+                icon="pi pi-times" iconPos="left"  (click)="onCancelAction()">
+              </p-button>
+          </div>
+        </form>
+        
+      </p-fieldset>
   </div>
+</div>
