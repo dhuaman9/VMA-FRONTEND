@@ -108,6 +108,14 @@ export class VmaComponent implements OnInit {
     this.estados = ['COMPLETO', 'INCOMPLETO'];
 
     this.initializeYears();
+<<<<<<< HEAD
+=======
+
+    // this.initListRegistroVMA();
+    this.buscar();
+  //  this.empresa = new Empresa();
+  this.cargarListaEmpresas(); //carga el listdo de empresas
+>>>>>>> 5c99c66f558fa3093db28e94025a0ea80b3a7873
 
     // this.initListRegistroVMA();
     this.buscar();
@@ -115,6 +123,18 @@ export class VmaComponent implements OnInit {
     this.cargarListaEmpresas(); //carga el listdo de empresas
     this.vmaService.isRegistroCompleto().subscribe(response => this.registroCompleto = response);
     this.vmaService.registroCompleto$.subscribe(response => this.registroCompleto = response)
+  }
+
+  fechaDesdeListener(): void {
+    this.filtroForm.get('fechaDesde')?.valueChanges.subscribe(value => {
+      const fechaHastaControl = this.filtroForm.get('fechaHasta');
+      if (value) {
+        fechaHastaControl?.setValidators([Validators.required]);
+      } else {
+        fechaHastaControl?.clearValidators();
+      }
+      fechaHastaControl?.updateValueAndValidity();
+    });
   }
 
   fechaDesdeListener(): void {
@@ -142,6 +162,10 @@ export class VmaComponent implements OnInit {
       this.years.push({ label: year.toString(), value: year });
     }
   }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5c99c66f558fa3093db28e94025a0ea80b3a7873
 
  /* onTabClose(event) {
     this.messageService.add({severity:'info', summary:'Tab Closed', detail: 'Index: ' + event.index})
@@ -151,6 +175,10 @@ export class VmaComponent implements OnInit {
       this.messageService.add({severity:'info', summary:'Tab Expanded', detail: 'Index: ' + event.index});
   }*/
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5c99c66f558fa3093db28e94025a0ea80b3a7873
    onQueryListRegistroVMA(event?: any) {
 
    // this.isLoading = true;
@@ -172,6 +200,11 @@ export class VmaComponent implements OnInit {
     );
   }
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 5c99c66f558fa3093db28e94025a0ea80b3a7873
   onFilterTableGlobal(table: Table, event:any){
 
     const filterValue = (event.target as HTMLInputElement).value;
@@ -248,7 +281,14 @@ export class VmaComponent implements OnInit {
     if (fechaDesde && fechaHasta && new Date(fechaDesde) > new Date(fechaHasta)) {
       return { fechaComparison: true };
     }
+<<<<<<< HEAD
     return null;
   }
 
 }
+=======
+
+    return null;
+  }
+}
+>>>>>>> 5c99c66f558fa3093db28e94025a0ea80b3a7873
