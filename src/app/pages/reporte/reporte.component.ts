@@ -94,23 +94,23 @@ basicOptions = {
   }
   private cargarDatosBarChartSiNo(): void {
     const labels = [];
-    const percentages = [];
+    const porcentajes = [];
     this.registrosSiNoChart.forEach(item => {
       labels.push(item.tipo)
       const percentage = (item.cantidadRegistradoPorEmpresa / item.cantidadTotalRegistradoPorEmpresa) * 100;
-      percentages.push(percentage);
+      porcentajes.push(percentage);
     })
 
-    const sum = percentages.reduce((acc, curr) => acc + curr, 0);
-    const averagePercentage = sum / percentages.length;
+    const sum = porcentajes.reduce((acc, curr) => acc + curr, 0);
+    const averagePercentage = sum / porcentajes.length;
     labels.push('PROMEDIO');
-    percentages.push(averagePercentage)
+    porcentajes.push(averagePercentage)
 
     this.barChartDataSiNo = {
       labels: labels,
       datasets: [{
         label: 'Porcentaje de las EPS, con área dedicada al monitoreo y control de los VMA',
-        data: percentages,
+        data: porcentajes,
         backgroundColor: '#6fd76f',
         borderColor: '#6fd76f',
         borderWidth: 1
@@ -123,7 +123,9 @@ basicOptions = {
     this.initializeYears();
     this.initializeChartOptions();
     this.initializeCharts();
-    this.setDefaultYear();
+    
+    this.setDefaultYear();//cargara el año actual
+    this.applyFilter(); //cargara por defecto los graficos del año actual
   }
 
   private cargarDatos(): void {

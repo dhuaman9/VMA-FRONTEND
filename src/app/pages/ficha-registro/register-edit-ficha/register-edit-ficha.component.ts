@@ -74,10 +74,6 @@ export class RegisterEditFichaComponent implements OnInit {
       if(this.isEdition){
         ficha.idFichaRegistro = this.config.data.idFichaRegistro;
         
-        /*this.fichaRegistroService.update(ficha).subscribe(data =>{
-          this.closeDialog(true);
-        });*/
-
         this.fichaRegistroService.update(ficha).subscribe(responseUser => {
           this.closeDialog(true);
           Swal.fire({
@@ -95,6 +91,7 @@ export class RegisterEditFichaComponent implements OnInit {
           });
         },
          error => {  
+          this.closeDialog(true);
             Swal.fire({
               title: 'Error',
               text: error,
@@ -105,10 +102,7 @@ export class RegisterEditFichaComponent implements OnInit {
        );
 
       } else {
-        /*this.fichaRegistroService.create(ficha).subscribe(data =>{
-          this.closeDialog(true);
-        });*/
-
+        
         this.fichaRegistroService.create(ficha).subscribe(responseUser => {
           this.closeDialog(true);
           Swal.fire({
@@ -126,6 +120,7 @@ export class RegisterEditFichaComponent implements OnInit {
           });
         },
          error => {  
+          this.closeDialog(true);
             Swal.fire({
               title: 'Error',
               text: error,
@@ -134,7 +129,7 @@ export class RegisterEditFichaComponent implements OnInit {
               allowOutsideClick: false,
             }).then((result) => {
               if (result.isConfirmed) {
-                this.closeDialog(true); // Close the modal after alert acknowledgement
+                this.router.navigate(['/inicio/ficha-registro']) ;
               }
             });
          });

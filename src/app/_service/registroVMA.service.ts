@@ -1,25 +1,23 @@
 import { Injectable } from "@angular/core";
 import { RegistroVMA } from "../_model/registroVMA";
 import { environment } from '../../environments/environment';
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import {  Subject } from 'rxjs';
 import { RegistroVmaRequest } from "../_model/registroVMARequest";
 import { Observable } from 'rxjs';
 
-    @Injectable({
+  @Injectable({
         providedIn: 'root'
-    })
+  })
 
   export class RegistroVMAService {
   
   url: string = `${environment.HOST}`;
-
   token: string = sessionStorage.getItem(environment.TOKEN_NAME);
   httpOptions : any;
 
   constructor( private http: HttpClient
   ) { 
-
   }
 
   findById(id: number){
@@ -36,7 +34,6 @@ import { Observable } from 'rxjs';
     });
   }
 
-
   findAll(){
     return this.http.get<RegistroVMA[]>(this.url+'/registroVMA/listar', {
       headers : new HttpHeaders({'Content-Type':'application/json'}),
@@ -47,18 +44,28 @@ import { Observable } from 'rxjs';
   saveRegistroVMA(request: RegistroVmaRequest): Observable<void> {
     return this.http.post<void>(`${this.url}/registroVMA`, request);
   }
- /* create(empresa: Empresa) {
-    return this.http.post<Empresa>(this.url+'/empresa', empresa, {
-      headers: new HttpHeaders().set('Content-Type', 'application/json')
-    });
+
+
+  searchRegistroVmas(empresaId?: number, estado?: string, fechaInicio?: Date, fechaFin?: Date, year?: number): Observable<any> {
+    let params = new HttpParams();
+    if (empresaId) params = params.set('empresaId', empresaId.toString());
+    if (estado) params = params.set('estado', estado);
+    if (fechaInicio) {
+      params = params.set('startDate', this.formatearFecha(fechaInicio));
+    }
+    if (fechaFin) {
+      params = params.set('endDate', this.formatearFecha(fechaFin));
+    }
+    if (year) params = params.set('year', year.toString());
+    return this.http.get(`${this.url}/registroVMA/search`, { params });
   }
 
-  update(empresa: Empresa){
+  private formatearFecha(date: Date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
 
-    return this.http.put<Empresa>(this.url+'/empresa', empresa, {
-       headers: new HttpHeaders().set('Content-Type', 'application/json')
-    });
-  }*/
-
-
+    return `${year}-${month}-${day}`;
+  }
+  
 }

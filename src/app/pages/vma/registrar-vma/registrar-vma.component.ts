@@ -168,7 +168,7 @@ export class RegistrarVmaComponent implements OnInit {
               }).then((result) => {
                 if (result.isConfirmed) {
                   this.router.navigate(['/inicio/vma']).then(() => {
-                    // window.location.reload();
+                     window.location.reload();
                     //temporal, no  recomendable
                   });
                 }
@@ -191,8 +191,8 @@ export class RegistrarVmaComponent implements OnInit {
           });
        //   this.onBackToList();//temporal, no  recomendable
           this.router.navigate(['/inicio/vma']).then(() => {
-                // Es para forzar la recarga del listado por el momento.
-                // window.location.reload();
+                // Es para forzar la recarga del listado por el momento.no recomendable
+                 window.location.reload();
               });
           this.vmaService.sendRegistroCompleto(true);
         }
