@@ -334,7 +334,4 @@ basicOptions = {
   setDefaultYear() {
     this.selectedYear = new Date().getFullYear();
   }
-
-  
-
 }

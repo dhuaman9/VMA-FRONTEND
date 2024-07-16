@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {MessageService} from 'primeng/api';
-import { FormBuilder, FormGroup, Validators  } from '@angular/forms';
+import { FormBuilder, FormGroup, ValidationErrors, Validators  } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ParamsPagination } from 'src/app/_dto/params-pagination';
 import { Empresa } from 'src/app/_model/empresa';
@@ -39,6 +39,8 @@ export class VmaComponent implements OnInit {
   ListRegistroVMA: RegistroVMA[];  //pendiente
 
   registroForm: FormGroup;
+
+  years = [];
 
   basicData = {
     labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
@@ -97,11 +99,18 @@ export class VmaComponent implements OnInit {
       fechaDesde: [''],
       fechaHasta: [''],
       anio: ['']
+    }, {
+      validators: this.fechaComparisonValidator
     });
+
+    this.fechaDesdeListener();
 
     this.estados = ['COMPLETO', 'INCOMPLETO'];
 
-    this.initListRegistroVMA();
+    this.initializeYears();
+
+    // this.initListRegistroVMA();
+    this.buscar();
   //  this.empresa = new Empresa();
   this.cargarListaEmpresas(); //carga el listdo de empresas
 
@@ -109,10 +118,30 @@ export class VmaComponent implements OnInit {
   this.vmaService.registroCompleto$.subscribe(response => this.registroCompleto = response)
   }
 
+  fechaDesdeListener(): void {
+    this.filtroForm.get('fechaDesde')?.valueChanges.subscribe(value => {
+      const fechaHastaControl = this.filtroForm.get('fechaHasta');
+      if (value) {
+        fechaHastaControl?.setValidators([Validators.required]);
+      } else {
+        fechaHastaControl?.clearValidators();
+      }
+      fechaHastaControl?.updateValueAndValidity();
+    });
+  }
+
   initListRegistroVMA() {
     this.showResultados = false;
    // this.paramsPagination = new ParamsPagination(0,1,10,0); //?
     this.onQueryListRegistroVMA();  //dhr
+  }
+
+  initializeYears() {
+    const currentYear = new Date().getFullYear();
+    this.years = [];
+    for (let year = currentYear; year >= 2022; year--) {
+      this.years.push({ label: year.toString(), value: year });
+    }
   }
 
 
@@ -180,11 +209,26 @@ export class VmaComponent implements OnInit {
 
 
   buscar(){
-
+    console.log(this.filtroForm)
+    if(this.filtroForm.valid) {
+      const formValues = this.filtroForm.value;
+      this.registroVMAService.searchRegistroVmas(
+        formValues.eps,
+        formValues.estado, 
+        formValues.fechaDesde, 
+        formValues.fechaHasta, 
+        formValues.anio
+      ).subscribe(response => {
+        this.ListRegistroVMA= response;
+        this.showResultados = true;
+        this.totalRecords = response.length;
+        this.isLoading = false;
+      });
+    }
   }
 
   limpiar(){
-    
+    this.filtroForm.reset();
   }
 
 
@@ -203,4 +247,14 @@ export class VmaComponent implements OnInit {
     );
   }
 
+  fechaComparisonValidator(control: FormGroup): ValidationErrors | null {
+    const fechaDesde = control.get('fechaDesde').value;
+    const fechaHasta = control.get('fechaHasta').value;
+
+    if (fechaDesde && fechaHasta && new Date(fechaDesde) > new Date(fechaHasta)) {
+      return { fechaComparison: true };
+    }
+
+    return null;
+  }
 }

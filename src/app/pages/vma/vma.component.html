@@ -8,20 +8,19 @@
                       <!-- Filtros -->
                     <div class="card pdn-15 mb-3">
                         <div class="card-header border-0 text-center">
-                        <h2>Filtros de búsqueda</h2>
+                        <h2 style="margin-bottom: 0;">Filtros de búsqueda</h2>
                         </div>
                         <div class="card-body">
                         <form [formGroup]="filtroForm">
                             <div class="row">
-                            <div class="col-md-4 mb-3" *ngFor="let field of ['eps', 'estado', 'fechaDesde', 'fechaHasta', 'anio']; let i = index">
+                            <div class="col-md-4 mt-3" *ngFor="let field of ['eps', 'estado', 'fechaDesde', 'fechaHasta', 'anio']; let i = index">
                                 <div class="form-group" [ngSwitch]="field">
                                 <span class="p-float-label" *ngSwitchCase="'eps'">
                                     <p-dropdown inputId="selEmpresa" [options]="empresasLista" placeholder="Seleccionar" formControlName="eps" 
                                     [showClear]="true" [filter]="true"></p-dropdown>
                                 </span>
                                 <span class="p-float-label" *ngSwitchCase="'estado'">
-                                    <p-dropdown formControlName="estado" placeholder="Seleccione un estado">
-                                        <option *ngFor="let estado of estados" [value]="estado">{{ estado }}</option>
+                                    <p-dropdown formControlName="estado" placeholder="Seleccione un estado" [options]="estados">
                                       </p-dropdown>
                                 </span>
                                 <span class="p-float-label" *ngSwitchCase="'fechaDesde'">
@@ -30,15 +29,20 @@
                                 </span>
                                 <span class="p-float-label" *ngSwitchCase="'fechaHasta'">
                                     <p-calendar id="fechaHasta" dateFormat="yy-mm-dd" formControlName="fechaHasta"></p-calendar>
+                                    <br>
+                                    <small *ngIf="filtroForm.get('fechaHasta').errors?.required" style="color: red;" >La fecha hasta es requerida</small>
                                     <label for="fechaHasta">Fecha Hasta</label>
                                 </span>
                                 <span class="p-float-label" *ngSwitchCase="'anio'">
-                                    <p-dropdown formControlName="anio" placeholder="Seleccione un año"></p-dropdown>
+                                    <p-dropdown formControlName="anio" [options]="years" placeholder="Seleccione un año"></p-dropdown>
                                 </span>
                                 </div>
                             </div>
                             </div>
                             <div class="row mt-3">
+                                <div class="col-md-12">
+                                    <small *ngIf="filtroForm.errors?.fechaComparison" style="color: red;" >La fecha inicio debe ser mayor o igual a la fecha fin</small>
+                                </div>
                             <div class="col-md-12">
                                 <button pButton type="button" label="Buscar" icon="pi pi-search" style="margin-right: 50px" (click)="buscar()"></button>
                                 <button pButton type="button" label="Limpiar" icon="pi pi-times" (click)="limpiar()"></button>
@@ -101,7 +105,7 @@
                                         <td>{{item.empresa.tipo}}</td>
                                         <td>{{item.empresa.regimen}}</td>
                                         <td>{{item.estado}}</td>
-                                        <td>{{item.created_at}}</td>
+                                        <td>{{item.createdAt | date: 'dd-MM-yyy hh:mm'}}</td>
                                         <td>{{item.fichaRegistro.anio}}</td>
                                         <!--<td> {{item.username }}</td>-->
                                         <td style="text-align:center">
