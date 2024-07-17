@@ -60,7 +60,6 @@ import { Observable } from 'rxjs';
     return this.http.get(`${this.url}/registroVMA/search`, { params });
   }
 
-<<<<<<< HEAD
   private formatearFecha(date: Date) {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -69,34 +68,4 @@ import { Observable } from 'rxjs';
     return `${year}-${month}-${day}`;
   }
   
-=======
-  update(empresa: Empresa){
-
-    return this.http.put<Empresa>(this.url+'/empresa', empresa, {
-       headers: new HttpHeaders().set('Content-Type', 'application/json')
-    });
-  }*/
-
-  searchRegistroVmas(empresaId?: number, estado?: string, fechaInicio?: Date, fechaFin?: Date, year?: number): Observable<any> {
-    let params = new HttpParams();
-    if (empresaId) params = params.set('empresaId', empresaId.toString());
-    if (estado) params = params.set('estado', estado);
-    if (fechaInicio) {
-      params = params.set('startDate', this.formatearFecha(fechaInicio));
-    }
-    if (fechaFin) {
-      params = params.set('endDate', this.formatearFecha(fechaFin));
-    }
-    if (year) params = params.set('year', year.toString());
-    return this.http.get(`${this.url}/registroVMA/search`, { params });
-  }
-
-  private formatearFecha(date: Date) {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-
-    return `${year}-${month}-${day}`;
-  }
->>>>>>> 5c99c66f558fa3093db28e94025a0ea80b3a7873
 }
