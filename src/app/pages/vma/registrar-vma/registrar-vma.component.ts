@@ -160,8 +160,8 @@ export class RegistrarVmaComponent implements OnInit {
           .subscribe(
             () => {
               Swal.fire({
-                title: 'Registro actualizado',
-                text: isGuardadoCompleto ? 'Su información ha sido registrada y enviada.' : 'Se ha realizado el guardado progresivo',
+                title: isGuardadoCompleto ? 'Registro completado': 'Registro actualizado',
+                ///text: isGuardadoCompleto ? 'Su información ha sido registrada y enviada.' : 'Se ha realizado el guardado progresivo',
                 icon: 'success',
                 confirmButtonText: 'Aceptar',
                 allowOutsideClick: false  //evita hacer click fuera del alert
@@ -183,8 +183,8 @@ export class RegistrarVmaComponent implements OnInit {
       this.vmaService.saveRegistroVMA(registroVMA).subscribe(
         () => {
           Swal.fire({
-            title: 'Registro actualizado',
-            text:  isGuardadoCompleto? 'Su información ha sido registrada y enviada.' : 'Registrado guardado parciamente',
+            title: isGuardadoCompleto ? 'Registro completado': 'Registro actualizado',
+           // text:  isGuardadoCompleto? 'Su información ha sido registrada y enviada.' : 'Registrado guardado parcialmente',
             icon: 'success',
             confirmButtonText: 'Aceptar',
             allowOutsideClick: false    //evita hacer click fuera del alert
@@ -260,7 +260,7 @@ export class RegistrarVmaComponent implements OnInit {
       this.guardar(true);
     } else {
       this.formularioGeneral.markAllAsTouched();
-      Swal.fire('Registrado final','Para registrar todo, debe llenar el cuestionario.','info')
+      Swal.fire('Registrado final','Para registrar todo, debe llenar el formulario.','info')
     }
   }
 
@@ -417,8 +417,8 @@ export class RegistrarVmaComponent implements OnInit {
 
   onCancelSave(){
     Swal.fire({
-      title: "Desea cancelar el registro?",
-      text: "Si cancela el registro toda la información ingresada temporal, será borrada!",
+      title: "¿Está seguro que desea cancelar el registro?",
+      text: "Si acepta no se guardará ninguna información.",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#DF2A3D",
