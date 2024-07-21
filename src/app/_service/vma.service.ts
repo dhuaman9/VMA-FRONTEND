@@ -14,12 +14,12 @@ export class VmaService {
 
     constructor(private http: HttpClient) { }
 
-    saveRegistroVMA(request: RegistroVmaRequest): Observable<void> {
-        return this.http.post<void>(`${this.url}`, request);
+    saveRegistroVMA(request: RegistroVmaRequest): Observable<number> {
+        return this.http.post<number>(`${this.url}`, request);
     }
 
-    updateRegistroVMA(idRegistroVMA: number, request: RegistroVmaRequest): Observable<void> {
-      return this.http.put<void>(`${this.url}/${idRegistroVMA}`, request);
+    updateRegistroVMA(idRegistroVMA: number, request: RegistroVmaRequest): Observable<number> {
+      return this.http.put<number>(`${this.url}/${idRegistroVMA}`, request);
     }
 
     isRegistroCompleto(): Observable<boolean> {

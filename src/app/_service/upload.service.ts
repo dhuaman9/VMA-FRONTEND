@@ -7,16 +7,37 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class UploadService {
-  url: string = `${environment.HOST}/api/files`;
+  url: string = `${environment.HOST}/archivo`;
   constructor(private http: HttpClient) { }
 
-  uploadFiles(files: any[]): Observable<any> {
+  uploadFile(file: any, registroVMAId: number, preguntaId: number, respuestaId: number): Observable<any> {
     const formData = new FormData();
-    files.forEach(file => {
-      formData.append(file.type, file.file);
-    })
-    console.log(files,"xd")
-    console.log(formData)
+    formData.append("file", file);
+    formData.append("registroVMAId", registroVMAId.toString());
+    formData.append("preguntaId", preguntaId.toString());
+    if(respuestaId) {
+      formData.append("respuestaId", respuestaId.toString());
+    }
     return this.http.post<any>(`${this.url}/upload`, formData);
+  }
+
+  downloadFile(nodeId: string): void {
+    this.http.get(`${this.url}/${nodeId}/download`, {
+      responseType: 'blob'
+    }).subscribe((response: Blob) => {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        const a = document.createElement('a');
+        a.href = e.target.result;
+        a.download = 'filename.ext';//se cambiaría por algun nombre en específico
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      };
+      reader.readAsDataURL(response);
+    }, error => {
+      console.error('Ocurrió algo', error);
+    });
+
   }
 }

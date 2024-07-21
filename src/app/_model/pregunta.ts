@@ -3,7 +3,6 @@ import { RespuestaDTO } from "./respuestaRequest";
 import { TipoPregunta } from "./tipo-pregunta";
 
 export class Pregunta {
-    
     idPregunta: number;
     respuesta: string;
     descripcion: string;
@@ -13,4 +12,5 @@ export class Pregunta {
     alternativas: Alternativa[];
     respuestaDTO: RespuestaDTO;
     preguntaDependiente: Pregunta;
+    metadatoArchivo: any;
 }

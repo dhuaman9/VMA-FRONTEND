@@ -13,7 +13,7 @@
                                   <p-accordionTab *ngFor="let seccion of seccionesForm().controls; let i = index" [formGroupName]="i" [header]="seccion.get('titulo').value" ><!--[ngClass]="{'custom-active-tab': seccionActiva === i}" (click)="seleccionarSeccion(i)"-->
                                     <div formArrayName="preguntas">
                                       <div class="d-flex flex-column mb-3" *ngFor="let pregunta of preguntasForm(seccion).controls; let j = index" [formGroupName]="j">
-                                        <label class="mb-3">{{pregunta.get('texto').value}}</label>
+                                        <label class="mb-3" *ngIf="pregunta.get('tipoPregunta').value !== 'ARCHIVO'">{{pregunta.get('texto').value}}</label>
                                         <ng-container [ngSwitch]="pregunta.value.tipoPregunta">
                                             <input *ngSwitchCase="'TEXTO'" type="text" class="input-text" pInputText formControlName="respuesta">
                                             <ng-container *ngSwitchCase="'NUMERICO'">
@@ -32,10 +32,10 @@
                                             <ng-container *ngSwitchCase="'RADIO'">
                                                 <div class="d-flex gap-3" >
                                                     <div class="d-flex align-items-center gap-1" *ngFor="let alternativa of alternativasForm(pregunta).controls; let j = index">
-                                                        <p-radioButton 
-                                                          [value]="alternativa.value.nombreCampo" 
-                                                          [formControlName]="'respuesta'" 
-                                                          [inputId]="alternativa.value.nombreCampo+i+j" 
+                                                        <p-radioButton
+                                                          [value]="alternativa.value.nombreCampo"
+                                                          [formControlName]="'respuesta'"
+                                                          [inputId]="alternativa.value.nombreCampo+i+j"
                                                           (onClick)="onRadioButtonChange(seccion, alternativa.value.nombreCampo)"
                                                           >
                                                         </p-radioButton>
@@ -43,58 +43,44 @@
                                                     </div>
                                                 </div>
                                             </ng-container>
+                                          <ng-container *ngSwitchCase="'ARCHIVO'">
+                                            <div class="d-flex flex-column w-75">
+                                              <label class="form-label">{{pregunta.get('texto').value}} <span *ngIf="pregunta.get('metadatoArchivo').value?.requerido">(*)</span></label>
+                                              <ng-container *ngIf="!pregunta.get('respuestaDTO').value || (pregunta.get('respuestaDTO').value && (pregunta.get('respuesta').value === null || isFile(pregunta.get('respuesta').value))); else descargar">
+                                                <p-fileUpload
+                                                  name="file"
+                                                  [auto]="false"
+                                                  [class.disabled-choose-button]="!isRoleRegistrador"
+                                                  (onSelect)="onFileChange($event, pregunta.get('respuesta'))"
+                                                  (onClear)="onCancelFile(pregunta.get('respuesta'), pregunta.value)"
+                                                  chooseLabel="Elegir archivo"
+                                                  cancelLabel="Cancelar"
+                                                  [showUploadButton]="false"
+                                                  [showCancelButton]="true">
+
+                                                  <ng-template pTemplate="file" let-file>
+                                                    <div class="custom-file-item">
+                                                      <span>{{ file.name }}</span>
+                                                    </div>
+                                                  </ng-template>
+
+                                                </p-fileUpload>
+
+                                                <small *ngIf="pregunta.get('respuesta').errors?.required" style="color: red;">Archivo requerido</small>
+                                                <small *ngIf="pregunta.get('respuesta').errors?.fileType" style="color: red;">Tipo de archivo incorrecto</small>
+                                                <small *ngIf="pregunta.get('respuesta').errors?.maxSize" style="color: red;">El archivo no puede ser mayor a {{pregunta.get('metadatoArchivo').value.maxSizeInMB}}MB</small>
+                                              </ng-container>
+
+                                              <ng-template #descargar>
+                                                <div class="d-flex gap-1">
+                                                  <p-button label="Descargar archivo" icon="pi pi-download" iconPos="left" (click)="uploadService.downloadFile(pregunta.get('respuesta').value)"></p-button>
+                                                  <p-button [class.disabled-choose-button]="!isRoleRegistrador" label="Cambiar archivo" icon="pi pi-pencil" iconPos="left" (click)="onUpdateFile(pregunta)"></p-button>
+                                                </div>
+                                              </ng-template>
+                                            </div>
+                                          </ng-container>
                                         </ng-container>
                                       </div>
-                                    </div>
-                                    <!-- Botónes adjuntar en bootstrap-->
-                                    <div *ngIf="i === seccionesForm().controls.length - 1" class="container mt-4">
-                                      <form [formGroup]="filesFormGroup">                 
-                                        <div class="container">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <div class="mb-3">
-                                                            <label for="formFile1" class="form-label">Adjuntar PDF (*)</label>
-                                                            <input class="form-control"  (change)="onFileChange($event, 'pdf')" type="file" id="formFile1" accept=".pdf">
-                                                            <small *ngIf="filesFormGroup.get('pdf').errors?.required" style="color: red;">Archivo requerido</small>
-                                                            <small *ngIf="filesFormGroup.get('pdf').errors?.maxSize" style="color: red;">El archivo no puede ser mayor a 5MB</small>
-                                                        </div>
-                                                        <p class="mt-2 text-muted">El tamaño máximo del archivo es de 5MB.</p>
-                                                    </div>
-                                                </div>
-                                        
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <div class="mb-3">
-                                                            <label for="formFile2" class="form-label">Adjuntar Informe Técnico PDF o WORD (Opcional)</label>
-                                                            <input class="form-control" (change)="onFileChange($event, 'pdfWord')" type="file" id="formFile2" accept=".pdf,.doc,.docx">
-                                                            <small *ngIf="filesFormGroup.get('pdfWord').errors?.maxSize" style="color: red;">El archivo no puede ser mayor a 20MB</small>
-                                                        </div>
-                                                        <p class="mt-2 text-muted">El tamaño máximo del archivo es de 20MB.</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <div class="mb-3">
-                                                            <label for="formFile3" class="form-label">Adjuntar formato EXCEL (*)</label>
-                                                            <input class="form-control" (change)="onFileChange($event, 'excel')" type="file" id="formFile3" accept=".xls,.xlsx">
-                                                            <small *ngIf="filesFormGroup.get('excel').errors?.required" style="color: red;">Archivo requerido</small>
-                                                            <small *ngIf="filesFormGroup.get('excel').errors?.maxSize" style="color: red;">El archivo no puede ser mayor a 5MB</small>
-                                                        </div>
-                                                        <p class="mt-2 text-muted">El tamaño máximo del archivo es de 10MB.</p>
-                                                    </div>
-                                                </div>
-                                                
-                                                <!--<div class="col-md-6">
-                                                    Deja este espacio vacío para completar el diseño de 2x2 columnas
-                                                </div> -->
-
-                                            </div>
-                                         </div>
-                                      </form>
                                     </div>
                                   </p-accordionTab>
                                 </p-accordion >
@@ -107,7 +93,7 @@
                                     (click)="guardadoCompleto()">  <!--guardado final, donde todos los campos son requeridos , exceptos algunos botones de adjuntar archivos-->
                                   </p-button>
                                     <p-button type="button" label="Cancelar" class="p-button-danger red-button ml-1"
-                                    (click)="onCancelSave()" > 
+                                    (click)="onCancelSave()" >
                                     </p-button>
                                 </div>
                                 <ng-template #botonAdmin>
