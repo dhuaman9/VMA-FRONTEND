@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { saveAs } from 'file-saver'; 
 
 @Injectable({
   providedIn: 'root'
@@ -21,23 +23,33 @@ export class UploadService {
     return this.http.post<any>(`${this.url}/upload`, formData);
   }
 
+  
   downloadFile(nodeId: string): void {
-    this.http.get(`${this.url}/${nodeId}/download`, {
-      responseType: 'blob'
-    }).subscribe((response: Blob) => {
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        const a = document.createElement('a');
-        a.href = e.target.result;
-        a.download = 'filename.ext';//se cambiaría por algun nombre en específico
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-      };
-      reader.readAsDataURL(response);
+    this.http.get(`${this.url}/${nodeId}/download`).pipe(
+      map((response: any) => {
+        const binaryString = atob(response.content);
+        const len = binaryString.length;
+        const bytes = new Uint8Array(len);
+        for (let i = 0; i < len; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
+        }
+        return { filename: response.filename, blob: new Blob([bytes]) };
+      })
+    ).subscribe(({ filename, blob }) => {
+      const a = document.createElement('a');
+      const objectUrl = URL.createObjectURL(blob);
+      a.href = objectUrl;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(objectUrl);
     }, error => {
-      console.error('Ocurrió algo', error);
+      console.error('Download error:', error);
     });
 
   }
+
+
+  
 }
