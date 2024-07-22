@@ -74,26 +74,4 @@
   </div>
 </div>
 
-<p-dialog [(visible)]="displayModaAdvice"  [modal]="true" [style]="{width: '40vw', height:'30vw'}">
-  <div style="text-align: center;">
-    <img  [src]="modalImage" style="width:50%"/>
-  </div>
-  <div style="text-align: center; font-weight: 600;">
-    {{modalMessage}}
-  </div>
-    
-    <ng-template pTemplate="footer">
-      <div style="text-align: center;">
-        <p-button type="button" label="Aceptar" class="ml-1 p-button-success" 
-          (click)="onAccept()" *ngIf="isEdition">
-        </p-button>
-        <p-button type="button" label="Aceptar" class="ml-1 p-button-danger" 
-          (click)="onCancel()" *ngIf="!isEdition">
-        </p-button>  
-      </div>
-      
-    </ng-template>
-</p-dialog>
-
-
 <app-loading *ngIf="isLoading"></app-loading>

@@ -124,8 +124,7 @@ export class FichaRegistroComponent implements OnInit {
       width:'70%',
       height:'55%',
       showHeader: false,
-      styleClass: 'dialog-for-display-default',
-      baseZIndex: 100000
+      styleClass: 'dialog-for-display-default'
     });
 
     refDialog.onClose.subscribe((resultado: boolean) => {

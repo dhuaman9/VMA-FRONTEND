@@ -7,6 +7,7 @@ import { ReporteParamCalidadDto } from "../_dto/reporteParamCalidadDto";
 import { ReporteParamCalidadExportDto } from "../_dto/reporteParamCalidadExportDto";
 import { ReporteVarGestionDto } from "../_dto/reporteVarGestionDto";
 import { ReporteVarOperacionalDto } from "../_dto/reporteVarOperacionalDto";
+import { ListaReporte } from '../_model/reporte';
 
 @Injectable({
     providedIn: 'root'
@@ -149,4 +150,15 @@ export class ReporteService {
           responseType: 'blob'
         });
     }
+
+    getListaReportes(cat) {
+        return this.http
+          .get<any>('assets/lista-reportes.json')
+          .toPromise()
+          .then((res) => <ListaReporte[]>res.data)
+          .then((data) => {
+            return data.filter((item) => item.category === cat);
+        });
+    }
+
 }

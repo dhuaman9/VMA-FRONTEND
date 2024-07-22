@@ -1,6 +1,7 @@
 <router-outlet></router-outlet>
 <div style="text-align: center; margin-bottom: 20px;">
     <h2 style="margin-bottom: 20px;">Gráficos estadisticos VMA</h2>
+    <span>Seleccionar el año: </span>
     <p-dropdown 
       [options]="years" 
       [(ngModel)]="selectedYear" 
@@ -9,7 +10,7 @@
     </p-dropdown>
     <button pButton 
       type="button" 
-      label="Aplicar" 
+      label="Actualizar" 
       (click)="applyFilter()" 
       style="margin-left: 10px;">
     </button>

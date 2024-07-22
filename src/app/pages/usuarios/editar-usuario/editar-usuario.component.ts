@@ -67,6 +67,15 @@ export class EditarUsuarioComponent implements OnInit {
 
   }
 
+  isFieldRequired(field: string): boolean {
+    const control = this.registroForm.get(field);
+    if (!control) {
+      return false;
+    }
+    const validator = control.validator ? control.validator({} as AbstractControl) : null;
+    return !!(validator && validator.required);
+  }
+
   getDataUser(idUser: number) {
     console.log('idUser:', idUser);
     this.userService.findById(idUser).subscribe(responseDataUser => {
@@ -205,12 +214,20 @@ export class EditarUsuarioComponent implements OnInit {
   }
 
   onCancelEdit() {
-    /*this.displayModaAdvice = true;
-    this.isEdit = false;
-    this.modalImage = './assets/images/cancel-icon.png';
-    this.modalMessage = 'Registro cancelado';*/
-    //this.onAceptar();
-    this.onCancel();
+    Swal.fire({
+      title: "Aviso",
+      text: "¿Está seguro que desea cancelar la edición?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DF2A3D",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "SI",
+      cancelButtonText: "No"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.onCancel();
+      }
+    });
   }
 
   onAceptar(){
@@ -247,7 +264,7 @@ export class EditarUsuarioComponent implements OnInit {
       this.registroForm.get('usuario').enable();
 
      // this.registroForm.get('eps').setValidators([Validators.nullValidator]);  //? dhr
-      //this.registroForm.get('telefono').setValidators([Validators.nullValidator]);
+      this.registroForm.get('usuario').setValidators([Validators.required]);
       this.registroForm.get('password').setValidators([Validators.nullValidator]);
 
       //this.registroForm.get('eps').updateValueAndValidity();
@@ -262,12 +279,14 @@ export class EditarUsuarioComponent implements OnInit {
       this.registroForm.get('nombres').enable();
       this.registroForm.get('apellidos').enable();
       this.registroForm.get('correo').enable();
-    //  this.registroForm.get('eps').enable();
       this.registroForm.get('password').enable();
 
-     // this.registroForm.get('eps').setValidators([Validators.required]);
+      this.registroForm.get('usuario').setValidators([Validators.required]);
+      this.registroForm.get('username').setValidators([Validators.required]);
       this.registroForm.get('telefono').setValidators([Validators.required, Validators.minLength(9)]);
-     // this.registroForm.get('eps').updateValueAndValidity();
+
+      this.registroForm.get('usuario').updateValueAndValidity();
+      this.registroForm.get('username').updateValueAndValidity();
       this.registroForm.get('telefono').updateValueAndValidity();
 
     }

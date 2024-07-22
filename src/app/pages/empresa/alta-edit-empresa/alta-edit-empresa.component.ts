@@ -1,13 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Empresa } from 'src/app/_model/empresa';
 import { EmpresaService } from 'src/app/_service/empresa.service';
 import { ValidateInputs, cleanSpaces, validateInput  } from 'src/app/utils/validate-inputs';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
-
-
 
 @Component({
   selector: 'app-alta-edit-empresa',
@@ -26,13 +24,12 @@ export class AltaEditEmpresaComponent implements OnInit {
     { label: 'NO RAT', value: 'NO RAT' }
   ];
   tipoOptions: any[] = [
-    { label: 'PEQUEÑA', value: 'PEQUEÑA' },
-    { label: 'MEDIANA', value: 'MEDIANA' },
-    { label: 'GRANDE', value: 'GRANDE' },
-    { label: 'SEDAPAL', value: 'SEDAPAL' }
+    { label: 'Pequeña', value: 'Pequeña' },
+    { label: 'Mediana', value: 'Mediana' },
+    { label: 'Grande', value: 'Grande' },
+    { label: 'Sedapal', value: 'Sedapal' }
   ];
 
-  
   titleHeader: string;
   isEdition: boolean;
   
@@ -144,6 +141,15 @@ export class AltaEditEmpresaComponent implements OnInit {
 
   onCancelAction(){
     this.closeDialog(false);
+  }
+
+  isFieldRequired(field: string): boolean {
+    const control = this.registroForm.get(field);
+    if (!control) {
+      return false;
+    }
+    const validator = control.validator ? control.validator({} as AbstractControl) : null;
+    return !!(validator && validator.required);
   }
 
   /**

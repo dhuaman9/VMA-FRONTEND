@@ -15,7 +15,7 @@
           </div>
           <!-- falta dar espacio, no funciona con br-->
           <div class="field col-12 md:col-4">
-            <label>Perfil:</label>
+            <label>Perfil <span style="color: #FA7272;" *ngIf="isFieldRequired('perfil')"> * </span></label>
                 <p-dropdown inputId="perfil" [options]="perfiles" optionLabel="description"
                     optionValue="id" placeholder="Seleccionar" formControlName="perfil"
                     [showClear]="true">
@@ -24,9 +24,8 @@
                 </app-validate-inputs-form>
           </div>
           <div class="field col-12 md:col-4" >
-            <label>Usuario:</label>
+            <label>Usuario <span style="color: #FA7272;" *ngIf="isFieldRequired('usuario')"> * </span></label>
             <p-dropdown inputId="usuario" [options]="usuariosSunass" placeholder="Seleccionar"
-              
               formControlName="usuario" [showClear]="true" [disabled]="isDropUsersDisable" 
               [filter]="true" (onChange)="onUserChange($event)">
             </p-dropdown>
@@ -34,31 +33,33 @@
             </app-validate-inputs-form>
           </div>
           <div class="field col-12 md:col-4" >
-            <label>Unidad Orgánica:</label>
+            <label>Unidad Orgánica <span style="color: #FA7272;" *ngIf="isFieldRequired('unidadOrganica')"> * </span></label>
             <input id="unidadOrganica" type="text" pInputText   formControlName="unidadOrganica" maxlength="30"  />
             <app-validate-inputs-form [form]="registroForm" formInput='unidadOrganica' labelInput="Unidad Orgánica">
             </app-validate-inputs-form>
           </div>
           <div class="field col-12 md:col-4">
-            <label>Nombres:</label>
-            <input id="nombre" type="text" pInputText (input)="validateInputForm('nombres','alfabetico')" formControlName="nombres" maxlength="30" dirAlphabeticInput/>
+            <label>Nombres <span style="color: #FA7272;" *ngIf="isFieldRequired('nombres')"> * </span></label>
+            <input id="nombres" type="text" pInputText (input)="validateInputForm('nombres','alfabetico')" 
+              formControlName="nombres" maxlength="30" dirAlphabeticInput autocomplete="off" />
             <app-validate-inputs-form [form]="registroForm" formInput='nombres' labelInput="Nombres">
             </app-validate-inputs-form>
           </div>
           <div class="field col-12 md:col-4">
-            <label>Apellidos:</label>
-            <input id="apellidos" type="text" pInputText (input)="validateInputForm('apellidos','alfabetico')" formControlName="apellidos" maxlength="50" dirAlphabeticInput/>
+            <label>Apellidos <span style="color: #FA7272;" *ngIf="isFieldRequired('apellidos')"> * </span></label>
+            <input id="apellidos" type="text" pInputText (input)="validateInputForm('apellidos','alfabetico')" 
+              autocomplete="off" formControlName="apellidos" maxlength="50" dirAlphabeticInput/>
             <app-validate-inputs-form [form]="registroForm" formInput='apellidos' labelInput="Apellidos">
             </app-validate-inputs-form>
           </div>
           <div class="field col-12 md:col-4">
-            <label>Correo Electrónico:</label>
-            <input id="correo" type="text" pInputText   formControlName="correo" maxlength="100"  />
+            <label>Correo Electrónico <span style="color: #FA7272;" *ngIf="isFieldRequired('correo')"> * </span></label>
+            <input id="correo" type="text" pInputText   formControlName="correo" maxlength="100" autocomplete="off" />
             <app-validate-inputs-form [form]="registroForm" formInput='correo' labelInput="Correo">
             </app-validate-inputs-form>
           </div>
           <div  *ngIf="mostrarCampo" class="field col-12 md:col-4" >
-            <label>EPS:</label>
+            <label>EPS <span style="color: #FA7272;" *ngIf="isFieldRequired('selEmpresa')"> * </span></label>
             <p-dropdown inputId="selEmpresa" [options]="empresasLista" placeholder="Seleccionar" formControlName="selEmpresa" 
               [showClear]="true" [filter]="true">
             </p-dropdown>
@@ -66,20 +67,21 @@
             </app-validate-inputs-form>
           </div>
           <div class="field col-12 md:col-4">
-            <label>Usuario:</label>
-            <input id="username" type="text" pInputText formControlName="username" maxlength="30" dirUserNameInput/>
+            <label>Usuario <span style="color: #FA7272;" *ngIf="isFieldRequired('username')"> * </span></label>
+            <input id="username" type="text" pInputText formControlName="username" maxlength="30" dirUserNameInput autocomplete="off" />
             <app-validate-inputs-form [form]="registroForm" formInput='username' labelInput="Usuario">
             </app-validate-inputs-form>
           </div>
           <div class="field col-12 md:col-4">
-            <label>Contraseña:</label>
-            <input id="password" type="password" pInputText formControlName="password" maxlength="255" minlength="8"/>
+            <label>Contraseña <span style="color: #FA7272;" *ngIf="isFieldRequired('password')"> * </span></label>
+            <input id="password" type="password" pInputText formControlName="password" maxlength="255" minlength="8" autocomplete="off" />
             <app-validate-inputs-form [form]="registroForm" formInput='password' labelInput="Contraseña">
             </app-validate-inputs-form>
           </div>
           <div class="field col-12 md:col-4">
-            <label>Teléfono:</label>
-            <input id="telefono" type="text" pInputText pKeyFilter="int" formControlName="telefono" (input)="validateInputForm('telefono','numerico')" minlength="9" maxlength="9" dirTelefonoInput/>
+            <label>Teléfono <span style="color: #FA7272;" *ngIf="isFieldRequired('telefono')"> * </span></label>
+            <input id="telefono" type="text" pInputText pKeyFilter="int" formControlName="telefono" (input)="validateInputForm('telefono','numerico')"
+              autocomplete="off" minlength="9" maxlength="9" dirTelefonoInput/>
             <app-validate-inputs-form [form]="registroForm" formInput='telefono' labelInput="Teléfono">
             </app-validate-inputs-form>
           </div>

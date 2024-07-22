@@ -3,3 +3,7 @@
     border-color: #007ad9;
     color: #ffffff;
 }
+
+:host ::ng-deep .swal2-custom-zindex {
+    z-index: 2000 !important; /* Ajusta el z-index según sea necesario */
+  }

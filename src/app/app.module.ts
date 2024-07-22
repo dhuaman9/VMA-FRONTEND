@@ -20,10 +20,6 @@ import { LoadingComponent } from './pages/loading/loading.component';
 import { FormsSelect2Component } from './pages/forms/forms-select2/forms-select2.component';
 
 import { NgSelectComponent, NgSelectModule } from '@ng-select/ng-select';
-import { DataTablesModule } from 'angular-datatables';
-import { ReportesVariableGestionComponent } from './pages/reportes/reportes-variable-gestion/reportes-variable-gestion.component';
-import { ReportesVariableOperacionalComponent } from './pages/reportes/reportes-variable-operacional/reportes-variable-operacional.component';
-import { ReportesParametroCalidadComponent } from './pages/reportes/reportes-parametro-calidad/reportes-parametro-calidad.component';
 import { interceptorProvider } from './_service/interceptor.service';
 import { ErrorValidationComponent } from './pages/forms/error-validation/error-validation.component';
 import { UsuariosComponent } from './pages/usuarios/usuarios.component';
@@ -67,6 +63,10 @@ import { FileUploadModule } from 'primeng/fileupload';
 import {TooltipModule} from 'primeng/tooltip';
 import { ChartModule } from 'primeng/chart';
 
+import {OrderListModule} from 'primeng/orderlist';
+import { ReporteService } from 'src/app/_service/reporte.service';
+
+
 const PRIMENG_COMPONENTS = [
   TableModule,
   PaginatorModule,
@@ -87,7 +87,8 @@ const PRIMENG_COMPONENTS = [
   SplitterModule,
   FileUploadModule,
   TooltipModule,
-  ChartModule
+  ChartModule,
+  OrderListModule
 ]
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
 
@@ -103,9 +104,6 @@ export function tokenGetter(){
     ModulosComponent,
     LoadingComponent,
     FormsSelect2Component,
-    ReportesVariableGestionComponent,
-    ReportesVariableOperacionalComponent,
-    ReportesParametroCalidadComponent,
     ErrorValidationComponent,
     UsuariosComponent,
     RegistrarUsuarioComponent,
@@ -124,9 +122,8 @@ export function tokenGetter(){
     UserNameInputDirective
   ],
   imports: [
-
+   
     BrowserModule,
-    DataTablesModule,
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
@@ -134,7 +131,7 @@ export function tokenGetter(){
     FormsModule,
    // NgbModule,
     JwtModule.forRoot({
-      config : {
+      config : { 
         tokenGetter : tokenGetter,
         allowedDomains : environment.ALLOWED_DOMAINS,
         disallowedRoutes : environment.DISALLOWED_ROUTES
@@ -149,7 +146,7 @@ export function tokenGetter(){
   ],
   providers: [
     { provide : LocationStrategy, useClass: HashLocationStrategy },
-    interceptorProvider
+    interceptorProvider, ReporteService
   ],
   bootstrap: [AppComponent],
   exports: [

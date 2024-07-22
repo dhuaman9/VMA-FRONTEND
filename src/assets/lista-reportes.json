@@ -1,0 +1,355 @@
+{
+    "data": [
+      {
+        "id": "1",
+        "code": "1",
+        "name": "Gráfico 1",
+        "description": "Remisión de Información VMA Año actual, según tamaño de la empresa",
+        "icon": "pi pi-chart-bar",
+        "category": "gra",
+        "url": "url/grafico"
+      },
+      {
+        "id": "2",
+        "code": "2",
+        "name": "Gráfico 2",
+        "description": "Número de EP que implementaron la normativa VMA, según tamaño",
+        "icon": "pi pi-clock",
+        "category": "gra",
+        "url": "url/grafico"
+      },
+      {
+        "id": "3",
+        "code": "3",
+        "name": "Gráfico 3",
+        "description": "Porcentaje de EP con área dedicada al monitoreo y control de los VMA, según tamaño de la EP",
+        "icon": "pi pi-align-left",
+        "category": "gra",
+        "url": "url/grafico"
+      },
+      {
+        "id": "4",
+        "code": "4",
+        "name": "Gráfico 4",
+        "description": "Número promedio de trabajadores dedicados a la implementación de los VMA, según tamaño de la EP",
+        "icon": "pi pi-align-left",
+        "category": "gra",
+        "url": "url/grafico"
+      },
+      {
+        "id": "5",
+        "code": "5",
+        "name": "Gráfico 5",
+        "description": "Porcentaje de UND identificados, según tamaño de la EP",
+        "icon": "pi pi-clock",
+        "category": "gra",
+        "url": "url/grafico"
+      },
+      {
+        "id": "6",
+        "code": "6",
+        "name": "Gráfico 6",
+        "description": "Porcentaje de UND inspeccionados, según tamaño de la EP",
+        "icon": "pi pi-align-left",
+        "category": "gra",
+        "url": "url/grafico"
+      },
+      {
+        "id": "7",
+        "code": "7",
+        "name": "Gráfico 7",
+        "description": "Porcentaje de UND a los que se le ha solicitado el diagrama de flujo y balance hídrico, según tamaño de la EP",
+        "icon": "pi pi-align-left",
+        "category": "gra",
+        "url": "url/grafico"
+      },
+      {
+        "id": "8",
+        "code": "8",
+        "name": "Gráfico 8",
+        "description": "Porcentaje de UND que han presentado el diagrama de flujo y balance hídrico, según tamaño de la EP",
+        "icon": "pi pi-align-left",
+        "category": "gra",
+        "url": "url/grafico"
+      },
+      {
+        "id": "9",
+        "code": "9",
+        "name": "Gráfico 9",
+        "description": "Comparativo de los UND registrados, inspeccionados e identificados, según tamaño de la EP",
+        "icon": "pi pi-table",
+        "category": "gra",
+        "url": "url/grafico"
+      },
+      {
+        "id": "10",
+        "code": "10",
+        "name": "Gráfico 10",
+        "description": "Porcentaje de UND que cuentan con caja de registro o dispositivo similar en la parte externa de su predio, según tamaño de la EP",
+        "icon": "pi pi-align-left",
+        "category": "gra",
+        "url": "url/grafico"
+      }
+      ,
+      {
+        "id": "11",
+        "code": "11",
+        "name": "Gráfico 11",
+        "description": "Porcentaje de UND a los que se realizó la toma de muestra inopinada, según tamaño de la EP",
+        "icon": "pi pi-align-left",
+        "category": "gra",
+        "url": "url/grafico"
+      }
+      ,
+      {
+        "id": "12",
+        "code": "12",
+        "name": "Gráfico 12",
+        "description": "Porcentaje de toma de muestra inopinada, según tamaño de la EP",
+        "icon": "pi pi-clock",
+        "category": "gra",
+        "url": "url/grafico"
+      }
+      ,
+      {
+        "id": "13",
+        "code": "13",
+        "name": "Gráfico 13",
+        "description": "Porcentaje de UND que sobrepasan algún(os) parámetro(s) del Anexo N° 1 del REGLAMENTO VMA, según tamaño de la EP",
+        "icon": "pi pi-align-left",
+        "category": "gra",
+        "url": "url/grafico"
+      }
+      ,
+      {
+        "id": "14",
+        "code": "14",
+        "name": "Gráfico 14",
+        "description": "Porcentaje de UND a los que se ha facturado por concepto de Pago adicional por exceso de concentración, según tamaño de la EP",
+        "icon": "pi pi-align-left",
+        "category": "gra",
+        "url": "url/grafico"
+      }
+      ,
+      {
+        "id": "15",
+        "code": "15",
+        "name": "Gráfico 15",
+        "description": "Porcentaje de UND que realizaron el Pago adicional por exceso de concentración, según tamaño de la EP",
+        "icon": "pi pi-align-left",
+        "category": "gra",
+        "url": "url/grafico"
+      }
+      ,
+      {
+        "id": "16",
+        "code": "16",
+        "name": "Gráfico 16",
+        "description": "Porcentaje de UND que sobrepasan algún(os) parámetro(s) del Anexo N° 2 del Reglamento de VMA, según tamaño de la EP",
+        "icon": "pi pi-align-left",
+        "category": "gra",
+        "url": "url/grafico"
+      }
+      ,
+      {
+        "id": "17",
+        "code": "17",
+        "name": "Gráfico 17",
+        "description": "Porcentaje de UND a los que les ha otorgado un plazo adicional (hasta 18 meses) con el fin de implementar las acciones de mejora y acreditar el cumplimiento de los VMA, según tamaño de la EP",
+        "icon": "pi pi-align-left",
+        "category": "gra",
+        "url": "url/grafico"
+      }
+      ,
+      {
+        "id": "18",
+        "code": "18",
+        "name": "Gráfico 18",
+        "description": "Porcentaje de UND que han suscrito un acuerdo en el que se establece un plazo otorgado, por única vez, a fin de ejecutar las acciones de mejora y acreditar el cumplimiento de los VMA, según tamaño de la EP",
+        "icon": "pi pi-align-left",
+        "category": "gra",
+        "url": "url/grafico"
+      }
+      ,
+      {
+        "id": "19",
+        "code": "19",
+        "name": "Gráfico 19",
+        "description": "Porcentaje de recibidos por VMA, según tamaño de la EP",
+        "icon": "pi pi-align-left",
+        "category": "gra",
+        "url": "url/grafico"
+      }
+      ,
+      {
+        "id": "20",
+        "code": "20",
+        "name": "Gráfico 20",
+        "description": "Porcentaje de reclamos por VMA resueltos fundados, según tamaño de la EP",
+        "icon": "pi pi-align-left",
+        "category": "gra",
+        "url": "url/grafico"
+      }
+      ,
+      {
+        "id": "21",
+        "code": "21",
+        "name": "Gráfico 21 y 22",
+        "description": "Costo anual incurrido en la identificación, inspección e inscripción de los UND, según tamaño de la EP",
+        "icon": "pi pi-chart-bar",
+        "category": "gra",
+        "url": "url/grafico"
+      }
+      ,
+      {
+        "id": "22",
+        "code": "22",
+        "name": "Gráfico 23",
+        "description": "Costo anual por conexión incurrido en la identificación, inspección e inscripción de los UND",
+        "icon": "pi pi-chart-bar",
+        "category": "gra",
+        "url": "url/grafico"
+      }
+      ,
+      {
+        "id": "23",
+        "code": "23",
+        "name": "Gráfico 24 y 25",
+        "description": "Costo anual incurrido por realizar las tomas de muestras inopinadas, según tamaño de la EP",
+        "icon": "pi pi-chart-bar",
+        "category": "gra",
+        "url": "url/grafico"
+      }
+      ,
+      {
+        "id": "24",
+        "code": "24",
+        "name": "Gráfico 26",
+        "description": "Costo anual por conexión incurrido por realizar las tomas de muestras inopinadas",
+        "icon": "pi pi-chart-bar",
+        "category": "gra",
+        "url": "url/grafico"
+      }
+      ,
+      {
+        "id": "25",
+        "code": "25",
+        "name": "Gráfico 27",
+        "description": "Costo anual por otros gastos incurridos en la implementación de los VMA, según tamaño de la EP (miles de soles)",
+        "icon": "pi pi-chart-bar",
+        "category": "gra",
+        "url": "url/grafico"
+      }
+      ,
+      {
+        "id": "26",
+        "code": "26",
+        "name": "Anexo 1",
+        "description": "Relación de las EP que remitieron información y/o implementaron normativa y/o remitieron informes de implementación de los VMA del año en curso",
+        "icon": "pi pi-table",
+        "category": "anx",
+        "url": "url/anexo"
+      }
+      ,
+      {
+        "id": "27",
+        "code": "27",
+        "name": "Anexo 2",
+        "description": "Relación de las EP que cuentan con un área destinada a la implementación de la norma VMA, y el número de trabajadores que se dedican a tiempo parcial o tiempo completo a la implementación de la norma VMA",
+        "icon": "pi pi-table",
+        "category": "anx",
+        "url": "url/anexo"
+      }
+      ,
+      {
+        "id": "28",
+        "code": "28",
+        "name": "Anexo 3",
+        "description": "Relación de las EP que han realizado avances en la inspección y/o inscripción en sus registros de los UND bajo su ámbito de influencia",
+        "icon": "pi pi-table",
+        "category": "anx",
+        "url": "url/anexo"
+      }
+      ,
+      {
+        "id": "29",
+        "code": "29",
+        "name": "Anexo 4",
+        "description": "Detalle de porcentaje de toma de muestra inopinada de las EP",
+        "icon": "pi pi-table",
+        "category": "anx",
+        "url": "url/anexo"
+      }
+      ,
+      {
+        "id": "30",
+        "code": "30",
+        "name": "Anexo 5",
+        "description": "Detalle de las EP que han realizado la evaluación de los VMA del Anexo 1 del reglamento de VMA",
+        "icon": "pi pi-table",
+        "category": "anx",
+        "url": "url/anexo"
+      }
+      ,
+      {
+        "id": "31",
+        "code": "31",
+        "name": "Anexo 6",
+        "description": "Detalle de las EP que han realizado la evaluación de los VMA del Anexo 2 del reglamento de VMA",
+        "icon": "pi pi-table",
+        "category": "anx",
+        "url": "url/anexo"
+      }
+      ,
+      {
+        "id": "32",
+        "code": "32",
+        "name": "Anexo 7",
+        "description": "Detalle de las EP que han realizado la atención de reclamos referidos a VMA",
+        "icon": "pi pi-table",
+        "category": "anx",
+        "url": "url/anexo"
+      }
+      ,
+      {
+        "id": "33",
+        "code": "33",
+        "name": "Anexo 8",
+        "description": "Detalle de los costos de identificación, inspección y registro de los UND",
+        "icon": "pi pi-table",
+        "category": "anx",
+        "url": "url/anexo"
+      }
+      ,
+      {
+        "id": "34",
+        "code": "34",
+        "name": "Anexo 9",
+        "description": "Detalle de los costos totales por toma de muestras inopinadas",
+        "icon": "pi pi-table",
+        "category": "anx",
+        "url": "url/anexo"
+      }
+      ,
+      {
+        "id": "35",
+        "code": "35",
+        "name": "Anexo 10",
+        "description": "Detalle de los costos totales incurridos por las Empresas Prestadoras",
+        "icon": "pi pi-table",
+        "category": "anx",
+        "url": "url/anexo"
+      }
+      ,
+      {
+        "id": "36",
+        "code": "36",
+        "name": "Anexo 11",
+        "description": "Detalle de los ingresos facturados durante el año actual, por conceptos de VMA",
+        "icon": "pi pi-table",
+        "category": "anx",
+        "url": "url/anexo"
+      }
+    ]
+  }
+  

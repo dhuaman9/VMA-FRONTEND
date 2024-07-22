@@ -3,7 +3,6 @@ import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { saveAs } from 'file-saver'; 
 
 @Injectable({
   providedIn: 'root'

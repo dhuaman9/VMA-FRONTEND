@@ -12,7 +12,7 @@
             <a href="#" class="dropdown-toggle link-user link-user-custom" data-toggle="dropdown">
               <div class="d-md-inline-block">
                 <i class="fa fa-user-circle fa-fw" style="padding-right: 50%; font-weight: bolder; font-size: 1.6rem;"></i>
-              </div>
+              </div> 
               <div class="d-md-inline-block">
                 <div class="nav-item-content-span-user" style="height: 15px;">
                   <span style="font-size: 13px;">{{shortName}}</span>
@@ -37,7 +37,6 @@
           <nav class="mt-3">
             <ul class="mainmenu" data-widget="treeview" role="menu" data-accordion="false">
               <li class="nav-item" *ngFor="let m of modules">
-<!--                <ng-container *ngIf="m.activo></ng-container> tener una lista de rutas única y dependiendo del rol o roles, activarlas o no -->
                 <ng-container>
                   <a [routerLink]="m.route" class="nav-link custom-nav-link">
                    <!-- <i class="fa fa fa-indent" aria-hidden="true" style="padding-right: 5px;"></i>  dhr-->

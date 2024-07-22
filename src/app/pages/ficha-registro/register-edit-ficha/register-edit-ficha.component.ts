@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FichaRegistro } from 'src/app/_model/fichaRegistro';
 import { FichaRegistroService } from 'src/app/_service/ficha-registro.service';
 import { ValidateInputs } from 'src/app/utils/validate-inputs';
 import * as moment from 'moment';
 import Swal from 'sweetalert2';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register-edit-ficha',
@@ -33,8 +32,7 @@ export class RegisterEditFichaComponent implements OnInit {
     constructor(
       private ref: DynamicDialogRef,
       private config: DynamicDialogConfig,
-      private fichaRegistroService : FichaRegistroService,
-      private router: Router) {
+      private fichaRegistroService : FichaRegistroService) {
   
         this.titleHeader = this.config.data.titleHeader;
         this.isEdition = false;
@@ -73,67 +71,13 @@ export class RegisterEditFichaComponent implements OnInit {
     //  const ficha = this.registroForm.value as FichaRegistro;
       if(this.isEdition){
         ficha.idFichaRegistro = this.config.data.idFichaRegistro;
-        
-        this.fichaRegistroService.update(ficha).subscribe(responseUser => {
+        this.fichaRegistroService.update(ficha).subscribe(data =>{
           this.closeDialog(true);
-          Swal.fire({
-            icon: "success",
-            title: 'Se actualizó la ficha de registro correctamente.',
-            showConfirmButton: true,
-            confirmButtonText: 'Aceptar',
-            allowOutsideClick: false,
-            confirmButtonColor: '#28a745' // color verde
-          }).then((result) => {
-            if (result.isConfirmed) {
-             // this.onAceptar(); // se redirige al listado
-              this.router.navigate(['/inicio/ficha-registro']) ;
-            }
-          });
-        },
-         error => {  
-          this.closeDialog(true);
-            Swal.fire({
-              title: 'Error',
-              text: error,
-              icon: 'error',
-              confirmButtonText: 'Aceptar'
-            });
-         }
-       );
-
+        });
       } else {
-        
-        this.fichaRegistroService.create(ficha).subscribe(responseUser => {
+        this.fichaRegistroService.create(ficha).subscribe(data =>{
           this.closeDialog(true);
-          Swal.fire({
-            icon: "success",
-            title: 'Se Registró la ficha de apertura correctamente.',
-            showConfirmButton: true,
-            confirmButtonText: 'Aceptar',
-            allowOutsideClick: false,
-            confirmButtonColor: '#28a745' // color verde
-          }).then((result) => {
-            if (result.isConfirmed) {
-              this.router.navigate(['/inicio/ficha-registro']) ;
-             // this.onAceptar(); // se redirige al listado
-            }
-          });
-        },
-         error => {  
-          this.closeDialog(true);
-            Swal.fire({
-              title: 'Error',
-              text: error,
-              icon: 'error',
-              confirmButtonText: 'Aceptar',
-              allowOutsideClick: false,
-            }).then((result) => {
-              if (result.isConfirmed) {
-                this.router.navigate(['/inicio/ficha-registro']) ;
-              }
-            });
-         });
-      
+        });
       }
     } else {
       ValidateInputs.touchedAllFormFields(this.registroForm);
@@ -182,7 +126,27 @@ export class RegisterEditFichaComponent implements OnInit {
   }
 
   onCancelAction(){
-    this.closeDialog(false);
+    Swal.fire({
+      title: "Aviso",
+      text: "¿Está seguro que desea cancelar el registro?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DF2A3D",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "SI",
+      cancelButtonText: "No",
+      didOpen: (popup) => {
+        const container = popup.parentElement;
+        if (container) {
+          container.style.zIndex = '2000';
+        }
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.closeDialog(false);
+      }
+    });
+    
   }
 
   onStartDateSelect() {
@@ -199,6 +163,15 @@ export class RegisterEditFichaComponent implements OnInit {
     this.maxEndDate = maxEndDate;
   }
 
+  isFieldRequired(field: string): boolean {
+    const control = this.registroForm.get(field);
+    if (!control) {
+      return false;
+    }
+    const validator = control.validator ? control.validator({} as AbstractControl) : null;
+    return !!(validator && validator.required);
+  }
+
 
   private prepareFichaData(): FichaRegistro {
     const formValues = this.registroForm.value;
@@ -210,12 +183,5 @@ export class RegisterEditFichaComponent implements OnInit {
     return ficha;
   }
 
-  onAceptar(){
-    
-    this.router.navigate(['/inicio/ficha-registro']).then(() => {
-      // Aquí puedes forzar la recarga de la lista de usuarios si es necesario
-     window.location.reload();
-    });
-    
-  }
+  
 }
