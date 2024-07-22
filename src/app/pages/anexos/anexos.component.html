@@ -1,1 +1,47 @@
-<p>anexos works!</p>
+<div class="px-5 py-3">
+  <div style="text-align: center; margin-bottom: 20px;">
+    <h2 style="margin-bottom: 20px;">Anexos</h2>
+    <p-dropdown
+      [options]="years"
+      [(ngModel)]="selectedYear"
+      placeholder="Seleccionar el año"
+      class="combobox-anio">
+    </p-dropdown>
+    <button pButton
+            type="button"
+            label="Aplicar"
+            (click)="applyFilter()"
+            style="margin-left: 10px;">
+    </button>
+  </div>
+
+  <div>
+    <p-table [value]="anexoRegistros" responsiveLayout="scroll">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>N°</th>
+          <th>Empresa Prestadora</th>
+          <th>Tamaño</th>
+          <th>RAT</th>
+          <th>EPS remitió información</th>
+          <th>EPS remitió informe</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-anexo let-i="rowIndex">
+        <tr>
+          <td>{{i+1}}</td>
+          <td>{{anexo.nombreEmpresa}}</td>
+          <ng-container *ngIf="anexo.rowspan; else noRowspan">
+            <td [attr.rowspan]="anexo.rowspan" class="text-center">{{anexo.tamanioEmpresa}}</td>
+          </ng-container>
+          <ng-template #noRowspan></ng-template>
+          <td>{{anexo.esRAT ? 'SÍ' : 'NO'}}</td>
+          <td>{{anexo.epsRemitioInformacion ? 'SÍ' : 'NO'}}</td>
+          <td>{{anexo.epsRemitioInforme ? 'SÍ' : 'NO'}}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+  </div>
+
+</div>

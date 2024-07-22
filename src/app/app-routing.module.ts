@@ -17,28 +17,29 @@ import { EditarUsuarioComponent } from './pages/usuarios/editar-usuario/editar-u
 import { VmaComponent } from './pages/vma/vma.component';
 import { RegistrarVmaComponent } from './pages/vma/registrar-vma/registrar-vma.component';
 import { RegistradorVmaGuard } from './_service/registrador-vma.guard';
+import {AnexoGuard} from "./_service/anexo.guard";
 
 
 
-const routes : Routes = 
+const routes : Routes =
 [
   { path : 'login', component : LoginComponent},
   { path : 'modulos', component : ModulosComponent, canActivate : [GuardService] },
-  { path : 'inicio', component : InicioComponent , children :  
+  { path : 'inicio', component : InicioComponent , children :
     [
       {
         path : 'usuarios', component : UsuariosComponent, canActivate : [GuardService] , children :
         [
           { path: "registrar-usuario", component : RegistrarUsuarioComponent, data: { tituloModulo : 'Sistema de Valores Maximos Admisibles' } },
           { path: "editar-usuario/:id", component : EditarUsuarioComponent, data: { tituloModulo : 'Sistema de Valores Maximos Admisibles' } }
-          
+
         ]
       },
       {
-        path : 'empresa', component : EmpresaComponent, canActivate : [GuardService] 
+        path : 'empresa', component : EmpresaComponent, canActivate : [GuardService]
       },
       {
-        path : 'ficha-registro', component : FichaRegistroComponent, canActivate : [GuardService] 
+        path : 'ficha-registro', component : FichaRegistroComponent, canActivate : [GuardService]
       },
       {
         path : 'vma', component : VmaComponent, canActivate : [GuardService] , children :
@@ -48,10 +49,10 @@ const routes : Routes =
         ]
       },
       {
-        path : 'reporte', component : ReporteComponent, canActivate : [GuardService] 
+        path : 'reporte', component : ReporteComponent, canActivate : [GuardService]
       },
       {
-        path : 'anexos', component : AnexosComponent, canActivate : [GuardService] 
+        path : 'anexos', component : AnexosComponent, canActivate : [GuardService, AnexoGuard], data: {expectedRoles: ['ADMINISTRADOR DAP', 'CONSULTOR']}
       }
     //] , canActivate : [GuardService], data: { tituloModulo : 'Variables de gestión', menuOption : 'submenu-option-variable-gestion' }
   ]

@@ -124,7 +124,7 @@ export function tokenGetter(){
     UserNameInputDirective
   ],
   imports: [
-   
+
     BrowserModule,
     DataTablesModule,
     AppRoutingModule,
@@ -134,7 +134,7 @@ export function tokenGetter(){
     FormsModule,
    // NgbModule,
     JwtModule.forRoot({
-      config : { 
+      config : {
         tokenGetter : tokenGetter,
         allowedDomains : environment.ALLOWED_DOMAINS,
         disallowedRoutes : environment.DISALLOWED_ROUTES
