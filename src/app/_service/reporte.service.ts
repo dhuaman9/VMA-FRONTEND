@@ -8,12 +8,13 @@ import { ReporteParamCalidadExportDto } from "../_dto/reporteParamCalidadExportD
 import { ReporteVarGestionDto } from "../_dto/reporteVarGestionDto";
 import { ReporteVarOperacionalDto } from "../_dto/reporteVarOperacionalDto";
 import { ListaReporte } from '../_model/reporte';
+import {ChartDto} from "../_model/chart-dto";
 
 @Injectable({
     providedIn: 'root'
   })
 export class ReporteService {
-   
+
     private url: string = environment.HOST;
     private token: string = sessionStorage.getItem(environment.TOKEN_NAME);
     private httpOptions : any;
@@ -22,12 +23,14 @@ export class ReporteService {
         private http : HttpClient
     ) { }
 
-    reporteRegistros(anio: number): Observable<any> {
-        return this.http.get(`${this.url}/api/reporte/registros?anio=${anio}`);
+    reporteRegistros(anio: number): Observable<ChartDto[]> {
+        return this.http.get(`${this.url}/api/reporte/registros?anio=${anio}`)
+          .pipe(map((response: any) => response.items));
     }
 
-    reporteRespuestaSiNo(anio: number): Observable<any> {
-        return this.http.get(`${this.url}/api/reporte/respuesta-si-no?anio=${anio}`);
+    reporteRespuestaSiNo(anio: number): Observable<ChartDto[]> {
+        return this.http.get(`${this.url}/api/reporte/respuesta-si-no?anio=${anio}`)
+          .pipe(map((response: any) => response.items));
     }
 
     fechaprocesa(): Observable<any>{

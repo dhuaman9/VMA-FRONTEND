@@ -65,6 +65,8 @@ import { ChartModule } from 'primeng/chart';
 
 import {OrderListModule} from 'primeng/orderlist';
 import { ReporteService } from 'src/app/_service/reporte.service';
+import { PieChartComponent } from './pages/reporte/pie-chart/pie-chart.component';
+import { BarChartComponent } from './pages/reporte/bar-chart/bar-chart.component';
 
 
 const PRIMENG_COMPONENTS = [
@@ -119,7 +121,9 @@ export function tokenGetter(){
     RegisterEditFichaComponent,
     AlphabeticInputDirective,
     TelefonoInputDirective,
-    UserNameInputDirective
+    UserNameInputDirective,
+    PieChartComponent,
+    BarChartComponent
   ],
   imports: [
    
