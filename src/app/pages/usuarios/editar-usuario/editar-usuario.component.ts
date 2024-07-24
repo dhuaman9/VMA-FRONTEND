@@ -215,8 +215,8 @@ export class EditarUsuarioComponent implements OnInit {
 
   onCancelEdit() {
     Swal.fire({
-      title: "Aviso",
-      text: "¿Está seguro que desea cancelar la edición?",
+      title: "¿Está seguro que desea cancelar el registro?",
+      text: "Si acepta no se guardará ninguna información",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#DF2A3D",
@@ -250,6 +250,7 @@ export class EditarUsuarioComponent implements OnInit {
     inputElement.value = inputElement.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑüÜ]/g, '');
     this.val = inputElement.value;
   }
+  //edit
 
   private setEnableDisableIputs(){
     console.log('this.registroForm.get(tipo).value', this.registroForm.get('tipo').value);
@@ -265,11 +266,12 @@ export class EditarUsuarioComponent implements OnInit {
 
      // this.registroForm.get('eps').setValidators([Validators.nullValidator]);  //? dhr
       this.registroForm.get('usuario').setValidators([Validators.required]);
-      this.registroForm.get('password').setValidators([Validators.nullValidator]);
+      this.registroForm.get('perfil').setValidators([Validators.required]);
+      this.registroForm.get('telefono').setValidators([Validators.nullValidator]);
 
-      //this.registroForm.get('eps').updateValueAndValidity();
+      this.registroForm.get('usuario').updateValueAndValidity();
+      this.registroForm.get('perfil').updateValueAndValidity();
       this.registroForm.get('telefono').updateValueAndValidity();
-      this.registroForm.get('password').updateValueAndValidity();
 
     } else if(this.registroForm.get('tipo').value === 'EPS') {
       this.mostrarCampo =true; 

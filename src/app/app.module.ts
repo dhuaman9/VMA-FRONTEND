@@ -6,8 +6,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { InicioComponent } from './pages/inicio/inicio.component';
 import { LoginComponent } from './pages/login/login.component';
-//import { UsuarioEdicionComponent } from './pages/usuarios/usuario-edicion/usuario-edicion.component';
-//import { UsuariosComponent } from './pages/usuarios/usuarios.component';
 import { JwtModule } from '@auth0/angular-jwt';
 import { environment } from './../environments/environment';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';

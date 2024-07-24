@@ -127,8 +127,8 @@ export class RegisterEditFichaComponent implements OnInit {
 
   onCancelAction(){
     Swal.fire({
-      title: "Aviso",
-      text: "¿Está seguro que desea cancelar el registro?",
+      title: "¿Está seguro que desea cancelar el registro?",
+      text: "Si acepta no se guardará ninguna información",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#DF2A3D",
