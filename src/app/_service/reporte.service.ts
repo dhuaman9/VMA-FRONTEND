@@ -9,6 +9,8 @@ import { ReporteVarGestionDto } from "../_dto/reporteVarGestionDto";
 import { ReporteVarOperacionalDto } from "../_dto/reporteVarOperacionalDto";
 import { ListaReporte } from '../_model/reporte';
 import {ChartDto} from "../_model/chart-dto";
+import {RegistroPromedioTrabajadorVMAChartDto} from "../_model/RegistroPromedioTrabajadorVMAChartDto";
+import {PieChartBasicoDto} from "../_model/pie-chart-basico-dto";
 
 @Injectable({
     providedIn: 'root'
@@ -24,14 +26,24 @@ export class ReporteService {
     ) { }
 
     reporteRegistros(anio: number): Observable<ChartDto[]> {
-        return this.http.get(`${this.url}/api/reporte/registros?anio=${anio}`)
+        return this.http.get(`${this.url}/api/reporte/registros?anio=${anio.toString()}`)
           .pipe(map((response: any) => response.items));
     }
 
     reporteRespuestaSiNo(anio: number): Observable<ChartDto[]> {
-        return this.http.get(`${this.url}/api/reporte/respuesta-si-no?anio=${anio}`)
+        return this.http.get(`${this.url}/api/reporte/respuesta-si-no?anio=${anio.toString()}`)
           .pipe(map((response: any) => response.items));
     }
+
+    generarReporteTrabajadoresDedicadosRegistro(anio: number): Observable<RegistroPromedioTrabajadorVMAChartDto[]> {
+      return this.http.get(`${this.url}/api/reporte/trabajadores-dedicados-registro?anio=${anio.toString()}`)
+          .pipe(map((response: any) => response.items));
+    }
+
+  generarReporteNumeroTotalUND(anio: number): Observable<PieChartBasicoDto[]> {
+    return this.http.get(`${this.url}/api/reporte/numero-total-und?anio=${anio.toString()}`)
+      .pipe(map((response: any) => response.items));
+  }
 
     fechaprocesa(): Observable<any>{
 

@@ -8,8 +8,11 @@ import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core'
 export class PieChartComponent implements OnInit, OnChanges {
   @Input() data: number[];
   @Input() labels: string[];
+  @Input() esPorcentaje: boolean = false;
+  @Input() tieneDecimalesDataLabel: boolean = false;
 
   pieChartConfig = {};
+  chartOptions = {};
 
   constructor() { }
 
@@ -46,35 +49,24 @@ export class PieChartComponent implements OnInit, OnChanges {
         }
       ]
     };
-  }
 
-  chartOptions = {
-    plugins: {
-      legend: {
-        position: 'bottom'
-      },
-      datalabels: {
-        display: true,
-        color: 'white',
-        font: {
-          weight: 'bold',
-          size: 16,
+    this.chartOptions = {
+      plugins: {
+        legend: {
+          position: 'bottom'
         },
+        datalabels: {
+          display: true,
+          color: 'white',
+          font: {
+            weight: 'bold',
+            size: 16,
+          },
+          formatter: (value) => {
+            return this.esPorcentaje ? value.toFixed(this.tieneDecimalesDataLabel ? 2 : 0)+'%' : value.toFixed(this.tieneDecimalesDataLabel ? 2 : 0);
+          }
+        }
       }
-    },
-    scales: {
-      x: {
-        grid: {
-          color: 'rgba(255,255,255,0.2)'
-        },
-        beginAtZero: true
-      },
-      y: {
-        grid: {
-          color: 'rgba(255,255,255,0.2)'
-        },
-        beginAtZero: true
-      }
-    }
-  };
+    };
+  }
 }

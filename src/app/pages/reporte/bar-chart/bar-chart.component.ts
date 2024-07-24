@@ -13,6 +13,9 @@ export class BarChartComponent implements OnInit, OnChanges {
   @Input() esPorcentaje: boolean = false;
   @Input() esLabelDataAfuera: boolean = false;
   @Input() colorDataLabel: string = '#FFF';
+  @Input() tieneDecimalesDataLabel: boolean = false;
+  @Input() tieneDecimalesLabel: boolean = false;
+  @Input() maximoX: number;
   barChartConfig: any;
   barChartOptions: any;
 
@@ -48,7 +51,7 @@ export class BarChartComponent implements OnInit, OnChanges {
             size: 16,
           },
           formatter: (value) => {
-            return this.esPorcentaje ? value+'%' : value;
+            return this.esPorcentaje ? value.toFixed(this.tieneDecimalesDataLabel ? 2 : 0)+'%' : value.toFixed(this.tieneDecimalesDataLabel ? 2 : 0);
           },
           anchor: this.esLabelDataAfuera ? 'end' : 'center',
           align: this.esLabelDataAfuera ? 'end' : 'center',
@@ -60,11 +63,6 @@ export class BarChartComponent implements OnInit, OnChanges {
             color: 'rgba(255,255,255,0.2)'
           },
           beginAtZero: true,
-          ticks: {
-            callback: (value) => {
-              return this.esPorcentaje ? value+'%' : value;
-            }
-          }
         },
         y: {
           grid: {
@@ -74,5 +72,17 @@ export class BarChartComponent implements OnInit, OnChanges {
         }
       }
     };
+
+    if (this.maximoX) {
+      this.barChartOptions.scales.x.max = this.maximoX;
+    }
+
+    if(!this.esVertical) {
+      this.barChartOptions.scales.x.ticks = {
+        callback: (value) => {
+          return this.esPorcentaje ? value.toFixed(this.tieneDecimalesLabel ? 2 : 0)+'%' : value.toFixed(this.tieneDecimalesLabel ? 2 : 0);
+        }
+      }
+    }
   }
 }

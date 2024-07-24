@@ -5,6 +5,8 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Chart } from 'chart.js';
 import {BarChartDataset} from "../../_model/bar-chart-dataset";
 import {ChartDto} from "../../_model/chart-dto";
+import {RegistroPromedioTrabajadorVMAChartDto} from "../../_model/RegistroPromedioTrabajadorVMAChartDto";
+import {PieChartBasicoDto} from "../../_model/pie-chart-basico-dto";
 
 //npm install chartjs-plugin-datalabels
 Chart.register(ChartDataLabels);
@@ -28,6 +30,12 @@ export class ReporteComponent implements OnInit {
 
   chartDataSiNo: BarChartDataset[] = [];
   chartLabelsSiNo: string[] = [];
+
+  chartDataNumeroTotalUND: number[] = [];
+  chartLabelsNumeroTotalUND: string[] = [];
+
+  chartTrabajadoresDedicadosRegistroData: BarChartDataset[] = [];
+  chartTrabajadoresDedicadosRegistroLabels: string[] = [];
 
   constructor(
     public route : ActivatedRoute,
@@ -96,6 +104,32 @@ export class ReporteComponent implements OnInit {
     this.chartDataNumeroEP = [...cantidadRegistradosPorEmpresa];
   }
 
+  private cargarDatosTrabajadoresDedicadosRegistro(data: RegistroPromedioTrabajadorVMAChartDto[]): void {
+    this.chartTrabajadoresDedicadosRegistroData = [];
+    this.chartTrabajadoresDedicadosRegistroLabels = data.map(item => item.tipo);
+    const dataPorTipoEmpresa: number[] = data.map(item => item.promedio);
+    const cantidadEmpresasPorTipoEmpresa: number[] = data.map(item => item.cantidadEmpresasPorTipo);
+
+    if(data.length) {
+      const sumaTotal: number = dataPorTipoEmpresa.reduce((acc, curr) => acc + curr, 0);
+      const sumaTotalEmpresas: number = cantidadEmpresasPorTipoEmpresa.reduce((acc, curr) => acc + curr, 0);
+      const averagePercentage: number = sumaTotal / sumaTotalEmpresas;
+      this.chartTrabajadoresDedicadosRegistroLabels.push('PROMEDIO');
+      dataPorTipoEmpresa.push(averagePercentage);
+    }
+
+    this.chartTrabajadoresDedicadosRegistroData.push({
+      label: 'Número promedio de trabajadores a tiempo completo o parcial en los VMA',
+      backgroundColor: '#03A9F4',
+      data: dataPorTipoEmpresa
+    });
+  }
+
+  private cargarDatosNumeroTotalUND(data: PieChartBasicoDto[]): void {
+    this.chartLabelsNumeroTotalUND = data.map(item => item.label);
+    this.chartDataNumeroTotalUND = data.map(item => item.cantidad);
+  }
+
 
   private initializeYears(): void {
     const currentYear = new Date().getFullYear();
@@ -113,6 +147,14 @@ export class ReporteComponent implements OnInit {
     this.reporteService.reporteRespuestaSiNo(this.selectedYear).subscribe(data => {
       this.cargarDatosBarChartSiNo(data);
     });
+
+    this.reporteService.generarReporteTrabajadoresDedicadosRegistro(this.selectedYear).subscribe(data => {
+      this.cargarDatosTrabajadoresDedicadosRegistro(data);
+    })
+
+    this.reporteService.generarReporteNumeroTotalUND(this.selectedYear).subscribe(data => {
+      this.cargarDatosNumeroTotalUND(data);
+    })
   }
 
   private setDefaultYear() {
