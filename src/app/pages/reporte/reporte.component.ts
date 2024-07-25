@@ -109,11 +109,12 @@ export class ReporteComponent implements OnInit {
     this.chartTrabajadoresDedicadosRegistroLabels = data.map(item => item.tipo);
     const dataPorTipoEmpresa: number[] = data.map(item => item.promedio);
     const cantidadEmpresasPorTipoEmpresa: number[] = data.map(item => item.cantidadEmpresasPorTipo);
+    const cantidadTrabajadoresPorTipoEmpresa: number[] = data.map(item => item.cantidadTrabajadoresDecicados);
 
     if(data.length) {
-      const sumaTotal: number = dataPorTipoEmpresa.reduce((acc, curr) => acc + curr, 0);
       const sumaTotalEmpresas: number = cantidadEmpresasPorTipoEmpresa.reduce((acc, curr) => acc + curr, 0);
-      const averagePercentage: number = sumaTotal / sumaTotalEmpresas;
+      const sumaTotalTrabajadores: number = cantidadTrabajadoresPorTipoEmpresa.reduce((acc, curr) => acc + curr, 0);
+      const averagePercentage: number = sumaTotalTrabajadores / sumaTotalEmpresas;
       this.chartTrabajadoresDedicadosRegistroLabels.push('PROMEDIO');
       dataPorTipoEmpresa.push(averagePercentage);
     }
