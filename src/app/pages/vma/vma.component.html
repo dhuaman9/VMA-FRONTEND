@@ -66,7 +66,7 @@
                      <!-- Botón Registrar -->
                     <div class="card pdn-15" *ngIf="isRoleRegistrador">
                         <div class="card-header border-0">
-                            <button  class="btn btn-success mt-2 mr-2" (click)="redirectToForm()" [disabled]="registroCompleto" [pTooltip]="registroCompleto ? 'Ya existe un registro VMA en curso' : 'Registrar nuevo VMA'" tooltipPosition="top"><i class="pi pi-plus"></i>  Registrar</button>
+                            <button  class="btn btn-success mt-2 mr-2" (click)="redirectToForm()" [disabled]="registroCompleto" [pTooltip]="registroCompleto ? 'El registro VMA no está disponible o ya existe.' : 'Registrar nuevo VMA'" tooltipPosition="top"><i class="pi pi-plus"></i>  Registrar</button>
                         </div>
                     </div>
 
