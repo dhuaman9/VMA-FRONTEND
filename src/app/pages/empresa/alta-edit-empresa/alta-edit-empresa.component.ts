@@ -76,7 +76,6 @@ export class AltaEditEmpresaComponent implements OnInit {
               this.onAceptar();
             }
           });
-
         },
         error => {  
           this.closeDialog(true);

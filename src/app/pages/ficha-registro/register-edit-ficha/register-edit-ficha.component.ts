@@ -6,6 +6,7 @@ import { FichaRegistroService } from 'src/app/_service/ficha-registro.service';
 import { ValidateInputs } from 'src/app/utils/validate-inputs';
 import * as moment from 'moment';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register-edit-ficha',
@@ -32,7 +33,8 @@ export class RegisterEditFichaComponent implements OnInit {
     constructor(
       private ref: DynamicDialogRef,
       private config: DynamicDialogConfig,
-      private fichaRegistroService : FichaRegistroService) {
+      private fichaRegistroService : FichaRegistroService,
+      private router: Router) {
   
         this.titleHeader = this.config.data.titleHeader;
         this.isEdition = false;
@@ -59,30 +61,81 @@ export class RegisterEditFichaComponent implements OnInit {
  /**
    * Funcion para el alta o edicion de una ficha
    */
-  onCreateFicha() {
-    console.log('this.registroForm.valid',this.registroForm.valid, this.registroForm.value);
+ onCreateFicha() {
+  console.log('this.registroForm.valid',this.registroForm.valid, this.registroForm.value);
 
-    if(this.registroForm.valid){
-      //aqui debes de convertir las fechas al formato que necesitas antes de madarlas al backend
-      console.log('moment(remoteData.fechaInicio, "DD/MM/YYYY").toDate()',
-        moment(this.registroForm.get('fechaInicio').value, "DD/MM/YYYY").toDate());
+  if(this.registroForm.valid){
+    //aqui debes de convertir las fechas al formato que necesitas antes de madarlas al backend
+    console.log('moment(remoteData.fechaInicio, "DD/MM/YYYY").toDate()',
+      moment(this.registroForm.get('fechaInicio').value, "DD/MM/YYYY").toDate());
 
-        const ficha = this.prepareFichaData();
-    //  const ficha = this.registroForm.value as FichaRegistro;
-      if(this.isEdition){
-        ficha.idFichaRegistro = this.config.data.idFichaRegistro;
-        this.fichaRegistroService.update(ficha).subscribe(data =>{
-          this.closeDialog(true);
+      const ficha = this.prepareFichaData();
+  
+    if(this.isEdition){
+      ficha.idFichaRegistro = this.config.data.idFichaRegistro;
+      this.fichaRegistroService.update(ficha).subscribe(data =>{
+        this.closeDialog(true);
+    
+    Swal.fire({
+          icon: "success",
+          title: 'Se actualizó la Ficha de registro correctamente',
+          showConfirmButton: true,
+          confirmButtonText: 'Aceptar',
+          confirmButtonColor: '#28a745',
+          allowOutsideClick: false
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.router.navigate(['/inicio/ficha-registro']).then(() => {
+              // Aquí puedes forzar la recarga de la lista de fichas , por el momento no recomendable
+             window.location.reload();
+            });
+          }
         });
-      } else {
-        this.fichaRegistroService.create(ficha).subscribe(data =>{
-          this.closeDialog(true);
-        });
-      }
+      },
+      error => {  
+        this.closeDialog(true);
+         Swal.fire({
+           title: 'Error',
+           text: error,
+           icon: 'error',
+           confirmButtonText: 'Aceptar',
+           confirmButtonColor: '#d22c21'
+         });
+      });
+  
     } else {
-      ValidateInputs.touchedAllFormFields(this.registroForm);
+      this.fichaRegistroService.create(ficha).subscribe(data =>{
+        this.closeDialog(true);
+        Swal.fire({
+          icon: "success",
+          title: 'Se registró la Ficha de registro correctamente',
+          showConfirmButton: true,
+          confirmButtonText: 'Aceptar',
+          confirmButtonColor: '#28a745', // color verde
+          allowOutsideClick: false
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.router.navigate(['/inicio/ficha-registro']).then(() => {
+             window.location.reload();
+            }); // se redirige al listado de fichas
+          }
+        });
+      },
+      error => {  
+        this.closeDialog(true);
+         Swal.fire({
+           title: 'Error',
+           text: error,
+           icon: 'error',
+           confirmButtonText: 'Aceptar',
+           confirmButtonColor: '#d22c21'
+         });
+      });
     }
+  } else {
+    ValidateInputs.touchedAllFormFields(this.registroForm);
   }
+}
 
   private initFromGroup() {
     return new FormGroup({
