@@ -12,7 +12,6 @@ import { SessionService } from 'src/app/_service/session.service';
 import { EmpresaService } from 'src/app/_service/empresa.service';
 
 
-
 @Component({
   selector: 'app-vma',
   templateUrl: './vma.component.html',
@@ -64,11 +63,10 @@ export class VmaComponent implements OnInit {
   rows = 10;
   totalRecords = 0;
 
-  registroCompleto: boolean = false;
+  registroCompleto: boolean = false; //cambiar por registroVMAEnCurso
   isRoleRegistrador: boolean = this.sessionService.obtenerRoleJwt().toUpperCase() === 'REGISTRADOR';
   isRoleAdminAndConsultor: boolean = this.sessionService.obtenerRoleJwt().toUpperCase() === ('ADMINISTRADOR DAP' || 'CONSULTOR');
 
- // displayModaAdvice = false;
 
  //paginacion
   /* currentPage: number= 0;
@@ -115,7 +113,7 @@ export class VmaComponent implements OnInit {
      //  this.empresa = new Empresa();
     this.cargarListaEmpresas(); //carga el listdo de empresas
     this.vmaService.isRegistroCompleto().subscribe(response => this.registroCompleto = response);
-    this.vmaService.registroCompleto$.subscribe(response => this.registroCompleto = response)
+    this.vmaService.registroCompleto$.subscribe(response => this.registroCompleto = response);
   }
 
   fechaDesdeListener(): void {
@@ -155,7 +153,7 @@ export class VmaComponent implements OnInit {
    onQueryListRegistroVMA(event?: any) {
 
    // this.isLoading = true;
-    const page = event ? event.first / event.rows : 0;
+    const page = event ? Math.floor(event.first / event.rows) : 0;
     const size = event ? event.rows : this.rows;
     //console.log("paramsPag",paramsPag);
     this.registroVMAService.findAll().subscribe(

@@ -1,0 +1,21 @@
+:host ::ng-deep .p-datepicker {  transform: scale(0.73);}
+
+:host ::ng-deep .align-left .p-button-label {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+:host ::ng-deep .align-left .p-button-icon-left {
+    margin-right: 0.5rem; /* Ajusta el margen según sea necesario */
+}
+
+:host ::ng-deep .align-left .p-button {
+    justify-content: flex-start;
+}
+
+:host ::ng-deep .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+    background: #007ad9;
+    border-color: #007ad9;
+    color: #ffffff;
+}

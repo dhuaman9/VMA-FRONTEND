@@ -169,8 +169,8 @@ export class RegistrarUsuarioComponent implements OnInit {
 
   onCancelEdit() {
     Swal.fire({
-      title: "Aviso",
-      text: "¿Está seguro que desea cancelar el registro?",
+      title: "¿Está seguro que desea cancelar el registro?",
+      text: "Si acepta no se guardará ninguna información",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#DF2A3D",
@@ -233,7 +233,7 @@ export class RegistrarUsuarioComponent implements OnInit {
 
      // this.registroForm.get('eps').setValidators([Validators.nullValidator]);
       this.registroForm.get('selEmpresa').setValidators([Validators.nullValidator]);
-      this.registroForm.get('telefono').setValidators([Validators.required,Validators.minLength(9)]);
+      this.registroForm.get('telefono').setValidators([Validators.minLength(9)]);
       this.registroForm.get('password').setValidators([Validators.nullValidator]);
       this.registroForm.get('usuario').setValidators([Validators.required]);
 
