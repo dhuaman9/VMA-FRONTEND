@@ -55,7 +55,6 @@ export class RegisterEditFichaComponent implements OnInit {
       this.setValuesFormGroup(this.config.data.idFichaRegistro);
     }
 
-
   }
 
  /**
@@ -203,7 +202,7 @@ export class RegisterEditFichaComponent implements OnInit {
   }
 
   onStartDateSelect() {
-    //this.minEndDate = this.startDate;
+    
     this.minEndDate = this.registroForm.get('fechaInicio').value;
     const maxEndDate = new Date(this.minEndDate);
     maxEndDate.setMonth(maxEndDate.getMonth() + 6);
