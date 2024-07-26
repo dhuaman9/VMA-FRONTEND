@@ -65,10 +65,25 @@
                 </div>
                      <!-- Botón Registrar -->
                     <div class="card pdn-15" *ngIf="isRoleRegistrador">
-                        <div class="card-header border-0">
-                            <button  class="btn btn-success mt-2 mr-2" (click)="redirectToForm()" [disabled]="registroCompleto" [pTooltip]="registroCompleto ? 'El registro VMA no está disponible o ya existe.' : 'Registrar nuevo VMA'" tooltipPosition="top"><i class="pi pi-plus"></i>  Registrar</button>
-                        </div>
-                    </div>
+					  <div class="card-header border-0">
+						<button
+						  class="btn btn-success mt-2 mr-2"
+						  (click)="redirectToForm()"
+						  [disabled]="registroCompleto"
+						  [pTooltip]="
+							registroCompleto
+							  ? 'Registro VMA no  disponible.'
+							  : 'Registrar nuevo.'
+						  "
+						  tooltipPosition="top"
+						>
+						  <i class="pi pi-plus"></i> Registrar
+						</button>
+						<span *ngIf="registroCompleto" class="registro-indisponible">
+						  No es posible registrar un nuevo VMA. Ya existe uno en curso o la fecha actual no está dentro del período programado.
+						</span>
+					  </div>
+					</div>
 
                     <div class="card pdn-15" *ngIf="showResultados">
                         

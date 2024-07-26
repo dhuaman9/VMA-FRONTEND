@@ -19,3 +19,10 @@
     border-color: #007ad9;
     color: #ffffff;
 }
+
+.registro-indisponible {
+  margin-left: 10px; /* Ajusta el espacio entre el botón y el mensaje */
+  font-size: 14px; /* Ajusta el tamaño de la fuente según tus necesidades */
+  color: red; /* Cambia el color para dar visibilidad */
+  vertical-align: middle; /* Alinea verticalmente el texto con el botón */
+}
