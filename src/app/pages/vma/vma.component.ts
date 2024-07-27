@@ -220,6 +220,19 @@ export class VmaComponent implements OnInit {
     }
   }
 
+  descargar(): void {
+    if(this.filtroForm.valid) {
+      const formValues = this.filtroForm.value;
+      this.registroVMAService.descargarExcel(
+        formValues.eps,
+        formValues.estado,
+        formValues.fechaDesde,
+        formValues.fechaHasta,
+        formValues.anio
+      );
+    }
+  }
+
   limpiar(){
     this.filtroForm.reset();
   }

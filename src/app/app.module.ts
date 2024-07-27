@@ -65,6 +65,7 @@ import {OrderListModule} from 'primeng/orderlist';
 import { ReporteService } from 'src/app/_service/reporte.service';
 import { PieChartComponent } from './pages/reporte/pie-chart/pie-chart.component';
 import { BarChartComponent } from './pages/reporte/bar-chart/bar-chart.component';
+import {MessageModule} from "primeng/message";
 
 
 const PRIMENG_COMPONENTS = [
@@ -123,29 +124,30 @@ export function tokenGetter(){
     PieChartComponent,
     BarChartComponent
   ],
-  imports: [
-   
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    ReactiveFormsModule,
-    NgSelectModule,
-    FormsModule,
-   // NgbModule,
-    JwtModule.forRoot({
-      config : { 
-        tokenGetter : tokenGetter,
-        allowedDomains : environment.ALLOWED_DOMAINS,
-        disallowedRoutes : environment.DISALLOWED_ROUTES
-      }
-    }),
-    NgxMaskModule.forRoot(options),
-    PaginationModule.forRoot(),
-    NgbModule,
-    BrowserAnimationsModule,
-    GlobalFormsComponentsModule,
-    PRIMENG_COMPONENTS
-  ],
+    imports: [
+
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        ReactiveFormsModule,
+        NgSelectModule,
+        FormsModule,
+        // NgbModule,
+        JwtModule.forRoot({
+            config: {
+                tokenGetter: tokenGetter,
+                allowedDomains: environment.ALLOWED_DOMAINS,
+                disallowedRoutes: environment.DISALLOWED_ROUTES
+            }
+        }),
+        NgxMaskModule.forRoot(options),
+        PaginationModule.forRoot(),
+        NgbModule,
+        BrowserAnimationsModule,
+        GlobalFormsComponentsModule,
+        PRIMENG_COMPONENTS,
+        MessageModule
+    ],
   providers: [
     { provide : LocationStrategy, useClass: HashLocationStrategy },
     interceptorProvider, ReporteService

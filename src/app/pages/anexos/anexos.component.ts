@@ -1,8 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AnexoService} from "../../_service/anexo.service";
-import {Subscription} from "rxjs";
+import {Subject, Subscription} from "rxjs";
 import {AnexoRegistro} from "../../_model/anexo-registro";
-import {tap} from "rxjs/operators";
+import {takeUntil, tap} from "rxjs/operators";
+import {AnexoRespondieronSi} from "../../_model/anexo-respondieron-si";
 
 @Component({
   selector: 'app-anexos',
@@ -14,6 +15,8 @@ export class AnexosComponent implements OnInit, OnDestroy {
   selectedYear: number;
   suscription: Subscription;
   anexoRegistros: AnexoRegistro[] = [];
+  anexoRespondieronSi: AnexoRespondieronSi[] = [];
+  unsubscribe$: Subject<void> = new Subject<void>();
 
   constructor(private anexoService: AnexoService) {
     this.initializeYears();
@@ -31,17 +34,30 @@ export class AnexosComponent implements OnInit, OnDestroy {
       this.years.push({ label: year.toString(), value: year });
     }
   }
+
   applyFilter(): void {
-    this.suscription = this.anexoService.getListAnexoRegistrosVMA(this.selectedYear)
-      .pipe(tap(response => this.anexoRegistros = this.processAnexoRegistros(response.items)))
-      .subscribe();
+    this.anexoService.getListAnexoRegistrosVMA(this.selectedYear)
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        tap(response => this.anexoRegistros = this.processAnexoRegistros(response))
+      ).subscribe();
+
+    this.anexoService.getListAnexoMarcaronSi(this.selectedYear)
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        tap(response => this.anexoRespondieronSi = this.processAnexoRegistros(response))
+      ).subscribe();
   }
 
   setDefaultYear(): void {
     this.selectedYear = new Date().getFullYear();
   }
 
-  processAnexoRegistros(data: AnexoRegistro[]): any[] {
+  processAnexoRegistros(data: any[]): any[] {
+    if(data.length === 0) {
+      return [];
+    }
+
     const processedData = [];
     let previousTamanioEmpresa = null;
     let rowspan = 1;
