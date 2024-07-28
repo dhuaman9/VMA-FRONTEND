@@ -1,9 +1,10 @@
 import { Injectable } from "@angular/core";
 import { environment } from '../../environments/environment';
-import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Observable, Subject } from 'rxjs';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
+import { Observable, Subject, throwError } from 'rxjs';
 import { FichaRegistro } from "../_model/fichaRegistro";
 import { map } from 'rxjs/operators';
+import { catchError, take, tap } from 'rxjs/operators';
 
 
 @Injectable({
@@ -52,19 +53,43 @@ export class FichaRegistroService{
         });
     }
 
-    create(ficha: FichaRegistro) {
+    /*create(ficha: FichaRegistro) {
         return this.http.post<FichaRegistro>(this.url+'/fichas', ficha, {
         headers: new HttpHeaders().set('Content-Type', 'application/json')
         });
-    }
+    }*/
 
+    create(ficha: FichaRegistro) : Observable<any>  {
+        return this.http.post<FichaRegistro>(this.url+'/fichas', ficha, {
+            headers: new HttpHeaders().set('Content-Type', 'application/json')
+            }).pipe(catchError(this.handleError) // Manejo de errores
+        );
+     }
+
+  
+    
     update(ficha: FichaRegistro){
-
         return this.http.put<FichaRegistro>(this.url+'/fichas', ficha, {
         headers: new HttpHeaders().set('Content-Type', 'application/json')
-        });
+        }).pipe(catchError(this.handleError) // Manejo de errores
+        );
     }
 
+    private handleError(error: HttpErrorResponse) {
+        let errorMessage = 'Ocurrió un error inesperado';
+        if (error.error instanceof ErrorEvent) {
+          // Error del lado del cliente o de la red
+          errorMessage = `Error: ${error.error.message}`;
+        } else {
+          // El backend retornó un código de error y el mensaje
+          if (error.error && error.error.message) {
+            errorMessage = error.error.message;
+          } else {
+            errorMessage = `Error ${error.status}: ${error.message}`;
+          }
+        }
+        return throwError(errorMessage);
+      }
 
 
 }

@@ -11,7 +11,6 @@ import { Empresa } from 'src/app/_model/empresa';
 import Swal from 'sweetalert2'
 
 
-
 @Component({
   selector: 'app-editar-usuario',
   templateUrl: './editar-usuario.component.html',
@@ -43,7 +42,7 @@ export class EditarUsuarioComponent implements OnInit {
   ngOnInit(): void {
     this.cargarUsuariosLDAP();
     this.cargarListaEmpresas();
-    
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&.,#-_;])([A-Za-z\d$@$!%*?&.,#-_;]|[^ ]){8,15}$/;
     this.registroForm = this.formBuilder.group({
       id: ['', Validators.required],
       tipo: ['EPS', Validators.required],
@@ -55,7 +54,7 @@ export class EditarUsuarioComponent implements OnInit {
      // eps: ['', Validators.required],
       usuario: [''],
       username: [''],
-      password: [''],
+      password: ['',Validators.pattern(regex)],
       telefono: ['', [Validators.required, Validators.minLength(9)]],
       estado: [true, Validators.required],
       selEmpresa : ['', Validators.required],
@@ -68,11 +67,13 @@ export class EditarUsuarioComponent implements OnInit {
 
   }
 
-  validateInputForm(formControlName: string, validationType: string): void {
-    const control = this.registroForm.get(formControlName);
-    if (control) {
-      validateInput(control, validationType);
+  isFieldRequired(field: string): boolean {
+    const control = this.registroForm.get(field);
+    if (!control) {
+      return false;
     }
+    const validator = control.validator ? control.validator({} as AbstractControl) : null;
+    return !!(validator && validator.required);
   }
 
   getDataUser(idUser: number) {
@@ -82,6 +83,13 @@ export class EditarUsuarioComponent implements OnInit {
       this.setDataUser(responseDataUser);
       this.onTipoUsuarioChange();
     });
+  }
+
+  validateInputForm(formControlName: string, validationType: string): void {
+    const control = this.registroForm.get(formControlName);
+    if (control) {
+      validateInput(control, validationType);
+    }
   }
 
   setDataUser(userData: any) {
@@ -181,7 +189,8 @@ export class EditarUsuarioComponent implements OnInit {
           title: 'Se actualizó el usuario correctamente',
           showConfirmButton: true,
           confirmButtonText: 'Aceptar',
-          confirmButtonColor: '#28a745' // color verde
+          confirmButtonColor: '#28a745', // color verde
+          allowOutsideClick: false
         }).then((result) => {
           if (result.isConfirmed) {
             this.onAceptar(); // se redirige al listado de usuarios
@@ -205,11 +214,20 @@ export class EditarUsuarioComponent implements OnInit {
   }
 
   onCancelEdit() {
-    /*this.displayModaAdvice = true;
-    this.isEdit = false;
-    this.modalImage = './assets/images/cancel-icon.png';
-    this.modalMessage = 'Registro cancelado';*/
-     this.router.navigate(['/inicio/usuarios']);
+    Swal.fire({
+      title: "¿Está seguro que desea cancelar el registro?",
+      text: "Si acepta no se guardará ninguna información",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DF2A3D",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "SI",
+      cancelButtonText: "No"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.onCancel();
+      }
+    });
   }
 
   onAceptar(){
@@ -223,15 +241,16 @@ export class EditarUsuarioComponent implements OnInit {
     
   }
 
-  /*onCancel() {
+  onCancel() {
     this.router.navigate(['/inicio/usuarios']);
-  }*/
+  }
 
   validateAlfabetico(event: Event) {
     const inputElement = event.target as HTMLInputElement;
     inputElement.value = inputElement.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑüÜ]/g, '');
     this.val = inputElement.value;
   }
+  //edit
 
   private setEnableDisableIputs(){
     console.log('this.registroForm.get(tipo).value', this.registroForm.get('tipo').value);
@@ -246,12 +265,13 @@ export class EditarUsuarioComponent implements OnInit {
       this.registroForm.get('usuario').enable();
 
      // this.registroForm.get('eps').setValidators([Validators.nullValidator]);  //? dhr
+      this.registroForm.get('usuario').setValidators([Validators.required]);
+      this.registroForm.get('perfil').setValidators([Validators.required]);
       this.registroForm.get('telefono').setValidators([Validators.nullValidator]);
-      this.registroForm.get('password').setValidators([Validators.nullValidator]);
 
-      //this.registroForm.get('eps').updateValueAndValidity();
+      this.registroForm.get('usuario').updateValueAndValidity();
+      this.registroForm.get('perfil').updateValueAndValidity();
       this.registroForm.get('telefono').updateValueAndValidity();
-      this.registroForm.get('password').updateValueAndValidity();
 
     } else if(this.registroForm.get('tipo').value === 'EPS') {
       this.mostrarCampo =true; 
@@ -261,12 +281,14 @@ export class EditarUsuarioComponent implements OnInit {
       this.registroForm.get('nombres').enable();
       this.registroForm.get('apellidos').enable();
       this.registroForm.get('correo').enable();
-    //  this.registroForm.get('eps').enable();
       this.registroForm.get('password').enable();
 
-     // this.registroForm.get('eps').setValidators([Validators.required]);
-     this.registroForm.get('telefono').setValidators([Validators.required, Validators.minLength(9)]);
-     // this.registroForm.get('eps').updateValueAndValidity();
+      this.registroForm.get('usuario').setValidators([Validators.required]);
+      this.registroForm.get('username').setValidators([Validators.required]);
+      this.registroForm.get('telefono').setValidators([Validators.required, Validators.minLength(9)]);
+
+      this.registroForm.get('usuario').updateValueAndValidity();
+      this.registroForm.get('username').updateValueAndValidity();
       this.registroForm.get('telefono').updateValueAndValidity();
 
     }

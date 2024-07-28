@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, ElementRef, Input, OnInit, ViewChild  } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { GenericCombo } from 'src/app/_dto/generic-combo';
@@ -10,7 +10,6 @@ import { ValidateInputs, validateInput } from 'src/app/utils/validate-inputs';
 import { Empresa } from 'src/app/_model/empresa';
 import { EmpresaService } from 'src/app/_service/empresa.service';
 import Swal from 'sweetalert2';
-
 
 
 @Component({
@@ -28,7 +27,8 @@ export class RegistrarUsuarioComponent implements OnInit {
   modalMessage = '';
   perfiles: GenericCombo[] =[];
   continue : boolean  = true;  // en caso aparesca algun error de validacion no siga con los dems metodos.
-
+  @ViewChild('perfil') perfilInput: ElementRef<HTMLInputElement>;
+  isRequired: boolean = true;
   errorMessage: string | null = null;
 
   mostrarCampo: boolean = true; 
@@ -48,8 +48,10 @@ export class RegistrarUsuarioComponent implements OnInit {
 
   ngOnInit(): void {
 
+    
     this.cargarUsuariosLDAP();
-
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&.,#-_;])([A-Za-z\d$@$!%*?&.,#-_;]|[^ ]){8,15}$/;
+    //Entre 8 a 15 caracteres, no espacios, al menos una mayúscula, una minúscula, un número y un caracter especial (@$!%*?&.,#-_;)
     this.registroForm = this.formBuilder.group({
       tipo: ['EPS', Validators.required],
       perfil: ['', Validators.required],
@@ -57,12 +59,11 @@ export class RegistrarUsuarioComponent implements OnInit {
       nombres: ['', Validators.required],
       apellidos: ['', Validators.required],
       correo: ['', [Validators.required, Validators.email]],
-      //eps: ['', Validators.required],
       selEmpresa : ['', Validators.required],
       usuario: [''],
-      username: [''],
-      password: ['', Validators.required],
-      telefono: ['', Validators.required],
+      username: ['', Validators.required],
+      password: ['', [Validators.required,Validators.pattern(regex)]],
+      telefono: ['', [Validators.required,Validators.minLength(9)]],
       estado: [true]
     });
     
@@ -108,9 +109,9 @@ export class RegistrarUsuarioComponent implements OnInit {
         {id:2, description:'Administrador DAP'},
         {id:3, description:'Registrador'},
         {id:4, description:'Consultor'}];
-
+        this.isRequired = false;
     } else if(this.registroForm.get('tipo').value === 'EPS') {
-
+      this.isRequired = true;
       this.perfiles = [
         {id:3, description:'Registrador'},
         {id:4, description:'Consultor'}];
@@ -121,10 +122,11 @@ export class RegistrarUsuarioComponent implements OnInit {
   guardar() {
 
    // this.registroForm.enable(); habilita todos los campos del form
-    
     if(this.registroForm.valid) {
       console.log("this.registroForm.value",this.registroForm.value);
+      this.registroForm.enable();
       let user = new User(this.registroForm.value);
+      this.registroForm.disable();
       let role = new Role();
       role.idRole = this.registroForm.get("perfil").value;
       user.role = role;
@@ -133,14 +135,16 @@ export class RegistrarUsuarioComponent implements OnInit {
 
       empresa.idEmpresa = this.registroForm.get("selEmpresa").value;
       user.empresa = empresa;
-      
+      console.log(user);
+      //this.registroForm.enable();
       this.userService.create(user).subscribe(responseUser => {
         Swal.fire({
           icon: "success",
           title: 'Se registró el usuario correctamente',
           showConfirmButton: true,
           confirmButtonText: 'Aceptar',
-          confirmButtonColor: '#28a745' // color verde
+          confirmButtonColor: '#28a745', // color verde
+          allowOutsideClick: false
         }).then((result) => {
           if (result.isConfirmed) {
             this.onAceptar(); // se redirige al listado de usuarios
@@ -153,10 +157,10 @@ export class RegistrarUsuarioComponent implements OnInit {
             title: 'Error',
             text: error,
             icon: 'error',
-            confirmButtonText: 'Aceptar'
+            confirmButtonText: 'Aceptar',
+            confirmButtonColor: '#d22c21'
           });
-       }
-     );
+       });
     } else {
       this.setEnableDisableIputs();
       ValidateInputs.touchedAllFormFields(this.registroForm);
@@ -164,11 +168,20 @@ export class RegistrarUsuarioComponent implements OnInit {
   }
 
   onCancelEdit() {
-   /* this.displayModaAdvice = true;
-    this.isEdit = false;
-    this.modalImage = './assets/images/cancel-icon.png';
-    this.modalMessage = 'Registro cancelado';*/
-    this.onCancel();
+    Swal.fire({
+      title: "¿Está seguro que desea cancelar el registro?",
+      text: "Si acepta no se guardará ninguna información",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DF2A3D",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "SI",
+      cancelButtonText: "No"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.onCancel();
+      }
+    });
   }
 
   onAceptar(){
@@ -206,6 +219,7 @@ export class RegistrarUsuarioComponent implements OnInit {
   }
 
   private setEnableDisableIputs(){
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&.,#-_;])([A-Za-z\d$@$!%*?&.,#-_;]|[^ ]){8,15}$/;
     if(this.registroForm.get('tipo').value === 'SUNASS'){
       this.mostrarCampo =false; //por ejemplo se va ocultar el campo EPS
       this.isDropUsersDisable = false;
@@ -214,17 +228,20 @@ export class RegistrarUsuarioComponent implements OnInit {
       this.registroForm.get('apellidos').disable();
       this.registroForm.get('correo').disable();
       this.registroForm.get('password').disable();
+      this.registroForm.get('username').disable();
       this.registroForm.get('usuario').enable();
 
      // this.registroForm.get('eps').setValidators([Validators.nullValidator]);
       this.registroForm.get('selEmpresa').setValidators([Validators.nullValidator]);
-      this.registroForm.get('telefono').setValidators([Validators.required,Validators.minLength(9)]);
+      this.registroForm.get('telefono').setValidators([Validators.minLength(9)]);
       this.registroForm.get('password').setValidators([Validators.nullValidator]);
+      this.registroForm.get('usuario').setValidators([Validators.required]);
 
       //this.registroForm.get('eps').updateValueAndValidity();
       this.registroForm.get('selEmpresa').updateValueAndValidity();
       this.registroForm.get('telefono').updateValueAndValidity();
       this.registroForm.get('password').updateValueAndValidity();
+      this.registroForm.get('usuario').updateValueAndValidity();
 
     } else if(this.registroForm.get('tipo').value === 'EPS') {
       this.mostrarCampo =true; 
@@ -233,16 +250,29 @@ export class RegistrarUsuarioComponent implements OnInit {
       this.registroForm.get('usuario').disable();
       this.registroForm.get('nombres').enable();
       this.registroForm.get('apellidos').enable();
+      this.registroForm.get('username').enable();
       this.registroForm.get('correo').enable();
-      //this.registroForm.get('eps').enable();
       this.registroForm.get('password').enable();
-     // this.registroForm.get('eps').setValidators([Validators.required]);
-      this.registroForm.get('selEmpresa').setValidators([Validators.required])
+
+      this.registroForm.get('selEmpresa').setValidators([Validators.required]);
       this.registroForm.get('telefono').setValidators([Validators.required,Validators.minLength(9)]);
-      //this.registroForm.get('eps').updateValueAndValidity();
+      this.registroForm.get('usuario').setValidators([Validators.nullValidator]);
+      this.registroForm.get('password').setValidators([Validators.required,Validators.pattern(regex)]);
+
+      this.registroForm.get('usuario').updateValueAndValidity();
       this.registroForm.get('selEmpresa').updateValueAndValidity();
       this.registroForm.get('telefono').updateValueAndValidity();
+      this.registroForm.get('password').updateValueAndValidity();
     }
+  }
+
+  isFieldRequired(field: string): boolean {
+    const control = this.registroForm.get(field);
+    if (!control) {
+      return false;
+    }
+    const validator = control.validator ? control.validator({} as AbstractControl) : null;
+    return !!(validator && validator.required);
   }
 
   cargarListaEmpresas(): void {
@@ -266,7 +296,6 @@ export class RegistrarUsuarioComponent implements OnInit {
       validateInput(control, validationType);
     }
   }
-
 
 }
 @Component({

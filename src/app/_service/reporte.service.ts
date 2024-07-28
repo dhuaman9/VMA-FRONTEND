@@ -7,12 +7,16 @@ import { ReporteParamCalidadDto } from "../_dto/reporteParamCalidadDto";
 import { ReporteParamCalidadExportDto } from "../_dto/reporteParamCalidadExportDto";
 import { ReporteVarGestionDto } from "../_dto/reporteVarGestionDto";
 import { ReporteVarOperacionalDto } from "../_dto/reporteVarOperacionalDto";
+import { ListaReporte } from '../_model/reporte';
+import {ChartDto} from "../_model/chart-dto";
+import {RegistroPromedioTrabajadorVMAChartDto} from "../_model/RegistroPromedioTrabajadorVMAChartDto";
+import {PieChartBasicoDto} from "../_model/pie-chart-basico-dto";
 
 @Injectable({
     providedIn: 'root'
   })
 export class ReporteService {
-   
+
     private url: string = environment.HOST;
     private token: string = sessionStorage.getItem(environment.TOKEN_NAME);
     private httpOptions : any;
@@ -20,6 +24,26 @@ export class ReporteService {
     constructor(
         private http : HttpClient
     ) { }
+
+    reporteRegistros(anio: number): Observable<ChartDto[]> {
+        return this.http.get(`${this.url}/api/reporte/registros?anio=${anio.toString()}`)
+          .pipe(map((response: any) => response.items));
+    }
+
+    reporteRespuestaSiNo(anio: number): Observable<ChartDto[]> {
+        return this.http.get(`${this.url}/api/reporte/respuesta-si-no?anio=${anio.toString()}`)
+          .pipe(map((response: any) => response.items));
+    }
+
+    generarReporteTrabajadoresDedicadosRegistro(anio: number): Observable<RegistroPromedioTrabajadorVMAChartDto[]> {
+      return this.http.get(`${this.url}/api/reporte/trabajadores-dedicados-registro?anio=${anio.toString()}`)
+          .pipe(map((response: any) => response.items));
+    }
+
+  generarReporteNumeroTotalUND(anio: number): Observable<PieChartBasicoDto[]> {
+    return this.http.get(`${this.url}/api/reporte/numero-total-und?anio=${anio.toString()}`)
+      .pipe(map((response: any) => response.items));
+  }
 
     fechaprocesa(): Observable<any>{
 
@@ -141,4 +165,15 @@ export class ReporteService {
           responseType: 'blob'
         });
     }
+
+    getListaReportes(cat) {
+        return this.http
+          .get<any>('assets/lista-reportes.json')
+          .toPromise()
+          .then((res) => <ListaReporte[]>res.data)
+          .then((data) => {
+            return data.filter((item) => item.category === cat);
+        });
+    }
+
 }

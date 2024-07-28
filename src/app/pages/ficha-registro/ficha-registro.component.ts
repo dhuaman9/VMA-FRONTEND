@@ -71,7 +71,10 @@ export class FichaRegistroComponent implements OnInit {
     this.fichaRegistroService.findAll().subscribe(
      
       (data:any) => {
-      this.ListFichasRegistro= data.content || data;
+      this.ListFichasRegistro= (data.content || data).map((item: FichaRegistro,index: number)=>({
+        ...item,
+        index: index + 1
+      }));
       this.showResultados = true;
       this.totalRecords = data.totalElements || this.ListFichasRegistro.length;
       this.isLoading = false;
@@ -121,8 +124,7 @@ export class FichaRegistroComponent implements OnInit {
       width:'70%',
       height:'55%',
       showHeader: false,
-      styleClass: 'dialog-for-display-default',
-      baseZIndex: 100000
+      styleClass: 'dialog-for-display-default'
     });
 
     refDialog.onClose.subscribe((resultado: boolean) => {

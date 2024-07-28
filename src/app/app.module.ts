@@ -6,8 +6,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { InicioComponent } from './pages/inicio/inicio.component';
 import { LoginComponent } from './pages/login/login.component';
-//import { UsuarioEdicionComponent } from './pages/usuarios/usuario-edicion/usuario-edicion.component';
-//import { UsuariosComponent } from './pages/usuarios/usuarios.component';
 import { JwtModule } from '@auth0/angular-jwt';
 import { environment } from './../environments/environment';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -20,10 +18,6 @@ import { LoadingComponent } from './pages/loading/loading.component';
 import { FormsSelect2Component } from './pages/forms/forms-select2/forms-select2.component';
 
 import { NgSelectComponent, NgSelectModule } from '@ng-select/ng-select';
-import { DataTablesModule } from 'angular-datatables';
-import { ReportesVariableGestionComponent } from './pages/reportes/reportes-variable-gestion/reportes-variable-gestion.component';
-import { ReportesVariableOperacionalComponent } from './pages/reportes/reportes-variable-operacional/reportes-variable-operacional.component';
-import { ReportesParametroCalidadComponent } from './pages/reportes/reportes-parametro-calidad/reportes-parametro-calidad.component';
 import { interceptorProvider } from './_service/interceptor.service';
 import { ErrorValidationComponent } from './pages/forms/error-validation/error-validation.component';
 import { UsuariosComponent } from './pages/usuarios/usuarios.component';
@@ -64,7 +58,14 @@ import { ToastModule } from 'primeng/toast';
 import { SplitterModule } from 'primeng/splitter';
 import { CalendarModule } from 'primeng/calendar';
 import { FileUploadModule } from 'primeng/fileupload';
+import {TooltipModule} from 'primeng/tooltip';
+import { ChartModule } from 'primeng/chart';
 
+import {OrderListModule} from 'primeng/orderlist';
+import { ReporteService } from 'src/app/_service/reporte.service';
+import { PieChartComponent } from './pages/reporte/pie-chart/pie-chart.component';
+import { BarChartComponent } from './pages/reporte/bar-chart/bar-chart.component';
+import {MessageModule} from "primeng/message";
 
 
 const PRIMENG_COMPONENTS = [
@@ -86,7 +87,9 @@ const PRIMENG_COMPONENTS = [
   ToastModule,
   SplitterModule,
   FileUploadModule,
-
+  TooltipModule,
+  ChartModule,
+  OrderListModule
 ]
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
 
@@ -102,9 +105,6 @@ export function tokenGetter(){
     ModulosComponent,
     LoadingComponent,
     FormsSelect2Component,
-    ReportesVariableGestionComponent,
-    ReportesVariableOperacionalComponent,
-    ReportesParametroCalidadComponent,
     ErrorValidationComponent,
     UsuariosComponent,
     RegistrarUsuarioComponent,
@@ -120,35 +120,37 @@ export function tokenGetter(){
     RegisterEditFichaComponent,
     AlphabeticInputDirective,
     TelefonoInputDirective,
-    UserNameInputDirective
+    UserNameInputDirective,
+    PieChartComponent,
+    BarChartComponent
   ],
-  imports: [
-   
-    BrowserModule,
-    DataTablesModule,
-    AppRoutingModule,
-    HttpClientModule,
-    ReactiveFormsModule,
-    NgSelectModule,
-    FormsModule,
-   // NgbModule,
-    JwtModule.forRoot({
-      config : { 
-        tokenGetter : tokenGetter,
-        allowedDomains : environment.ALLOWED_DOMAINS,
-        disallowedRoutes : environment.DISALLOWED_ROUTES
-      }
-    }),
-    NgxMaskModule.forRoot(options),
-    PaginationModule.forRoot(),
-    NgbModule,
-    BrowserAnimationsModule,
-    GlobalFormsComponentsModule,
-    PRIMENG_COMPONENTS
-  ],
+    imports: [
+
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        ReactiveFormsModule,
+        NgSelectModule,
+        FormsModule,
+        // NgbModule,
+        JwtModule.forRoot({
+            config: {
+                tokenGetter: tokenGetter,
+                allowedDomains: environment.ALLOWED_DOMAINS,
+                disallowedRoutes: environment.DISALLOWED_ROUTES
+            }
+        }),
+        NgxMaskModule.forRoot(options),
+        PaginationModule.forRoot(),
+        NgbModule,
+        BrowserAnimationsModule,
+        GlobalFormsComponentsModule,
+        PRIMENG_COMPONENTS,
+        MessageModule
+    ],
   providers: [
     { provide : LocationStrategy, useClass: HashLocationStrategy },
-    interceptorProvider
+    interceptorProvider, ReporteService
   ],
   bootstrap: [AppComponent],
   exports: [

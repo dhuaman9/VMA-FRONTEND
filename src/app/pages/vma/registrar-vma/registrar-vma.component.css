@@ -1,22 +1,32 @@
 :host {
-    .input-text {
-        width: 350px;
-    }
-
-    .input-number {
-        width: 200px;;
-    }
-    p-accordion p-accordiontab .p-accordion-header-link
-    {
-            background-color: #1087E5 !important;
-            /*border: 1px solid green !important;*/
-    }
-}
-
-
-.green-tab {
-    background-color: green;
+  .input-text {
+      width: 350px;
   }
 
+  .input-number {
+      width: 200px;;
+  }
 
-  
+  .disabled-choose-button .p-button, .disabled-choose-button {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+}
+
+:host ::ng-deep .p-accordion .p-accordion-header:not(.p-highlight):not(.p-disabled):hover .p-accordion-header-link {
+  background-color: #27a0ff;
+  border-color: #27a0ff;
+  color: #ffffff;
+}
+
+:host ::ng-deep .p-accordion .p-accordion-header:not(.p-disabled).p-highlight:hover .p-accordion-header-link {
+  background: #27a0ff;
+  border-color: #27a0ff;
+  color: #ffffff;
+}
+
+:host ::ng-deep .p-accordion .p-accordion-header:not(.p-disabled).p-highlight .p-accordion-header-link {
+  background: #27a0ff;
+  border-color: #27a0ff;
+  color: #ffffff;
+}

@@ -4,9 +4,6 @@ import { InicioComponent } from './pages/inicio/inicio.component';
 import { LoginComponent } from './pages/login/login.component';
 import { ModulosComponent } from './pages/modulos/modulos.component';
 import { ReporteComponent } from './pages/reporte/reporte.component';
-import { ReportesParametroCalidadComponent } from './pages/reportes/reportes-parametro-calidad/reportes-parametro-calidad.component';
-import { ReportesVariableGestionComponent } from './pages/reportes/reportes-variable-gestion/reportes-variable-gestion.component';
-import { ReportesVariableOperacionalComponent } from './pages/reportes/reportes-variable-operacional/reportes-variable-operacional.component';
 import { UsuariosComponent } from './pages/usuarios/usuarios.component';
 import { GuardService } from './_service/guard.service';
 import { EmpresaComponent } from './pages/empresa/empresa.component';
@@ -16,6 +13,8 @@ import { RegistrarUsuarioComponent } from './pages/usuarios/registrar-usuario/re
 import { EditarUsuarioComponent } from './pages/usuarios/editar-usuario/editar-usuario.component';
 import { VmaComponent } from './pages/vma/vma.component';
 import { RegistrarVmaComponent } from './pages/vma/registrar-vma/registrar-vma.component';
+import { RegistradorVmaGuard } from './_service/registrador-vma.guard';
+import { AnexoGuard } from './_service/anexo.guard';
 
 
 
@@ -42,7 +41,7 @@ const routes : Routes =
       {
         path : 'vma', component : VmaComponent, canActivate : [GuardService] , children :
         [
-          { path: "registrar-vma", component : RegistrarVmaComponent, data: { tituloModulo : 'Sistema de Valores Maximos Admisibles' } },
+          { path: "registrar-vma", component : RegistrarVmaComponent, data: { tituloModulo : 'Sistema de Valores Maximos Admisibles', expectedRole: 'REGISTRADOR' }, canActivate: [RegistradorVmaGuard] },
           { path: "registrar-vma/:id", component : RegistrarVmaComponent, data: { tituloModulo : 'Sistema de Valores Maximos Admisibles' } }
         ]
       },
@@ -50,7 +49,7 @@ const routes : Routes =
         path : 'reporte', component : ReporteComponent, canActivate : [GuardService] 
       },
       {
-        path : 'anexos', component : AnexosComponent, canActivate : [GuardService] 
+        path : 'anexos', component : AnexosComponent, canActivate : [GuardService, AnexoGuard], data: {expectedRoles: ['ADMINISTRADOR DAP', 'CONSULTOR', 'REGISTRADOR']}
       }
     //] , canActivate : [GuardService], data: { tituloModulo : 'Variables de gestión', menuOption : 'submenu-option-variable-gestion' }
   ]

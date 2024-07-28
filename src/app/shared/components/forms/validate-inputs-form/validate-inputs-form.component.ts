@@ -45,7 +45,7 @@ export class ValidateInputsFormComponent implements OnInit {
               return this.labelInput.concat(' debe tener mínimo ').
               concat(errors['minlength'].requiredLength).concat(' caracteres.');
             case 'pattern':
-              return this.labelInput.concat(' es inválido.');
+              return this.labelInput.concat(' es inválido. Debe contener entre 8 a 15 caracteres, al menos una letra mayúscula, una letra minúscula, un número y un caracter especial.');
             case 'max':
               return this.labelInput.concat(' máximo ').concat(errors['max'].max).concat('.');
             case 'min':
@@ -84,3 +84,4 @@ export class ValidateInputsFormComponent implements OnInit {
   ngOnInit() {}
 
 }
+

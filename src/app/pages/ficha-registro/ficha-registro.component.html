@@ -4,26 +4,24 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-lg-12 mt-2">
-          <div class="card pdn-15">
-            <div class="card-header border-0">
-              <button class="btn btn-success mt-3 mr-3" (click)="addFichaRegistro()">Registrar</button>
-            </div>
-          </div>
+          
 
           <div class="card pdn-15" *ngIf="showResultados">
             <div class="content">
               <div class="card-body table-responsive p-0">
+                <button class="btn btn-success mt-3 mb-3" (click)="addFichaRegistro()"><i class="pi pi-plus"></i> Registrar</button>
                 <p-table #dt1 
                  [value]="ListFichasRegistro" 
                  dataKey="id"
                  [rows]="10"
+                 [rowHover]="true"
                   [globalFilterFields]="['anio', 'fechaInicio', 'fechaFin']"
                   currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
                   responsiveLayout="scroll"
                   [showCurrentPageReport]="true"
                   [rowsPerPageOptions]="[10, 25, 50, 100]"
                   [paginator]="true"
-                  styleClass="p-datatable-customers p-datatable-gridlines"
+                  styleClass="p-datatable-customers p-datatable-gridlines p-datatable-sm"
                   >
                   <ng-template pTemplate="caption">
                     Buscar:
@@ -35,22 +33,22 @@
 
                   <ng-template pTemplate="header">
                     <tr>
-                      <th style="width: 5%;">N°</th>
+                      <th style="text-align: center;width: 7%;">N°</th>
                       <th style="text-align: center;">Año</th>
-                      <th style="width: 30%;text-align: center;">Fecha de inicio</th>
-                      <th style="width: 30%;text-align: center;">Fecha de fin</th>
+                      <th style="width: 35%;text-align: center;">Fecha de inicio</th>
+                      <th style="width: 35%;text-align: center;">Fecha de fin</th>
                       <th style="width: 10%;text-align: center;">Editar</th>
                     </tr>
                   </ng-template>
 
                   <ng-template pTemplate="body" let-item let-ri="rowIndex">
                     <tr>
-                      <td style="text-align: center;">{{item.idFichaRegistro}}</td>
+                      <td style="text-align: center;">{{item.index}}</td>
                       <td style="text-align: center;">{{item.anio}}</td>
                       <td style="text-align: center;">{{item.fechaInicio}}</td>
                       <td style="text-align: center;">{{item.fechaFin}}</td>
                       <td style="text-align:center">
-                        <button pButton type="button" icon="pi pi-pencil" class="ml-2 p-button-rounded small-button"
+                        <button pButton type="button" icon="pi pi-pencil" style="width: 30px; height: 20px;"
                           pTooltip="Editar registro" tooltipPosition="top"
                           (click)="onEditFichaRegistro(item.idFichaRegistro)">
                         </button>
@@ -75,27 +73,5 @@
     </div>
   </div>
 </div>
-
-<p-dialog [(visible)]="displayModaAdvice"  [modal]="true" [style]="{width: '40vw', height:'30vw'}">
-  <div style="text-align: center;">
-    <img  [src]="modalImage" style="width:50%"/>
-  </div>
-  <div style="text-align: center; font-weight: 600;">
-    {{modalMessage}}
-  </div>
-    
-    <ng-template pTemplate="footer">
-      <div style="text-align: center;">
-        <p-button type="button" label="Aceptar" class="ml-1 p-button-success" 
-          (click)="onAccept()" *ngIf="isEdition">
-        </p-button>
-        <p-button type="button" label="Aceptar" class="ml-1 p-button-danger" 
-          (click)="onCancel()" *ngIf="!isEdition">
-        </p-button>  
-      </div>
-      
-    </ng-template>
-</p-dialog>
-
 
 <app-loading *ngIf="isLoading"></app-loading>

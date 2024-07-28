@@ -43,10 +43,10 @@ export class EmpresaComponent implements OnInit {
     { label: 'NO RAT', value: 'NO RAT' }
   ];
   tipoOptions: any[] = [
-    { label: 'Pequeña', value: 'Pequeña' },
-    { label: 'Mediana', value: 'Mediana' },
-    { label: 'Grande', value: 'Grande' },
-    { label: 'Sedapal', value: 'Sedapal' }
+    { label: 'PEQUEÑA', value: 'PEQUEÑA' },
+    { label: 'MEDIANA', value: 'MEDIANA' },
+    { label: 'GRANDE', value: 'GRANDE' },
+    { label: 'SEDAPAL', value: 'SEDAPAL' }
   ];
 
    constructor(
@@ -80,96 +80,97 @@ export class EmpresaComponent implements OnInit {
     this.onQueryPageEmpresa();  //dhr
   }
 
-
-   /**
+ /**
    * Funcion para el listado de empresas  en la tabla
    * 
    */
-   onQueryPageEmpresa() {
+ onQueryPageEmpresa() {
    
-    this.empresaService.findAll().subscribe(
-      (data:any) => {
-        console.log("params ",data);
-      this.ListEmpresa= data.content || data;
-      this.showResultados = true;
-      this.totalRecords = data.totalElements || this.ListEmpresa.length;
-      this.isLoading = false;
-      },
-      error => {
-        console.error('No se encontro datos de la empresa.', error);
-      }
-    );
-  }
-
-  onFilterTableGlobal(table: Table, event:any){
-
-    const filterValue = (event.target as HTMLInputElement).value;
-    if (table) {
-      table.filterGlobal(filterValue, 'contains');
+  this.empresaService.findAll().subscribe(
+    (data:any) => {
+    console.log("params ",data);
+    this.ListEmpresa = (data.content || data).map((item: Empresa,index: number)=>({
+      ...item,
+      index: index + 1
+    }));
+    this.showResultados = true;
+    this.totalRecords = data.totalElements || this.ListEmpresa.length;
+    this.isLoading = false;
+    },
+    error => {
+      console.error('No se encontro datos de la empresa.', error);
     }
-  
+  );
+}
+
+onFilterTableGlobal(table: Table, event:any){
+
+  const filterValue = (event.target as HTMLInputElement).value;
+  if (table) {
+    table.filterGlobal(filterValue, 'contains');
   }
 
-  
-
-  onCancel(){
-    this.displayModaAdvice = false;
-  }
+}
 
 
-  onAccept(){
-    this.displayModaAdvice = false;
-  }
 
-  onAddEmpresa() {
-    this.isEdition = false;
-    this.openModalAddEditEmpresa(0, 'Formulario de Registro');
-  }
+onCancel(){
+  this.displayModaAdvice = false;
+}
 
-  onEditEmpresa(idEmpresa: number) {
-    this.isEdition = true;
-    this.openModalAddEditEmpresa(idEmpresa, 'Formulario de Edición');
-  }
-  private openModalAddEditEmpresa(idEmpresa: number, titleModal: string){
- 
-    const refDialog = this.dialogService.open(AltaEditEmpresaComponent, {
-      data: {
-        'idEmpresa': idEmpresa,
-        'titleHeader': titleModal
-      },
-      header: titleModal,
-      showHeader: false,
-      styleClass: 'dialog-for-display-default',
-      baseZIndex: 100000
-    });
 
-    refDialog.onClose.subscribe((resultado: boolean) => {
+onAccept(){
+  this.displayModaAdvice = false;
+}
 
-      if (resultado) {
-        console.log('se cerro modal y se muestra valor de resultado', resultado);
+onAddEmpresa() {
+  this.isEdition = false;
+  this.openModalAddEditEmpresa(0, 'Formulario de Registro');
+}
 
-        this.displayModaAdvice = true;
-        this.modalImage = './assets/images/accept-icon.png';
-        if(this.isEdition){
-          this.modalMessage = 'Se editó la empresa de manera correcta';
-        } else {
-          this.modalMessage = 'Se registró la empresa de manera correcta';
-        }
-        
-      //  this.paramsPagination = new ParamsPagination(0,1,10,0); //?
-        this.onQueryPageEmpresa();  //dhr
+onEditEmpresa(idEmpresa: number) {
+  this.isEdition = true;
+  this.openModalAddEditEmpresa(idEmpresa, 'Formulario de Edición');
+}
+private openModalAddEditEmpresa(idEmpresa: number, titleModal: string){
+
+  const refDialog = this.dialogService.open(AltaEditEmpresaComponent, {
+    data: {
+      'idEmpresa': idEmpresa,
+      'titleHeader': titleModal
+    },
+    header: titleModal,
+    showHeader: false,
+    styleClass: 'dialog-for-display-default',
+    baseZIndex: 100000
+  });
+
+  refDialog.onClose.subscribe((resultado: boolean) => {
+
+    /*if (resultado) {
+      console.log('se cerro modal y se muestra valor de resultado', resultado);
+
+      this.displayModaAdvice = true;
+      this.modalImage = './assets/images/accept-icon.png';
+      if(this.isEdition){
+        this.modalMessage = 'Se editó la empresa de manera correcta';
       } else {
-        this.displayModaAdvice = true;
-        this.modalImage = './assets/images/cancel-icon.png';
-        if(this.isEdition){
-          this.modalMessage = 'Edición cancelada';
-        } else {
-          this.modalMessage = 'Registro cancelado';
-        }
+        this.modalMessage = 'Se registró la empresa de manera correcta';
       }
-    });
-  
-  }
+      
+    //  this.paramsPagination = new ParamsPagination(0,1,10,0); //?
+      this.onQueryPageEmpresa();  //dhr
+    }*/ /*else {
+      this.displayModaAdvice = true;
+      this.modalImage = './assets/images/cancel-icon.png';
+      if(this.isEdition){
+        this.modalMessage = 'Edición cancelada';
+      } else {
+        this.modalMessage = 'Registro cancelado';
+      }
+    }*/
+  });
 
-  
+}
+
 }
