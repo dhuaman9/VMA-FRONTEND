@@ -10,34 +10,34 @@
                         <div class="border-0 text-center">
                             <h2>Filtros de búsqueda</h2>
                         </div>
-                        <div class="form-row">
-                          <form [formGroup]="filtroForm" class="form-row">
+                        <div class="d-flex flex-wrap">
+                          <form [formGroup]="filtroForm"  class="d-flex flex-wrap gap-2">
                             <div *ngFor="let field of ['eps', 'estado', 'fechaDesde', 'fechaHasta', 'anio']; let i = index">
                                 <div [ngSwitch]="field" >
-                                    <div class="col-auto">
-                                        <span class="p-float-label ml-3" *ngSwitchCase="'eps'">
+                                    <div>
+                                        <span class="p-float-label" *ngSwitchCase="'eps'">
                                             <p-dropdown inputId="selEmpresa" [options]="empresasLista" placeholder="Seleccionar EPS" formControlName="eps"
                                             [showClear]="true" [filter]="true"></p-dropdown>
                                         </span>
                                     </div>
-                                    <div class="col-auto">
+                                    <div>
                                         <span class="p-float-label" *ngSwitchCase="'estado'">
                                             <p-dropdown formControlName="estado" placeholder="Estado" [options]="estados">
                                             </p-dropdown>
                                         </span>
                                     </div>
-                                    <div class="col-auto">
+                                    <div>
                                         <span class="p-float-label" *ngSwitchCase="'anio'">
                                             <p-dropdown formControlName="anio" [options]="years" placeholder="Año"></p-dropdown>
                                         </span>
                                     </div>
-                                    <div class="col-auto">
+                                    <div>
                                         <span class="p-float-label" *ngSwitchCase="'fechaDesde'">
                                             <p-calendar id="fechaDesde" dateFormat="yy-mm-dd" formControlName="fechaDesde"></p-calendar>
                                             <label for="fechaDesde">Fecha Desde</label>
                                         </span>
                                     </div>
-                                    <div class="col-auto">
+                                    <div>
                                         <span class="p-float-label" *ngSwitchCase="'fechaHasta'">
                                             <p-calendar id="fechaHasta" dateFormat="yy-mm-dd" formControlName="fechaHasta"></p-calendar>
                                             <br>
@@ -47,9 +47,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-auto">
-                                <button pButton type="button" label="Buscar" icon="pi pi-search" (click)="buscar()" class="ml-1 align-left"></button>
-                                <button pButton type="button" label="Limpiar" icon="pi pi-circle-on" (click)="limpiar()" class="p-button-secondary ml-3"></button>
+                            <div class="d-flex gap-2">
+                                <button pButton type="button" label="Buscar" icon="pi pi-search" (click)="buscar()" class="align-left"></button>
+                                <button pButton type="button" label="Limpiar" icon="pi pi-circle-on" (click)="limpiar()" class="p-button-secondary"></button>
                             </div>
                             <div class="row mt-3">
                                 <div class="col-md-12">
