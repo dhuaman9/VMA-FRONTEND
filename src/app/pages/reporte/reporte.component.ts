@@ -22,20 +22,23 @@ export class ReporteComponent implements OnInit {
   years: any[];
   selectedYear: number;
 
-  chartDataNumeroEP: number[] = [];
+  chartDataNumeroEP: number[];
   chartLabelsNumeroEP: string[] = [];
 
-  chartDataRemisionInfo: BarChartDataset[] = [];
+  chartDataRemisionInfo: BarChartDataset[];
   chartLabelsRemisionInfo: string[] = [];
 
-  chartDataSiNo: BarChartDataset[] = [];
+  chartDataSiNo: BarChartDataset[];
   chartLabelsSiNo: string[] = [];
 
-  chartDataNumeroTotalUND: number[] = [];
+  chartDataNumeroTotalUND: number[];
   chartLabelsNumeroTotalUND: string[] = [];
 
-  chartTrabajadoresDedicadosRegistroData: BarChartDataset[] = [];
+  chartTrabajadoresDedicadosRegistroData: BarChartDataset[];
   chartTrabajadoresDedicadosRegistroLabels: string[] = [];
+
+  //Inicialización de TABS en false, la cantidad en el array es dependiendo cuántos gráficos haya
+  openedTabs: boolean[] = [false, false, false, false, false];
 
   constructor(
     public route : ActivatedRoute,
@@ -46,10 +49,9 @@ export class ReporteComponent implements OnInit {
 
   ngOnInit(): void {
     this.setDefaultYear();//cargara el año actual
-    this.applyFilter(); //cargara por defecto los graficos del año actual
   }
 
-  private cargarDatosBarChartSiNo(registrosSiNoChart: ChartDto[]): void {
+  private cargarDatosBarChartSiNo = (registrosSiNoChart: ChartDto[]): void => {
     let porcentajes: number[] = [];
     let labels: string[] = [];
     this.chartDataSiNo = [];
@@ -71,7 +73,7 @@ export class ReporteComponent implements OnInit {
     });
   }
 
-  private cargarDatos(registrosDatosBarAndPieChart: ChartDto[]): void {
+  private cargarDatos(registrosDatosBarAndPieChart: ChartDto[], isChartNumero1: boolean): void {
     let labels: string[] = [];
     let cantidadRegistradosPorEmpresa: number[] = [];
     let cantidadRegistradosPorEmpresaTotal: number[] = [];
@@ -82,8 +84,11 @@ export class ReporteComponent implements OnInit {
       cantidadRegistradosPorEmpresaTotal.push(item.cantidadTotalRegistradoPorEmpresa)
     });
 
-    this.cargarChartNumero2(labels, cantidadRegistradosPorEmpresa);
-    this.cargarChartNumero1([...cantidadRegistradosPorEmpresa], [...cantidadRegistradosPorEmpresaTotal], [...labels]);
+    if(isChartNumero1) {
+      this.cargarChartNumero1([...cantidadRegistradosPorEmpresa], [...cantidadRegistradosPorEmpresaTotal], [...labels]);
+    } else {
+      this.cargarChartNumero2(labels, cantidadRegistradosPorEmpresa);
+    }
   }
 
   private cargarChartNumero1(cantidadRegistradosPorEmpresa: number[], cantidadRegistradosPorEmpresaTotal: number[], labels: string[]): void {
@@ -104,7 +109,7 @@ export class ReporteComponent implements OnInit {
     this.chartDataNumeroEP = [...cantidadRegistradosPorEmpresa];
   }
 
-  private cargarDatosTrabajadoresDedicadosRegistro(data: RegistroPromedioTrabajadorVMAChartDto[]): void {
+  private cargarDatosTrabajadoresDedicadosRegistro = (data: RegistroPromedioTrabajadorVMAChartDto[]): void => {
     this.chartTrabajadoresDedicadosRegistroData = [];
     this.chartTrabajadoresDedicadosRegistroLabels = data.map(item => item.tipo);
     const dataPorTipoEmpresa: number[] = data.map(item => item.promedio);
@@ -126,7 +131,7 @@ export class ReporteComponent implements OnInit {
     });
   }
 
-  private cargarDatosNumeroTotalUND(data: PieChartBasicoDto[]): void {
+  private cargarDatosNumeroTotalUND = (data: PieChartBasicoDto[]): void => {
     this.chartLabelsNumeroTotalUND = data.map(item => item.label);
     this.chartDataNumeroTotalUND = data.map(item => item.cantidad);
   }
@@ -141,24 +146,89 @@ export class ReporteComponent implements OnInit {
   }
 
   applyFilter(): void {
-    this.reporteService.reporteRegistros(this.selectedYear).subscribe(data => {
-      this.cargarDatos(data);
-    });
-
-    this.reporteService.reporteRespuestaSiNo(this.selectedYear).subscribe(data => {
-      this.cargarDatosBarChartSiNo(data);
-    });
-
-    this.reporteService.generarReporteTrabajadoresDedicadosRegistro(this.selectedYear).subscribe(data => {
-      this.cargarDatosTrabajadoresDedicadosRegistro(data);
-    })
-
-    this.reporteService.generarReporteNumeroTotalUND(this.selectedYear).subscribe(data => {
-      this.cargarDatosNumeroTotalUND(data);
-    })
+    this.cleanDataChart();
+    this.reloadOpenedTabs();
   }
 
   private setDefaultYear() {
     this.selectedYear = new Date().getFullYear();
+  }
+
+  filterText: string = '';
+
+
+  filterTabs(header: string, content: string): boolean {
+    if (!this.filterText) {
+      return true;
+    }
+
+    const searchText = this.filterText.toLowerCase();
+    return header.toLowerCase().includes(searchText) || content.toLowerCase().includes(searchText);
+  }
+
+  reloadOpenedTabs(): void {
+    const tabsSelected = [];
+    this.openedTabs.forEach((isOpen, index) => {
+      tabsSelected.push({selected: isOpen})
+    });
+
+    tabsSelected.forEach((isOpen, index) => {
+      if (isOpen) {
+        this.onTabOpen(index, { tabs: tabsSelected }, true);
+      }
+    })
+  }
+
+  onTabOpen(tabIndex: number, accordion: any, reload?: boolean) {
+    if(!reload) {
+      this.openedTabs[tabIndex] = !this.openedTabs[tabIndex];
+    }
+
+    if (accordion.tabs[tabIndex].selected) {
+      switch (tabIndex) {
+        case 0:
+          if (this.openedTabs[tabIndex]) {
+            this.reporteService.reporteRegistros(this.selectedYear).subscribe(data => this.cargarDatos(data, true));
+          }
+          break;
+        case 1:
+          if (this.openedTabs[tabIndex]) {
+            this.reporteService.reporteRegistros(this.selectedYear).subscribe(data => this.cargarDatos(data, false));
+          }
+          break;
+        case 2:
+          if (this.openedTabs[tabIndex]) {
+            this.reporteService.reporteRespuestaSiNo(this.selectedYear).subscribe(this.cargarDatosBarChartSiNo);
+          }
+          break;
+        case 3:
+          if (this.openedTabs[tabIndex]) {
+            this.reporteService.generarReporteTrabajadoresDedicadosRegistro(this.selectedYear).subscribe(this.cargarDatosTrabajadoresDedicadosRegistro);
+          }
+          break;
+        case 4:
+          if (this.openedTabs[tabIndex]) {
+            this.reporteService.generarReporteNumeroTotalUND(this.selectedYear).subscribe(this.cargarDatosNumeroTotalUND);
+          }
+          break;
+      }
+    }
+  }
+
+  cleanDataChart(): void {
+    this.chartDataNumeroEP = undefined;
+    this.chartLabelsNumeroEP = [];
+
+    this.chartDataRemisionInfo = undefined;
+    this.chartLabelsRemisionInfo = [];
+
+    this.chartDataSiNo = undefined;
+    this.chartLabelsSiNo = [];
+
+    this.chartDataNumeroTotalUND = undefined;
+    this.chartLabelsNumeroTotalUND = [];
+
+    this.chartTrabajadoresDedicadosRegistroData = undefined;
+    this.chartTrabajadoresDedicadosRegistroLabels = [];
   }
 }
