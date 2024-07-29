@@ -7,6 +7,7 @@ import {BarChartDataset} from "../../_model/bar-chart-dataset";
 import {ChartDto} from "../../_model/chart-dto";
 import {RegistroPromedioTrabajadorVMAChartDto} from "../../_model/RegistroPromedioTrabajadorVMAChartDto";
 import {PieChartBasicoDto} from "../../_model/pie-chart-basico-dto";
+import {BarChartBasicoDto} from "../../_model/bar-chart-basico-dto";
 
 //npm install chartjs-plugin-datalabels
 Chart.register(ChartDataLabels);
@@ -36,6 +37,9 @@ export class ReporteComponent implements OnInit {
 
   chartTrabajadoresDedicadosRegistroData: BarChartDataset[];
   chartTrabajadoresDedicadosRegistroLabels: string[] = [];
+
+  chartDiagramaFlujoData: BarChartDataset[];
+  chartDiagramaFlujoLabels: string[] = [];
 
   //Inicialización de TABS en false, la cantidad en el array es dependiendo cuántos gráficos haya
   openedTabs: boolean[] = [false, false, false, false, false];
@@ -136,6 +140,15 @@ export class ReporteComponent implements OnInit {
     this.chartDataNumeroTotalUND = data.map(item => item.cantidad);
   }
 
+  private cargatDatosDiagramaFlujoBalance = (data: BarChartBasicoDto[]): void => {
+    this.chartDiagramaFlujoData = [];
+    this.chartDiagramaFlujoLabels = data.map(item => item.label);
+    this.chartDiagramaFlujoData.push({
+      label: 'Porcentaje de usuariosa los que se les ha solicitado el diagrama de flujo y balance hídrico',
+      backgroundColor: '#03A9F4',
+      data: data.map(item => item.value)
+    });
+  }
 
   private initializeYears(): void {
     const currentYear = new Date().getFullYear();
@@ -209,6 +222,11 @@ export class ReporteComponent implements OnInit {
         case 4:
           if (this.openedTabs[tabIndex]) {
             this.reporteService.generarReporteNumeroTotalUND(this.selectedYear).subscribe(this.cargarDatosNumeroTotalUND);
+          }
+          break;
+        case 5:
+          if (this.openedTabs[tabIndex]) {
+            this.reporteService.generarReporteDiagramaFlujoYBalance(this.selectedYear).subscribe(this.cargatDatosDiagramaFlujoBalance);
           }
           break;
       }

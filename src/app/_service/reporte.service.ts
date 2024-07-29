@@ -11,6 +11,7 @@ import { ListaReporte } from '../_model/reporte';
 import {ChartDto} from "../_model/chart-dto";
 import {RegistroPromedioTrabajadorVMAChartDto} from "../_model/RegistroPromedioTrabajadorVMAChartDto";
 import {PieChartBasicoDto} from "../_model/pie-chart-basico-dto";
+import {BarChartBasicoDto} from "../_model/bar-chart-basico-dto";
 
 @Injectable({
     providedIn: 'root'
@@ -40,10 +41,15 @@ export class ReporteService {
           .pipe(map((response: any) => response.items));
     }
 
-  generarReporteNumeroTotalUND(anio: number): Observable<PieChartBasicoDto[]> {
-    return this.http.get(`${this.url}/api/reporte/numero-total-und?anio=${anio.toString()}`)
-      .pipe(map((response: any) => response.items));
-  }
+    generarReporteNumeroTotalUND(anio: number): Observable<PieChartBasicoDto[]> {
+      return this.http.get(`${this.url}/api/reporte/numero-total-und?anio=${anio.toString()}`)
+        .pipe(map((response: any) => response.items));
+    }
+
+    generarReporteDiagramaFlujoYBalance(anio: number): Observable<BarChartBasicoDto[]> {
+        return this.http.get(`${this.url}/api/reporte/diagrama-flujo-balance?anio=${anio.toString()}`)
+          .pipe(map((response: any) => response.items));
+    }
 
     fechaprocesa(): Observable<any>{
 

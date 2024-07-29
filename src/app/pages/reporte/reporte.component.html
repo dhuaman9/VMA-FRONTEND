@@ -69,6 +69,16 @@
         <app-pie-chart [data]="chartDataNumeroTotalUND" [labels]="chartLabelsNumeroTotalUND" [esPorcentaje]="true" [tieneDecimalesDataLabel]="true"></app-pie-chart>
       </ng-container>
     </p-accordionTab>
+    <p-accordionTab header="Gráfico N° 6: "
+                    (click)="onTabOpen(5, accordion)"
+                    [hidden]="!filterTabs('grafico 6', 'Grafico N° 6: ')">
+      <ng-container *ngIf="chartDiagramaFlujoData; else loading">
+        <app-bar-chart [barChartDataset]="chartDiagramaFlujoData"
+                       [labels]="chartDiagramaFlujoLabels"
+                       [tieneDecimalesDataLabel]="true"
+                       [esPorcentaje]="true" [maximoX]="100"></app-bar-chart>
+      </ng-container>
+    </p-accordionTab>
   </p-accordion>
 </div>
 
