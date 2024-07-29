@@ -16,12 +16,14 @@ export class BarChartComponent implements OnInit, OnChanges {
   @Input() tieneDecimalesDataLabel: boolean = false;
   @Input() tieneDecimalesLabel: boolean = false;
   @Input() maximoX: number;
+  @Input() stepSize: number;
   barChartConfig: any;
   barChartOptions: any;
 
   constructor() { }
 
   ngOnInit(): void {
+    this.initConfig();
     this.cargarDatosIniciales();
   }
 
@@ -62,7 +64,7 @@ export class BarChartComponent implements OnInit, OnChanges {
           grid: {
             color: 'rgba(255,255,255,0.2)'
           },
-          beginAtZero: true,
+          beginAtZero: true
         },
         y: {
           grid: {
@@ -73,16 +75,20 @@ export class BarChartComponent implements OnInit, OnChanges {
       }
     };
 
-    if (this.maximoX) {
-      this.barChartOptions.scales.x.max = this.maximoX;
-    }
-
     if(!this.esVertical) {
       this.barChartOptions.scales.x.ticks = {
         callback: (value) => {
           return this.esPorcentaje ? value.toFixed(this.tieneDecimalesLabel ? 2 : 0)+'%' : value.toFixed(this.tieneDecimalesLabel ? 2 : 0);
         }
       }
+    }
+
+    if (this.maximoX) {
+      this.barChartOptions.scales.x.max = this.maximoX;
+    }
+
+    if(this.stepSize) {
+      this.barChartOptions.scales.x.ticks.stepSize = this.stepSize;
     }
   }
 }
