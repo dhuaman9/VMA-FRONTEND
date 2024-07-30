@@ -19,7 +19,7 @@
   width: 200px; display: inline-block;
 }
 
-::ng-deep p-accordion p-accordiontab {
+.reporte ::ng-deep p-accordion p-accordiontab {
 
   /*color de los tabs*/
   .p-accordion-header-link {
@@ -38,5 +38,3 @@
     border: 1px solid #19812d !important;
   }
 }
-
-/*box-shadow: 0 0 0 0.2rem green;*/
