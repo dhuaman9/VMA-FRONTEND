@@ -145,7 +145,7 @@ export class ReporteComponent implements OnInit {
     this.chartDiagramaFlujoLabels = data.map(item => item.label);
     this.chartDiagramaFlujoData.push({
       label: 'Porcentaje de usuariosa los que se les ha solicitado el diagrama de flujo y balance hídrico',
-      backgroundColor: '#03A9F4',
+      backgroundColor: '#6fd76f',
       data: data.map(item => item.value)
     });
   }

@@ -5,15 +5,10 @@
     <p-dropdown
       [options]="years"
       [(ngModel)]="selectedYear"
+      (onChange)="applyFilter()"
       placeholder="Seleccionar el año"
       class="combobox-anio">
     </p-dropdown>
-    <button pButton
-      type="button"
-      label="Actualizar"
-      (click)="applyFilter()"
-      style="margin-left: 10px;">
-    </button>
   </div>
 
 <div class="mx-5">
@@ -22,7 +17,7 @@
     <input type="text" pInputText [(ngModel)]="filterText" placeholder="Search">
   </span>
 
-  <p-accordion #accordion [multiple]="true">
+  <p-accordion class="custom-accordion" #accordion [multiple]="true">
     <p-accordionTab header="Gráfico N° 1: Remisión de Información VMA Año actual, Según tamaño de la empresa."
                     (click)="onTabOpen(0, accordion)"
                     [hidden]="!filterTabs('grafico 1', 'Grafico N° 1: Remision de Informacion VMA Año actual, Segun tamaño de la empresa.')">
