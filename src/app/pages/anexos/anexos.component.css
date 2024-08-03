@@ -33,6 +33,10 @@
     }
 }
 
+.combobox-anio{
+    width: 200px; display: inline-block;
+  }
+  
 ::ng-deep p-message .p-inline-message-info {
   width: 100%;
 }

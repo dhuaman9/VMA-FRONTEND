@@ -10,34 +10,34 @@
                         <div class="border-0 text-center">
                             <h2>Filtros de búsqueda</h2>
                         </div>
-                        <div class="form-row">
-                          <form [formGroup]="filtroForm" class="form-row">
+                        <div class="d-flex flex-wrap">
+                          <form [formGroup]="filtroForm"  class="d-flex flex-wrap gap-2">
                             <div *ngFor="let field of ['eps', 'estado', 'fechaDesde', 'fechaHasta', 'anio']; let i = index">
                                 <div [ngSwitch]="field" >
-                                    <div class="col-auto">
-                                        <span class="p-float-label ml-3" *ngSwitchCase="'eps'">
+                                    <div>
+                                        <span class="p-float-label" *ngSwitchCase="'eps'">
                                             <p-dropdown inputId="selEmpresa" [options]="empresasLista" placeholder="Seleccionar EPS" formControlName="eps"
                                             [showClear]="true" [filter]="true"></p-dropdown>
                                         </span>
                                     </div>
-                                    <div class="col-auto">
+                                    <div>
                                         <span class="p-float-label" *ngSwitchCase="'estado'">
                                             <p-dropdown formControlName="estado" placeholder="Estado" [options]="estados">
                                             </p-dropdown>
                                         </span>
                                     </div>
-                                    <div class="col-auto">
+                                    <div>
                                         <span class="p-float-label" *ngSwitchCase="'anio'">
                                             <p-dropdown formControlName="anio" [options]="years" placeholder="Año"></p-dropdown>
                                         </span>
                                     </div>
-                                    <div class="col-auto">
+                                    <div>
                                         <span class="p-float-label" *ngSwitchCase="'fechaDesde'">
                                             <p-calendar id="fechaDesde" dateFormat="yy-mm-dd" formControlName="fechaDesde"></p-calendar>
                                             <label for="fechaDesde">Fecha Desde</label>
                                         </span>
                                     </div>
-                                    <div class="col-auto">
+                                    <div>
                                         <span class="p-float-label" *ngSwitchCase="'fechaHasta'">
                                             <p-calendar id="fechaHasta" dateFormat="yy-mm-dd" formControlName="fechaHasta"></p-calendar>
                                             <br>
@@ -47,9 +47,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-auto">
-                                <button pButton type="button" label="Buscar" icon="pi pi-search" (click)="buscar()" class="ml-1 align-left"></button>
-                                <button pButton type="button" label="Limpiar" icon="pi pi-circle-on" (click)="limpiar()" class="p-button-secondary ml-3"></button>
+                            <div class="d-flex gap-2">
+                                <button pButton type="button" label="Buscar" icon="pi pi-search" (click)="buscar()" class="align-left"></button>
+                                <button pButton type="button" label="Limpiar" icon="pi pi-circle-on" (click)="limpiar()" class="p-button-secondary"></button>
                             </div>
                             <div class="row mt-3">
                                 <div class="col-md-12">
@@ -71,9 +71,9 @@
                                  [disabled]="registroCompleto"
                                  [pTooltip]="registroCompleto ? 'Ya existe un registro VMA en curso' : 'Registrar nuevo VMA'"
                                  tooltipPosition="top"><i class="pi pi-plus"></i>  Registrar</button>
-                        <button pButton label="Descargar" class="p-button-success float-right" icon="pi pi-download" iconPos="right" *ngIf="isRoleAdminAndConsultor"
+                        <button pButton label="Descargar Excel" class="p-button-success float-right" icon="pi pi-download" iconPos="right" *ngIf="isRoleAdminAndConsultor"
                                 (click)="descargar()"></button>
-                        <span *ngIf="registroCompleto" class="registro-indisponible">
+                        <span *ngIf="registroCompleto && isRoleRegistrador" class="registro-indisponible">
                           No es posible registrar un nuevo VMA. Ya existe uno en curso o la fecha actual no está dentro del período programado.
                         </span>
                       </div>
@@ -87,7 +87,7 @@
 
                                 <p-table #dt1 [value]="ListRegistroVMA"
                                 dataKey="id"
-                                [globalFilterFields]="['username','empresa.nombre', 'estado', 'created_at', 'updated_at']"
+                                [globalFilterFields]="['empresa.nombre', 'estado', 'empresa.tipo','empresa.regimen','created_at', 'fichaRegistro.anio']"
                                 responsiveLayout="scroll"
                                 [paginator]="true"
                                 [rows]="10"
@@ -106,18 +106,24 @@
                                 </ng-template>
                                 <ng-template pTemplate="header">
                                     <tr>
+                                        <!--<th style="width: 3rem">
+                                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                                        </th> -->
                                         <th style="text-align:center;width: 5%;">N°</th>
                                         <th>Empresa EPS</th>
                                         <th style="width: 15%;">Tamaño de la EPS</th>
                                         <th style="width: 10%;">Régimen</th>
                                         <th style="width: 12%;">Estado</th>
                                         <th style="width: 15%;">Fecha de registro</th>
-                                        <th style="text-align:center;width:7%;">Año</th>
+                                        <th style="text-align:center;width: 7%;">Año</th>
                                         <th style="text-align:center;width: 7%;">Editar</th>
                                     </tr>
                                 </ng-template>
                                    <ng-template pTemplate="body" let-item let-ri="rowIndex" let-first="first">
                                       <tr>
+                                        <!--<td>
+                                            <p-tableCheckbox [value]=""></p-tableCheckbox>
+                                        </td> -->
                                         <td style="text-align:center;">{{ri + 1}}</td>
                                         <td>{{item.empresa?.nombre}}</td>
                                         <td>{{item.empresa.tipo}}</td>
@@ -144,5 +150,5 @@
         </div>
     </div>
 </div>
-
+</div>
 <app-loading *ngIf="isLoading"></app-loading>

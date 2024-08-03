@@ -7,6 +7,7 @@ import {BarChartDataset} from "../../_model/bar-chart-dataset";
 import {ChartDto} from "../../_model/chart-dto";
 import {RegistroPromedioTrabajadorVMAChartDto} from "../../_model/RegistroPromedioTrabajadorVMAChartDto";
 import {PieChartBasicoDto} from "../../_model/pie-chart-basico-dto";
+import {BarChartBasicoDto} from "../../_model/bar-chart-basico-dto";
 
 //npm install chartjs-plugin-datalabels
 Chart.register(ChartDataLabels);
@@ -22,20 +23,47 @@ export class ReporteComponent implements OnInit {
   years: any[];
   selectedYear: number;
 
-  chartDataNumeroEP: number[] = [];
+  chartDataNumeroEP: number[];
   chartLabelsNumeroEP: string[] = [];
 
-  chartDataRemisionInfo: BarChartDataset[] = [];
+  chartDataRemisionInfo: BarChartDataset[];
   chartLabelsRemisionInfo: string[] = [];
 
-  chartDataSiNo: BarChartDataset[] = [];
+  chartDataSiNo: BarChartDataset[];
   chartLabelsSiNo: string[] = [];
 
-  chartDataNumeroTotalUND: number[] = [];
+  chartDataNumeroTotalUND: number[];
   chartLabelsNumeroTotalUND: string[] = [];
 
-  chartTrabajadoresDedicadosRegistroData: BarChartDataset[] = [];
+  chartTrabajadoresDedicadosRegistroData: BarChartDataset[];
   chartTrabajadoresDedicadosRegistroLabels: string[] = [];
+
+  chartUNDInspeccionadosData: BarChartDataset[];
+  chartUNDInspeccionadosLabels: string[] = [];
+
+  chartDiagramaFlujoData: BarChartDataset[];
+  chartDiagramaFlujoLabels: string[] = [];
+
+   //grafico 8
+  chartDiagramaFlujoPresentadosData: BarChartDataset[];
+  chartDiagramaFlujoPresentadosLabels: string[] = [];
+
+  //falta para el grafico 9
+
+  //grafico 10  -  Porcentaje de UND que cuentan con caja de registro
+  chartPorcentajeUNDConCajaRegistroData: BarChartDataset[];
+  chartPorcentajeUNDConCajaRegistroLabels: string[] = [];
+
+  //grafico 11  -  Porcentaje de UND a los que se realizó la toma de muestra inopinada
+  chartPorcentajeUNDTomaMuestraInopinadaData: BarChartDataset[];
+  chartPorcentajeUNDTomaMuestraInopinadaLabels: string[] = [];
+
+  // Gráfico 12: Porcentaje de total tomas de muestras inopinadas, según tamaño de la EP 
+  chartDataPorcentajeUNDConCajaRegistro: number[];
+  chartLabelsPorcentajeUNDConCajaRegistro: string[] = [];
+
+  //es necesario , agregar nuevo false, si en caso haya nuevos tabs , la cantidad en el array depende del # de gráficos 
+  openedTabs: boolean[] = [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false];
 
   constructor(
     public route : ActivatedRoute,
@@ -46,10 +74,9 @@ export class ReporteComponent implements OnInit {
 
   ngOnInit(): void {
     this.setDefaultYear();//cargara el año actual
-    this.applyFilter(); //cargara por defecto los graficos del año actual
   }
 
-  private cargarDatosBarChartSiNo(registrosSiNoChart: ChartDto[]): void {
+  private cargarDatosBarChartSiNo = (registrosSiNoChart: ChartDto[]): void => {
     let porcentajes: number[] = [];
     let labels: string[] = [];
     this.chartDataSiNo = [];
@@ -71,7 +98,7 @@ export class ReporteComponent implements OnInit {
     });
   }
 
-  private cargarDatos(registrosDatosBarAndPieChart: ChartDto[]): void {
+  private cargarDatos(registrosDatosBarAndPieChart: ChartDto[], isChartNumero1: boolean): void {
     let labels: string[] = [];
     let cantidadRegistradosPorEmpresa: number[] = [];
     let cantidadRegistradosPorEmpresaTotal: number[] = [];
@@ -82,8 +109,11 @@ export class ReporteComponent implements OnInit {
       cantidadRegistradosPorEmpresaTotal.push(item.cantidadTotalRegistradoPorEmpresa)
     });
 
-    this.cargarChartNumero2(labels, cantidadRegistradosPorEmpresa);
-    this.cargarChartNumero1([...cantidadRegistradosPorEmpresa], [...cantidadRegistradosPorEmpresaTotal], [...labels]);
+    if(isChartNumero1) {
+      this.cargarChartNumero1([...cantidadRegistradosPorEmpresa], [...cantidadRegistradosPorEmpresaTotal], [...labels]);
+    } else {
+      this.cargarChartNumero2(labels, cantidadRegistradosPorEmpresa);
+    }
   }
 
   private cargarChartNumero1(cantidadRegistradosPorEmpresa: number[], cantidadRegistradosPorEmpresaTotal: number[], labels: string[]): void {
@@ -104,7 +134,7 @@ export class ReporteComponent implements OnInit {
     this.chartDataNumeroEP = [...cantidadRegistradosPorEmpresa];
   }
 
-  private cargarDatosTrabajadoresDedicadosRegistro(data: RegistroPromedioTrabajadorVMAChartDto[]): void {
+  private cargarDatosTrabajadoresDedicadosRegistro = (data: RegistroPromedioTrabajadorVMAChartDto[]): void => {
     this.chartTrabajadoresDedicadosRegistroData = [];
     this.chartTrabajadoresDedicadosRegistroLabels = data.map(item => item.tipo);
     const dataPorTipoEmpresa: number[] = data.map(item => item.promedio);
@@ -126,11 +156,72 @@ export class ReporteComponent implements OnInit {
     });
   }
 
-  private cargarDatosNumeroTotalUND(data: PieChartBasicoDto[]): void {
+  private cargarDatosNumeroTotalUND = (data: PieChartBasicoDto[]): void => {
     this.chartLabelsNumeroTotalUND = data.map(item => item.label);
     this.chartDataNumeroTotalUND = data.map(item => item.cantidad);
   }
 
+  //DHR GRAF6
+  private cargarDatosUNDInspeccionados = (data: BarChartBasicoDto[]): void => {
+    this.chartUNDInspeccionadosData = [];
+    this.chartUNDInspeccionadosLabels = data.map(item => item.label);
+    this.chartUNDInspeccionadosData.push({
+      label: 'Porcentaje de UND inspeccionados, según tamaño de la EP.',
+      backgroundColor: '#6fd76f',
+      data: data.map(item => item.value)
+    });
+  }
+
+  private cargarDatosDiagramaFlujoBalance = (data: BarChartBasicoDto[]): void => {
+    this.chartDiagramaFlujoData = [];
+    this.chartDiagramaFlujoLabels = data.map(item => item.label);
+    this.chartDiagramaFlujoData.push({
+      label: 'Porcentaje de usuarios, a los que se les ha solicitado el diagrama de flujo y balance hídrico',
+      backgroundColor: '#6fd76f',
+      data: data.map(item => item.value)
+    });
+  }
+
+  //dhr - grafico 8
+  private cargatDatosDiagramaFlujoBalancePresentados = (data: BarChartBasicoDto[]): void => {
+    this.chartDiagramaFlujoPresentadosData = [];
+    this.chartDiagramaFlujoPresentadosLabels = data.map(item => item.label);
+    this.chartDiagramaFlujoPresentadosData.push({
+      label: 'Porcentaje de UND, que han presentado el diagrama de flujo y balance hídrico. ',
+      backgroundColor: '#6fd76f',
+      data: data.map(item => item.value)
+    });
+  }
+
+  //10 UND que cuentan con caja de registro
+  private cargarDatosUNDConCajaRegistro = (data: BarChartBasicoDto[]): void => {
+    this.chartPorcentajeUNDConCajaRegistroData = [];
+    this.chartPorcentajeUNDConCajaRegistroLabels = data.map(item => item.label);
+    this.chartPorcentajeUNDConCajaRegistroData.push({
+      label: 'Porcentaje de UND que cuentan con caja de registro o dispositivo en la parte externa de su predio. ',
+      backgroundColor: '#6fd76f',
+      data: data.map(item => item.value)
+    });
+  }
+
+   //11  Porcentaje de UND a los que se realizó la toma de muestra inopinada
+   private cargarDatosUNDTomaMuestraInopinada = (data: BarChartBasicoDto[]): void => {
+    this.chartPorcentajeUNDTomaMuestraInopinadaData = [];
+    this.chartPorcentajeUNDTomaMuestraInopinadaLabels = data.map(item => item.label);
+    this.chartPorcentajeUNDTomaMuestraInopinadaData.push({
+      label: 'Porcentaje de UND a los que se realizó la toma de muestra inopinada, según tamaño de EPS. ',
+      backgroundColor: '#6fd76f',
+      data: data.map(item => item.value)
+    });
+  }
+
+   //12 Porcentaje de toma de muestra inopinada, según tamaño de la EP  
+   
+
+  private cargarDatosTotalMuestrasInopinadas = (data: PieChartBasicoDto[]): void => {
+    this.chartLabelsPorcentajeUNDConCajaRegistro = data.map(item => item.label);
+    this.chartDataPorcentajeUNDConCajaRegistro = data.map(item => item.cantidad);
+  }
 
   private initializeYears(): void {
     const currentYear = new Date().getFullYear();
@@ -141,24 +232,119 @@ export class ReporteComponent implements OnInit {
   }
 
   applyFilter(): void {
-    this.reporteService.reporteRegistros(this.selectedYear).subscribe(data => {
-      this.cargarDatos(data);
-    });
-
-    this.reporteService.reporteRespuestaSiNo(this.selectedYear).subscribe(data => {
-      this.cargarDatosBarChartSiNo(data);
-    });
-
-    this.reporteService.generarReporteTrabajadoresDedicadosRegistro(this.selectedYear).subscribe(data => {
-      this.cargarDatosTrabajadoresDedicadosRegistro(data);
-    })
-
-    this.reporteService.generarReporteNumeroTotalUND(this.selectedYear).subscribe(data => {
-      this.cargarDatosNumeroTotalUND(data);
-    })
+    this.cleanDataChart();
+    this.reloadOpenedTabs();
   }
 
   private setDefaultYear() {
     this.selectedYear = new Date().getFullYear();
+  }
+
+  filterText: string = '';
+
+
+  filterTabs(header: string, content: string): boolean {
+    if (!this.filterText) {
+      return true;
+    }
+
+    const searchText = this.filterText.toLowerCase();
+    return header.toLowerCase().includes(searchText) || content.toLowerCase().includes(searchText);
+  }
+
+  reloadOpenedTabs(): void {
+    const tabsSelected = [];
+    this.openedTabs.forEach((isOpen, index) => {
+      tabsSelected.push({selected: isOpen})
+    });
+
+    tabsSelected.forEach((isOpen, index) => {
+      if (isOpen) {
+        this.onTabOpen(index, { tabs: tabsSelected }, true);
+      }
+    })
+  }
+
+  onTabOpen(tabIndex: number, accordion: any, reload?: boolean) {
+    if(!reload) {
+      this.openedTabs[tabIndex] = !this.openedTabs[tabIndex];
+    }
+
+    if (accordion.tabs[tabIndex].selected) {
+      switch (tabIndex) {
+        case 0:
+          if (this.openedTabs[tabIndex]) {
+            this.reporteService.reporteRegistros(this.selectedYear).subscribe(data => this.cargarDatos(data, true));
+          }
+          break;
+        case 1:
+          if (this.openedTabs[tabIndex]) {
+            this.reporteService.reporteRegistros(this.selectedYear).subscribe(data => this.cargarDatos(data, false));
+          }
+          break;
+        case 2:
+          if (this.openedTabs[tabIndex]) {
+            this.reporteService.reporteRespuestaSiNo(this.selectedYear).subscribe(this.cargarDatosBarChartSiNo);
+          }
+          break;
+        case 3:
+          if (this.openedTabs[tabIndex]) {
+            this.reporteService.generarReporteTrabajadoresDedicadosRegistro(this.selectedYear).subscribe(this.cargarDatosTrabajadoresDedicadosRegistro);
+          }
+          break;
+        case 4:
+          if (this.openedTabs[tabIndex]) {
+            this.reporteService.generarReporteNumeroTotalUND(this.selectedYear).subscribe(this.cargarDatosNumeroTotalUND);
+          }
+          break;
+        case 5:
+          if (this.openedTabs[tabIndex]) {
+            this.reporteService.generarReporteDiagramaUNDInspeccionados(this.selectedYear).subscribe(this.cargarDatosUNDInspeccionados); //dhr
+          }
+          break;
+        case 6:
+            if (this.openedTabs[tabIndex]) {
+              this.reporteService.generarReporteDiagramaFlujoYBalance(this.selectedYear).subscribe(this.cargarDatosDiagramaFlujoBalance);
+            }
+        break;
+        case 7:
+            if (this.openedTabs[tabIndex]) {
+              this.reporteService.generarReporteDiagramaFlujoYBalancePresentados(this.selectedYear).subscribe(this.cargatDatosDiagramaFlujoBalancePresentados);
+            }
+        break;
+        case 9:
+          if (this.openedTabs[tabIndex]) {
+            this.reporteService.generarReportePorcentajeUNDConCajaRegistro(this.selectedYear).subscribe(this.cargarDatosUNDConCajaRegistro);
+          }
+        break;
+        case 10:
+            if (this.openedTabs[tabIndex]) {
+              this.reporteService.generarReportePorcentajeUNDTomaMuestraInopinada(this.selectedYear).subscribe(this.cargarDatosUNDTomaMuestraInopinada);
+            }
+        break;
+        case 11:
+          if (this.openedTabs[tabIndex]) {
+            this.reporteService.generarReporteTotalMuestrasInopinadas(this.selectedYear).subscribe(this.cargarDatosTotalMuestrasInopinadas);
+          }
+        break;
+      }
+    }
+  }
+
+  cleanDataChart(): void {
+    this.chartDataNumeroEP = undefined;
+    this.chartLabelsNumeroEP = [];
+
+    this.chartDataRemisionInfo = undefined;
+    this.chartLabelsRemisionInfo = [];
+
+    this.chartDataSiNo = undefined;
+    this.chartLabelsSiNo = [];
+
+    this.chartDataNumeroTotalUND = undefined;
+    this.chartLabelsNumeroTotalUND = [];
+
+    this.chartTrabajadoresDedicadosRegistroData = undefined;
+    this.chartTrabajadoresDedicadosRegistroLabels = [];
   }
 }

@@ -24,10 +24,10 @@ export class AltaEditEmpresaComponent implements OnInit {
     { label: 'NO RAT', value: 'NO RAT' }
   ];
   tipoOptions: any[] = [
-    { label: 'Pequeña', value: 'Pequeña' },
-    { label: 'Mediana', value: 'Mediana' },
-    { label: 'Grande', value: 'Grande' },
-    { label: 'Sedapal', value: 'Sedapal' }
+    { label: 'PEQUEÑA', value: 'PEQUEÑA' },
+    { label: 'MEDIANA', value: 'MEDIANA' },
+    { label: 'GRANDE', value: 'GRANDE' },
+    { label: 'SEDAPAL', value: 'SEDAPAL' }
   ];
 
   titleHeader: string;
@@ -184,7 +184,7 @@ export class AltaEditEmpresaComponent implements OnInit {
    */
   private setValuesFormGroup(idEmpresa: number) {
     this.empresaService.findById(idEmpresa).subscribe(remoteData =>{
-      console.log('remoteData====>', remoteData);
+      console.log('remoteData ====>', remoteData);
       this.registroForm.patchValue({
         nombre: remoteData.nombre,
         tipo: remoteData.tipo,

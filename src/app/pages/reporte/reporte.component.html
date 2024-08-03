@@ -1,87 +1,236 @@
 <router-outlet></router-outlet>
-<div style="text-align: center; margin-bottom: 20px;">
+<div class="reporte">
+  <div style="text-align: center; margin-bottom: 20px;">
     <h2 style="margin-bottom: 20px;">Gráficos estadisticos VMA</h2>
     <span>Seleccionar el año: </span>
     <p-dropdown
       [options]="years"
       [(ngModel)]="selectedYear"
+      (onChange)="applyFilter()"
       placeholder="Seleccionar el año"
       class="combobox-anio">
     </p-dropdown>
-    <button pButton
-      type="button"
-      label="Actualizar"
-      (click)="applyFilter()"
-      style="margin-left: 10px;">
-    </button>
   </div>
 
-<!--<div id="GFG">  -->
-<div class="margin-container">
-  <div  class="card chart-card" ><!-- style="width:60%;"-->
-    <h3>Gráfico N° 1: Remisión de Información VMA Año actual, Según tamaño de la empresa.</h3>
-    <app-bar-chart [barChartDataset]="chartDataRemisionInfo" [labels]="chartLabelsRemisionInfo" [esVertical]="true" [esLabelDataAfuera]="true" [colorDataLabel]="'#575757'"></app-bar-chart>
-  </div>
-  <div class="card chart-card" >
-    <h3>Gráfico N° 2: Número de EP que implementaron la normativa VMA, Según tamaño.</h3>
-    <app-pie-chart [data]="chartDataNumeroEP" [labels]="chartLabelsNumeroEP"></app-pie-chart>
+  <div class="mx-5">
+  <span class="p-input-icon-left mb-3">
+    <i class="pi pi-search"></i>
+    <input type="text" pInputText [(ngModel)]="filterText" placeholder="Buscar grafico">
+  </span>
+
+    <p-accordion #accordion [multiple]="true">
+      <p-accordionTab header="Gráfico N° 1: Remisión de Información VMA Año actual, Según tamaño de la empresa."
+                      (click)="onTabOpen(0, accordion)"
+                      [hidden]="!filterTabs('grafico 1', 'Gráfico N° 1: Remisión de Información VMA Año actual, Según tamaño de la empresa.')">
+        <ng-container *ngIf="chartDataRemisionInfo; else loading">
+          <app-bar-chart [barChartDataset]="chartDataRemisionInfo"
+                         [labels]="chartLabelsRemisionInfo"
+                         [esVertical]="true"
+                         [esLabelDataAfuera]="true"
+                         [colorDataLabel]="'#575757'"></app-bar-chart>
+        </ng-container>
+      </p-accordionTab>
+      <p-accordionTab header="Gráfico N° 2: Número de EP que implementaron la normativa VMA, Según tamaño."
+                      (click)="onTabOpen(1, accordion)"
+                      [hidden]="!filterTabs('grafico 2', 'Gráfico N° 2: Número de EP que implementaron la normativa VMA, Según tamaño.')">
+        <ng-container *ngIf="chartDataNumeroEP; else loading">
+          <app-pie-chart [data]="chartDataNumeroEP" [labels]="chartLabelsNumeroEP"></app-pie-chart>
+        </ng-container>
+      </p-accordionTab>
+      <p-accordionTab header="Gráfico N° 3: Porcentaje de EP con área dedicada al monitoreo y control de los VMA, según tamaño de la EPS."
+                      (click)="onTabOpen(2, accordion)"
+                      [hidden]="!filterTabs('grafico 3', 'Gráfico N° 3: Porcentaje de EP con área dedicada al monitoreo y control de los VMA, según tamaño de la EPS.')">
+        <ng-container *ngIf="chartDataSiNo; else loading">
+          <app-bar-chart [barChartDataset]="chartDataSiNo"
+                         [labels]="chartLabelsSiNo"
+                         [tieneDecimalesDataLabel]="true"
+                         [esPorcentaje]="true" 
+                         [stepSize]="20"></app-bar-chart> <!-- [maximoX]="100"-->
+        </ng-container>
+      </p-accordionTab>
+      <p-accordionTab header="Gráfico N° 4: Número promedio de trabajadores dedicados a la implementación de los VMA, según tamaño de la EPS."
+                      (click)="onTabOpen(3, accordion)"
+                      [hidden]="!filterTabs('grafico 4', 'Gráfico N° 4: Número promedio de trabajadores dedicados a la implementación de los VMA, según tamaño de la EPS.')">
+        <ng-container *ngIf="chartTrabajadoresDedicadosRegistroData; else loading">
+          <app-bar-chart [barChartDataset]="chartTrabajadoresDedicadosRegistroData"
+                         [labels]="chartTrabajadoresDedicadosRegistroLabels"
+                         [colorDataLabel]="'#000'"
+                         [tieneDecimalesDataLabel]="true"
+                        ></app-bar-chart>
+        </ng-container>
+      </p-accordionTab>
+      <p-accordionTab header="Gráfico N° 5: Porcentaje de UND identificados, según tamaño de las Empresas Prestadoras."
+                      (click)="onTabOpen(4, accordion)"
+                      [hidden]="!filterTabs('grafico 5', 'Gráfico N° 5: Porcentaje de UND identificados, según tamaño de las Empresas Prestadoras.')">
+        <ng-container *ngIf="chartDataNumeroTotalUND; else loading">
+          <app-pie-chart [data]="chartDataNumeroTotalUND" [labels]="chartLabelsNumeroTotalUND" [esPorcentaje]="true" [tieneDecimalesDataLabel]="true"></app-pie-chart>
+        </ng-container>
+      </p-accordionTab>
+
+      <p-accordionTab header="Gráfico N° 6: Porcentaje de UND inspeccionados, según tamaño de la EPS ."
+                      (click)="onTabOpen(5, accordion)"
+                      [hidden]="!filterTabs('grafico 6', 'Gráfico N° 6:  Porcentaje de UND inspeccionados, según tamaño de la EPS. ')">
+                      <ng-container *ngIf="chartUNDInspeccionadosData; else loading">
+                        <app-bar-chart [barChartDataset]="chartUNDInspeccionadosData"
+                                       [labels]="chartUNDInspeccionadosLabels"
+                                       [tieneDecimalesDataLabel]="true"
+                                       [esPorcentaje]="true" [stepSize]="20"></app-bar-chart>
+                      </ng-container>
+      </p-accordionTab>
+
+      <p-accordionTab header="Gráfico N° 7: Porcentaje de UND a los que se le ha solicitado el diagrama de flujo y balance hídrico, según tamaño de la EP "
+                      (click)="onTabOpen(6, accordion)"
+                      [hidden]="!filterTabs('grafico 7', 'Gráfico N° 7: Porcentaje de UND a los que se le ha solicitado el diagrama de flujo y balance hídrico, según tamaño de la EP ')">
+        <ng-container *ngIf="chartDiagramaFlujoData; else loading">
+          <app-bar-chart [barChartDataset]="chartDiagramaFlujoData"
+                         [labels]="chartDiagramaFlujoLabels"
+                         [tieneDecimalesDataLabel]="true"
+                         [esPorcentaje]="true" [stepSize]="20"></app-bar-chart>
+        </ng-container>
+      </p-accordionTab>
+
+      <p-accordionTab header="Gráfico N° 8: Porcentaje de UND que han presentado el diagrama de flujo y balance hídrico, según tamaño de la EP."
+                      (click)="onTabOpen(7, accordion)"
+                      [hidden]="!filterTabs('grafico 8', 'Gráfico N° 8: Porcentaje de UND que han presentado el diagrama de flujo y balance hídrico, según tamaño de la EP.')">
+                      <ng-container *ngIf="chartDiagramaFlujoPresentadosData; else loading">
+                        <app-bar-chart [barChartDataset]="chartDiagramaFlujoPresentadosData"
+                                       [labels]="chartDiagramaFlujoPresentadosLabels"
+                                       [tieneDecimalesDataLabel]="true"
+                                       [esPorcentaje]="true" [stepSize]="20"></app-bar-chart>
+                      </ng-container>
+      </p-accordionTab>
+      <p-accordionTab header="Gráfico N° 9: Comparativo de los UND registrados, inspeccionados e identificados, según tamaño de la EP."
+                      (click)="onTabOpen(8, accordion)"
+                      [hidden]="!filterTabs('grafico 9', 'Gráfico N° 9: Comparativo de los UND registrados, inspeccionados e identificados, según tamaño de la EP.')">
+       <!-- <ng-container *ngIf="chartDataNumeroTotalUND; else loading">
+          <app-pie-chart [data]="chartDataNumeroTotalUND" [labels]="chartLabelsNumeroTotalUND" [esPorcentaje]="true" [tieneDecimalesDataLabel]="true"></app-pie-chart>
+        </ng-container>  -->
+      </p-accordionTab>
+
+      <p-accordionTab header="Gráfico N° 10: Porcentaje de UND que cuentan con caja de registro o dispositivo similar en la parte externa de su predio, según tamaño de la EP."
+                      (click)="onTabOpen(9, accordion)"
+                      [hidden]="!filterTabs('grafico 10', 'Gráfico N° 10: Porcentaje de UND que cuentan con caja de registro o dispositivo similar en la parte externa de su predio, según tamaño de la EP.')">
+                      <ng-container *ngIf="chartPorcentajeUNDConCajaRegistroData; else loading">
+                        <app-bar-chart [barChartDataset]="chartPorcentajeUNDConCajaRegistroData"
+                                       [labels]="chartPorcentajeUNDConCajaRegistroLabels"
+                                       [tieneDecimalesDataLabel]="true"
+                                       [esPorcentaje]="true" [stepSize]="20"></app-bar-chart>
+                      </ng-container>
+      </p-accordionTab>
+
+      <p-accordionTab header="Gráfico N° 11: Porcentaje de UND a los que se realizó la toma de muestra inopinada, según tamaño de la EP."
+                      (click)="onTabOpen(10, accordion)"
+                      [hidden]="!filterTabs('grafico 11', 'Gráfico N° 11: Porcentaje de UND a los que se realizó la toma de muestra inopinada, según tamaño de la EP.')">
+                      <ng-container *ngIf="chartPorcentajeUNDTomaMuestraInopinadaData; else loading">
+                      <app-bar-chart [barChartDataset]="chartPorcentajeUNDTomaMuestraInopinadaData"
+                                     [labels]="chartPorcentajeUNDTomaMuestraInopinadaLabels"
+                                     [tieneDecimalesDataLabel]="true"
+                                     [esPorcentaje]="true" [stepSize]="20"></app-bar-chart>
+                      </ng-container>
+      </p-accordionTab>
+
+      <p-accordionTab header="Gráfico N° 12: Porcentaje de toma de muestra inopinada, según tamaño de la EP."
+                      (click)="onTabOpen(11, accordion)"
+                      [hidden]="!filterTabs('grafico 12', 'Gráfico N° 12: Porcentaje de toma de muestra inopinada, según tamaño de la EP.')">
+                      <ng-container *ngIf="chartDataPorcentajeUNDConCajaRegistro; else loading">
+                          <app-pie-chart [data]="chartDataPorcentajeUNDConCajaRegistro" [labels]="chartLabelsPorcentajeUNDConCajaRegistro" [esPorcentaje]="true" [tieneDecimalesDataLabel]="true"></app-pie-chart>
+                        </ng-container>
+
+      </p-accordionTab>
+
+      <p-accordionTab header="Gráfico N° 13: Porcentaje de UND que sobrepasan algún(os) parámetro(s) del Anexo N° 1 del REGLAMENTO VMA, según tamaño de la EP."
+                      (click)="onTabOpen(12, accordion)"
+                      [hidden]="!filterTabs('grafico 13', 'Gráfico N° 13: Porcentaje de UND que sobrepasan algún(os) parámetro(s) del Anexo N° 1 del REGLAMENTO VMA, según tamaño de la EP.')">
+       <!-- <ng-container *ngIf="chartDataNumeroTotalUND; else loading">
+          <app-pie-chart [data]="chartDataNumeroTotalUND" [labels]="chartLabelsNumeroTotalUND" [esPorcentaje]="true" [tieneDecimalesDataLabel]="true"></app-pie-chart>
+        </ng-container>  -->
+      </p-accordionTab>
+
+      <p-accordionTab header="Gráfico N° 14: Porcentaje de UND a los que se ha facturado por concepto de Pago adicional por exceso de concentración, según tamaño de la EP."
+                      (click)="onTabOpen(13, accordion)"
+                      [hidden]="!filterTabs('grafico 14', 'Gráfico N° 14: Porcentaje de UND a los que se ha facturado por concepto de Pago adicional por exceso de concentración, según tamaño de la EP.')">
+       <!-- <ng-container *ngIf="chartDataNumeroTotalUND; else loading">
+          <app-pie-chart [data]="chartDataNumeroTotalUND" [labels]="chartLabelsNumeroTotalUND" [esPorcentaje]="true" [tieneDecimalesDataLabel]="true"></app-pie-chart>
+        </ng-container>  -->
+      </p-accordionTab>
+
+      <p-accordionTab header="Gráfico N° 15: Porcentaje de UND que realizaron el Pago adicional por exceso de concentración, según tamaño de la EP."
+                      (click)="onTabOpen(14, accordion)"
+                      [hidden]="!filterTabs('grafico 15', 'Gráfico N° 15: Porcentaje de UND que realizaron el Pago adicional por exceso de concentración, según tamaño de la EP.')">
+       <!-- <ng-container *ngIf="chartDataNumeroTotalUND; else loading">
+          <app-pie-chart [data]="chartDataNumeroTotalUND" [labels]="chartLabelsNumeroTotalUND" [esPorcentaje]="true" [tieneDecimalesDataLabel]="true"></app-pie-chart>
+        </ng-container>  -->
+      </p-accordionTab>
+      <p-accordionTab header="Gráfico N° 16: Porcentaje de UND que sobrepasan algún(os) parámetro(s) del Anexo N° 2 del Reglamento de VMA, según tamaño de la EP ."
+                      (click)="onTabOpen(15, accordion)"
+                      [hidden]="!filterTabs('grafico 16', 'Gráfico N° 16: Porcentaje de UND que sobrepasan algún(os) parámetro(s) del Anexo N° 2 del Reglamento de VMA, según tamaño de la EP .')">
+       <!-- <ng-container *ngIf="chartDataNumeroTotalUND; else loading">
+          <app-pie-chart [data]="chartDataNumeroTotalUND" [labels]="chartLabelsNumeroTotalUND" [esPorcentaje]="true" [tieneDecimalesDataLabel]="true"></app-pie-chart>
+        </ng-container>  -->
+      </p-accordionTab>
+
+      <p-accordionTab header="Gráfico N° 17: Porcentaje de UND a los que les ha otorgado un plazo adicional (hasta 18 meses) con el fin de implementar las acciones de mejora y acreditar el cumplimiento de los VMA, según tamaño de la EP."
+                      (click)="onTabOpen(16, accordion)"
+                      [hidden]="!filterTabs('grafico 17', 'Gráfico N° 17: Porcentaje de UND a los que les ha otorgado un plazo adicional (hasta 18 meses) con el fin de implementar las acciones de mejora y acreditar el cumplimiento de los VMA, según tamaño de la EP.')">
+       <!-- <ng-container *ngIf="chartDataNumeroTotalUND; else loading">
+          <app-pie-chart [data]="chartDataNumeroTotalUND" [labels]="chartLabelsNumeroTotalUND" [esPorcentaje]="true" [tieneDecimalesDataLabel]="true"></app-pie-chart>
+        </ng-container>  -->
+      </p-accordionTab>
+
+      <p-accordionTab header="Gráfico N° 18: Porcentaje de UND que han suscrito un acuerdo en el que se establece un plazo otorgado, por única vez, a fin de ejecutar las acciones de mejora y acreditar el cumplimiento de los VMA, según tamaño de la EP."
+                      (click)="onTabOpen(17, accordion)"
+                      [hidden]="!filterTabs('grafico 18', 'Gráfico N° 18: Porcentaje de UND que han suscrito un acuerdo en el que se establece un plazo otorgado, por única vez, a fin de ejecutar las acciones de mejora y acreditar el cumplimiento de los VMA, según tamaño de la EP.')">
+       <!-- <ng-container *ngIf="chartDataNumeroTotalUND; else loading">
+          <app-pie-chart [data]="chartDataNumeroTotalUND" [labels]="chartLabelsNumeroTotalUND" [esPorcentaje]="true" [tieneDecimalesDataLabel]="true"></app-pie-chart>
+        </ng-container>  -->
+      </p-accordionTab>
+
+      <p-accordionTab header="Gráfico N° 19: Porcentaje de recibidos por VMA, según tamaño de la EP."
+                      (click)="onTabOpen(18, accordion)"
+                      [hidden]="!filterTabs('grafico 19', 'Gráfico N° 19: Porcentaje de recibidos por VMA, según tamaño de la EP.')">
+       <!-- <ng-container *ngIf="chartDataNumeroTotalUND; else loading">
+          <app-pie-chart [data]="chartDataNumeroTotalUND" [labels]="chartLabelsNumeroTotalUND" [esPorcentaje]="true" [tieneDecimalesDataLabel]="true"></app-pie-chart>
+        </ng-container>  -->
+      </p-accordionTab>
+
+      <p-accordionTab header="Gráfico N° 20: Porcentaje de reclamos por VMA resueltos fundados, según tamaño de la EP."
+                      (click)="onTabOpen(19, accordion)"
+                      [hidden]="!filterTabs('grafico 20', 'Gráfico N° 20: Porcentaje de reclamos por VMA resueltos fundados, según tamaño de la EP.')">
+       <!-- <ng-container *ngIf="chartDataNumeroTotalUND; else loading">
+          <app-pie-chart [data]="chartDataNumeroTotalUND" [labels]="chartLabelsNumeroTotalUND" [esPorcentaje]="true" [tieneDecimalesDataLabel]="true"></app-pie-chart>
+        </ng-container>  -->
+      </p-accordionTab>
+
+      <p-accordionTab header="Gráficos N° 21 y 22: Costo anual incurrido en la identificación, inspección e inscripción de los UND, según tamaño de la EP."
+                      (click)="onTabOpen(20, accordion)"
+                      [hidden]="!filterTabs('grafico 21 y 22', 'Gráficos N° 21 y 22: Costo anual incurrido en la identificación, inspección e inscripción de los UND, según tamaño de la EP.')">
+       <!-- <ng-container *ngIf="chartDataNumeroTotalUND; else loading">
+          <app-pie-chart [data]="chartDataNumeroTotalUND" [labels]="chartLabelsNumeroTotalUND" [esPorcentaje]="true" [tieneDecimalesDataLabel]="true"></app-pie-chart>
+        </ng-container>  -->
+      </p-accordionTab>
+
+      <p-accordionTab header="Gráficos N° 23: Costo anual por conexión incurrido en la identificación, inspección e inscripción de los UND."
+                      (click)="onTabOpen(21, accordion)"
+                      [hidden]="!filterTabs('grafico 23', 'Gráficos N° 23: Costo anual por conexión incurrido en la identificación, inspección e inscripción de los UND.')">
+       <!-- <ng-container *ngIf="chartDataNumeroTotalUND; else loading">
+          <app-pie-chart [data]="chartDataNumeroTotalUND" [labels]="chartLabelsNumeroTotalUND" [esPorcentaje]="true" [tieneDecimalesDataLabel]="true"></app-pie-chart>
+        </ng-container>  -->
+      </p-accordionTab>
+
+      <p-accordionTab header="Gráficos N° 24 y 25: Costo anual incurrido por realizar las tomas de muestras inopinadas, según tamaño de la EP."
+                      (click)="onTabOpen(21, accordion)"
+                      [hidden]="!filterTabs('grafico 24 y 25', 'Gráficos N° 24 y 25: Costo anual incurrido por realizar las tomas de muestras inopinadas, según tamaño de la EP.')">
+       <!-- <ng-container *ngIf="chartDataNumeroTotalUND; else loading">
+          <app-pie-chart [data]="chartDataNumeroTotalUND" [labels]="chartLabelsNumeroTotalUND" [esPorcentaje]="true" [tieneDecimalesDataLabel]="true"></app-pie-chart>
+        </ng-container>  -->
+      </p-accordionTab>
+      
+
+    </p-accordion>
   </div>
 
-  <div class="card chart-card" > <!-- style="width:60%;"-->
-    <h3>Gráfico N° 3: Porcentaje de EP con área dedicada al monitoreo y control de los VMA, según tamaño de la EPS. </h3>
-    <app-bar-chart [barChartDataset]="chartDataSiNo"
-                   [labels]="chartLabelsSiNo"
-                   [tieneDecimalesDataLabel]="true"
-                   [esPorcentaje]="true" [maximoX]="100"></app-bar-chart>
-  </div>
-  <div class="card chart-card" > <!-- style="width:60%;"-->
-    <h3>Gráfico N° 4: Número promedio de trabajadores dedicados a la implementación de los VMA, según tamaño de la EPS. </h3>
-    <app-bar-chart [barChartDataset]="chartTrabajadoresDedicadosRegistroData"
-                   [labels]="chartTrabajadoresDedicadosRegistroLabels"
-                   [colorDataLabel]="'#000'"
-                   [tieneDecimalesDataLabel]="true"
-                   [maximoX]="10"></app-bar-chart>
-  </div>
-  <div class="card chart-card" >
-    <h3>Gráfico N° 5: Porcentaje de UND identificados, según tamaño de las Empresas Prestadoras.</h3>
-    <app-pie-chart [data]="chartDataNumeroTotalUND" [labels]="chartLabelsNumeroTotalUND" [esPorcentaje]="true" [tieneDecimalesDataLabel]="true"></app-pie-chart>
-  </div>
-
+  <ng-template #loading>
+    <p-progressBar mode="indeterminate" [style]="{'height': '6px'}"></p-progressBar>
+  </ng-template>
 </div>
 
-<!--
- <div class="grid p-fluid margin-container">
-    <div class="col-12 lg:col-6">
-      <div class="card chart-card">
-        <h4>Grafico N°01: Remisión de Información VMA Año actual, Según tamaño de la empresa</h4>
-        <p-chart type="bar" [data]="barChartData1" [style]="{'height': '300px'}"></p-chart>
-      </div>
-    </div>
-    <div class="col-12 lg:col-6">
-      <div class="card flex flex-column align-items-center chart-card">
-        <h4 class="text-left w-full">Grafico N°02: Número de EP que implementaron la normativa VMA, Según tamaño</h4>
-        <p-chart type="pie" [data]="pieChartData1" [style]="{'height': '300px'}"></p-chart>
-      </div>
-    </div>
-
-
-    <div class="col-12 lg:col-6">
-        <div class="card flex flex-column align-items-center chart-card">
-          <h4 class="text-left w-full">Grafico N°03: Porcentaje de EP con área dedicada al monitoreo y control de los VMA, según tamaño de la EP.</h4>
-          <p-chart type="bar" [data]="barChartData2" [options]="chartOptions"  [style]="{'height': '300px'}"></p-chart>
-        </div>
-      </div>
-
-
-    <div class="col-12 lg:col-6">
-      <div class="card flex flex-column align-items-center chart-card">
-        <h4 class="text-left w-full">Grafico N°04: Número promedio de trabajadores dedicados a la implementación de los VMA, según tamaño de la EP. </h4>
-        <p-chart type="pie" [data]="pieChartData2" [style]="{'height': '300px'}"></p-chart>
-      </div>
-    </div>
-  </div>
-
--->
-
-
-  <!-- <app-loading *ngIf="isLoading"></app-loading> -->

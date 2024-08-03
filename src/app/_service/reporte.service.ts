@@ -11,6 +11,7 @@ import { ListaReporte } from '../_model/reporte';
 import {ChartDto} from "../_model/chart-dto";
 import {RegistroPromedioTrabajadorVMAChartDto} from "../_model/RegistroPromedioTrabajadorVMAChartDto";
 import {PieChartBasicoDto} from "../_model/pie-chart-basico-dto";
+import {BarChartBasicoDto} from "../_model/bar-chart-basico-dto";
 
 @Injectable({
     providedIn: 'root'
@@ -40,10 +41,53 @@ export class ReporteService {
           .pipe(map((response: any) => response.items));
     }
 
-  generarReporteNumeroTotalUND(anio: number): Observable<PieChartBasicoDto[]> {
-    return this.http.get(`${this.url}/api/reporte/numero-total-und?anio=${anio.toString()}`)
-      .pipe(map((response: any) => response.items));
-  }
+    generarReporteNumeroTotalUND(anio: number): Observable<PieChartBasicoDto[]> {
+      return this.http.get(`${this.url}/api/reporte/numero-total-und?anio=${anio.toString()}`)
+        .pipe(map((response: any) => response.items));
+    }
+
+    generarReporteDiagramaUNDInspeccionados(anio: number): Observable<BarChartBasicoDto[]> {
+        return this.http.get(`${this.url}/api/reporte/numero-und-inspeccionados?anio=${anio.toString()}`)
+          .pipe(map((response: any) => response.items));
+    }
+
+    generarReporteDiagramaFlujoYBalance(anio: number): Observable<BarChartBasicoDto[]> {
+        return this.http.get(`${this.url}/api/reporte/diagrama-flujo-balance?anio=${anio.toString()}`)
+          .pipe(map((response: any) => response.items));
+    }
+    //grafico 8
+    generarReporteDiagramaFlujoYBalancePresentados(anio: number): Observable<BarChartBasicoDto[]> {
+        return this.http.get(`${this.url}/api/reporte/diagrama-flujo-balance-presentado?anio=${anio.toString()}`)
+          .pipe(map((response: any) => response.items));
+    }
+    //grafico 9
+
+
+    //grafico 10
+    generarReportePorcentajeUNDConCajaRegistro(anio: number): Observable<BarChartBasicoDto[]> {
+        return this.http.get(`${this.url}/api/reporte/porcentaje-und-caja-registro?anio=${anio.toString()}`)
+          .pipe(map((response: any) => response.items));
+    }
+
+    //grafico 11
+    generarReportePorcentajeUNDTomaMuestraInopinada(anio: number): Observable<BarChartBasicoDto[]> {
+        return this.http.get(`${this.url}/api/reporte/porcentaje-und-muestra-inopinada?anio=${anio.toString()}`)
+          .pipe(map((response: any) => response.items));
+    }
+
+
+    //grafico 12
+    generarReporteTotalMuestrasInopinadas(anio: number): Observable<PieChartBasicoDto[]> {
+        return this.http.get(`${this.url}/api/reporte/porcentaje-total-muestras-inopinadas?anio=${anio.toString()}`)
+          .pipe(map((response: any) => response.items));
+    }
+
+    //grafico 13
+   /* generarReporteDiagramaFlujoYBalancePresentados(anio: number): Observable<BarChartBasicoDto[]> {
+        return this.http.get(`${this.url}/api/reporte/diagrama-flujo-balance-presentado?anio=${anio.toString()}`)
+          .pipe(map((response: any) => response.items));
+    }*/
+
 
     fechaprocesa(): Observable<any>{
 

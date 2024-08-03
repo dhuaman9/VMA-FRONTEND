@@ -30,3 +30,9 @@
   border-color: #27a0ff;
   color: #ffffff;
 }
+
+.horizontal-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 8px; /* Puedes ajustar este valor según el margen que desees */
+}

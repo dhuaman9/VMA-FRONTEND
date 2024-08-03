@@ -254,7 +254,7 @@ export class RegistrarVmaComponent implements OnInit {
       this.guardar(true);
     } else {
       this.formularioGeneral.markAllAsTouched();
-      Swal.fire('Registrado final','Para registrar todo debe llenar el formulario.','info')
+      Swal.fire('Registrado final','Para registrar todo debe completar el formulario.','info')
     }
   }
 
