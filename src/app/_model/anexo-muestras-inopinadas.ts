@@ -6,5 +6,7 @@ export interface AnexoTomaMuestrasInopinadas {
     nroMuestraInopinada: number;
     porcentajeMuestraInopinada: number;
 
+ 
+
   }
 

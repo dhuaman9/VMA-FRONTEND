@@ -65,3 +65,23 @@
         }
     }
 }
+
+.anexo ::ng-deep p-accordion p-accordiontab {
+
+    /*color de los tabs*/
+    .p-accordion-header-link {
+      background: #19b319 !important;
+      border: 1px solid #19b319 !important;
+    }
+  
+    /*color del la sombra en los bordes*/
+    .p-accordion-header:not(.p-disabled) .p-accordion-header-link:focus {
+      box-shadow: 0 0 0 0.2rem #a6ffa6 !important;
+    }
+  
+    /*color del seleccionado*/
+    .p-highlight .p-accordion-header-link {
+      background: #19812d !important;
+      border: 1px solid #19812d !important;
+    }
+  }

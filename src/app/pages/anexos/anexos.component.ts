@@ -8,7 +8,11 @@ import { AnexoUNDRegistrados } from 'src/app/_model/anexo-eps-inspeccionados';
 import { AnexoTomaMuestrasInopinadas } from 'src/app/_model/anexo-muestras-inopinadas';
 import { AnexoEvaluacionVmaAnexo1 } from 'src/app/_model/anexo-ep-evaluacion-vma-anexo1';
 import { AnexoEvaluacionVmaAnexo2 } from 'src/app/_model/anexo-ep-evaluacion-vma-anexo2';
-import { AnexoEPAtenciondeReclamosVMA } from 'src/app/_model/anexo-ep-reclamos-vma-dto';
+import { AnexoEPAtenciondeReclamosVMA } from 'src/app/_model/anexo-ep-reclamos-vma';
+import { AnexoCostoTotalMuestrasInopinadas } from 'src/app/_model/anexo-costo-total-muestras-inopinadas';
+import { AnexoCostosUND } from 'src/app/_model/anexo-costos-und';
+import { AnexoCostoTotalesIncurridos } from 'src/app/_model/anexo-costo_totales-incurridos';
+import { AnexoIngresos } from 'src/app/_model/anexo-ingresos';
 
 @Component({
   selector: 'app-anexos',
@@ -27,7 +31,14 @@ export class AnexosComponent implements OnInit, OnDestroy {
   anexoEvaluacionVmaAnexo1: AnexoEvaluacionVmaAnexo1[] = [];
   anexoEvaluacionVmaAnexo2: AnexoEvaluacionVmaAnexo2[] = [];
   anexoEPAtenciondeReclamosVMA: AnexoEPAtenciondeReclamosVMA[] = [];
+  anexoCostosUND: AnexoCostosUND[] = [];
+  anexoCostoTotalMuestrasInopinadas: AnexoCostoTotalMuestrasInopinadas[] = [];
+  anexoCostoTotalesIncurridos: AnexoCostoTotalesIncurridos[] = [];
+  anexoIngresos: AnexoIngresos[] = [];
+
   unsubscribe$: Subject<void> = new Subject<void>();
+
+  openedTabs: boolean[] = [false, false,false,false,false,false,false,false,false,false,false];
 
   constructor(private anexoService: AnexoService) {
     this.initializeYears();
@@ -47,6 +58,15 @@ export class AnexosComponent implements OnInit, OnDestroy {
   }
 
   applyFilter(): void {
+    this.cleanDataChart();
+    this.reloadOpenedTabs();
+  }
+
+
+/*
+  applyFilter(): void {
+
+    //anexo 1
     this.anexoService.getListAnexoRegistrosVMA(this.selectedYear)
       .pipe(
         takeUntil(this.unsubscribe$),
@@ -95,15 +115,179 @@ export class AnexosComponent implements OnInit, OnDestroy {
       tap(response => this.anexoEPAtenciondeReclamosVMA = this.processAnexoRegistros(response))
     ).subscribe();
 
-    /*
-     this.anexoService.getListAnexoTomaMuestrasInopinadas(this.selectedYear)
+
+    //anexo 8
+    this.anexoService.getListAnexoCostosUND(this.selectedYear)
     .pipe(
       takeUntil(this.unsubscribe$),
-      tap(response => this.anexoTomaMuestrasInopinadas = this.processAnexoRegistros(response))
+      tap(response => this.anexoCostosUND = this.processAnexoRegistros(response))
     ).subscribe();
-    */
 
+    //anexo 9
+    this.anexoService.getListAnexoCostosTotalesxMuestrasInopinadas(this.selectedYear)
+    .pipe(
+      takeUntil(this.unsubscribe$),
+      tap(response => this.anexoCostoTotalMuestrasInopinadas = this.processAnexoRegistros(response))
+    ).subscribe();
+
+    //anexo 10
+    this.anexoService.getListAnexoDetalleCostosTotalesIncurridos(this.selectedYear)
+    .pipe(
+      takeUntil(this.unsubscribe$),
+      tap(response => this.anexoCostoTotalesIncurridos = this.processAnexoRegistros(response))
+    ).subscribe();
+    
+    this.anexoService.getListAnexoIngresosVMA(this.selectedYear)
+    .pipe(
+      takeUntil(this.unsubscribe$),
+      tap(response => {
+        // Procesar los registros y formatear los ingresos
+        this.anexoIngresos = this.processAnexoRegistros(response).map(anexo => {
+          return {
+            ...anexo,
+            ingresosVma: this.formatNumberWithSpaces(anexo.ingresosVma)
+          };
+        });
+      })
+    ).subscribe();
+
+  
+
+  }*/
+
+  onTabOpen(tabIndex: number, accordion: any, reload?: boolean) {
+    if(!reload) {
+      this.openedTabs[tabIndex] = !this.openedTabs[tabIndex];
+    }
+
+    if (accordion.tabs[tabIndex].selected) {
+      switch (tabIndex) {
+        case 0:
+          if (this.openedTabs[tabIndex]) {
+            this.anexoService.getListAnexoRegistrosVMA(this.selectedYear)
+            .pipe(
+              takeUntil(this.unsubscribe$),
+              tap(response => this.anexoRegistros = this.processAnexoRegistros(response))
+            ).subscribe();
+          }
+        break;
+        case 1:
+          if (this.openedTabs[tabIndex]) {
+            this.anexoService.getListAnexoMarcaronSi(this.selectedYear)
+            .pipe(
+              takeUntil(this.unsubscribe$),
+              tap(response => this.anexoRespondieronSi = this.processAnexoRegistros(response))
+            ).subscribe();
+          }
+        break;
+        case 2:
+          if (this.openedTabs[tabIndex]) {
+            this.anexoService.getListAnexoUNDregistrados(this.selectedYear)
+              .pipe(
+                takeUntil(this.unsubscribe$),
+                tap(response => this.anexoUNDregistrados = this.processAnexoRegistros(response))
+            ).subscribe();
+
+          }
+        break;
+        case 3:
+          if (this.openedTabs[tabIndex]) {
+            this.anexoService.getListAnexoTomaMuestrasInopinadas(this.selectedYear)
+            .pipe(
+              takeUntil(this.unsubscribe$),
+              tap(response => this.anexoTomaMuestrasInopinadas = this.processAnexoRegistros(response))
+            ).subscribe();
+          }
+        break;
+        case 4:
+          if (this.openedTabs[tabIndex]) {
+            this.anexoService.getListAnexoEPRealizaronEvaluacionVMAAnexo1(this.selectedYear)
+            .pipe(
+              takeUntil(this.unsubscribe$),
+              tap(response => this.anexoEvaluacionVmaAnexo1 = this.processAnexoRegistros(response))
+            ).subscribe();
+          }
+        break;
+        case 5:
+          if (this.openedTabs[tabIndex]) {
+            this.anexoService.getListAnexoEPRealizaronEvaluacionVMAAnexo2(this.selectedYear)
+            .pipe(
+              takeUntil(this.unsubscribe$),
+              tap(response => this.anexoEvaluacionVmaAnexo2 = this.processAnexoRegistros(response))
+            ).subscribe();        
+          }
+        break;
+        case 6:
+          if (this.openedTabs[tabIndex]) {
+            this.anexoService.getListAnexoAtenciondeReclamosVMA(this.selectedYear)
+            .pipe(
+              takeUntil(this.unsubscribe$),
+              tap(response => this.anexoEPAtenciondeReclamosVMA = this.processAnexoRegistros(response))
+            ).subscribe();
+          }
+        break;
+        case 7:
+          if (this.openedTabs[tabIndex]) {
+            this.anexoService.getListAnexoCostosUND(this.selectedYear)
+            .pipe(
+              takeUntil(this.unsubscribe$),
+              tap(response => this.anexoCostosUND = this.processAnexoRegistros(response))
+            ).subscribe();
+          }
+        break;
+        case 8:
+          if (this.openedTabs[tabIndex]) {
+            this.anexoService.getListAnexoCostosTotalesxMuestrasInopinadas(this.selectedYear)
+            .pipe(
+              takeUntil(this.unsubscribe$),
+              tap(response => this.anexoCostoTotalMuestrasInopinadas = this.processAnexoRegistros(response))
+            ).subscribe();
+          }
+        break;
+        case 9:
+          if (this.openedTabs[tabIndex]) {
+            this.anexoService.getListAnexoDetalleCostosTotalesIncurridos(this.selectedYear)
+            .pipe(
+              takeUntil(this.unsubscribe$),
+              tap(response => this.anexoCostoTotalesIncurridos = this.processAnexoRegistros(response))
+            ).subscribe();
+          }
+        break;
+        case 10:
+          if (this.openedTabs[tabIndex]) {
+            this.anexoService.getListAnexoIngresosVMA(this.selectedYear)
+            .pipe(
+              takeUntil(this.unsubscribe$),
+              tap(response => {
+                // Procesar los registros y formatear los ingresos
+                this.anexoIngresos = this.processAnexoRegistros(response).map(anexo => {
+                  return {
+                    ...anexo,
+                    ingresosVma: this.formatNumberWithSpaces(anexo.ingresosVma)
+                  };
+                });
+              })
+            ).subscribe();
+          }
+        break;
+      }
+    }
   }
+
+  filterText: string = '';
+
+
+  filterTabs(header: string, content: string): boolean {
+    if (!this.filterText) {
+      return true;
+    }
+
+    const searchText = this.filterText.toLowerCase();
+    return header.toLowerCase().includes(searchText) || content.toLowerCase().includes(searchText);
+  }
+
+
+
 
   setDefaultYear(): void {
     this.selectedYear = new Date().getFullYear();
@@ -136,6 +320,56 @@ export class AnexosComponent implements OnInit, OnDestroy {
 
     return processedData;
   }
+
+  formatNumberWithSpaces(num: number): string {
+    var rounded = num.toFixed(2);
+    var [integerPart, decimalPart] = rounded.split('.');
+    integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    return `${integerPart}.${decimalPart}`;
+  }
+
+  reloadOpenedTabs(): void {
+    const tabsSelected = [];
+    this.openedTabs.forEach((isOpen, index) => {
+      tabsSelected.push({selected: isOpen})
+    });
+
+    tabsSelected.forEach((isOpen, index) => {
+      if (isOpen) {
+        this.onTabOpen(index, { tabs: tabsSelected }, true);
+      }
+    })
+  }
+
+  cleanDataChart(): void {
+    /*this.chartDataNumeroEP = undefined;
+    this.chartLabelsNumeroEP = [];
+
+    this.chartDataRemisionInfo = undefined;
+    this.chartLabelsRemisionInfo = [];
+
+    this.chartDataSiNo = undefined;
+    this.chartLabelsSiNo = [];
+
+    this.chartDataNumeroTotalUND = undefined;
+    this.chartLabelsNumeroTotalUND = [];
+
+    this.chartTrabajadoresDedicadosRegistroData = undefined;
+    this.chartTrabajadoresDedicadosRegistroLabels = [];*/
+
+    //anexoRegistros: AnexoRegistro[] = [];
+    this.anexoRespondieronSi = [];
+    this.anexoUNDregistrados = [];
+    this.anexoTomaMuestrasInopinadas= [];
+    this.anexoEvaluacionVmaAnexo1 = [];
+    this.anexoEvaluacionVmaAnexo2 = [];
+    this.anexoEPAtenciondeReclamosVMA = [];
+    this.anexoCostosUND = [];
+    this.anexoCostoTotalMuestrasInopinadas = [];
+    this.anexoCostoTotalesIncurridos = [];
+    this.anexoIngresos = [];
+  }
+
 
   ngOnDestroy(): void {
     if(this.suscription) {

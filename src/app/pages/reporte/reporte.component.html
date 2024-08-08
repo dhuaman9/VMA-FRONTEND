@@ -271,13 +271,29 @@
       </p-accordionTab>
 
       <p-accordionTab header="Gráficos N° 24 y 25: Costo anual incurrido por realizar las tomas de muestras inopinadas, según tamaño de la EP."
-                      (click)="onTabOpen(21, accordion)"
+                      (click)="onTabOpen(22, accordion)"
                       [hidden]="!filterTabs('grafico 24 y 25', 'Gráficos N° 24 y 25: Costo anual incurrido por realizar las tomas de muestras inopinadas, según tamaño de la EP.')">
        <!-- <ng-container *ngIf="chartDataNumeroTotalUND; else loading">
           <app-pie-chart [data]="chartDataNumeroTotalUND" [labels]="chartLabelsNumeroTotalUND" [esPorcentaje]="true" [tieneDecimalesDataLabel]="true"></app-pie-chart>
         </ng-container>  -->
       </p-accordionTab>
       
+      <p-accordionTab header="Gráficos N° 26: Costo anual por conexión incurrido por realizar las tomas de muestras inopinadas."
+                      (click)="onTabOpen(22, accordion)"
+                      [hidden]="!filterTabs('grafico 26', 'Gráficos N° 26:  Costo anual por conexión incurrido por realizar las tomas de muestras inopinadas.')">
+       <!-- <ng-container *ngIf="chartDataNumeroTotalUND; else loading">
+          <app-pie-chart [data]="chartDataNumeroTotalUND" [labels]="chartLabelsNumeroTotalUND" [esPorcentaje]="true" [tieneDecimalesDataLabel]="true"></app-pie-chart>
+        </ng-container>  -->
+      </p-accordionTab>
+
+      <p-accordionTab header="Gráficos N° 27: Costo anual por otros gastos incurridos en la implementación de los VMA, según tamaño de la EP (miles de soles)."
+                      (click)="onTabOpen(22, accordion)"
+                      [hidden]="!filterTabs('grafico 27', 'Gráficos N° 27: Costo anual por otros gastos incurridos en la implementación de los VMA, según tamaño de la EP (miles de soles).')">
+       <!-- <ng-container *ngIf="chartDataNumeroTotalUND; else loading">
+          <app-pie-chart [data]="chartDataNumeroTotalUND" [labels]="chartLabelsNumeroTotalUND" [esPorcentaje]="true" [tieneDecimalesDataLabel]="true"></app-pie-chart>
+        </ng-container>  -->
+      </p-accordionTab>
+
 
     </p-accordion>
   </div>

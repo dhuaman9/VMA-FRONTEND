@@ -6,5 +6,6 @@ export interface ComparativoUNDDTO {
     UNDidentificados: number;
     porcentajeUNDinspeccionados: number;
     porcentajeUNDidentificados: number;
+
   }
   
