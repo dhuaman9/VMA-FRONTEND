@@ -4,6 +4,11 @@ import {Subject, Subscription} from "rxjs";
 import {AnexoRegistro} from "../../_model/anexo-registro";
 import {takeUntil, tap} from "rxjs/operators";
 import {AnexoRespondieronSi} from "../../_model/anexo-respondieron-si";
+import { AnexoUNDRegistrados } from 'src/app/_model/anexo-eps-inspeccionados';
+import { AnexoTomaMuestrasInopinadas } from 'src/app/_model/anexo-muestras-inopinadas';
+import { AnexoEvaluacionVmaAnexo1 } from 'src/app/_model/anexo-ep-evaluacion-vma-anexo1';
+import { AnexoEvaluacionVmaAnexo2 } from 'src/app/_model/anexo-ep-evaluacion-vma-anexo2';
+import { AnexoEPAtenciondeReclamosVMA } from 'src/app/_model/anexo-ep-reclamos-vma-dto';
 
 @Component({
   selector: 'app-anexos',
@@ -14,8 +19,14 @@ export class AnexosComponent implements OnInit, OnDestroy {
   years: {label: string, value: number}[];
   selectedYear: number;
   suscription: Subscription;
+
   anexoRegistros: AnexoRegistro[] = [];
   anexoRespondieronSi: AnexoRespondieronSi[] = [];
+  anexoUNDregistrados: AnexoUNDRegistrados[] = [];
+  anexoTomaMuestrasInopinadas: AnexoTomaMuestrasInopinadas[] = [];
+  anexoEvaluacionVmaAnexo1: AnexoEvaluacionVmaAnexo1[] = [];
+  anexoEvaluacionVmaAnexo2: AnexoEvaluacionVmaAnexo2[] = [];
+  anexoEPAtenciondeReclamosVMA: AnexoEPAtenciondeReclamosVMA[] = [];
   unsubscribe$: Subject<void> = new Subject<void>();
 
   constructor(private anexoService: AnexoService) {
@@ -42,11 +53,56 @@ export class AnexosComponent implements OnInit, OnDestroy {
         tap(response => this.anexoRegistros = this.processAnexoRegistros(response))
       ).subscribe();
 
+      //anexo 2
     this.anexoService.getListAnexoMarcaronSi(this.selectedYear)
       .pipe(
         takeUntil(this.unsubscribe$),
         tap(response => this.anexoRespondieronSi = this.processAnexoRegistros(response))
       ).subscribe();
+
+      //anexo 3
+    this.anexoService.getListAnexoUNDregistrados(this.selectedYear)
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        tap(response => this.anexoUNDregistrados = this.processAnexoRegistros(response))
+    ).subscribe();
+
+     //anexo 4
+    this.anexoService.getListAnexoTomaMuestrasInopinadas(this.selectedYear)
+    .pipe(
+      takeUntil(this.unsubscribe$),
+      tap(response => this.anexoTomaMuestrasInopinadas = this.processAnexoRegistros(response))
+    ).subscribe();
+
+     //anexo 5
+    this.anexoService.getListAnexoEPRealizaronEvaluacionVMAAnexo1(this.selectedYear)
+    .pipe(
+      takeUntil(this.unsubscribe$),
+      tap(response => this.anexoEvaluacionVmaAnexo1 = this.processAnexoRegistros(response))
+    ).subscribe();
+
+     //anexo 6
+    this.anexoService.getListAnexoEPRealizaronEvaluacionVMAAnexo2(this.selectedYear)
+    .pipe(
+      takeUntil(this.unsubscribe$),
+      tap(response => this.anexoEvaluacionVmaAnexo2 = this.processAnexoRegistros(response))
+    ).subscribe();
+
+    //anexo 7
+    this.anexoService.getListAnexoAtenciondeReclamosVMA(this.selectedYear)
+    .pipe(
+      takeUntil(this.unsubscribe$),
+      tap(response => this.anexoEPAtenciondeReclamosVMA = this.processAnexoRegistros(response))
+    ).subscribe();
+
+    /*
+     this.anexoService.getListAnexoTomaMuestrasInopinadas(this.selectedYear)
+    .pipe(
+      takeUntil(this.unsubscribe$),
+      tap(response => this.anexoTomaMuestrasInopinadas = this.processAnexoRegistros(response))
+    ).subscribe();
+    */
+
   }
 
   setDefaultYear(): void {

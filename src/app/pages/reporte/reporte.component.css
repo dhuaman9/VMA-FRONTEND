@@ -38,3 +38,40 @@
     border: 1px solid #19812d !important;
   }
 }
+
+/* Estilo general para la tabla */
+:host ::ng-deep .p-datatable table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+  margin-top: 1rem;
+}
+
+/* Estilo para las cabeceras */
+:host ::ng-deep .p-datatable thead th {
+  background-color: #d9e6f2; /* Color de fondo de las cabeceras */
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Estilo para las celdas del cuerpo de la tabla */
+:host ::ng-deep .p-datatable tbody td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+}
+
+/* Estilo para la fila de totales */
+:host ::ng-deep .p-datatable tfoot td {
+  font-weight: bold;
+  background-color: #f9f9f9; /* Color de fondo para la fila de totales */
+}
+
+
+
+/* Estilo para la cabecera */
+:host ::ng-deep .p-datatable thead {
+  border: 1px solid #ccc;
+}

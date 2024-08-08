@@ -105,6 +105,50 @@
        <!-- <ng-container *ngIf="chartDataNumeroTotalUND; else loading">
           <app-pie-chart [data]="chartDataNumeroTotalUND" [labels]="chartLabelsNumeroTotalUND" [esPorcentaje]="true" [tieneDecimalesDataLabel]="true"></app-pie-chart>
         </ng-container>  -->
+        <div>
+        <!--<h2>Grafico N° 9: Comparativo de los UND registrados, inspeccionados e identificados, según tamaño de la EP .</h2> -->
+      
+        <p-table [value]="tablaData" [responsiveLayout]="'scroll'">
+          <ng-template pTemplate="header">
+            <tr>
+              <th rowspan="2">Empresa Prestadora</th>
+              <th colspan="1">UND registrados (A)</th>
+              <th colspan="2">UND inspeccionados (B)</th>
+              <th colspan="2">UND identificados (C)</th>
+            </tr>
+            <tr>
+              <th>Cantidad</th>
+              <th>Cantidad</th>
+              <th>(A/B) %</th>
+              <th>Cantidad</th>
+              <th>(A/C) %</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData>
+            <tr>
+              <td>{{rowData.tamanioEmpresa}}</td>
+              <td>{{rowData.UNDregistrados}}</td>
+              <td>{{ rowData.UNDinspeccionados }}</td>
+              <td>{{ rowData.porcentajeUNDinspeccionados }}%</td>
+              <td>{{ rowData.UNDidentificados }}</td>
+              <td>{{ rowData.porcentajeUNDidentificados }}%</td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="footer">
+            <tr>
+              <td>{{ totalRow.empresa }}</td>
+              <td>{{ totalRow.registrados }}</td>
+              <td>{{ totalRow.inspeccionados }}</td>
+              <td>{{ totalRow.porcentajeAB }}%</td>
+              <td>{{ totalRow.identificados }}</td>
+              <td>{{ totalRow.porcentajeAC }}%</td>
+            </tr>
+          </ng-template>
+        </p-table>
+        </div>
+
+
+
       </p-accordionTab>
 
       <p-accordionTab header="Gráfico N° 10: Porcentaje de UND que cuentan con caja de registro o dispositivo similar en la parte externa de su predio, según tamaño de la EP."
@@ -141,25 +185,34 @@
       <p-accordionTab header="Gráfico N° 13: Porcentaje de UND que sobrepasan algún(os) parámetro(s) del Anexo N° 1 del REGLAMENTO VMA, según tamaño de la EP."
                       (click)="onTabOpen(12, accordion)"
                       [hidden]="!filterTabs('grafico 13', 'Gráfico N° 13: Porcentaje de UND que sobrepasan algún(os) parámetro(s) del Anexo N° 1 del REGLAMENTO VMA, según tamaño de la EP.')">
-       <!-- <ng-container *ngIf="chartDataNumeroTotalUND; else loading">
-          <app-pie-chart [data]="chartDataNumeroTotalUND" [labels]="chartLabelsNumeroTotalUND" [esPorcentaje]="true" [tieneDecimalesDataLabel]="true"></app-pie-chart>
-        </ng-container>  -->
+                      <ng-container *ngIf="chartPorcentajeUNDSobrepasanParametroAnexo1Data; else loading">
+                        <app-bar-chart [barChartDataset]="chartPorcentajeUNDSobrepasanParametroAnexo1Data"
+                                       [labels]="chartPorcentajeUNDSobrepasanParametroAnexo1Labels"
+                                       [tieneDecimalesDataLabel]="true"
+                                       [esPorcentaje]="true" [stepSize]="20"></app-bar-chart>
+                        </ng-container>
       </p-accordionTab>
 
       <p-accordionTab header="Gráfico N° 14: Porcentaje de UND a los que se ha facturado por concepto de Pago adicional por exceso de concentración, según tamaño de la EP."
                       (click)="onTabOpen(13, accordion)"
                       [hidden]="!filterTabs('grafico 14', 'Gráfico N° 14: Porcentaje de UND a los que se ha facturado por concepto de Pago adicional por exceso de concentración, según tamaño de la EP.')">
-       <!-- <ng-container *ngIf="chartDataNumeroTotalUND; else loading">
-          <app-pie-chart [data]="chartDataNumeroTotalUND" [labels]="chartLabelsNumeroTotalUND" [esPorcentaje]="true" [tieneDecimalesDataLabel]="true"></app-pie-chart>
-        </ng-container>  -->
+                      <ng-container *ngIf="chartPorcentajeUNDFacturaronPagoAdicionalData; else loading">
+                        <app-bar-chart [barChartDataset]="chartPorcentajeUNDFacturaronPagoAdicionalData"
+                                       [labels]="chartPorcentajeUNDFacturaronPagoAdicionalLabels"
+                                       [tieneDecimalesDataLabel]="true"
+                                       [esPorcentaje]="true" [stepSize]="20"></app-bar-chart>
+                      </ng-container>
       </p-accordionTab>
 
       <p-accordionTab header="Gráfico N° 15: Porcentaje de UND que realizaron el Pago adicional por exceso de concentración, según tamaño de la EP."
                       (click)="onTabOpen(14, accordion)"
                       [hidden]="!filterTabs('grafico 15', 'Gráfico N° 15: Porcentaje de UND que realizaron el Pago adicional por exceso de concentración, según tamaño de la EP.')">
-       <!-- <ng-container *ngIf="chartDataNumeroTotalUND; else loading">
-          <app-pie-chart [data]="chartDataNumeroTotalUND" [labels]="chartLabelsNumeroTotalUND" [esPorcentaje]="true" [tieneDecimalesDataLabel]="true"></app-pie-chart>
-        </ng-container>  -->
+                      <ng-container *ngIf="chartPorcentajeUNDPagoAdicionalRealizadoData; else loading">
+                        <app-bar-chart [barChartDataset]="chartPorcentajeUNDPagoAdicionalRealizadoData"
+                                       [labels]="chartPorcentajeUNDPagoAdicionalRealizadoLabels"
+                                       [tieneDecimalesDataLabel]="true"
+                                       [esPorcentaje]="true" [stepSize]="20"></app-bar-chart>
+                      </ng-container>
       </p-accordionTab>
       <p-accordionTab header="Gráfico N° 16: Porcentaje de UND que sobrepasan algún(os) parámetro(s) del Anexo N° 2 del Reglamento de VMA, según tamaño de la EP ."
                       (click)="onTabOpen(15, accordion)"

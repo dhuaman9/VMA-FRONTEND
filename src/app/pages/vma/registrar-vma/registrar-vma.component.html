@@ -43,48 +43,60 @@
                                                     </div>
                                                 </div>
                                             </ng-container>
-                                          <ng-container *ngSwitchCase="'ARCHIVO'">
-                                            <div class="col-md-5"><!-- d-flex flex-column w-75 -->
-                                              <label class="form-label">{{pregunta.get('texto').value}} <span *ngIf="pregunta.get('metadatoArchivo').value?.requerido">(*)</span></label>
-                                              <ng-container *ngIf="!pregunta.get('respuestaDTO').value || (pregunta.get('respuestaDTO').value && (pregunta.get('respuesta').value === null || isFile(pregunta.get('respuesta').value))); else descargar">
-                                                <p-fileUpload
-                                                  name="file"
-                                                  [auto]="false"
-                                                  [class.disabled-choose-button]="!isRoleRegistrador"
-                                                  (onSelect)="onFileChange($event, pregunta.get('respuesta'))"
-                                                  (onClear)="onCancelFile(pregunta.get('respuesta'), pregunta.value)"
-                                                  chooseLabel="Elegir archivo"
-                                                  cancelLabel="Cancelar"
-                                                  [showUploadButton]="false"
-                                                  [showCancelButton]="true">
-
-                                                  <ng-template pTemplate="file" let-file>
-                                                    <div class="custom-file-item">
-                                                      <span>{{ file.name }}</span>
-                                                    </div>
-                                                  </ng-template>
-
-                                                </p-fileUpload>
-
-                                                <small *ngIf="pregunta.get('respuesta').errors?.required" style="color: red;">Archivo requerido</small>
-                                                <small *ngIf="pregunta.get('respuesta').errors?.fileType" style="color: red;">Tipo de archivo incorrecto</small>
-                                                <small *ngIf="pregunta.get('respuesta').errors?.maxSize" style="color: red;">El archivo no puede ser mayor a {{pregunta.get('metadatoArchivo').value.maxSizeInMB}}MB</small>
-                                              </ng-container>
-
-                                              <ng-template #descargar>
-                                               <div class="d-flex gap-1">  <!-- "d-flex gap-1" -->
-                                                  <p-button label="Descargar archivo" icon="pi pi-download" iconPos="left" (click)="uploadService.downloadFile(pregunta.get('respuesta').value)"></p-button>
-                                                  <p-button [class.disabled-choose-button]="!isRoleRegistrador" label="Cambiar archivo" icon="pi pi-pencil" iconPos="left" (click)="onUpdateFile(pregunta)"></p-button>
-                                                </div>
-                                              </ng-template>
-                                            </div>
-                                          </ng-container>
                                         </ng-container>
                                       </div>
+                                      <div class="p-fluid grid formgrid">
+                                      <div *ngFor="let pregunta of preguntasForm(seccion).controls; let j = index; let isFirst = first; let isLast = last" [formGroupName]="j">
+                                        <ng-container [ngSwitch]="pregunta.value.tipoPregunta">
+                                            <ng-container *ngSwitchCase="'ARCHIVO'">
+                                                    <div class="field col-12 md:col-12"> <!-- Elemento de archivo -->
+                                                        <label class="form-label">
+                                                            {{pregunta.get('texto').value}}
+                                                            <span *ngIf="pregunta.get('metadatoArchivo').value?.requerido">(*)</span>
+                                                        </label>
+                                                        <ng-container *ngIf="!pregunta.get('respuestaDTO').value || (pregunta.get('respuestaDTO').value && (pregunta.get('respuesta').value === null || isFile(pregunta.get('respuesta').value))); else descargar">
+                                                            <p-fileUpload
+                                                                name="file"
+                                                                [auto]="false"
+                                                                [class.disabled-choose-button]="!isRoleRegistrador"
+                                                                (onSelect)="onFileChange($event, pregunta.get('respuesta'))"
+                                                                (onClear)="onCancelFile(pregunta.get('respuesta'), pregunta.value)"
+                                                                chooseLabel="Elegir archivo"
+                                                                cancelLabel="Cancelar"
+                                                                [showUploadButton]="false"
+                                                                [showCancelButton]="true">
+                                                                <ng-template pTemplate="file" let-file>
+                                                                    <div class="custom-file-item">
+                                                                        <span>{{ file.name }}</span>
+                                                                    </div>
+                                                                </ng-template>
+                                                            </p-fileUpload>
+                                                            <small *ngIf="pregunta.get('respuesta').errors?.required" style="color: red;">Archivo requerido</small>
+                                                            <small *ngIf="pregunta.get('respuesta').errors?.fileType" style="color: red;">Tipo de archivo incorrecto</small>
+                                                            <small *ngIf="pregunta.get('respuesta').errors?.maxSize" style="color: red;">El archivo no puede ser mayor a {{pregunta.get('metadatoArchivo').value.maxSizeInMB}}MB</small>
+                                                        </ng-container>
+                                                        <ng-template #descargar>
+                                                            <div class="d-flex gap-1">
+                                                                <p-button label="Descargar archivo" icon="pi pi-download" iconPos="left" (click)="uploadService.downloadFile(pregunta.get('respuesta').value)"></p-button>
+                                                                <p-button [class.disabled-choose-button]="!isRoleRegistrador" label="Cambiar archivo" icon="pi pi-pencil" iconPos="left" (click)="onUpdateFile(pregunta)"></p-button>
+                                                            </div>
+                                                        </ng-template>
+                                                    </div>
+                                            </ng-container>
+                                        </ng-container>
+                                    </div>
+                                  </div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
                                     </div>
                                   </p-accordionTab>
                                 </p-accordion >
-
+                                
+                                
                                 <div class="col-12 flex  justify-content-center" *ngIf="this.isRoleRegistrador; else botonAdmin">
                                     <p-button type="button" label="Guardar Progresivamente" class="p-button-success p-button-secondary green-button ml-1" icon="pi pi-check" iconPos="left" [styleClass]="'p-button-success'"
                                       (click)="guardadoParcial()"> <!--guardado progresivo, donde ningun campo es requerido, pero si el usuario no llena ningun dato, dar el aviso que no lleno nada, por ende no se guarda nada ni las fechas de registro-->
@@ -110,6 +122,7 @@
                                 </div>
 
                               </form>
+                              
                         </div>
                     </div>
                 </div>

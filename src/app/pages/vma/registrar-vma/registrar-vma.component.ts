@@ -332,8 +332,8 @@ export class RegistrarVmaComponent implements OnInit {
         const tipoPregunta = pregunta.get('tipoPregunta').value;
         if ((tipoPregunta === TipoPregunta.TEXTO)||
           (tipoPregunta === TipoPregunta.NUMERICO && alternativasControl.length === 0) ||
-          (tipoPregunta === TipoPregunta.RADIO) && respuestaControl || (tipoPregunta === TipoPregunta.ARCHIVO && pregunta.get('metadatoArchivo').value.requerido)) {
-
+          (tipoPregunta === TipoPregunta.RADIO) && respuestaControl ||(tipoPregunta === TipoPregunta.ARCHIVO && pregunta.get('metadatoArchivo').value.requerido)) {
+//|| pregunta.get('alternativas').get('requerido') 
           if(agregarValidacion) {
             respuestaControl.addValidators([Validators.required])
           } else {

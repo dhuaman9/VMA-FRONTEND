@@ -12,6 +12,7 @@ import {ChartDto} from "../_model/chart-dto";
 import {RegistroPromedioTrabajadorVMAChartDto} from "../_model/RegistroPromedioTrabajadorVMAChartDto";
 import {PieChartBasicoDto} from "../_model/pie-chart-basico-dto";
 import {BarChartBasicoDto} from "../_model/bar-chart-basico-dto";
+import { ComparativoUNDDTO } from "../_model/comparativo-und-dto";
 
 @Injectable({
     providedIn: 'root'
@@ -61,7 +62,10 @@ export class ReporteService {
           .pipe(map((response: any) => response.items));
     }
     //grafico 9
-
+    generarReporteComparativoUND(anio: number): Observable<ComparativoUNDDTO[]> {
+      return this.http.get(`${this.url}/api/reporte/comparativo-UND?anio=${anio.toString()}`)
+        .pipe(map((response: any) => response.items));
+    }
 
     //grafico 10
     generarReportePorcentajeUNDConCajaRegistro(anio: number): Observable<BarChartBasicoDto[]> {
@@ -82,6 +86,22 @@ export class ReporteService {
           .pipe(map((response: any) => response.items));
     }
 
+    generarReporteUNDSobrepasanParametrosAnexoUno(anio: number): Observable<BarChartBasicoDto[]> {
+      return this.http.get(`${this.url}/api/reporte/porcentaje-und-sobrepasan-parametro-anexo1?anio=${anio.toString()}`)
+        .pipe(map((response: any) => response.items));
+    }
+
+    generarReporteUNDFacturadosPagoAdicional(anio: number): Observable<BarChartBasicoDto[]> {
+      return this.http.get(`${this.url}/api/reporte/porcentaje-und-facturado-pago-adicional?anio=${anio.toString()}`)
+        .pipe(map((response: any) => response.items));
+    }
+
+    generarReporteUNDPagoAdicionalRealizado(anio: number): Observable<BarChartBasicoDto[]> {
+      return this.http.get(`${this.url}/api/reporte/porcentaje-und-pago-adicional?anio=${anio.toString()}`)
+        .pipe(map((response: any) => response.items));
+    }
+
+    
     //grafico 13
    /* generarReporteDiagramaFlujoYBalancePresentados(anio: number): Observable<BarChartBasicoDto[]> {
         return this.http.get(`${this.url}/api/reporte/diagrama-flujo-balance-presentado?anio=${anio.toString()}`)
