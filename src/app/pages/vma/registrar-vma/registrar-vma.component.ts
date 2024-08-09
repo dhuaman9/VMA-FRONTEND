@@ -333,7 +333,7 @@ export class RegistrarVmaComponent implements OnInit {
         if ((tipoPregunta === TipoPregunta.TEXTO)||
           (tipoPregunta === TipoPregunta.NUMERICO && alternativasControl.length === 0) ||
           (tipoPregunta === TipoPregunta.RADIO) && respuestaControl ||(tipoPregunta === TipoPregunta.ARCHIVO && pregunta.get('metadatoArchivo').value.requerido)) {
-//|| pregunta.get('alternativas').get('requerido') 
+//|| pregunta.get('alternativas').get('requerido')
           if(agregarValidacion) {
             respuestaControl.addValidators([Validators.required])
           } else {
@@ -350,7 +350,7 @@ export class RegistrarVmaComponent implements OnInit {
         alternativas.controls.forEach(alternativa => {
           const respuestaAlternativaControl = alternativa.get('respuesta');
           if (pregunta.get('tipoPregunta').value === TipoPregunta.NUMERICO && respuestaAlternativaControl) {
-            respuestaAlternativaControl.setValidators(agregarValidacion ? [Validators.required] : []);
+            respuestaAlternativaControl.setValidators(agregarValidacion && alternativa.get('requerido').value ? [Validators.required] : []);
             respuestaAlternativaControl.updateValueAndValidity();
 
             if (!respuestaAlternativaControl.valid) {
@@ -383,6 +383,7 @@ export class RegistrarVmaComponent implements OnInit {
           idAlternativa: [alternativa.idAlternativa],
           nombreCampo: [alternativa.nombreCampo],
           respuesta: [alternativa.respuestaDTO?.respuesta],
+          requerido: [alternativa.requerido],
           respuestaDTO: this.buildRespuestaForm(alternativa.respuestaDTO)
         });
       case TipoPregunta.RADIO:
