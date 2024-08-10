@@ -41,6 +41,8 @@ export class VmaComponent implements OnInit {
 
   years = [];
 
+  registrosSeleccionados: RegistroVMA[] = [];
+
   basicData = {
     labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
     datasets: [
@@ -222,14 +224,7 @@ export class VmaComponent implements OnInit {
 
   descargar(): void {
     if(this.filtroForm.valid) {
-      const formValues = this.filtroForm.value;
-      this.registroVMAService.descargarExcel(
-        formValues.eps,
-        formValues.estado,
-        formValues.fechaDesde,
-        formValues.fechaHasta,
-        formValues.anio
-      );
+      this.registroVMAService.descargarExcel(this.getRegistrosSeleccionados());
     }
   }
 
@@ -263,4 +258,7 @@ export class VmaComponent implements OnInit {
     return null;
   }
 
+  getRegistrosSeleccionados(): number[] {
+    return this.registrosSeleccionados.map(registro => registro.idRegistroVma);
+  }
 }

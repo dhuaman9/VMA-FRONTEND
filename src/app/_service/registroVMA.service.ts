@@ -48,8 +48,11 @@ import { Observable } from 'rxjs';
       return this.http.get(`${this.url}/registroVMA/search`, { params });
     }
 
-    descargarExcel(empresaId?: number, estado?: string, fechaInicio?: Date, fechaFin?: Date, year?: number): void{
-      const params = this.buildParams(empresaId, estado, fechaInicio, fechaFin, year);
+    descargarExcel(ids: number[]): void{
+      let params = new HttpParams();
+      ids.forEach(id => {
+        params = params.append('idsVma', id.toString());
+      });
       this.http.get(`${this.url}/registroVMA/descargar-excel`, { params, responseType: 'blob' }).subscribe((data: Blob) => {
         const blob = data;
         const a = document.createElement('a');
