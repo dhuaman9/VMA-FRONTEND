@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {MessageService} from 'primeng/api';
 import {RegistroVmaRequest} from 'src/app/_model/registroVMARequest';
@@ -11,10 +11,11 @@ import {CuestionarioService} from 'src/app/_service/cuestionario.service';
 import {VmaService} from 'src/app/_service/vma.service';
 import Swal from 'sweetalert2';
 import {ActivatedRoute, Router} from '@angular/router';
-import {forkJoin, Observable, of} from 'rxjs';
+import {forkJoin, Observable, of, Subscription} from 'rxjs';
 import {SessionService} from 'src/app/_service/session.service';
 import {UploadService} from 'src/app/_service/upload.service';
-import {switchMap} from "rxjs/operators";
+import {finalize, switchMap} from "rxjs/operators";
+import {index} from "d3";
 
 
 @Component({
@@ -25,7 +26,7 @@ import {switchMap} from "rxjs/operators";
 })
 
 
-export class RegistrarVmaComponent implements OnInit {
+export class RegistrarVmaComponent implements OnInit, OnDestroy {
   cuestionario: Cuestionario;
   registroForm: FormGroup;
 
@@ -40,6 +41,8 @@ export class RegistrarVmaComponent implements OnInit {
   formGroupPregunta: FormGroup;
   secciones: FormArray;
   preguntasAuxiliar: Pregunta[] = [];
+  cargandoProceso$: Observable<boolean>;
+  suscripcionRegistro: Subscription;
 
   constructor(
     private router: Router,
@@ -95,6 +98,7 @@ export class RegistrarVmaComponent implements OnInit {
   }
 
   guardar(isGuardadoCompleto: boolean){
+    this.cargandoProceso$ = of(true);
     const preguntasArray = this.formularioGeneral.value.secciones.map(seccion => seccion.preguntas);
     let preguntas: Pregunta[] = preguntasArray.reduce((acc, cur) => acc.concat(cur), []);
     const respuestas: RespuestaDTO[] = [];
@@ -141,7 +145,7 @@ export class RegistrarVmaComponent implements OnInit {
 
     if(this.idRegistroVMA) {
 
-      this.vmaService.updateRegistroVMA(this.idRegistroVMA, registroVMA)
+      this.suscripcionRegistro = this.vmaService.updateRegistroVMA(this.idRegistroVMA, registroVMA)
         .pipe(
           switchMap(registroVMAId => {
             if(respuestasArchivo.length > 0) {
@@ -151,7 +155,8 @@ export class RegistrarVmaComponent implements OnInit {
             }
 
             return of(null);
-          })
+          }),
+          finalize(() => this.cargandoProceso$ = of(false))
         )
           .subscribe(
             () => {
@@ -173,7 +178,7 @@ export class RegistrarVmaComponent implements OnInit {
           );
     } else {
 
-      this.vmaService.saveRegistroVMA(registroVMA)
+      this.suscripcionRegistro = this.vmaService.saveRegistroVMA(registroVMA)
         .pipe(
           switchMap(registroVMAId => {
             if(respuestasArchivo.length > 0) {
@@ -467,6 +472,12 @@ export class RegistrarVmaComponent implements OnInit {
         const preguntaFormGroup = this.buildPregunta(pregunta);
         formArray.push(preguntaFormGroup);
       });
+    }
+  }
+
+  ngOnDestroy(): void {
+    if(this.suscripcionRegistro) {
+      this.suscripcionRegistro.unsubscribe();
     }
   }
 }
