@@ -1,11 +1,9 @@
 export interface ComparativoUNDDTO {
-
     tipoEmpresa: string;
-    UNDregistrados: number;
-    UNDinspeccionados: number;
-    UNDidentificados: number;
+    undregistrados: number;
+    undinspeccionados: number;
+    undidentificados: number;
     porcentajeUNDinspeccionados: number;
     porcentajeUNDidentificados: number;
 
   }
-  

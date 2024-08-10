@@ -17,6 +17,7 @@ export class BarChartComponent implements OnInit, OnChanges {
   @Input() tieneDecimalesLabel: boolean = false;
   @Input() maximoX: number;
   @Input() stepSize: number;
+  @Input() moneda: string;
   barChartConfig: any;
   barChartOptions: any;
 
@@ -53,7 +54,7 @@ export class BarChartComponent implements OnInit, OnChanges {
             size: 16,
           },
           formatter: (value) => {
-            return this.esPorcentaje ? value.toFixed(this.tieneDecimalesDataLabel ? 2 : 0)+'%' : value.toFixed(this.tieneDecimalesDataLabel ? 2 : 0);
+            return this.esPorcentaje ? value.toFixed(this.tieneDecimalesDataLabel ? 2 : 0)+'%' : (this.moneda || '')+value.toFixed(this.tieneDecimalesDataLabel ? 2 : 0);
           },
           anchor: this.esLabelDataAfuera ? 'end' : 'center',
           align: this.esLabelDataAfuera ? 'end' : 'center',
@@ -78,7 +79,13 @@ export class BarChartComponent implements OnInit, OnChanges {
     if(!this.esVertical) {
       this.barChartOptions.scales.x.ticks = {
         callback: (value) => {
-          return this.esPorcentaje ? value.toFixed(this.tieneDecimalesLabel ? 2 : 0)+'%' : value.toFixed(this.tieneDecimalesLabel ? 2 : 0);
+          return this.esPorcentaje ? value.toFixed(this.tieneDecimalesLabel ? 2 : 0)+'%' : (this.moneda||'')+value.toFixed(this.tieneDecimalesLabel ? 2 : 0);
+        }
+      }
+    } else {
+      this.barChartOptions.scales.y.ticks = {
+        callback: (value) => {
+          return this.esPorcentaje ? value.toFixed(this.tieneDecimalesLabel ? 2 : 0)+'%' : (this.moneda||'')+value.toFixed(this.tieneDecimalesLabel ? 2 : 0);
         }
       }
     }
@@ -88,7 +95,12 @@ export class BarChartComponent implements OnInit, OnChanges {
     }
 
     if(this.stepSize) {
-      this.barChartOptions.scales.x.ticks.stepSize = this.stepSize;
+      if(this.esVertical) {
+        this.barChartOptions.scales.y.ticks.stepSize = this.stepSize;
+      } else {
+        this.barChartOptions.scales.x.ticks.stepSize = this.stepSize;
+      }
+
     }
   }
 }

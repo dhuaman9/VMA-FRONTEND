@@ -9,6 +9,8 @@ import {RegistroPromedioTrabajadorVMAChartDto} from "../../_model/RegistroPromed
 import {PieChartBasicoDto} from "../../_model/pie-chart-basico-dto";
 import {BarChartBasicoDto} from "../../_model/bar-chart-basico-dto";
 import { ComparativoUNDDTO } from 'src/app/_model/comparativo-und-dto';
+import {CostoTotalConcurridoDto} from "../../_model/costo-total-concurrido-dto";
+import {CostoTotalIncurridoCompletoDTO} from "../../_model/costo-total-incurrido-completo-dto";
 
 //npm install chartjs-plugin-datalabels
 Chart.register(ChartDataLabels);
@@ -60,7 +62,7 @@ export class ReporteComponent implements OnInit {
     porcentajeAB: 0,
     porcentajeAC: 0
   };
-  
+
   //grafico 10  -  Porcentaje de UND que cuentan con caja de registro
   chartPorcentajeUNDConCajaRegistroData: BarChartDataset[];
   chartPorcentajeUNDConCajaRegistroLabels: string[] = [];
@@ -69,16 +71,16 @@ export class ReporteComponent implements OnInit {
   chartPorcentajeUNDTomaMuestraInopinadaData: BarChartDataset[];
   chartPorcentajeUNDTomaMuestraInopinadaLabels: string[] = [];
 
-  // Gráfico 12: Porcentaje de total tomas de muestras inopinadas, según tamaño de la EP 
+  // Gráfico 12: Porcentaje de total tomas de muestras inopinadas, según tamaño de la EP
   chartDataPorcentajeUNDConCajaRegistro: number[];
   chartLabelsPorcentajeUNDConCajaRegistro: string[] = [];
 
-  // Gráfico 13: Porcentaje de UND que sobrepasan algún(os) parámetro(s) del Anexo N° 1  
+  // Gráfico 13: Porcentaje de UND que sobrepasan algún(os) parámetro(s) del Anexo N° 1
   chartPorcentajeUNDSobrepasanParametroAnexo1Data: BarChartDataset[];
   chartPorcentajeUNDSobrepasanParametroAnexo1Labels: string[] = [];
-  
+
   // Gráfico 14: Porcentaje de UND a los que se ha facturado por concepto de Pago adicional por exceso de concentración,
-  // según tamaño de la EP 
+  // según tamaño de la EP
   chartPorcentajeUNDFacturaronPagoAdicionalData: BarChartDataset[];
   chartPorcentajeUNDFacturaronPagoAdicionalLabels: string[] = [];
 
@@ -87,8 +89,14 @@ export class ReporteComponent implements OnInit {
   chartPorcentajeUNDPagoAdicionalRealizadoData: BarChartDataset[];
   chartPorcentajeUNDPagoAdicionalRealizadoLabels: string[] = [];
 
+  chartCostoTotalConcurridoData: BarChartDataset[];
+  chartCostoTotalConcurridoLabels: string[] = [];
+  costoTotalConcurridoList: CostoTotalConcurridoDto[];
 
-  //es necesario , agregar nuevo false, si en caso haya nuevos tabs , la cantidad en el array depende del # de gráficos 
+  chartCostoTotalConcurridoOtrosData: BarChartDataset[];
+  chartCostoTotalConcurridoOtrosLabels: string[] = [];
+
+  //es necesario , agregar nuevo false, si en caso haya nuevos tabs , la cantidad en el array depende del # de gráficos
   openedTabs: boolean[] = [false, false, false, false, false, false, false, false,
      false, false, false, false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false];
 
@@ -251,14 +259,14 @@ export class ReporteComponent implements OnInit {
     });
   }
 
-   //12 Porcentaje de toma de muestra inopinada, según tamaño de la EP  
-   
+   //12 Porcentaje de toma de muestra inopinada, según tamaño de la EP
+
   private cargarDatosTotalMuestrasInopinadas = (data: PieChartBasicoDto[]): void => {
     this.chartLabelsPorcentajeUNDConCajaRegistro = data.map(item => item.label);
     this.chartDataPorcentajeUNDConCajaRegistro = data.map(item => item.cantidad);
   }
 
-  //13  Porcentaje de UND que sobrepasan algún(os) parámetro(s) del Anexo N° 1  
+  //13  Porcentaje de UND que sobrepasan algún(os) parámetro(s) del Anexo N° 1
   private cargarUNDSobrepasanParametrosAnexo1 = (data: BarChartBasicoDto[]): void => {
     this.chartPorcentajeUNDSobrepasanParametroAnexo1Data = [];
     this.chartPorcentajeUNDSobrepasanParametroAnexo1Labels = data.map(item => item.label);
@@ -288,6 +296,27 @@ export class ReporteComponent implements OnInit {
     this.chartPorcentajeUNDPagoAdicionalRealizadoData.push({
       label: 'Porcentaje de UND que realizaron el Pago adicional por exceso de concentración, según tamaño de EPS. ',
       backgroundColor: '#6fd76f',
+      data: data.map(item => item.value)
+    });
+  }
+
+  private cargarDatosCostoTotalIncurrido = (data: CostoTotalIncurridoCompletoDTO): void => {
+    this.chartCostoTotalConcurridoData = [];
+    this.chartCostoTotalConcurridoLabels = data.barChartData.map(item => item.label);
+    this.costoTotalConcurridoList = data.costoAnualIncurridoList;
+    this.chartCostoTotalConcurridoData.push({
+      label: 'Costo incurrido S/',
+      backgroundColor: '#3d8aca',
+      data: data.barChartData.map(item => item.value)
+    });
+  }
+
+  private cargarDatosCostoTotalIncurridoOtros = (data: BarChartBasicoDto[]): void => {
+    this.chartCostoTotalConcurridoOtrosData = [];
+    this.chartCostoTotalConcurridoOtrosLabels = data.map(item => item.label);
+    this.chartCostoTotalConcurridoOtrosData.push({
+      label: 'Costo anual por otros gastos incurridos en la implementación de los VMA, según tamaño de la EP (miles de soles)',
+      backgroundColor: '#3d8aca',
       data: data.map(item => item.value)
     });
   }
@@ -417,14 +446,24 @@ export class ReporteComponent implements OnInit {
             this.reporteService.generarReporteUNDPagoAdicionalRealizado(this.selectedYear).subscribe(this.cargarUNDPagoAdicionalRealizados);
           }
         break;
+        case 20:
+          if (this.openedTabs[tabIndex]) {
+            this.reporteService.generarReporteCostoTotalIncurrido(this.selectedYear).subscribe(this.cargarDatosCostoTotalIncurrido);
+          }
+          break;
+        case 24:
+          if (this.openedTabs[tabIndex]) {
+            this.reporteService.generarReporteCostoTotalIncurridoOtros(this.selectedYear).subscribe(this.cargarDatosCostoTotalIncurridoOtros);
+          }
+          break;
       }
     }
   }
 
   calculateTotals() {
-    this.totalRow.registrados = this.tablaData.reduce((sum, item) => sum + item.UNDregistrados, 0);
-    this.totalRow.inspeccionados = this.tablaData.reduce((sum, item) => sum + item.UNDinspeccionados, 0);
-    this.totalRow.identificados = this.tablaData.reduce((sum, item) => sum + item.UNDidentificados, 0);
+    this.totalRow.registrados = this.tablaData.reduce((sum, item) => sum + item.undregistrados, 0);
+    this.totalRow.inspeccionados = this.tablaData.reduce((sum, item) => sum + item.undinspeccionados, 0);
+    this.totalRow.identificados = this.tablaData.reduce((sum, item) => sum + item.undidentificados, 0);
     this.totalRow.porcentajeAB = this.totalRow.inspeccionados ? Math.round(this.totalRow.registrados / this.totalRow.inspeccionados * 100) : 0;
     this.totalRow.porcentajeAC = this.totalRow.identificados ? Math.round(this.totalRow.registrados / this.totalRow.identificados * 100) : 0;
   }
