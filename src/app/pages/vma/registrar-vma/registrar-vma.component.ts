@@ -14,8 +14,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {forkJoin, Observable, of, Subscription} from 'rxjs';
 import {SessionService} from 'src/app/_service/session.service';
 import {UploadService} from 'src/app/_service/upload.service';
-import {finalize, switchMap} from "rxjs/operators";
-import {index} from "d3";
+import {finalize, switchMap, tap} from "rxjs/operators";
 
 
 @Component({
@@ -43,6 +42,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
   preguntasAuxiliar: Pregunta[] = [];
   cargandoProceso$: Observable<boolean>;
   suscripcionRegistro: Subscription;
+  isRegistroCompleto: boolean;
 
   constructor(
     private router: Router,
@@ -80,10 +80,16 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
     this.idRegistroVMA = params['id'];
 
     if(this.idRegistroVMA) {
-      this.cuestionarioService.cuestionarioConRespuestas(this.idRegistroVMA).subscribe((response: any) => {
-        this.cuestionario = response.item;
-        this.buildForm();
-      })
+      this.vmaService.findById(this.idRegistroVMA)
+        .pipe(
+          tap((response: any) => this.isRegistroCompleto = response.estado === 'COMPLETO'),
+          switchMap(() => this.cuestionarioService.cuestionarioConRespuestas(this.idRegistroVMA)),
+          tap((response: any) => {
+            this.cuestionario = response.item;
+            this.buildForm();
+          })
+        )
+        .subscribe();
     } else {
       this.cuestionarioService.findCuestionarioByIdMax().subscribe((response: any) => {
         this.cuestionario = response.item;
@@ -294,7 +300,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
       this.formGroupPregunta = preguntaFormGroup;
     }
 
-    if (!this.isRoleRegistrador) {
+    if (!this.isRoleRegistrador || this.isRegistroCompleto) {
       preguntaFormGroup.disable();
     }
 

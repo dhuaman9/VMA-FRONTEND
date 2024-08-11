@@ -71,7 +71,10 @@
                                  [disabled]="registroCompleto"
                                  [pTooltip]="registroCompleto ? 'Ya existe un registro VMA en curso' : 'Registrar nuevo VMA'"
                                  tooltipPosition="top"><i class="pi pi-plus"></i>  Registrar</button>
-                        <button pButton label="Descargar Excel" class="p-button-success float-right" icon="pi pi-download" iconPos="right" *ngIf="isRoleAdminAndConsultor"
+                        <button pButton label="Descargar Excel" class="p-button-success float-right" icon="pi pi-download" iconPos="right"
+                                *ngIf="isRoleAdminAndConsultor"
+                                [pTooltip]="'Debe seleccionar al menos 1 registro para descargar'"
+                                tooltipPosition="top"
                                 (click)="descargar()"></button>
                         <span *ngIf="registroCompleto && isRoleRegistrador" class="registro-indisponible">
                           No es posible registrar un nuevo VMA. Ya existe uno en curso o la fecha actual no está dentro del período programado.
@@ -131,11 +134,19 @@
                                         <td>{{item.estado}}</td>
                                         <td>{{item.createdAt | date: 'dd-MM-yyy hh:mm'}}</td>
                                         <td style="text-align:center;">{{item.fichaRegistro.anio}}</td>
-                                        <td style="text-align:center">
-                                            <button pButton type="button" [icon]="isRoleRegistrador ? 'pi pi-pencil' : 'pi pi-eye'" style="width: 30px; height: 20px;"
-                                                [pTooltip]="isRoleRegistrador ? 'Editar registro' : 'Visualizar registro'" tooltipPosition="top"
-                                                (click)="redirectToFormUpdate(item.idRegistroVma)">
-                                            </button>
+                                        <td style="text-align:center" class="">
+                                            <div class="d-flex gap-2">
+                                              <button pButton type="button" [icon]="isRoleRegistrador && item.estado !== 'COMPLETO' ? 'pi pi-pencil' : 'pi pi-eye'" style="width: 30px; height: 20px;"
+                                                      [pTooltip]="isRoleRegistrador && item.estado !== 'COMPLETO' ? 'Editar registro' : 'Visualizar registro'" tooltipPosition="top"
+                                                      (click)="redirectToFormUpdate(item.idRegistroVma)">
+                                              </button>
+                                              <button pButton type="button" style="width: 30px; height: 20px;"
+                                                      *ngIf="isRoleAdminAndConsultor && item.estado === 'COMPLETO'"
+                                                      [pTooltip]="'Volver a editar'" tooltipPosition="top"
+                                                      [icon]="'pi pi-pencil'"
+                                                      (click)="cambiarEstadoIncompleto(item.idRegistroVma)">
+                                              </button>
+                                            </div>
                                         </td>
                                       </tr>
                                   </ng-template>

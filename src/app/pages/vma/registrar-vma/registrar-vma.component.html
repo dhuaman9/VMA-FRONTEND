@@ -58,7 +58,7 @@
                                                             <p-fileUpload
                                                                 name="file"
                                                                 [auto]="false"
-                                                                [class.disabled-choose-button]="!isRoleRegistrador"
+                                                                [class.disabled-choose-button]="!isRoleRegistrador || isRegistroCompleto"
                                                                 (onSelect)="onFileChange($event, pregunta.get('respuesta'))"
                                                                 (onClear)="onCancelFile(pregunta.get('respuesta'), pregunta.value)"
                                                                 chooseLabel="Elegir archivo"
@@ -78,7 +78,7 @@
                                                         <ng-template #descargar>
                                                             <div class="d-flex gap-1">
                                                                 <p-button label="Descargar archivo" icon="pi pi-download" iconPos="left" (click)="uploadService.downloadFile(pregunta.get('respuesta').value)"></p-button>
-                                                                <p-button [class.disabled-choose-button]="!isRoleRegistrador" label="Cambiar archivo" icon="pi pi-pencil" iconPos="left" (click)="onUpdateFile(pregunta)"></p-button>
+                                                                <p-button [class.disabled-choose-button]="!isRoleRegistrador || isRegistroCompleto" label="Cambiar archivo" icon="pi pi-pencil" iconPos="left" (click)="onUpdateFile(pregunta)"></p-button>
                                                             </div>
                                                         </ng-template>
                                                     </div>

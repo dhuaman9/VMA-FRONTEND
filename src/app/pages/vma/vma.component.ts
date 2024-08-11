@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {MessageService} from 'primeng/api';
 import { FormBuilder, FormGroup, ValidationErrors, Validators  } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ParamsPagination } from 'src/app/_dto/params-pagination';
 import { Empresa } from 'src/app/_model/empresa';
 import { RegistroVMA } from 'src/app/_model/registroVMA';
 import { RegistroVMAService } from 'src/app/_service/registroVMA.service';
@@ -10,6 +8,8 @@ import { Table } from 'primeng/table';
 import { VmaService } from 'src/app/_service/vma.service';
 import { SessionService } from 'src/app/_service/session.service';
 import { EmpresaService } from 'src/app/_service/empresa.service';
+import {switchMap, tap} from "rxjs/operators";
+import Swal from "sweetalert2";
 
 
 @Component({
@@ -202,9 +202,44 @@ export class VmaComponent implements OnInit {
     this.router.navigate(['/inicio/vma/registrar-vma', id]);// temporal, luego se setea el ID del registro , en el metodo anterior redirectToForm
   }
 
+  cambiarEstadoIncompleto(id: number): void {
+    Swal.fire({
+      title: "¿Está seguro de cambiar el estado",
+      text: "Se cambiará el estado del registro a INCOMPLETO",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, cambiar estado",
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.vmaService.actualizarEstadoIncompleto(id)
+          .pipe(
+            tap(this.mostrarMensajeSatisfactorio),
+            switchMap(() => this.registroVMAService.searchRegistroVmas()),
+            tap((response: any) => {
+              this.ListRegistroVMA= response;
+              this.showResultados = true;
+              this.totalRecords = response.length;
+              this.isLoading = false;
+            })
+          ).subscribe();
+
+      }
+    });
+
+  }
+
+  private mostrarMensajeSatisfactorio = (): void => {
+    Swal.fire({
+      title: "Actualizado",
+      text: "Ahora el usuario puede actualizar el registro",
+      icon: "success"
+    });
+  }
 
   buscar(){
-    console.log(this.filtroForm)
     if(this.filtroForm.valid) {
       const formValues = this.filtroForm.value;
       this.registroVMAService.searchRegistroVmas(
@@ -223,7 +258,7 @@ export class VmaComponent implements OnInit {
   }
 
   descargar(): void {
-    if(this.filtroForm.valid) {
+    if(this.getRegistrosSeleccionados().length > 0) {
       this.registroVMAService.descargarExcel(this.getRegistrosSeleccionados());
     }
   }
