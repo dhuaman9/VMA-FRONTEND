@@ -63,8 +63,9 @@ export class VmaComponent implements OnInit {
   rows = 10;
   totalRecords = 0;
 
-  registroCompleto: boolean = false; //cambiar por registroVMAEnCurso
-  isRoleRegistrador: boolean = this.sessionService.obtenerRoleJwt().toUpperCase() === 'REGISTRADOR';
+  registroCompleto: boolean = false; //pendiente: cambiar por registroVMAEnCurso
+  isRoleRegistrador: boolean = this.sessionService.obtenerRoleJwt().toUpperCase() === 'REGISTRADOR';//para mostrar boton editar o el ojito(ver rsptas)
+
   isRoleAdminAndConsultor: boolean = this.sessionService.obtenerRoleJwt().toUpperCase() === ('ADMINISTRADOR DAP' || 'CONSULTOR');
 
 

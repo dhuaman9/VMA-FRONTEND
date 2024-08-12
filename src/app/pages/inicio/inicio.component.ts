@@ -7,6 +7,7 @@ import { UserService } from './../../_service/user.service';
 import { SessionService } from 'src/app/_service/session.service';
 import { Module } from './module';
 
+
 declare const $:any;
 declare const attachEventsToPushMenu: any;
 
@@ -41,30 +42,7 @@ export class InicioComponent implements OnInit {
 
   ngOnInit(): void {
 
-    //window.location.href.includes("reportes") ? this.tituloModulo = "Variables de gestión" : this.tituloModulo = "Gestión de usuarios";
-
-    /*
-    window.location.href.includes("reportes") ? this.optionRepVarGestionActive = "active" : this.optionRepVarGestionActive = "";
-    window.location.href.includes("variable-gestion") ? this.optionRepVarGestionActive = "active" : this.optionRepVarGestionActive = "";
-    window.location.href.includes("variable-operacional") ? this.optionRepVarOperacionalActive = "active" : this.optionRepVarOperacionalActive = "";
-    window.location.href.includes("parametro-calidad") ? this.optionRepParamCalidadActive = "active" : this.optionRepParamCalidadActive = "";
-    */
     
-    /*
-    let myUrlPathActive = window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
-
-    switch(myUrlPathActive){
-      case 'reportes': this.optionRepVarGestionActive = "active"
-                               break;
-      case 'variable-gestion': this.optionRepVarGestionActive = "active"
-                               break;
-      case 'variable-operacional':  this.optionRepVarOperacionalActive = "active"
-                                    break;
-      case 'parametro-calidad': this.optionRepParamCalidadActive = "active"
-                                break;
-      
-    }
-    */
 
     /*
     this.usuarioService.findModules().subscribe((response:any)=>{
@@ -138,8 +116,8 @@ export class InicioComponent implements OnInit {
     this.modules = [ 
       {
         route : "usuarios",
-        label : "Administracion de Usuarios",
-        icon : ""
+        label : "Administración de Usuarios",
+        icon : "pi pi-users"
       }
     ]
 
@@ -149,27 +127,27 @@ export class InicioComponent implements OnInit {
       {
         route : "empresa",
         label : "Administracion de Empresas",
-        icon : ""
+        icon : "pi pi-home"
       },
       {
         route : "ficha-registro",
-        label : "Aperturar ficha de registro VMA",
-        icon : ""
+        label : "Periodo de registro VMA",
+        icon : "pi pi-calendar-plus"
       },
       {
         route : "vma",
         label : "Registrar VMA",
-        icon : ""
+        icon : "pi pi-check-square"
       },
       {
         route : "reporte",
         label : "Reportes e Indicadores",
-        icon : ""
+        icon : "pi pi-chart-bar"
       },
       {
         route : "anexos",
         label : "Anexos",
-        icon : ""
+        icon : "pi pi-table"
       },
     ]
 
@@ -181,17 +159,17 @@ export class InicioComponent implements OnInit {
       {
         route : "vma",
         label : "Registrar VMA",
-        icon : ""
+        icon : "pi pi-check-square"
       },
       {
         route : "reporte",
         label : "Reportes e Indicadores",
-        icon : ""
+        icon : "pi pi-chart-bar"
       },
       {
         route : "anexos",
         label : "Anexos",
-        icon : ""
+        icon : "pi pi-table"
       },
     ]
 
@@ -203,18 +181,15 @@ export class InicioComponent implements OnInit {
       {
         route : "reporte",
         label : "Reportes e Indicadores",
-        icon : ""
+        icon : "pi pi-chart-bar"
       },
       {
         route : "anexos",
         label : "Anexos",
-        icon : ""
+        icon : "pi pi-table"
       },
     ]
    }
   }
-
-
-
 
 }

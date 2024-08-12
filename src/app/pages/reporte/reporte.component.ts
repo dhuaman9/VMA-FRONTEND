@@ -9,6 +9,8 @@ import {RegistroPromedioTrabajadorVMAChartDto} from "../../_model/RegistroPromed
 import {PieChartBasicoDto} from "../../_model/pie-chart-basico-dto";
 import {BarChartBasicoDto} from "../../_model/bar-chart-basico-dto";
 import { ComparativoUNDDTO } from 'src/app/_model/comparativo-und-dto';
+import { CostoTotalConcurridoDto } from 'src/app/_model/costo-total-concurrido';
+import { CostoTotalIncurridoCompletoDTO } from 'src/app/_model/costo-total-incurrido-completo';
 
 //npm install chartjs-plugin-datalabels
 Chart.register(ChartDataLabels);
@@ -87,10 +89,47 @@ export class ReporteComponent implements OnInit {
   chartPorcentajeUNDPagoAdicionalRealizadoData: BarChartDataset[];
   chartPorcentajeUNDPagoAdicionalRealizadoLabels: string[] = [];
 
+ 
+  // Gráfico 16: 
+  chartPorcentajesUNDParametroAnexo2Data: BarChartDataset[];
+  chartPorcentajesUNDParametroAnexo2Labels: string[] = [];
+
+  // Gráfico 17: 
+  chartReporteUNDPlazoAdicionalOtorgadoData: BarChartDataset[];
+  chartReporteUNDPlazoAdicionalOtorgadoLabels: string[] = [];
+
+  // Gráfico 18: 
+  chartReportePorcentajeUNDSuscritoAcuerdoData: BarChartDataset[];
+  chartReportePorcentajeUNDSuscritoAcuerdoLabels: string[] = [];
+
+  // Gráfico 19: 
+  chartReportePorcentajeReclamosRecibidosVMAData: BarChartDataset[];
+  chartReportePorcentajeReclamosRecibidosVMALabels: string[] = [];
+
+   // Gráfico 20: 
+   charteporteReclamosFundadosVMAData: BarChartDataset[];
+   charteporteReclamosFundadosVMALabels: string[] = [];
+  
+   chartCostoTotalConcurridoData: BarChartDataset[];
+   chartCostoTotalConcurridoLabels: string[] = [];
+   costoTotalConcurridoList: CostoTotalConcurridoDto[];
+ 
+   chartCostoTotalConcurridoOtrosData: BarChartDataset[];
+   chartCostoTotalConcurridoOtrosLabels: string[] = [];
+
+//grafico 27
+  chartCostoTotalAnualGastosVMAData: BarChartDataset[];
+  chartCostoTotalAnualGastosVMALabels: string[] = [];
+
 
   //es necesario , agregar nuevo false, si en caso haya nuevos tabs , la cantidad en el array depende del # de gráficos 
-  openedTabs: boolean[] = [false, false, false, false, false, false, false, false,
-     false, false, false, false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false];
+
+
+     openedTabs: boolean[] = [false, false, false, false, false,
+       false, false, false,false, false, false, 
+      false, false, false, false, false, false,
+      false, false,  false, false,false, false, 
+      false, false, false, false];
 
   constructor(
     public route : ActivatedRoute,
@@ -215,7 +254,7 @@ export class ReporteComponent implements OnInit {
     this.chartDiagramaFlujoPresentadosLabels = data.map(item => item.label);
     this.chartDiagramaFlujoPresentadosData.push({
       label: 'Porcentaje de UND, que han presentado el diagrama de flujo y balance hídrico. ',
-      backgroundColor: '#6fd76f',
+      backgroundColor: '#47cafa',
       data: data.map(item => item.value)
     });
   }
@@ -235,7 +274,7 @@ export class ReporteComponent implements OnInit {
     this.chartPorcentajeUNDConCajaRegistroLabels = data.map(item => item.label);
     this.chartPorcentajeUNDConCajaRegistroData.push({
       label: 'Porcentaje de UND que cuentan con caja de registro o dispositivo en la parte externa de su predio. ',
-      backgroundColor: '#6fd76f',
+      backgroundColor: '#16a0f4',
       data: data.map(item => item.value)
     });
   }
@@ -246,7 +285,7 @@ export class ReporteComponent implements OnInit {
     this.chartPorcentajeUNDTomaMuestraInopinadaLabels = data.map(item => item.label);
     this.chartPorcentajeUNDTomaMuestraInopinadaData.push({
       label: 'Porcentaje de UND a los que se realizó la toma de muestra inopinada, según tamaño de EPS. ',
-      backgroundColor: '#6fd76f',
+      backgroundColor: '#8f67fa',
       data: data.map(item => item.value)
     });
   }
@@ -264,7 +303,7 @@ export class ReporteComponent implements OnInit {
     this.chartPorcentajeUNDSobrepasanParametroAnexo1Labels = data.map(item => item.label);
     this.chartPorcentajeUNDSobrepasanParametroAnexo1Data.push({
       label: 'Porcentaje de UND que sobrepasan algún(os) parámetro(s) del Anexo N° 1 , según tamaño de EPS. ',
-      backgroundColor: '#6fd76f',
+      backgroundColor: '#46cb22',
       data: data.map(item => item.value)
     });
   }
@@ -276,7 +315,7 @@ export class ReporteComponent implements OnInit {
     this.chartPorcentajeUNDFacturaronPagoAdicionalLabels = data.map(item => item.label);
     this.chartPorcentajeUNDFacturaronPagoAdicionalData.push({
       label: 'Porcentaje de UND a los que se ha facturado por concepto de Pago adicional, según tamaño de EPS. ',
-      backgroundColor: '#6fd76f',
+      backgroundColor: '#14b0f4',
       data: data.map(item => item.value)
     });
   }
@@ -287,11 +326,101 @@ export class ReporteComponent implements OnInit {
     this.chartPorcentajeUNDPagoAdicionalRealizadoLabels = data.map(item => item.label);
     this.chartPorcentajeUNDPagoAdicionalRealizadoData.push({
       label: 'Porcentaje de UND que realizaron el Pago adicional por exceso de concentración, según tamaño de EPS. ',
-      backgroundColor: '#6fd76f',
+      backgroundColor: '#46cb22',
       data: data.map(item => item.value)
     });
   }
 
+   // grafico 16  Porcentaje de UND que realizaron el Pago adicional por exceso de concentración, según tamaño de la EP
+   private cargarPorcentajesUNDParametroAnexo2 = (data: BarChartBasicoDto[]): void => {
+    this.chartPorcentajesUNDParametroAnexo2Data = [];
+    this.chartPorcentajesUNDParametroAnexo2Labels = data.map(item => item.label);
+    this.chartPorcentajesUNDParametroAnexo2Data.push({
+      label: 'Porcentaje de UND que realizaron el Pago adicional por exceso de concentración, según tamaño de EPS. ',
+      backgroundColor: '#46cb22',
+      data: data.map(item => item.value)
+    });
+  }
+
+
+  // grafico 17  Porcentaje de UND que realizaron el Pago adicional por exceso de concentración, según tamaño de la EP
+  private cargarPorcentajesUNDPlazoAdicionalOtorgado = (data: BarChartBasicoDto[]): void => {
+    this. chartReporteUNDPlazoAdicionalOtorgadoData = [];
+    this. chartReporteUNDPlazoAdicionalOtorgadoLabels = data.map(item => item.label);
+    this. chartReporteUNDPlazoAdicionalOtorgadoData.push({
+      label: 'Porcentaje de UND que realizaron el Pago adicional por exceso de concentración, según tamaño de EPS. ',
+      backgroundColor: '#70d568',
+      data: data.map(item => item.value)
+    });
+  }
+
+  // grafico 18  Porcentaje de UND que realizaron el Pago adicional por exceso de concentración, según tamaño de la EP
+  private cargarPorcentajesUNDSuscritoAcuerdo = (data: BarChartBasicoDto[]): void => {
+    this.chartReportePorcentajeUNDSuscritoAcuerdoData = [];
+    this.chartReportePorcentajeUNDSuscritoAcuerdoLabels = data.map(item => item.label);
+    this.chartReportePorcentajeUNDSuscritoAcuerdoData.push({
+      label: 'Porcentaje de UND que realizaron el Pago adicional por exceso de concentración, según tamaño de EPS. ',
+      backgroundColor: '#53a14d',
+      data: data.map(item => item.value)
+    });
+  }
+
+   // grafico 19  Porcentaje de UND que realizaron el Pago adicional por exceso de concentración, según tamaño de la EP
+   private cargarPorcentajeReclamosRecibidosVMA = (data: BarChartBasicoDto[]): void => {
+    this.chartReportePorcentajeReclamosRecibidosVMAData = [];
+    this.chartReportePorcentajeReclamosRecibidosVMALabels = data.map(item => item.label);
+    this.chartReportePorcentajeReclamosRecibidosVMAData.push({
+      label: 'Porcentaje de UND que realizaron el Pago adicional por exceso de concentración, según tamaño de EPS. ',
+      backgroundColor: '#2fb2dc',
+      data: data.map(item => item.value)
+    });
+  }
+
+  // grafico 20  Porcentaje de UND que realizaron el Pago adicional por exceso de concentración, según tamaño de la EP
+  private cargarReporteReclamosFundadosVMA = (data: BarChartBasicoDto[]): void => {
+    this.charteporteReclamosFundadosVMAData = [];
+    this.charteporteReclamosFundadosVMALabels = data.map(item => item.label);
+    this.charteporteReclamosFundadosVMAData.push({
+      label: 'Porcentaje de UND que realizaron el Pago adicional por exceso de concentración, según tamaño de EPS. ',
+      backgroundColor: '#208af4',
+      data: data.map(item => item.value)
+    });
+  }
+
+  private cargarDatosCostoTotalIncurrido = (data: CostoTotalIncurridoCompletoDTO): void => {
+    this.chartCostoTotalConcurridoData = [];
+    this.chartCostoTotalConcurridoLabels = data.barChartData.map(item => item.label);
+    this.costoTotalConcurridoList = data.costoAnualIncurridoList;
+    this.chartCostoTotalConcurridoData.push({
+      label: 'Costo incurrido S/',
+      backgroundColor: '#3d8aca',
+      data: data.barChartData.map(item => item.value)
+    });
+  }
+
+  private cargarDatosCostoTotalIncurridoOtros = (data: BarChartBasicoDto[]): void => {
+    this.chartCostoTotalConcurridoOtrosData = [];
+    this.chartCostoTotalConcurridoOtrosLabels = data.map(item => item.label);
+    this.chartCostoTotalConcurridoOtrosData.push({
+      label: 'Costo anual por otros gastos incurridos en la implementación de los VMA, según tamaño de la EP (miles de soles)',
+      backgroundColor: '#3d8aca',
+      data: data.map(item => item.value)
+    });
+  }
+
+
+
+
+  // grafico 27  Costo anual por otros gastos incurridos en la implementación de los VMA, según tamaño de la EP (miles de soles)
+ /* private cargarCostoTotalAnualGastosVMA = (data: BarChartBasicoDto[]): void => {
+    this.chartCostoTotalAnualGastosVMAData = [];
+    this.chartCostoTotalAnualGastosVMALabels = data.map(item => item.label);
+    this.chartCostoTotalAnualGastosVMAData.push({
+      label: 'Costo anual por otros gastos incurridos en la implementación de los VMA, según tamaño de EPS. ',
+      backgroundColor: '#1d9df5',
+      data: data.map(item => item.value)
+    });
+  }*/
 
   private initializeYears(): void {
     const currentYear = new Date().getFullYear();
@@ -340,6 +469,9 @@ export class ReporteComponent implements OnInit {
       this.openedTabs[tabIndex] = !this.openedTabs[tabIndex];
     }
 
+   /* console.log("tabIndex -",tabIndex);
+    console.log("accordion -",accordion);
+    console.log("accordion.tabs[tabIndex].selected -", accordion.tabs[tabIndex].selected);*/
     if (accordion.tabs[tabIndex].selected) {
       switch (tabIndex) {
         case 0:
@@ -417,14 +549,49 @@ export class ReporteComponent implements OnInit {
             this.reporteService.generarReporteUNDPagoAdicionalRealizado(this.selectedYear).subscribe(this.cargarUNDPagoAdicionalRealizados);
           }
         break;
+        case 15:
+          if (this.openedTabs[tabIndex]) {
+            this.reporteService.generarReportePorcentajesTUNDParametroAnexo2(this.selectedYear).subscribe(this.cargarPorcentajesUNDParametroAnexo2);
+          }
+        break;
+        case 16:
+          if (this.openedTabs[tabIndex]) {
+            this.reporteService.generarReporteUNDPlazoAdicionalOtorgado(this.selectedYear).subscribe(this.cargarPorcentajesUNDPlazoAdicionalOtorgado);
+          }
+        break;
+        case 17:
+          if (this.openedTabs[tabIndex]) {
+            this.reporteService.generarReportePorcentajeUNDSuscritoAcuerdo(this.selectedYear).subscribe(this.cargarPorcentajesUNDSuscritoAcuerdo);
+          }
+        break;
+        case 18:
+          if (this.openedTabs[tabIndex]) {
+            this.reporteService.generarReportePorcentajeReclamosRecibidosVMA(this.selectedYear).subscribe(this.cargarPorcentajeReclamosRecibidosVMA);
+          }
+        break;
+        case 19:
+          if (this.openedTabs[tabIndex]) {
+            this.reporteService.generarReporteReclamosFundadosVMA(this.selectedYear).subscribe(this.cargarReporteReclamosFundadosVMA);
+          }
+        break;
+        case 20:
+          if (this.openedTabs[tabIndex]) {
+            this.reporteService.generarReporteCostoTotalIncurrido(this.selectedYear).subscribe(this.cargarDatosCostoTotalIncurrido);
+          }
+          break;
+        case 24:
+          if (this.openedTabs[tabIndex]) {
+            this.reporteService.generarReporteCostoTotalIncurridoOtros(this.selectedYear).subscribe(this.cargarDatosCostoTotalIncurridoOtros);
+          }
+          break;
       }
     }
   }
 
   calculateTotals() {
-    this.totalRow.registrados = this.tablaData.reduce((sum, item) => sum + item.UNDregistrados, 0);
-    this.totalRow.inspeccionados = this.tablaData.reduce((sum, item) => sum + item.UNDinspeccionados, 0);
-    this.totalRow.identificados = this.tablaData.reduce((sum, item) => sum + item.UNDidentificados, 0);
+    this.totalRow.registrados = this.tablaData.reduce((sum, item) => sum + item.undregistrados, 0);
+    this.totalRow.inspeccionados = this.tablaData.reduce((sum, item) => sum + item.undinspeccionados, 0);
+    this.totalRow.identificados = this.tablaData.reduce((sum, item) => sum + item.undidentificados, 0);
     this.totalRow.porcentajeAB = this.totalRow.inspeccionados ? Math.round(this.totalRow.registrados / this.totalRow.inspeccionados * 100) : 0;
     this.totalRow.porcentajeAC = this.totalRow.identificados ? Math.round(this.totalRow.registrados / this.totalRow.identificados * 100) : 0;
   }

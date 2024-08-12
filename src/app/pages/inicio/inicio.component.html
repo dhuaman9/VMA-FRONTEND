@@ -38,8 +38,11 @@
             <ul class="mainmenu" data-widget="treeview" role="menu" data-accordion="false">
               <li class="nav-item" *ngFor="let m of modules">
                 <ng-container>
-                  <a [routerLink]="m.route" class="nav-link custom-nav-link">
-                   <!-- <i class="fa fa fa-indent" aria-hidden="true" style="padding-right: 5px;"></i>  dhr-->
+                  <a [routerLink]="m.route" 
+                    routerLinkActive="active"
+                    [routerLinkActiveOptions]="{ exact: true }"
+                    class="nav-link custom-nav-link">
+                    <i class="{{m.icon}}"></i> 
                     <span class="pl-5-txt">{{m.label}}</span>
                   </a>
                 </ng-container>

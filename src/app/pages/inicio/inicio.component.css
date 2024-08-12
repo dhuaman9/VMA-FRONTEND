@@ -213,3 +213,21 @@ h5#tituloModulo{
 .pl-5-txt:hover {
     color: blue;
 }*/
+
+i, .active .pl-5-txt{
+    /* Ejemplo de color de fondo */
+  color: #5290E5;;  /* Ejemplo de color de texto */
+}
+
+.nav-link.custom-nav-link {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  text-decoration: none;
+}
+
+.nav-item .active {
+  border-left: 4px solid #007bff; /* Línea de borde azul en el lado izquierdo */
+  background-color: #f0f0f0;  /* Color de fondo diferente para el elemento activo */
+  color: #007bff; 
+}

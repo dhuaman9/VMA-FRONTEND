@@ -15,34 +15,46 @@
                                       <div class="d-flex flex-column mb-3" *ngFor="let pregunta of preguntasForm(seccion).controls; let j = index" [formGroupName]="j">
                                         <label class="mb-3" *ngIf="pregunta.get('tipoPregunta').value !== 'ARCHIVO'">{{pregunta.get('texto').value}}</label>
                                         <ng-container [ngSwitch]="pregunta.value.tipoPregunta">
-                                            <input *ngSwitchCase="'TEXTO'" type="text" class="input-text" pInputText formControlName="respuesta">
-                                            <ng-container *ngSwitchCase="'NUMERICO'">
-                                                <div class="d-flex gap-2 mb-4" *ngIf="alternativasForm(pregunta).controls.length > 0; else inputNumericoUnico">
-                                                    <ng-container formArrayName="alternativas">
-                                                        <div class="d-flex gap-2 align-items-center" *ngFor="let alternativa of alternativasForm(pregunta).controls; let k = index" [formGroupName]="k">
+                                            <ng-container *ngSwitchCase="'TEXTO'">
+                                                <input  type="text" class="input-text" pInputText formControlName="respuesta">
+                                                <small *ngIf="pregunta.get('respuesta').errors?.required" style="color: red;">Campo requerido</small>
+                                              </ng-container>
+                                              <ng-container *ngSwitchCase="'NUMERICO'">
+                                                <div class="d-flex gap-5 mb-4" *ngIf="alternativasForm(pregunta).controls.length > 0; else inputNumericoUnico">
+                                                  <ng-container formArrayName="alternativas">
+                                                    <ng-container *ngFor="let alternativa of alternativasForm(pregunta).controls; let k = index" [formGroupName]="k">
+                                                      <div class="d-flex flex-column">
+                    
+                                                        <div class="d-flex gap-2 align-items-center" >
                                                           <label class="mb-0" >{{alternativa.get('nombreCampo').value}}</label>
                                                           <p-inputNumber class="input-number" formControlName="respuesta"></p-inputNumber>
                                                         </div>
-                                                      </ng-container>
+                                                        <small *ngIf="alternativa.get('respuesta').errors?.required" style="color: red;">Campo requerido</small>
+                    
+                                                      </div>
+                                                    </ng-container>
+                                                  </ng-container>
                                                 </div>
                                                 <ng-template #inputNumericoUnico>
-                                                    <p-inputNumber class="input-number" formControlName="respuesta"></p-inputNumber>
+                                                  <p-inputNumber class="input-number" formControlName="respuesta"></p-inputNumber>
+                                                  <small *ngIf="pregunta.get('respuesta').errors?.required" style="color: red;">Campo requerido</small>
                                                 </ng-template>
-                                            </ng-container>
-                                            <ng-container *ngSwitchCase="'RADIO'">
+                                              </ng-container>
+                                              <ng-container *ngSwitchCase="'RADIO'">
                                                 <div class="d-flex gap-3" >
-                                                    <div class="d-flex align-items-center gap-1" *ngFor="let alternativa of alternativasForm(pregunta).controls; let j = index">
-                                                        <p-radioButton
-                                                          [value]="alternativa.value.nombreCampo"
-                                                          [formControlName]="'respuesta'"
-                                                          [inputId]="alternativa.value.nombreCampo+i+j"
-                                                          (onClick)="onRadioButtonChange(seccion, alternativa.value.nombreCampo)"
-                                                          >
-                                                        </p-radioButton>
-                                                        <label class="mb-0" [for]="alternativa.value.nombreCampo+i+j">{{alternativa.value.nombreCampo}}</label>
-                                                    </div>
+                                                  <div class="d-flex align-items-center gap-1" *ngFor="let alternativa of alternativasForm(pregunta).controls; let j = index">
+                                                    <p-radioButton
+                                                      [value]="alternativa.value.nombreCampo"
+                                                      [formControlName]="'respuesta'"
+                                                      [inputId]="alternativa.value.nombreCampo+i+j"
+                                                      (onClick)="onRadioButtonChange(seccion, alternativa.value.nombreCampo)"
+                                                    >
+                                                    </p-radioButton>
+                                                    <label class="mb-0" [for]="alternativa.value.nombreCampo+i+j">{{alternativa.value.nombreCampo}}</label>
+                                                    <small *ngIf="pregunta.get('respuesta').errors?.required" style="color: red;">Campo requerido</small>
+                                                  </div>
                                                 </div>
-                                            </ng-container>
+                                              </ng-container>
                                         </ng-container>
                                       </div>
                                       <div class="p-fluid grid formgrid">
@@ -87,23 +99,18 @@
                                     </div>
                                   </div>
                                     
-                                    
-                                    
-                                    
-                                    
-                                    
                                     </div>
                                   </p-accordionTab>
                                 </p-accordion >
                                 
                                 
                                 <div class="col-12 flex  justify-content-center" *ngIf="this.isRoleRegistrador; else botonAdmin">
-                                    <p-button type="button" label="Guardar Progresivamente" class="p-button-success p-button-secondary green-button ml-1" icon="pi pi-check" iconPos="left" [styleClass]="'p-button-success'"
-                                      (click)="guardadoParcial()"> <!--guardado progresivo, donde ningun campo es requerido, pero si el usuario no llena ningun dato, dar el aviso que no lleno nada, por ende no se guarda nada ni las fechas de registro-->
-                                    </p-button>
-                                    <p-button type="button" label="Registrar" icon="pi pi-save" iconPos="left" class="p-button-success p-button-secondary green-button ml-1"
-                                    (click)="guardadoCompleto()">  <!--guardado final, donde todos los campos son requeridos , exceptos algunos botones de adjuntar archivos-->
+                                  <p-button type="button" [disabled]="cargandoProceso$ | async" label="Guardar Progresivamente" class="p-button-success p-button-secondary green-button ml-1" icon="pi pi-check" iconPos="left" [styleClass]="'p-button-success'"
+                                    (click)="guardadoParcial()"> <!--guardado progresivo, donde ningun campo es requerido, pero si el usuario no llena ningun dato, dar el aviso que no lleno nada, por ende no se guarda nada ni las fechas de registro-->
                                   </p-button>
+                                  <p-button type="button" label="Registrar" icon="pi pi-save" iconPos="left" class="p-button-success p-button-secondary green-button ml-1"
+                                  (click)="guardadoCompleto()" [disabled]="cargandoProceso$ | async">  <!--guardado final, donde todos los campos son requeridos , exceptos algunos botones de adjuntar archivos-->
+                                </p-button>
                                     <p-button type="button" label="Cancelar" class="p-button-danger red-button ml-1" icon="pi pi-times" iconPos="left" [styleClass]="'p-button-danger'"
                                     (click)="onCancelSave()" >
                                     </p-button>

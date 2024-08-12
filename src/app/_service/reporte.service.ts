@@ -13,6 +13,7 @@ import {RegistroPromedioTrabajadorVMAChartDto} from "../_model/RegistroPromedioT
 import {PieChartBasicoDto} from "../_model/pie-chart-basico-dto";
 import {BarChartBasicoDto} from "../_model/bar-chart-basico-dto";
 import { ComparativoUNDDTO } from "../_model/comparativo-und-dto";
+import { CostoTotalIncurridoCompletoDTO } from "../_model/costo-total-incurrido-completo";
 
 @Injectable({
     providedIn: 'root'
@@ -86,27 +87,76 @@ export class ReporteService {
           .pipe(map((response: any) => response.items));
     }
 
+    //grafico 13
     generarReporteUNDSobrepasanParametrosAnexoUno(anio: number): Observable<BarChartBasicoDto[]> {
       return this.http.get(`${this.url}/api/reporte/porcentaje-und-sobrepasan-parametro-anexo1?anio=${anio.toString()}`)
         .pipe(map((response: any) => response.items));
     }
 
+    //grafico 14
     generarReporteUNDFacturadosPagoAdicional(anio: number): Observable<BarChartBasicoDto[]> {
       return this.http.get(`${this.url}/api/reporte/porcentaje-und-facturado-pago-adicional?anio=${anio.toString()}`)
         .pipe(map((response: any) => response.items));
     }
 
+    //grafico 15
     generarReporteUNDPagoAdicionalRealizado(anio: number): Observable<BarChartBasicoDto[]> {
       return this.http.get(`${this.url}/api/reporte/porcentaje-und-pago-adicional?anio=${anio.toString()}`)
         .pipe(map((response: any) => response.items));
     }
+    
+    //grafico 16
+    generarReportePorcentajesTUNDParametroAnexo2(anio: number): Observable<BarChartBasicoDto[]> {
+      return this.http.get(`${this.url}/api/reporte/porcentaje-und-parametro-anexo2?anio=${anio.toString()}`)
+        .pipe(map((response: any) => response.items));
+    }
 
+    //grafico 17
+    generarReporteUNDPlazoAdicionalOtorgado(anio: number): Observable<BarChartBasicoDto[]> {
+      return this.http.get(`${this.url}/api/reporte/porcentaje-und-plazo-adicional?anio=${anio.toString()}`)
+        .pipe(map((response: any) => response.items));
+    }
+
+    //grafico 18
+    generarReportePorcentajeUNDSuscritoAcuerdo(anio: number): Observable<BarChartBasicoDto[]> {
+      return this.http.get(`${this.url}/api/reporte/porcentaje-und-suscritos?anio=${anio.toString()}`)
+        .pipe(map((response: any) => response.items));
+    }
+
+    //grafico 19
+    generarReportePorcentajeReclamosRecibidosVMA(anio: number): Observable<BarChartBasicoDto[]> {
+      return this.http.get(`${this.url}/api/reporte/porcentaje-reclamos-recibidos-vma?anio=${anio.toString()}`)
+        .pipe(map((response: any) => response.items));
+    }
+
+    //grafico 20
+    generarReporteReclamosFundadosVMA(anio: number): Observable<BarChartBasicoDto[]> {
+      return this.http.get(`${this.url}/api/reporte/porcentaje-reclamos-fundados-vma?anio=${anio.toString()}`)
+        .pipe(map((response: any) => response.items));
+    }
+
+    generarReporteCostoTotalIncurrido(anio: number): Observable<CostoTotalIncurridoCompletoDTO> {
+      return this.http.get(`${this.url}/api/reporte/costo-total-incurrido?anio=${anio.toString()}`)
+        .pipe(map((response: any) => response.item));
+    }
+
+    generarReporteCostoTotalIncurridoOtros(anio: number): Observable<BarChartBasicoDto[]> {
+      return this.http.get(`${this.url}/api/reporte/costo-total-incurrido-otros?anio=${anio.toString()}`)
+        .pipe(map((response: any) => response.items));
+    }
+    
     
     //grafico 13
    /* generarReporteDiagramaFlujoYBalancePresentados(anio: number): Observable<BarChartBasicoDto[]> {
         return this.http.get(`${this.url}/api/reporte/diagrama-flujo-balance-presentado?anio=${anio.toString()}`)
           .pipe(map((response: any) => response.items));
     }*/
+
+//grafico 27
+  generarReporteCostoTotalAnualGastosVMA(anio: number): Observable<BarChartBasicoDto[]> {
+    return this.http.get(`${this.url}/api/reporte/costo-anual-vma?anio=${anio.toString()}`)
+     .pipe(map((response: any) => response.items));
+  }
 
 
     fechaprocesa(): Observable<any>{
