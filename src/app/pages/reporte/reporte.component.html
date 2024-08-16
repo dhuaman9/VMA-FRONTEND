@@ -37,9 +37,9 @@
           <app-pie-chart [data]="chartDataNumeroEP" [labels]="chartLabelsNumeroEP"></app-pie-chart>
         </ng-container>
       </p-accordionTab>
-      <p-accordionTab header="Gráfico N° 3: Porcentaje de EP con área dedicada al monitoreo y control de los VMA, según tamaño de la EPS."
+      <p-accordionTab header="Gráfico N° 3: Porcentaje de EP con área dedicada al monitoreo y control de los VMA, según tamaño de la EP."
                       (click)="onTabOpen(2, accordion)"
-                      [hidden]="!filterTabs('grafico 3', 'Gráfico N° 3: Porcentaje de EP con área dedicada al monitoreo y control de los VMA, según tamaño de la EPS.')">
+                      [hidden]="!filterTabs('grafico 3', 'Gráfico N° 3: Porcentaje de EP con área dedicada al monitoreo y control de los VMA, según tamaño de la EP.')">
         <ng-container *ngIf="chartDataSiNo; else loading">
           <app-bar-chart [barChartDataset]="chartDataSiNo"
                          [labels]="chartLabelsSiNo"
@@ -48,9 +48,9 @@
                          [stepSize]="20"></app-bar-chart> <!-- [maximoX]="100"-->
         </ng-container>
       </p-accordionTab>
-      <p-accordionTab header="Gráfico N° 4: Número promedio de trabajadores dedicados a la implementación de los VMA, según tamaño de la EPS."
+      <p-accordionTab header="Gráfico N° 4: Número promedio de trabajadores dedicados a la implementación de los VMA, según tamaño de la EP."
                       (click)="onTabOpen(3, accordion)"
-                      [hidden]="!filterTabs('grafico 4', 'Gráfico N° 4: Número promedio de trabajadores dedicados a la implementación de los VMA, según tamaño de la EPS.')">
+                      [hidden]="!filterTabs('grafico 4', 'Gráfico N° 4: Número promedio de trabajadores dedicados a la implementación de los VMA, según tamaño de la.')">
         <ng-container *ngIf="chartTrabajadoresDedicadosRegistroData; else loading">
           <app-bar-chart [barChartDataset]="chartTrabajadoresDedicadosRegistroData"
                          [labels]="chartTrabajadoresDedicadosRegistroLabels"
@@ -67,9 +67,9 @@
         </ng-container>
       </p-accordionTab>
 
-      <p-accordionTab header="Gráfico N° 6: Porcentaje de UND inspeccionados, según tamaño de la EPS ."
+      <p-accordionTab header="Gráfico N° 6: Porcentaje de UND inspeccionados, según tamaño de la EP."
                       (click)="onTabOpen(5, accordion)"
-                      [hidden]="!filterTabs('grafico 6', 'Gráfico N° 6:  Porcentaje de UND inspeccionados, según tamaño de la EPS. ')">
+                      [hidden]="!filterTabs('grafico 6', 'Gráfico N° 6:  Porcentaje de UND inspeccionados, según tamaño de la EP. ')">
                       <ng-container *ngIf="chartUNDInspeccionadosData; else loading">
                         <app-bar-chart [barChartDataset]="chartUNDInspeccionadosData"
                                        [labels]="chartUNDInspeccionadosLabels"
@@ -212,9 +212,9 @@
       <p-accordionTab header="Gráfico N° 16: Porcentaje de UND que sobrepasan algún(os) parámetro(s) del Anexo N° 2 del Reglamento de VMA, según tamaño de la EP."
                       (click)="onTabOpen(15, accordion)"
                       [hidden]="!filterTabs('grafico 16', 'Gráfico N° 16: Porcentaje de UND que sobrepasan algún(os) parámetro(s) del Anexo N° 2 del Reglamento de VMA, según tamaño de la EP .')">
-                      <ng-container *ngIf="chartPorcentajeUNDPagoAdicionalRealizadoData; else loading">
-                        <app-bar-chart [barChartDataset]="chartPorcentajeUNDPagoAdicionalRealizadoData"
-                                       [labels]="chartPorcentajeUNDPagoAdicionalRealizadoLabels"
+                      <ng-container *ngIf="chartPorcentajesUNDParametroAnexo2Data; else loading">
+                        <app-bar-chart [barChartDataset]="chartPorcentajesUNDParametroAnexo2Data"
+                                       [labels]="chartPorcentajesUNDParametroAnexo2Labels"
                                        [tieneDecimalesDataLabel]="true"
                                        [esPorcentaje]="true" [stepSize]="20"></app-bar-chart>
                       </ng-container>
@@ -256,9 +256,9 @@
       <p-accordionTab header="Gráfico N° 20: Porcentaje de reclamos por VMA resueltos fundados, según tamaño de la EP."
       (click)="onTabOpen(19, accordion)"
       [hidden]="!filterTabs('grafico 20', 'Gráfico N° 20: Porcentaje de reclamos por VMA resueltos fundados, según tamaño de la EP.')">
-      <ng-container *ngIf="charteporteReclamosFundadosVMAData; else loading">
-        <app-bar-chart [barChartDataset]="charteporteReclamosFundadosVMAData"
-                       [labels]="  charteporteReclamosFundadosVMALabels"
+      <ng-container *ngIf="chartreporteReclamosFundadosVMAData; else loading">
+        <app-bar-chart [barChartDataset]="chartreporteReclamosFundadosVMAData"
+                       [labels]="  chartreporteReclamosFundadosVMALabels"
                        [tieneDecimalesDataLabel]="true"
                        [esPorcentaje]="true" [stepSize]="20"></app-bar-chart>
       </ng-container>
@@ -267,16 +267,9 @@
       <p-accordionTab header="Gráficos N° 21 y 22: Costo anual incurrido en la identificación, inspección e inscripción de los UND, según tamaño de la EP."
                       (click)="onTabOpen(20, accordion)"
                       [hidden]="!filterTabs('grafico 21 y 22', 'Gráficos N° 21 y 22: Costo anual incurrido en la identificación, inspección e inscripción de los UND, según tamaño de la EP.')">
-       <!-- <ng-container *ngIf="chartDataNumeroTotalUND; else loading">
-          <app-pie-chart [data]="chartDataNumeroTotalUND" [labels]="chartLabelsNumeroTotalUND" [esPorcentaje]="true" [tieneDecimalesDataLabel]="true"></app-pie-chart>
-        </ng-container>  -->
+  
         <ng-container *ngIf="costoTotalConcurridoList; else loading">
-          <app-bar-chart [barChartDataset]="chartCostoTotalConcurridoData"
-                         [labels]="chartCostoTotalConcurridoLabels"
-                         [tieneDecimalesDataLabel]="true"
-                         [esLabelDataAfuera]="true"
-                         [colorDataLabel]="'#3c3b3b'"
-                         [stepSize]="2000"></app-bar-chart>
+          <h2>Tabla: Costo anual incurrido en la identificación, inspección e inscripción de los UND, según tamaño de la EP.</h2>
           <p-table [value]="costoTotalConcurridoList" [responsiveLayout]="'scroll'">
             <ng-template pTemplate="header">
               <tr>
@@ -284,7 +277,7 @@
                 <th>Total EP evaluadas</th>
                 <th>EP que remitieron información</th>
                 <th>Costo total reportado por las EP(S/)</th>
-                <th>Costo promedio incurrido por EP</th>
+                <th>Costo promedio incurrido por EP(S/)</th>
               </tr>
             </ng-template>
             <ng-template pTemplate="body" let-item>
@@ -297,32 +290,86 @@
               </tr>
             </ng-template>
           </p-table>
+          <br>
+          <h2>Grafico: Costo anual incurrido en la identificación, inspección e inscripción de los UND, por cada EP.</h2>
+          <app-bar-chart [barChartDataset]="chartCostoTotalConcurridoData"
+                         [labels]="chartCostoTotalConcurridoLabels"
+                         [tieneDecimalesDataLabel]="true"
+                         [esLabelDataAfuera]="true"
+                         [colorDataLabel]="'#3c3b3b'"
+                         [stepSize]="2000">
+          </app-bar-chart>
         </ng-container>
+
       </p-accordionTab>
 
 
       <p-accordionTab header="Gráficos N° 23: Costo anual por conexión incurrido en la identificación, inspección e inscripción de los UND."
                       (click)="onTabOpen(21, accordion)"
                       [hidden]="!filterTabs('grafico 23', 'Gráficos N° 23: Costo anual por conexión incurrido en la identificación, inspección e inscripción de los UND.')">
-       <!-- <ng-container *ngIf="chartDataNumeroTotalUND; else loading">
-          <app-pie-chart [data]="chartDataNumeroTotalUND" [labels]="chartLabelsNumeroTotalUND" [esPorcentaje]="true" [tieneDecimalesDataLabel]="true"></app-pie-chart>
-        </ng-container>  -->
+        <ng-container *ngIf="chartreporteCostoTotalAnualIncurridoData; else loading">
+         <app-bar-chart [barChartDataset]="chartreporteCostoTotalAnualIncurridoData"
+                      [labels]="chartreporteCostoTotalAnualIncurridoLabels"
+                      [tieneDecimalesDataLabel]="true"
+                      [esLabelDataAfuera]="true"
+                      [colorDataLabel]="'#3c3b3b'"
+                      [stepSize]="1000">
+         </app-bar-chart>
+        </ng-container>
       </p-accordionTab>
 
-      <p-accordionTab header="Gráficos N° 24 y 25: Costo anual incurrido por realizar las tomas de muestras inopinadas, según tamaño de la EP."
+      <p-accordionTab header="Gráficos N° 24 y 25: Costo anual incurrido por realizar las tomas de muestras inopinadas."
                       (click)="onTabOpen(22, accordion)"
-                      [hidden]="!filterTabs('grafico 24 y 25', 'Gráficos N° 24 y 25: Costo anual incurrido por realizar las tomas de muestras inopinadas, según tamaño de la EP.')">
-       <!-- <ng-container *ngIf="chartDataNumeroTotalUND; else loading">
-          <app-pie-chart [data]="chartDataNumeroTotalUND" [labels]="chartLabelsNumeroTotalUND" [esPorcentaje]="true" [tieneDecimalesDataLabel]="true"></app-pie-chart>
-        </ng-container>  -->
+                      [hidden]="!filterTabs('grafico 24 y 25', 'Gráficos N° 24 y 25: Costo anual incurrido por realizar las tomas de muestras inopinadas.')">
+       
+                      <ng-container *ngIf="costoTotalConcurridoList; else loading">
+                        <h2>Tabla: Costo anual incurrido por realizar las tomas de muestras inopinadas, según tamaño de la EP.</h2>
+                        <p-table [value]="costoTotalConcurridoList" [responsiveLayout]="'scroll'">
+                          <ng-template pTemplate="header">
+                            <tr>
+                              <th>Tamaño</th>
+                              <th>Total EP evaluadas</th>
+                              <th>EP que remitieron información</th>
+                              <th>Costo total reportado por las EP(S/)</th>
+                              <th>Costo promedio incurrido por EP(S/)</th>
+                            </tr>
+                          </ng-template>
+                          <ng-template pTemplate="body" let-item>
+                            <tr>
+                              <td>{{item.tipoEmpresa}}</td>
+                              <td>{{item.totalEpEvaludadas}}</td>
+                              <td>{{ item.epRemitieronInformacion }}</td>
+                              <td>{{ item.costoTotalReportado | number:'1.0-0' }}</td>
+                              <td>{{ item.costoPromedioIncurridoPorEp | number:'1.0-0'}}</td>
+                            </tr>
+                          </ng-template>
+                        </p-table>
+                        <br>
+                        <h2>Grafico: Costo anual incurrido por realizar las tomas de muestras inopinadas,por cada EP.</h2>
+                        <app-bar-chart [barChartDataset]="chartCostoAnualMuestrasInopinadasData"
+                                       [labels]="chartCostoTotalConcurridoLabels"
+                                       [tieneDecimalesDataLabel]="true"
+                                       [esLabelDataAfuera]="true"
+                                       [colorDataLabel]="'#3c3b3b'"
+                                       [stepSize]="10000">
+                        </app-bar-chart>
+                      </ng-container>
+
       </p-accordionTab>
 
       <p-accordionTab header="Gráficos N° 26: Costo anual por conexión incurrido por realizar las tomas de muestras inopinadas."
-                      (click)="onTabOpen(22, accordion)"
+                      (click)="onTabOpen(23, accordion)"
                       [hidden]="!filterTabs('grafico 26', 'Gráficos N° 26:  Costo anual por conexión incurrido por realizar las tomas de muestras inopinadas.')">
-       <!-- <ng-container *ngIf="chartDataNumeroTotalUND; else loading">
-          <app-pie-chart [data]="chartDataNumeroTotalUND" [labels]="chartLabelsNumeroTotalUND" [esPorcentaje]="true" [tieneDecimalesDataLabel]="true"></app-pie-chart>
-        </ng-container>  -->
+             <ng-container *ngIf="chartCostoAnualIncurridoMuestrasInopinadasAllData; else loading">
+                <app-bar-chart [barChartDataset]="chartCostoAnualIncurridoMuestrasInopinadasAllData"
+                    [labels]="chartCostoAnualIncurridoMuestrasInopinadasAllLabels"
+                    [tieneDecimalesDataLabel]="true"
+                    [esLabelDataAfuera]="true"
+                    [colorDataLabel]="'#3c3b3b'"
+                    [stepSize]="2000">
+                </app-bar-chart>
+             </ng-container>
+
       </p-accordionTab>
 
       <p-accordionTab header="Gráficos N° 27: Costo anual por otros gastos incurridos en la implementación de los VMA, según tamaño de la EP (miles de soles)."

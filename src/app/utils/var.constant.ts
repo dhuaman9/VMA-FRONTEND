@@ -6,6 +6,10 @@ export const REGIMEN_NO_RAT = 'NO RAT';
 export const  TIPO_SUNASS='SUNASS';
 export const  TIPO_EPS='EPS';
 
+export const  TIPO_EMPRESA_PEQUEÑA='PEQUEÑA';
+export const  TIPO_EMPRESA_MEDIANA='MEDIANA';
+export const  TIPO_EMPRESA_GRANDE='GRANDE';
+export const  TIPO_EMPRESA_SEDAPAL='SEDAPAL';
 //'Registro completado'
 
 //'Registro actualizado'

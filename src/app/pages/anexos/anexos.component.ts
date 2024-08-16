@@ -58,102 +58,10 @@ export class AnexosComponent implements OnInit, OnDestroy {
   }
 
   applyFilter(): void {
-    this.cleanDataChart();
+    this.cleanData();
     this.reloadOpenedTabs();
   }
 
-
-/*
-  applyFilter(): void {
-
-    //anexo 1
-    this.anexoService.getListAnexoRegistrosVMA(this.selectedYear)
-      .pipe(
-        takeUntil(this.unsubscribe$),
-        tap(response => this.anexoRegistros = this.processAnexoRegistros(response))
-      ).subscribe();
-
-      //anexo 2
-    this.anexoService.getListAnexoMarcaronSi(this.selectedYear)
-      .pipe(
-        takeUntil(this.unsubscribe$),
-        tap(response => this.anexoRespondieronSi = this.processAnexoRegistros(response))
-      ).subscribe();
-
-      //anexo 3
-    this.anexoService.getListAnexoUNDregistrados(this.selectedYear)
-      .pipe(
-        takeUntil(this.unsubscribe$),
-        tap(response => this.anexoUNDregistrados = this.processAnexoRegistros(response))
-    ).subscribe();
-
-     //anexo 4
-    this.anexoService.getListAnexoTomaMuestrasInopinadas(this.selectedYear)
-    .pipe(
-      takeUntil(this.unsubscribe$),
-      tap(response => this.anexoTomaMuestrasInopinadas = this.processAnexoRegistros(response))
-    ).subscribe();
-
-     //anexo 5
-    this.anexoService.getListAnexoEPRealizaronEvaluacionVMAAnexo1(this.selectedYear)
-    .pipe(
-      takeUntil(this.unsubscribe$),
-      tap(response => this.anexoEvaluacionVmaAnexo1 = this.processAnexoRegistros(response))
-    ).subscribe();
-
-     //anexo 6
-    this.anexoService.getListAnexoEPRealizaronEvaluacionVMAAnexo2(this.selectedYear)
-    .pipe(
-      takeUntil(this.unsubscribe$),
-      tap(response => this.anexoEvaluacionVmaAnexo2 = this.processAnexoRegistros(response))
-    ).subscribe();
-
-    //anexo 7
-    this.anexoService.getListAnexoAtenciondeReclamosVMA(this.selectedYear)
-    .pipe(
-      takeUntil(this.unsubscribe$),
-      tap(response => this.anexoEPAtenciondeReclamosVMA = this.processAnexoRegistros(response))
-    ).subscribe();
-
-
-    //anexo 8
-    this.anexoService.getListAnexoCostosUND(this.selectedYear)
-    .pipe(
-      takeUntil(this.unsubscribe$),
-      tap(response => this.anexoCostosUND = this.processAnexoRegistros(response))
-    ).subscribe();
-
-    //anexo 9
-    this.anexoService.getListAnexoCostosTotalesxMuestrasInopinadas(this.selectedYear)
-    .pipe(
-      takeUntil(this.unsubscribe$),
-      tap(response => this.anexoCostoTotalMuestrasInopinadas = this.processAnexoRegistros(response))
-    ).subscribe();
-
-    //anexo 10
-    this.anexoService.getListAnexoDetalleCostosTotalesIncurridos(this.selectedYear)
-    .pipe(
-      takeUntil(this.unsubscribe$),
-      tap(response => this.anexoCostoTotalesIncurridos = this.processAnexoRegistros(response))
-    ).subscribe();
-    
-    this.anexoService.getListAnexoIngresosVMA(this.selectedYear)
-    .pipe(
-      takeUntil(this.unsubscribe$),
-      tap(response => {
-        // Procesar los registros y formatear los ingresos
-        this.anexoIngresos = this.processAnexoRegistros(response).map(anexo => {
-          return {
-            ...anexo,
-            ingresosVma: this.formatNumberWithSpaces(anexo.ingresosVma)
-          };
-        });
-      })
-    ).subscribe();
-
-  
-
-  }*/
 
   onTabOpen(tabIndex: number, accordion: any, reload?: boolean) {
     if(!reload) {
@@ -231,7 +139,17 @@ export class AnexosComponent implements OnInit, OnDestroy {
             this.anexoService.getListAnexoCostosUND(this.selectedYear)
             .pipe(
               takeUntil(this.unsubscribe$),
-              tap(response => this.anexoCostosUND = this.processAnexoRegistros(response))
+              tap(response => {
+                // Procesar los registros y formatear los ingresos
+                this.anexoCostosUND = this.processAnexoRegistros(response).map(anexo => {
+                  return {
+                    ...anexo,
+                    costoTotalUND: this.formatNumberWithSpaces(anexo.costoTotalUND),
+                    costoAnualPorUND:this.formatNumberWithSpaces(anexo.costoAnualPorUND),
+                  };
+                });
+              })
+
             ).subscribe();
           }
         break;
@@ -240,7 +158,17 @@ export class AnexosComponent implements OnInit, OnDestroy {
             this.anexoService.getListAnexoCostosTotalesxMuestrasInopinadas(this.selectedYear)
             .pipe(
               takeUntil(this.unsubscribe$),
-              tap(response => this.anexoCostoTotalMuestrasInopinadas = this.processAnexoRegistros(response))
+              tap(response => {
+                // Procesar los registros y formatear los ingresos
+                this.anexoCostoTotalMuestrasInopinadas = this.processAnexoRegistros(response).map(anexo => {
+                  return {
+                    ...anexo,
+                    costoPorTomaMuestrasInopinadas: this.formatNumberWithSpaces(anexo.costoPorTomaMuestrasInopinadas),
+                    costoAnualMuestraInopinada:this.formatNumberWithSpaces(anexo.costoAnualMuestraInopinada),
+                  };
+                });
+              })
+
             ).subscribe();
           }
         break;
@@ -249,7 +177,18 @@ export class AnexosComponent implements OnInit, OnDestroy {
             this.anexoService.getListAnexoDetalleCostosTotalesIncurridos(this.selectedYear)
             .pipe(
               takeUntil(this.unsubscribe$),
-              tap(response => this.anexoCostoTotalesIncurridos = this.processAnexoRegistros(response))
+              tap(response => {
+                // Procesar los registros y formatear los ingresos
+                this.anexoCostoTotalesIncurridos = this.processAnexoRegistros(response).map(anexo => {
+                  return {
+                    ...anexo,
+                    costoIdentInspeccionRegistroUND: this.formatNumberWithSpaces(anexo.costoIdentInspeccionRegistroUND),
+                    costoMuestrasInopinadas:this.formatNumberWithSpaces(anexo.costoMuestrasInopinadas),
+                    costosOtrosGastosImplementacion:this.formatNumberWithSpaces(anexo.costosOtrosGastosImplementacion),
+                  };
+                });
+              })
+
             ).subscribe();
           }
         break;
@@ -341,23 +280,8 @@ export class AnexosComponent implements OnInit, OnDestroy {
     })
   }
 
-  cleanDataChart(): void {
-    /*this.chartDataNumeroEP = undefined;
-    this.chartLabelsNumeroEP = [];
-
-    this.chartDataRemisionInfo = undefined;
-    this.chartLabelsRemisionInfo = [];
-
-    this.chartDataSiNo = undefined;
-    this.chartLabelsSiNo = [];
-
-    this.chartDataNumeroTotalUND = undefined;
-    this.chartLabelsNumeroTotalUND = [];
-
-    this.chartTrabajadoresDedicadosRegistroData = undefined;
-    this.chartTrabajadoresDedicadosRegistroLabels = [];*/
-
-    //anexoRegistros: AnexoRegistro[] = [];
+  cleanData(): void {
+    
     this.anexoRespondieronSi = [];
     this.anexoUNDregistrados = [];
     this.anexoTomaMuestrasInopinadas= [];

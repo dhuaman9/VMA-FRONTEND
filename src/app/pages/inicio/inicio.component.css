@@ -174,26 +174,14 @@ h5#tituloModulo{
 }
 
 .nav-item a span {
-    padding-left: 5px;
+    padding-left: 3px;
 }
-
-
-/* Cambiar color del texto a azul al pasar el mouse */
-.nav-link.custom-nav-link:hover {
-	color: blue; /* Cambiar el color del texto a azul */
-  }
   
-  /* Estilo para el ícono y texto juntos */
-  .nav-link.custom-nav-link i, .nav-link.custom-nav-link .pl-5-txt {
-	transition: color 0.3s; /* Añadir una transición suave al color */
-  }
-  
-  /* Asegurar que el ícono también cambie de color */
-  .nav-link.custom-nav-link:hover i {
-	color: blue; /* Cambiar el color del ícono a azul */
-  }
- 
-  
+/* Estilo para el ícono y texto juntos */
+.nav-link.custom-nav-link i, .nav-link.custom-nav-link .pl-5-txt {
+transition: color 0.3s; /* Añadir una transición suave al color */
+}
+    
   /* Cambiar color del texto y el ícono a azul al pasar el mouse sobre el nav-item */
 .nav-item:hover .custom-nav-link, 
 .nav-item:hover .custom-nav-link i, 
@@ -201,33 +189,45 @@ h5#tituloModulo{
   color: #5290E5; /* Cambiar el color del texto a azul */
 }
 
+.custom-nav-link i{
+  color: #f0f0f0;
+}
+
 /* Separar cada nav-item con una barra de color blanco */
 .nav-item {
 	border-bottom: 1px solid white; /* Añadir borde inferior blanco */
-  }
-
-  .nav-item:last-child {
-	border-bottom: none; /* Quitar borde del último elemento */
-  }
-/*
-.pl-5-txt:hover {
-    color: blue;
-}*/
-
-i, .active .pl-5-txt{
-    /* Ejemplo de color de fondo */
-  color: #5290E5;;  /* Ejemplo de color de texto */
 }
 
-.nav-link.custom-nav-link {
-  display: flex;
-  align-items: center;
-  padding: 10px 15px;
-  text-decoration: none;
+.nav-item:last-child {
+  border-bottom: none; /* Quitar borde del último elemento */
 }
 
+/* Estilo general para íconos y texto cuando el enlace no está activo */
+
+.pl-5-txt {
+  color: #fff; /* Color de texto blanco por defecto */
+}
+
+/* Estilos para el enlace, el ícono y el texto cuando el enlace está activo */
 .nav-item .active {
   border-left: 4px solid #007bff; /* Línea de borde azul en el lado izquierdo */
-  background-color: #f0f0f0;  /* Color de fondo diferente para el elemento activo */
-  color: #007bff; 
+  background-color: #f0f0f0; /* Color de fondo diferente para el elemento activo */
+  color: #5a9be0; /* Color de texto azul para el enlace activo */
 }
+
+.nav-item .active i,
+.nav-item .active .pl-5-txt {
+  color: #5a9be0; /* Color azul para el ícono y el texto del span cuando el enlace está activo */
+}
+
+.sign-out-icon {
+  font-size: 2rem;
+  color: #007ad9;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+}
+
+

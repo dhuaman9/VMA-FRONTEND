@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from './../../_service/user.service';
 import { SessionService } from 'src/app/_service/session.service';
 import { Module } from './module';
-
+import { MessageService } from 'primeng/api';
 
 declare const $:any;
 declare const attachEventsToPushMenu: any;
@@ -36,13 +36,15 @@ export class InicioComponent implements OnInit {
     private router : Router,
     private sessionService: SessionService,
     private usuarioService : UserService, 
-    public route : ActivatedRoute
+    public route : ActivatedRoute,
+    private messageService: MessageService
   ) {
   }
 
   ngOnInit(): void {
 
-    
+    //this.showGenericMessage(); // Muestra el mensaje genérico al iniciar
+
 
     /*
     this.usuarioService.findModules().subscribe((response:any)=>{
@@ -93,6 +95,7 @@ export class InicioComponent implements OnInit {
    // this.renderModules();
     this.shortName = this.sessionService.obtenerShortNameJwt();
     this.role = this.sessionService.obtenerRoleJwt();
+    this.userName = this.sessionService.obtenerUserNameJwt();
     this.renderModules(this.role);
     //console.log("rol: ", this.role); //dhr
 
@@ -116,7 +119,7 @@ export class InicioComponent implements OnInit {
     this.modules = [ 
       {
         route : "usuarios",
-        label : "Administración de Usuarios",
+        label : "Usuarios",
         icon : "pi pi-users"
       }
     ]
@@ -126,7 +129,7 @@ export class InicioComponent implements OnInit {
       
       {
         route : "empresa",
-        label : "Administracion de Empresas",
+        label : "Empresas",
         icon : "pi pi-home"
       },
       {
@@ -192,4 +195,8 @@ export class InicioComponent implements OnInit {
    }
   }
 
+// dhr pendiente, para mostrar un mensaje generico
+  showGenericMessage() {
+    this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'This is a generic message' });
+  }
 }

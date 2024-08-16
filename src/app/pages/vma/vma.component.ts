@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {MessageService} from 'primeng/api';
 import { FormBuilder, FormGroup, ValidationErrors, Validators  } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ParamsPagination } from 'src/app/_dto/params-pagination';
 import { Empresa } from 'src/app/_model/empresa';
 import { RegistroVMA } from 'src/app/_model/registroVMA';
 import { RegistroVMAService } from 'src/app/_service/registroVMA.service';
@@ -10,6 +8,8 @@ import { Table } from 'primeng/table';
 import { VmaService } from 'src/app/_service/vma.service';
 import { SessionService } from 'src/app/_service/session.service';
 import { EmpresaService } from 'src/app/_service/empresa.service';
+import {switchMap, tap} from "rxjs/operators";
+import Swal from "sweetalert2";
 
 
 @Component({
@@ -41,6 +41,8 @@ export class VmaComponent implements OnInit {
 
   years = [];
 
+  registrosSeleccionados: RegistroVMA[] = [];
+
   basicData = {
     labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
     datasets: [
@@ -63,9 +65,8 @@ export class VmaComponent implements OnInit {
   rows = 10;
   totalRecords = 0;
 
-  registroCompleto: boolean = false; //pendiente: cambiar por registroVMAEnCurso
-  isRoleRegistrador: boolean = this.sessionService.obtenerRoleJwt().toUpperCase() === 'REGISTRADOR';//para mostrar boton editar o el ojito(ver rsptas)
-
+  registroCompleto: boolean = false; //cambiar por registroVMAEnCurso
+  isRoleRegistrador: boolean = this.sessionService.obtenerRoleJwt().toUpperCase() === 'REGISTRADOR';
   isRoleAdminAndConsultor: boolean = this.sessionService.obtenerRoleJwt().toUpperCase() === ('ADMINISTRADOR DAP' || 'CONSULTOR');
 
 
@@ -109,7 +110,7 @@ export class VmaComponent implements OnInit {
 
     this.initializeYears();
 
-    // this.initListRegistroVMA();
+    this.initListRegistroVMA();
     this.buscar();
      //  this.empresa = new Empresa();
     this.cargarListaEmpresas(); //carga el listdo de empresas
@@ -201,9 +202,44 @@ export class VmaComponent implements OnInit {
     this.router.navigate(['/inicio/vma/registrar-vma', id]);// temporal, luego se setea el ID del registro , en el metodo anterior redirectToForm
   }
 
+  cambiarEstadoIncompleto(id: number): void {
+    Swal.fire({
+      title: "¿Está seguro de cambiar el estado del registro?",
+      //text: "Se cambiará el estado del registro a INCOMPLETO",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí",
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.vmaService.actualizarEstadoIncompleto(id)
+          .pipe(
+            tap(this.mostrarMensajeSatisfactorio),
+            switchMap(() => this.registroVMAService.searchRegistroVmas()),
+            tap((response: any) => {
+              this.ListRegistroVMA= response;
+              this.showResultados = true;
+              this.totalRecords = response.length;
+              this.isLoading = false;
+            })
+          ).subscribe();
+
+      }
+    });
+
+  }
+
+  private mostrarMensajeSatisfactorio = (): void => {
+    Swal.fire({
+      title: "El registro se ha actualizado.",
+      //text: "Ahora el usuario puede actualizar el registro",
+      icon: "success"
+    });
+  }
 
   buscar(){
-    console.log(this.filtroForm)
     if(this.filtroForm.valid) {
       const formValues = this.filtroForm.value;
       this.registroVMAService.searchRegistroVmas(
@@ -222,22 +258,14 @@ export class VmaComponent implements OnInit {
   }
 
   descargar(): void {
-    if(this.filtroForm.valid) {
-      const formValues = this.filtroForm.value;
-      this.registroVMAService.descargarExcel(
-        formValues.eps,
-        formValues.estado,
-        formValues.fechaDesde,
-        formValues.fechaHasta,
-        formValues.anio
-      );
+    if(this.getRegistrosSeleccionados().length > 0) {
+      this.registroVMAService.descargarExcel(this.getRegistrosSeleccionados());
     }
   }
 
   limpiar(){
     this.filtroForm.reset();
   }
-
 
   cargarListaEmpresas(): void {
     this.empresaService.findAll().subscribe(
@@ -264,4 +292,7 @@ export class VmaComponent implements OnInit {
     return null;
   }
 
+  getRegistrosSeleccionados(): number[] {
+    return this.registrosSeleccionados.map(registro => registro.idRegistroVma);
+  }
 }

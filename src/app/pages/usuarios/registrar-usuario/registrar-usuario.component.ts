@@ -37,7 +37,6 @@ export class RegistrarUsuarioComponent implements OnInit {
 
   ListEmpresa: Empresa[];
   empresasLista: {label: string, value: any}[] = [];
-  //usuariosMap: Map<number, User> = new Map();//se usara en el ngOnInit
 
   constructor(private formBuilder: FormBuilder, private modalService: NgbModal,
     private userService : UserService,
@@ -70,10 +69,7 @@ export class RegistrarUsuarioComponent implements OnInit {
     this.onTipoUsuarioChange();
     this.cargarListaEmpresas();
 
-    //para obtener los demas datos del usuario, al seleccionar un usuario del combobox.
-
-
-
+    
   }
 
   onUserChange(event: any) {
@@ -121,7 +117,6 @@ export class RegistrarUsuarioComponent implements OnInit {
 
   guardar() {
 
-   // this.registroForm.enable(); habilita todos los campos del form
     if(this.registroForm.valid) {
       console.log("this.registroForm.value",this.registroForm.value);
       this.registroForm.enable();
@@ -136,7 +131,6 @@ export class RegistrarUsuarioComponent implements OnInit {
       empresa.idEmpresa = this.registroForm.get("selEmpresa").value;
       user.empresa = empresa;
       console.log(user);
-      //this.registroForm.enable();
       this.userService.create(user).subscribe(responseUser => {
         Swal.fire({
           icon: "success",
@@ -185,10 +179,9 @@ export class RegistrarUsuarioComponent implements OnInit {
   }
 
   onAceptar(){
-    // this.userService.page(1,10).subscribe();
-    //this.userService.findAll().subscribe();
+   
     this.router.navigate(['/inicio/usuarios']).then(() => {
-      // Aquí puedes forzar la recarga de la lista de usuarios si es necesario
+      // Aquí puedes forzar la recarga de la lista , no recomendable x ahora.
      window.location.reload();
     });
   //  this.router.navigate(['/inicio/usuarios']);
@@ -205,12 +198,9 @@ export class RegistrarUsuarioComponent implements OnInit {
       (data: User[]) => {        
         this.usuariosSunass = data.map(user => ({
           label: user.username,
-          //value: user.id
           value: user
         }));
-        /*data.forEach(user => {
-          this.usuariosMap.set(user.id, user);
-        });*/
+  
       },
       (error) => {
         console.error('Error al obtener los usuarios del LDAP', error);
@@ -231,13 +221,11 @@ export class RegistrarUsuarioComponent implements OnInit {
       this.registroForm.get('username').disable();
       this.registroForm.get('usuario').enable();
 
-     // this.registroForm.get('eps').setValidators([Validators.nullValidator]);
       this.registroForm.get('selEmpresa').setValidators([Validators.nullValidator]);
       this.registroForm.get('telefono').setValidators([Validators.minLength(9)]);
       this.registroForm.get('password').setValidators([Validators.nullValidator]);
       this.registroForm.get('usuario').setValidators([Validators.required]);
 
-      //this.registroForm.get('eps').updateValueAndValidity();
       this.registroForm.get('selEmpresa').updateValueAndValidity();
       this.registroForm.get('telefono').updateValueAndValidity();
       this.registroForm.get('password').updateValueAndValidity();

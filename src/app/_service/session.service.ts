@@ -48,6 +48,13 @@ export class SessionService {
     return token!=null;
   }
 
+  obtenerUserNameJwt(){
+    const helper = new JwtHelperService();
+    const decodedToken =  helper.decodeToken(this.retornarJwt());
+    return decodedToken.username;
+  }
+  
+  
   cerrarSession(){
     sessionStorage.clear();
     this.router.navigate(['']);

@@ -51,7 +51,6 @@ export class EditarUsuarioComponent implements OnInit {
       nombres: ['', Validators.required],
       apellidos: ['', Validators.required],
       correo: ['', [Validators.required, Validators.email]],
-     // eps: ['', Validators.required],
       usuario: [''],
       username: [''],
       password: ['',Validators.pattern(regex)],
@@ -103,11 +102,9 @@ export class EditarUsuarioComponent implements OnInit {
       nombres: userData.nombres,
       apellidos: userData.apellidos,
       correo: userData.correo,
-      //eps: userData.eps,
       selEmpresa: userData.empresa.idEmpresa,
       usuario: userData.username,
       username: userData.username,
-      //password: '',
       telefono: userData.telefono,
       estado: userData.estado
     });
@@ -146,8 +143,7 @@ export class EditarUsuarioComponent implements OnInit {
           unidadOrganica:'',
           nombres:'',
           apellidos:'',
-          correo:'',
-         // telefono:''
+          correo:''
         }
       );
     }
@@ -169,9 +165,7 @@ export class EditarUsuarioComponent implements OnInit {
   }
 
   onGuardar() {
-    // Lógica para guardar el usuario
-   // this.registroForm.enable();
-
+ 
     if(this.registroForm.valid) {
       console.log("this.registroForm.value",this.registroForm.value);
       let user = new User(this.registroForm.value);
@@ -234,7 +228,7 @@ export class EditarUsuarioComponent implements OnInit {
    // this.userService.page(1,10).subscribe();// dhr ?
    // this.userService.findAll().subscribe();
     this.router.navigate(['/inicio/usuarios']).then(() => {
-      // Aquí puedes forzar la recarga de la lista de usuarios si es necesario
+      // Aquí puedes forzar la recarga de la lista de usuarios , x ahora no recomendable
       window.location.reload();
     });
     //this.router.navigate(['/inicio/usuarios']);
@@ -264,7 +258,6 @@ export class EditarUsuarioComponent implements OnInit {
       this.registroForm.get('password').disable();
       this.registroForm.get('usuario').enable();
 
-     // this.registroForm.get('eps').setValidators([Validators.nullValidator]);  //? dhr
       this.registroForm.get('usuario').setValidators([Validators.required]);
       this.registroForm.get('perfil').setValidators([Validators.required]);
       this.registroForm.get('telefono').setValidators([Validators.nullValidator]);

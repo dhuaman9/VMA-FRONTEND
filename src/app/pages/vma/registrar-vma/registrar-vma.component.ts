@@ -14,7 +14,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {forkJoin, Observable, of, Subscription} from 'rxjs';
 import {SessionService} from 'src/app/_service/session.service';
 import {UploadService} from 'src/app/_service/upload.service';
-import {finalize, switchMap} from "rxjs/operators";
+import {finalize, switchMap, tap} from "rxjs/operators";
 
 
 @Component({
@@ -40,10 +40,10 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
   formGroupPregunta: FormGroup;
   secciones: FormArray;
   preguntasAuxiliar: Pregunta[] = [];
-
   cargandoProceso$: Observable<boolean>;
   suscripcionRegistro: Subscription;
-  
+  isRegistroCompleto: boolean;
+
   constructor(
     private router: Router,
     private fb: FormBuilder,
@@ -80,10 +80,16 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
     this.idRegistroVMA = params['id'];
 
     if(this.idRegistroVMA) {
-      this.cuestionarioService.cuestionarioConRespuestas(this.idRegistroVMA).subscribe((response: any) => {
-        this.cuestionario = response.item;
-        this.buildForm();
-      })
+      this.vmaService.findById(this.idRegistroVMA)
+        .pipe(
+          tap((response: any) => this.isRegistroCompleto = response.estado === 'COMPLETO'),
+          switchMap(() => this.cuestionarioService.cuestionarioConRespuestas(this.idRegistroVMA)),
+          tap((response: any) => {
+            this.cuestionario = response.item;
+            this.buildForm();
+          })
+        )
+        .subscribe();
     } else {
       this.cuestionarioService.findCuestionarioByIdMax().subscribe((response: any) => {
         this.cuestionario = response.item;
@@ -94,6 +100,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
   }
 
   isFile(value: any): boolean {
+    console.log("dhr filename value?-", value); //dhr
     return value instanceof File;
   }
 
@@ -198,7 +205,6 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
     }
   }
 
-
   onSuccess(isGuardadoCompleto: boolean) {
     Swal.fire({
       title: isGuardadoCompleto ? 'Registro completado': 'Registro actualizado',
@@ -225,11 +231,13 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
   onFileChange(event: any, formControl: AbstractControl): void {
     const file = event.files[0];
     if (file) {
-      formControl.patchValue(file)
+      console.log("dhr onFileChange file: -", file); //dhr
+      formControl.patchValue(file);
     }
   }
 
   onUpdateFile(formControl: AbstractControl): void {
+    console.log("metadato dhr -", formControl.get('metadatoArchivo').value );
     let metadato = formControl.get('metadatoArchivo').value;
     let validatorFn = this.fileValidator(metadato.tipoArchivosPermitidos.map(archivo => archivo.mimeType), metadato.maxSizeInMB);
     formControl.get('respuesta').setValue(null);
@@ -295,7 +303,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
       this.formGroupPregunta = preguntaFormGroup;
     }
 
-    if (!this.isRoleRegistrador) {
+    if (!this.isRoleRegistrador || this.isRegistroCompleto) {
       preguntaFormGroup.disable();
     }
 
@@ -339,7 +347,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
         if ((tipoPregunta === TipoPregunta.TEXTO)||
           (tipoPregunta === TipoPregunta.NUMERICO && alternativasControl.length === 0) ||
           (tipoPregunta === TipoPregunta.RADIO) && respuestaControl ||(tipoPregunta === TipoPregunta.ARCHIVO && pregunta.get('metadatoArchivo').value.requerido)) {
-//|| pregunta.get('alternativas').get('requerido') 
+//|| pregunta.get('alternativas').get('requerido')
           if(agregarValidacion) {
             respuestaControl.addValidators([Validators.required])
           } else {
@@ -356,7 +364,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
         alternativas.controls.forEach(alternativa => {
           const respuestaAlternativaControl = alternativa.get('respuesta');
           if (pregunta.get('tipoPregunta').value === TipoPregunta.NUMERICO && respuestaAlternativaControl) {
-            respuestaAlternativaControl.setValidators(agregarValidacion ? [Validators.required] : []);
+            respuestaAlternativaControl.setValidators(agregarValidacion && alternativa.get('requerido').value ? [Validators.required] : []);
             respuestaAlternativaControl.updateValueAndValidity();
 
             if (!respuestaAlternativaControl.valid) {

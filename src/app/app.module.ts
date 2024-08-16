@@ -60,7 +60,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { FileUploadModule } from 'primeng/fileupload';
 import {TooltipModule} from 'primeng/tooltip';
 import { ChartModule } from 'primeng/chart';
-
+import { MessageService } from 'primeng/api';
 import {OrderListModule} from 'primeng/orderlist';
 import { ReporteService } from 'src/app/_service/reporte.service';
 import { PieChartComponent } from './pages/reporte/pie-chart/pie-chart.component';
@@ -147,8 +147,8 @@ export function tokenGetter(){
         GlobalFormsComponentsModule,
         PRIMENG_COMPONENTS,
         MessageModule
-    ],
-  providers: [
+    ],  
+  providers: [MessageService,
     { provide : LocationStrategy, useClass: HashLocationStrategy },
     interceptorProvider, ReporteService
   ],

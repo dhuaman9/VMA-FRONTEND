@@ -135,11 +135,33 @@ export class ReporteService {
         .pipe(map((response: any) => response.items));
     }
 
+    //grafico 21 y 22
     generarReporteCostoTotalIncurrido(anio: number): Observable<CostoTotalIncurridoCompletoDTO> {
       return this.http.get(`${this.url}/api/reporte/costo-total-incurrido?anio=${anio.toString()}`)
         .pipe(map((response: any) => response.item));
     }
 
+    //grafico 23
+    generarReporteCostoTotalAnualIncurrido(anio: number): Observable<BarChartBasicoDto[]> {
+      return this.http.get(`${this.url}/api/reporte/costo-total-incurrido-por-ep?anio=${anio.toString()}`)
+        .pipe(map((response: any) => response.items));
+    }
+
+
+    //grafico 24 y 25
+    generarReporteCostoAnualMuestrasInopinadas(anio: number): Observable<CostoTotalIncurridoCompletoDTO> {
+      return this.http.get(`${this.url}/api/reporte/costo-anual-incurrido-muestras-inopinadas?anio=${anio.toString()}`)
+        .pipe(map((response: any) => response.item));
+    }
+
+    //grafico 26
+    generarGraficoCostoAnualIncurridoInopinadas(anio: number): Observable<BarChartBasicoDto[]> {
+      return this.http.get(`${this.url}/api/reporte/costo-anual-incurrido-muestras-inopinadas-completo?anio=${anio.toString()}`)
+        .pipe(map((response: any) => response.items));
+    }
+
+    //grafico 27
+  
     generarReporteCostoTotalIncurridoOtros(anio: number): Observable<BarChartBasicoDto[]> {
       return this.http.get(`${this.url}/api/reporte/costo-total-incurrido-otros?anio=${anio.toString()}`)
         .pipe(map((response: any) => response.items));
@@ -153,11 +175,7 @@ export class ReporteService {
     }*/
 
 //grafico 27
-  generarReporteCostoTotalAnualGastosVMA(anio: number): Observable<BarChartBasicoDto[]> {
-    return this.http.get(`${this.url}/api/reporte/costo-anual-vma?anio=${anio.toString()}`)
-     .pipe(map((response: any) => response.items));
-  }
-
+  
 
     fechaprocesa(): Observable<any>{
 

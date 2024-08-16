@@ -70,7 +70,7 @@
                                                             <p-fileUpload
                                                                 name="file"
                                                                 [auto]="false"
-                                                                [class.disabled-choose-button]="!isRoleRegistrador"
+                                                                [class.disabled-choose-button]="!isRoleRegistrador || isRegistroCompleto"
                                                                 (onSelect)="onFileChange($event, pregunta.get('respuesta'))"
                                                                 (onClear)="onCancelFile(pregunta.get('respuesta'), pregunta.value)"
                                                                 chooseLabel="Elegir archivo"
@@ -88,21 +88,20 @@
                                                             <small *ngIf="pregunta.get('respuesta').errors?.maxSize" style="color: red;">El archivo no puede ser mayor a {{pregunta.get('metadatoArchivo').value.maxSizeInMB}}MB</small>
                                                         </ng-container>
                                                         <ng-template #descargar>
-                                                            <div class="d-flex gap-1">
-                                                                <p-button label="Descargar archivo" icon="pi pi-download" iconPos="left" (click)="uploadService.downloadFile(pregunta.get('respuesta').value)"></p-button>
-                                                                <p-button [class.disabled-choose-button]="!isRoleRegistrador" label="Cambiar archivo" icon="pi pi-pencil" iconPos="left" (click)="onUpdateFile(pregunta)"></p-button>
-                                                            </div>
+                                                          <div class="d-flex gap-1">
+                                                              <p-button label="Descargar archivo" icon="pi pi-download" iconPos="left" (click)="uploadService.downloadFile(pregunta.get('respuesta').value)"></p-button>
+                                                              <p-button [class.disabled-choose-button]="!isRoleRegistrador || isRegistroCompleto" label="Cambiar archivo" icon="pi pi-pencil" iconPos="left" (click)="onUpdateFile(pregunta)"></p-button>
+                                                          </div>
                                                         </ng-template>
                                                     </div>
                                             </ng-container>
                                         </ng-container>
+                                      </div>
                                     </div>
-                                  </div>
                                     
                                     </div>
                                   </p-accordionTab>
                                 </p-accordion >
-                                
                                 
                                 <div class="col-12 flex  justify-content-center" *ngIf="this.isRoleRegistrador; else botonAdmin">
                                   <p-button type="button" [disabled]="cargandoProceso$ | async" label="Guardar Progresivamente" class="p-button-success p-button-secondary green-button ml-1" icon="pi pi-check" iconPos="left" [styleClass]="'p-button-success'"

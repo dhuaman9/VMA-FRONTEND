@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { EMPTY, Observable, of } from 'rxjs';
 import { SessionService } from './session.service';
-import { VmaService } from './vma.service';
-import { catchError, map, tap } from 'rxjs/operators';
+
 import Swal from 'sweetalert2';
 
 @Injectable({
@@ -24,7 +23,7 @@ export class AnexoGuard implements CanActivate {
     const userRole = this.sessionService.obtenerRoleJwt();
     expectedRoles = expectedRoles.map(rol => rol.toUpperCase());
     if (!expectedRoles.includes(userRole.toUpperCase())) {
-      Swal.fire('Permiso denegado', 'No tiene permisos para ver anexos', 'info');
+      Swal.fire('Permiso denegado', 'No tiene permisos para ver los anexos', 'info');
       this.router.navigate(['/inicio/vma']);
       return false;
     }

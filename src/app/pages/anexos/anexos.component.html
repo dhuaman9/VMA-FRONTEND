@@ -1,4 +1,4 @@
-<router-outlet></router-outlet>
+
 <div class="px-5 py-3 anexo">
   <div style="text-align: center; margin-bottom: 20px;">
     <h2 style="margin-bottom: 20px;">Lista de Anexos VMA </h2>
@@ -29,9 +29,9 @@
                     <th>N°</th>
                     <th>Empresa Prestadora</th>
                     <th>Tamaño</th>
-                    <th>RAT</th>
-                    <th>EPS remitió información</th>
-                    <th>EPS remitió informe</th>
+                    <th style="text-align: center;">RAT</th>
+                    <th style="text-align: center;">EPS remitió información</th>
+                    <th style="text-align: center;">EPS remitió informe</th>
                   </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-anexo let-i="rowIndex">
@@ -42,9 +42,9 @@
                       <td [attr.rowspan]="anexo.rowspan" class="text-center">{{anexo.tamanioEmpresa}}</td>
                     </ng-container>
                     <ng-template #noRowspan></ng-template>
-                    <td>{{anexo.esRAT ? 'SÍ' : 'NO'}}</td>
-                    <td>{{anexo.epsRemitioInformacion ? 'SÍ' : 'NO'}}</td>
-                    <td>{{anexo.epsRemitioInforme ? 'SÍ' : 'NO'}}</td>
+                    <td style="text-align: center;">{{anexo.esRAT ? 'SI' : 'NO'}}</td>
+                    <td style="text-align: center;">{{anexo.epsRemitioInformacion ? 'SI' : 'NO'}}</td>
+                    <td style="text-align: center;">{{anexo.epsRemitioInforme ? 'SI' : 'NO'}}</td>
                   </tr>
                 </ng-template>
               </p-table>
@@ -60,8 +60,8 @@
                   <th>N°</th>
                   <th>Empresa Prestadora</th>
                   <th>Tamaño</th>
-                  <th>Área VMA</th>
-                  <th>N° trabajadores</th>
+                  <th style="text-align: center;">Área VMA</th>
+                  <th style="text-align: center;">N° trabajadores</th>
                 </tr>
               </ng-template>
       
@@ -73,8 +73,8 @@
                     <td [attr.rowspan]="anexo.rowspan" class="text-center">{{anexo.tamanioEmpresa}}</td>
                   </ng-container>
                   <ng-template #noRowspan></ng-template>
-                  <td>{{anexo.respuesta}}</td>
-                  <td>{{anexo.nroTrabajadores}}</td>
+                  <td style="text-align: center;">{{anexo.respuesta}}</td>
+                  <td style="text-align: center;">{{anexo.nroTrabajadores}}</td>
                 </tr>
               </ng-template>
             </p-table>
@@ -90,23 +90,23 @@
             <th>N°</th>
             <th>Empresa Prestadora</th>
             <th>Tamaño</th>
-            <th>N° UND IDENTIFICADOS</th>
-            <th>N° UND INSPECCIONADOS</th>
-            <th>N° UND INSCRITOS EN EL REGISTRO DE UND</th>
+            <th style="text-align: center;">N° UND IDENTIFICADOS</th>
+            <th style="text-align: center;">N° UND INSPECCIONADOS</th>
+            <th style="text-align: center;">N° UND INSCRITOS EN EL REGISTRO DE UND</th>
           </tr>
         </ng-template>
 
         <ng-template pTemplate="body" let-anexo let-i="rowIndex">
           <tr>
             <td>{{i+1}}</td>
-            <td>{{anexo.nombreEmpresa}}</td>
+            <td style="width: 25%;">{{anexo.nombreEmpresa}}</td>
             <ng-container *ngIf="anexo.rowspan; else noRowspan">
               <td [attr.rowspan]="anexo.rowspan" class="text-center">{{anexo.tamanioEmpresa}}</td>
             </ng-container>
             <ng-template #noRowspan></ng-template>
-            <td>{{anexo.nroUNDidentificados}}</td>
-            <td>{{anexo.nroUNDinspeccionados}}</td>
-            <td>{{anexo.nroUNDinscritos}}</td>
+            <td style="text-align: center;">{{anexo.nroUNDidentificados}}</td>
+            <td style="text-align: center;">{{anexo.nroUNDinspeccionados}}</td>
+            <td style="text-align: center;">{{anexo.nroUNDinscritos}}</td>
           </tr>
         </ng-template>
       </p-table>
@@ -122,23 +122,23 @@
                   <th>N°</th>
                   <th>Empresa Prestadora</th>
                   <th>Tamaño</th>
-                  <th>N° UND INSCRITOS EN EL REGISTRO DE UND</th>
-                  <th>N° MUESTRAS INOPINADAS </th>
-                  <th>% MUESTRA INOPINADA</th>
+                  <th style="text-align: center;">N° UND INSCRITOS EN EL REGISTRO DE UND</th>
+                  <th style="text-align: center;">N° MUESTRAS INOPINADAS </th>
+                  <th style="text-align: center;">% MUESTRA INOPINADA</th>
                 </tr>
               </ng-template>
       
               <ng-template pTemplate="body" let-anexo let-i="rowIndex">
                 <tr>
                   <td>{{i+1}}</td>
-                  <td>{{anexo.nombreEmpresa}}</td>
+                  <td style="width: 25%;">{{anexo.nombreEmpresa}}</td>
                   <ng-container *ngIf="anexo.rowspan; else noRowspan">
                     <td [attr.rowspan]="anexo.rowspan" class="text-center">{{anexo.tamanioEmpresa}}</td>
                   </ng-container>
                   <ng-template #noRowspan></ng-template>
-                  <td>{{anexo.nroUNDinscritos}}</td>
-                  <td>{{anexo.nroMuestraInopinada}}</td>
-                  <td>{{anexo.porcentajeMuestraInopinada}}</td>
+                  <td style="text-align: center;">{{anexo.nroUNDinscritos}}</td>
+                  <td style="text-align: center;">{{anexo.nroMuestraInopinada}}</td>
+                  <td style="text-align: center;">{{anexo.porcentajeMuestraInopinada}}%</td>
                 </tr>
               </ng-template>
             </p-table>
@@ -155,25 +155,25 @@
             <th>N°</th>
             <th>Empresa Prestadora</th>
             <th>Tamaño</th>
-            <th>N° MUESTRAS INOPINADAS </th>
-            <th>N° UND QUE SOPREPASAN PARAMETROS DEL ANEXO 1</th>
-            <th>N° UND FACTURADOS POR ANEXO 1</th>
-            <th>N° UND QUE REALIZARON PAGO POR ANEXO 1</th>
+            <th style="text-align: center;">N° MUESTRAS INOPINADAS </th>
+            <th style="text-align: center;">N° UND QUE SOPREPASAN PARAMETROS DEL ANEXO 1</th>
+            <th style="text-align: center;">N° UND FACTURADOS POR ANEXO 1</th>
+            <th style="text-align: center;">N° UND QUE REALIZARON PAGO POR ANEXO 1</th>
           </tr>
         </ng-template>
 
         <ng-template pTemplate="body" let-anexo let-i="rowIndex">
           <tr>
             <td>{{i+1}}</td>
-            <td>{{anexo.nombreEmpresa}}</td>
+            <td style="width: 25%;">{{anexo.nombreEmpresa}}</td>
             <ng-container *ngIf="anexo.rowspan; else noRowspan">
               <td [attr.rowspan]="anexo.rowspan" class="text-center">{{anexo.tamanioEmpresa}}</td>
             </ng-container>
             <ng-template #noRowspan></ng-template>
-            <td>{{anexo.nroMuestrasInopinadas}}</td>
-            <td>{{anexo.nroUNDSobrepasanParametrosAnexo1}}</td>
-            <td>{{anexo.nroUNDFacturadosPorAnexo1}}</td>
-            <td>{{anexo.nroUNDRealizaronPagoPorAnexo1}}</td>
+            <td style="text-align: center;">{{anexo.nroMuestraInopinada}}</td>
+            <td style="text-align: center;">{{anexo.nroUNDSobrepasanParametrosAnexo1}}</td>
+            <td style="text-align: center;">{{anexo.nroUNDFacturadosPorAnexo1}}</td>
+            <td style="text-align: center;">{{anexo.nroUNDRealizaronPagoPorAnexo1}}</td>
           </tr>
         </ng-template>
       </p-table>
@@ -189,25 +189,25 @@
                   <th>N°</th>
                   <th>Empresa Prestadora</th>
                   <th>Tamaño</th>
-                  <th>N° MUESTRAS INOPINADAS </th>
-                  <th>N° UND QUE SOPREPASAN PARAMETROS DEL ANEXO 2</th>
-                  <th>N° UND CON PLAZO ADICIONAL </th>
-                  <th>N° UND CON ACUERDO SUSCRITO</th>
+                  <th style="text-align: center;">N° MUESTRAS INOPINADAS </th>
+                  <th style="text-align: center;">N° UND QUE SOPREPASAN PARAMETROS DEL ANEXO 2</th>
+                  <th style="text-align: center;">N° UND CON PLAZO ADICIONAL </th>
+                  <th style="text-align: center;">N° UND CON ACUERDO SUSCRITO</th>
                 </tr>
               </ng-template>
       
               <ng-template pTemplate="body" let-anexo let-i="rowIndex">
                 <tr>
                   <td>{{i+1}}</td>
-                  <td>{{anexo.nombreEmpresa}}</td>
+                  <td style="width: 25%;">{{anexo.nombreEmpresa}}</td>
                   <ng-container *ngIf="anexo.rowspan; else noRowspan">
                     <td [attr.rowspan]="anexo.rowspan" class="text-center">{{anexo.tamanioEmpresa}}</td>
                   </ng-container>
                   <ng-template #noRowspan></ng-template>
-                  <td>{{anexo.nroMuestrasInopinadas}}</td>
-                  <td>{{anexo.nroUNDSobrepasanParametrosAnexo2}}</td>
-                  <td>{{anexo.nroUNDConPlazoAdicional}}</td>
-                  <td>{{anexo.nroUNDSuscritoAcuerdo}}</td>
+                  <td style="text-align: center;">{{anexo.nroMuestraInopinada}}</td>
+                  <td style="text-align: center;">{{anexo.nroUNDSobrepasanParametrosAnexo2}}</td>
+                  <td style="text-align: center;">{{anexo.nroUNDConPlazoAdicional}}</td>
+                  <td style="text-align: center;">{{anexo.nroUNDSuscritoAcuerdo}}</td>
                 </tr>
               </ng-template>
             </p-table>
@@ -223,23 +223,23 @@
                   <th>N°</th>
                   <th>Empresa Prestadora</th>
                   <th>Tamaño</th>
-                  <th>N° UND INSCRITOS EN EL REGISTRO DE UND</th>
-                  <th>N° RECLAMOS POR VMA</th>
-                  <th>N° RECLAMOS RESUELTOS FUNDADOS</th>
+                  <th style="text-align: center;">N° UND INSCRITOS EN EL REGISTRO DE UND</th>
+                  <th style="text-align: center;">N° RECLAMOS POR VMA</th>
+                  <th style="text-align: center;">N° RECLAMOS RESUELTOS FUNDADOS</th>
                 </tr>
               </ng-template>
       
               <ng-template pTemplate="body" let-anexo let-i="rowIndex">
                 <tr>
                   <td>{{i+1}}</td>
-                  <td>{{anexo.nombreEmpresa}}</td>
+                  <td style="width: 25%;">{{anexo.nombreEmpresa}}</td>
                   <ng-container *ngIf="anexo.rowspan; else noRowspan">
                     <td [attr.rowspan]="anexo.rowspan" class="text-center">{{anexo.tamanioEmpresa}}</td>
                   </ng-container>
                   <ng-template #noRowspan></ng-template>
-                  <td>{{anexo.nroUNDInscritos}}</td>
-                  <td>{{anexo.nroReclamosRecibidos}}</td>
-                  <td>{{anexo.nroReclamosFundados}}</td>
+                  <td style="text-align: center;">{{anexo.nroUNDInscritos}}</td>
+                  <td style="text-align: center;">{{anexo.nroReclamosRecibidos}}</td>
+                  <td style="text-align: center;">{{anexo.nroReclamosFundados}}</td>
                 
                 </tr>
               </ng-template>
@@ -256,23 +256,23 @@
                   <th>N°</th>
                   <th>Empresa Prestadora</th>
                   <th>Tamaño</th>
-                  <th>COSTO EN IDENTIFICACIÓN, INSPECCIÓN Y REGISTRO DE UND (S/)</th>
-                  <th>N° UND IDENTIFICADOS (CANT) </th>
-                  <th>COSTO ANUAL POR UND (S/)</th>
+                  <th style="text-align: center;">COSTO EN IDENTIFICACIÓN, INSPECCIÓN Y REGISTRO DE UND (S/)</th>
+                  <th style="text-align: center;">N° UND IDENTIFICADOS (CANT) </th>
+                  <th style="text-align: center;">COSTO ANUAL POR UND (S/)</th>
                 </tr>
               </ng-template>
              
               <ng-template pTemplate="body" let-anexo let-i="rowIndex">
                 <tr>
                   <td>{{i+1}}</td>
-                  <td>{{anexo.nombreEmpresa}}</td>
+                  <td style="width: 25%;">{{anexo.nombreEmpresa}}</td>
                   <ng-container *ngIf="anexo.rowspan; else noRowspan">
                     <td [attr.rowspan]="anexo.rowspan" class="text-center">{{anexo.tamanioEmpresa}}</td>
                   </ng-container>
                   <ng-template #noRowspan></ng-template>
-                  <td>{{anexo.costoTotalUND}}</td>
-                  <td>{{anexo.nroUNDidentificados}}</td>
-                  <td>{{anexo.costoAnualPorUND}}</td>
+                  <td style="text-align: right;">{{anexo.costoTotalUND}}</td>
+                  <td style="text-align: center;">{{anexo.nroUNDidentificados}}</td>
+                  <td style="text-align: right;">{{anexo.costoAnualPorUND}}</td>
                 </tr>
               </ng-template>
             </p-table>
@@ -286,11 +286,11 @@
               <ng-template pTemplate="header">
                 <tr>
                   <th>N°</th>
-                  <th>Empresa Prestadora</th>
+                  <th style="width: 25%;">Empresa Prestadora</th>
                   <th>Tamaño</th>
-                  <th>COSTO POR TOMAS DE MUESTRA INOPINADAS (S/)</th>
-                  <th>N° DE MUESTRAS INOPINADAS (CANT)  </th>
-                  <th>COSTO ANUAL POR MUESTRA INOPINADA (S/)</th>
+                  <th style="text-align: center;">COSTO POR TOMAS DE MUESTRA INOPINADAS (S/)</th>
+                  <th style="text-align: center;">N° DE MUESTRAS INOPINADAS (CANT)  </th>
+                  <th style="text-align: center;">COSTO ANUAL POR MUESTRA INOPINADA (S/)</th>
                 </tr>
               </ng-template>
              
@@ -302,9 +302,9 @@
                     <td [attr.rowspan]="anexo.rowspan" class="text-center">{{anexo.tamanioEmpresa}}</td>
                   </ng-container>
                   <ng-template #noRowspan></ng-template>
-                  <td>{{anexo.costoPorTomaMuestrasInopinadas}}</td>
-                  <td>{{anexo.nroMuestrasInopinadas}}</td>
-                  <td>{{anexo.costoAnualMuestraInopinada}}</td>
+                  <td style="text-align: right;">{{anexo.costoPorTomaMuestrasInopinadas}}</td>
+                  <td style="text-align: center;">{{anexo.nroMuestrasInopinadas}}</td>
+                  <td style="text-align: right;">{{anexo.costoAnualMuestraInopinada}}</td>
                   
                 </tr>
               </ng-template>
@@ -320,24 +320,24 @@
                 <tr>
                   <th>N°</th>
                   <th>Empresa Prestadora</th>
-                  <th>Tamaño</th>
-                  <th>COSTO EN IDENTIFICACIÓN, INSPECCIÓN Y REGISTRO DE UND (S/)</th>
-                  <th>COSTO POR TOMAS DE MUESTRAS INOPINADAS (S/) </th>
-                  <th>COSTO POR OTROS GASTOS DE IMPLEMENTACIÓN (S/)</th>
+                  <th style="text-align: center;">Tamaño</th>
+                  <th style="text-align: center;">COSTO EN IDENTIFICACIÓN, INSPECCIÓN Y REGISTRO DE UND (S/)</th>
+                  <th style="text-align: center;">COSTO POR TOMAS DE MUESTRAS INOPINADAS (S/) </th>
+                  <th style="text-align: center;">COSTO POR OTROS GASTOS DE IMPLEMENTACIÓN (S/)</th>
                 </tr>
               </ng-template>
              
               <ng-template pTemplate="body" let-anexo let-i="rowIndex">
                 <tr>
                   <td>{{i+1}}</td>
-                  <td>{{anexo.nombreEmpresa}}</td>
+                  <td style="width: 25%;">{{anexo.nombreEmpresa}}</td>
                   <ng-container *ngIf="anexo.rowspan; else noRowspan">
                     <td [attr.rowspan]="anexo.rowspan" class="text-center">{{anexo.tamanioEmpresa}}</td>
                   </ng-container>
                   <ng-template #noRowspan></ng-template>
-                  <td>{{anexo.costoIdentInspeccionRegistroUND}}</td>
-                  <td>{{anexo.costoMuestrasInopinadas}}</td>
-                  <td>{{anexo.costosOtrosGastosImplementacion}}</td>
+                  <td style="text-align: right;">{{anexo.costoIdentInspeccionRegistroUND}}</td>
+                  <td style="text-align: right;">{{anexo.costoMuestrasInopinadas}}</td>
+                  <td style="text-align: right;">{{anexo.costosOtrosGastosImplementacion}}</td>
                 </tr>
               </ng-template>
             </p-table>
@@ -365,7 +365,7 @@
                     <td [attr.rowspan]="anexo.rowspan" class="text-center">{{anexo.tamanioEmpresa}}</td>
                   </ng-container>
                   <ng-template #noRowspan></ng-template>
-                  <td style="text-align: center;">{{anexo.ingresosVma}}</td>
+                  <td style="text-align: right;">{{anexo.ingresosVma}}</td>
                 </tr>
               </ng-template>
             </p-table>
@@ -376,4 +376,3 @@
   <ng-template #noResults>
     <p-message severity="info" text="No existen registros para este año"></p-message>
   </ng-template>
-</div>

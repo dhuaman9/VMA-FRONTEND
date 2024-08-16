@@ -29,4 +29,12 @@ export class VmaService {
     sendRegistroCompleto(message: boolean) {
       this.messageSource.next(message);
     }
+
+    findById(id: number): Observable<any> {
+      return this.http.get<any>(`${this.url}/findByid/${id}`);
+    }
+
+    actualizarEstadoIncompleto(id: number): Observable<void> {
+      return this.http.put<void>(`${this.url}/estado-incompleto/${id}`, {});
+    }
 }

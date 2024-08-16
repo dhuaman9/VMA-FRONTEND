@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { PrimeNGConfig } from 'primeng/api';
 
+
 declare const updateTituloModulo: any;
 declare const updateMenuOption: any;
 
@@ -66,8 +67,9 @@ export class AppComponent  implements OnInit{
       monthNames: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
       monthNamesShort: ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'],
     });
-}
 
+  }
 
+  
 
 }

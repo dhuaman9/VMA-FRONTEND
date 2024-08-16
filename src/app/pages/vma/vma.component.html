@@ -55,10 +55,7 @@
                                 <div class="col-md-12">
                                     <small *ngIf="filtroForm.errors?.fechaComparison" style="color: red;" >La fecha inicio debe ser mayor o igual a la fecha fin</small>
                                 </div>
-                            <!--<div class="col-md-12">
-                                <button pButton type="button" label="Buscar" icon="pi pi-search" style="margin-right: 50px" (click)="buscar()"></button>
-                                <button pButton type="button" label="Limpiar" icon="pi pi-times" (click)="limpiar()"></button>
-                            </div>-->
+                           
                             </div>
                           </form>
                     </div>
@@ -71,7 +68,10 @@
                                  [disabled]="registroCompleto"
                                  [pTooltip]="registroCompleto ? 'Ya existe un registro VMA en curso' : 'Registrar nuevo VMA'"
                                  tooltipPosition="top"><i class="pi pi-plus"></i>  Registrar</button>
-                        <button pButton label="Descargar Excel" class="p-button-success float-right" icon="pi pi-download" iconPos="right" *ngIf="isRoleAdminAndConsultor"
+                        <button pButton label="Descargar Excel" class="p-button-success float-right" icon="pi pi-download" iconPos="right"
+                                *ngIf="isRoleAdminAndConsultor"
+                                [pTooltip]="'Debe seleccionar al menos 1 registro para descargar'"
+                                tooltipPosition="top"
                                 (click)="descargar()"></button>
                         <span *ngIf="registroCompleto && isRoleRegistrador" class="registro-indisponible">
                           No es posible registrar un nuevo VMA. Ya existe uno en curso o la fecha actual no está dentro del período programado.
@@ -86,13 +86,13 @@
                               <div class="card-body table-responsive p-0">
 
                                 <p-table #dt1 [value]="ListRegistroVMA"
-                                dataKey="id"
                                 [globalFilterFields]="['empresa.nombre', 'estado', 'empresa.tipo','empresa.regimen','created_at', 'fichaRegistro.anio']"
                                 responsiveLayout="scroll"
                                 [paginator]="true"
                                 [rows]="10"
                                 [showCurrentPageReport]="true"
-                                [rowsPerPageOptions]="[10, 25, 50, 100]"
+                                [rowsPerPageOptions]="[10,25,50, 100]"
+                                [(selection)]="registrosSeleccionados" dataKey="idRegistroVma"
                                 currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
                                 styleClass="p-datatable-customers p-datatable-gridlines p-datatable-sm"
                                 >
@@ -106,9 +106,9 @@
                                 </ng-template>
                                 <ng-template pTemplate="header">
                                     <tr>
-                                        <!--<th style="width: 3rem">
+                                        <th style="width: 3rem"  *ngIf="!isRoleRegistrador">
                                             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                                        </th> -->
+                                        </th>
                                         <th style="text-align:center;width: 5%;">N°</th>
                                         <th>Empresa EPS</th>
                                         <th style="width: 15%;">Tamaño de la EPS</th>
@@ -116,14 +116,14 @@
                                         <th style="width: 12%;">Estado</th>
                                         <th style="width: 15%;">Fecha de registro</th>
                                         <th style="text-align:center;width: 7%;">Año</th>
-                                        <th style="text-align:center;width: 7%;">Editar</th>
+                                        <th style="text-align:center;width: 7%;">Acciones</th>
                                     </tr>
                                 </ng-template>
                                    <ng-template pTemplate="body" let-item let-ri="rowIndex" let-first="first">
                                       <tr>
-                                        <!--<td>
-                                            <p-tableCheckbox [value]=""></p-tableCheckbox>
-                                        </td>   registroCompleto-->
+                                        <td *ngIf="!isRoleRegistrador">
+                                            <p-tableCheckbox [value]="item"></p-tableCheckbox>
+                                        </td>
                                         <td style="text-align:center;">{{ri + 1}}</td>
                                         <td>{{item.empresa?.nombre}}</td>
                                         <td>{{item.empresa.tipo}}</td>
@@ -131,11 +131,19 @@
                                         <td>{{item.estado}}</td>
                                         <td>{{item.createdAt | date: 'dd-MM-yyy hh:mm'}}</td>
                                         <td style="text-align:center;">{{item.fichaRegistro.anio}}</td>
-                                        <td style="text-align:center">
-                                            <button pButton type="button" [icon]="isRoleRegistrador ? 'pi pi-pencil' : 'pi pi-eye'" style="width: 30px; height: 20px;"
-                                                [pTooltip]="isRoleRegistrador ? 'Editar registro' : 'Visualizar registro'" tooltipPosition="top"
-                                                (click)="redirectToFormUpdate(item.idRegistroVma)">
-                                            </button>
+                                        <td style="text-align:center" class="">
+                                            <div class="d-flex gap-2">
+                                              <button pButton type="button" [icon]="isRoleRegistrador && item.estado !== 'COMPLETO' ? 'pi pi-pencil' : 'pi pi-eye'" style="width: 30px; height: 20px;"
+                                                      [pTooltip]="isRoleRegistrador && item.estado !== 'COMPLETO' ? 'Editar registro' : 'Visualizar registro'" tooltipPosition="top"
+                                                      (click)="redirectToFormUpdate(item.idRegistroVma)">
+                                              </button>
+                                              <button pButton type="button" style="width: 30px; height: 20px;"
+                                                      *ngIf="isRoleAdminAndConsultor && item.estado === 'COMPLETO'"
+                                                      [pTooltip]="'Volver a editar'" tooltipPosition="top"
+                                                      [icon]="'pi pi-pencil'"
+                                                      (click)="cambiarEstadoIncompleto(item.idRegistroVma)">
+                                              </button>
+                                            </div>
                                         </td>
                                       </tr>
                                   </ng-template>
