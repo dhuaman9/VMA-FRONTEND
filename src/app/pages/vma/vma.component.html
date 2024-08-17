@@ -55,7 +55,7 @@
                                 <div class="col-md-12">
                                     <small *ngIf="filtroForm.errors?.fechaComparison" style="color: red;" >La fecha inicio debe ser mayor o igual a la fecha fin</small>
                                 </div>
-                           
+
                             </div>
                           </form>
                     </div>
@@ -83,16 +83,18 @@
 
                         <div class="content">
                             <div class="col-md-12">
-                              <div class="card-body table-responsive p-0">
+                              <div class="card-body p-0">
 
                                 <p-table #dt1 [value]="ListRegistroVMA"
                                 [globalFilterFields]="['empresa.nombre', 'estado', 'empresa.tipo','empresa.regimen','created_at', 'fichaRegistro.anio']"
                                 responsiveLayout="scroll"
+                                (onLazyLoad)="buscar($event)"
+                                [lazy]="true"
                                 [paginator]="true"
                                 [rows]="10"
                                 [showCurrentPageReport]="true"
-                                [rowsPerPageOptions]="[10,25,50, 100]"
-                                [(selection)]="registrosSeleccionados" dataKey="idRegistroVma"
+                                [totalRecords]="totalRecords"
+                                [rowsPerPageOptions]="[10,25,50,100]"
                                 currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
                                 styleClass="p-datatable-customers p-datatable-gridlines p-datatable-sm"
                                 >
@@ -101,13 +103,13 @@
                                   Buscar:
                                   <span class="p-input-icon-left p-ml-auto">
                                       <i class="pi pi-search"></i>
-                                      <input pInputText type="text" (input)="onFilterTableGlobal(dt1, $event)" placeholder="Ingresar texto" />
+                                      <input pInputText type="text" [formControl]="formBusqueda" placeholder="Ingresar texto" />
                                   </span>
                                 </ng-template>
                                 <ng-template pTemplate="header">
                                     <tr>
-                                        <th style="width: 3rem"  *ngIf="!isRoleRegistrador">
-                                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                                        <th style="width: 3rem" *ngIf="!isRoleRegistrador">
+                                          <input type="checkbox" class="custom-checkbox" [formControl]="formCheckBox">
                                         </th>
                                         <th style="text-align:center;width: 5%;">N°</th>
                                         <th>Empresa EPS</th>
@@ -122,7 +124,7 @@
                                    <ng-template pTemplate="body" let-item let-ri="rowIndex" let-first="first">
                                       <tr>
                                         <td *ngIf="!isRoleRegistrador">
-                                            <p-tableCheckbox [value]="item"></p-tableCheckbox>
+                                          <input class="custom-checkbox" type="checkbox" (change)="onCheckboxChange($event, item)"  [checked]="item.seleccionado">
                                         </td>
                                         <td style="text-align:center;">{{ri + 1}}</td>
                                         <td>{{item.empresa?.nombre}}</td>

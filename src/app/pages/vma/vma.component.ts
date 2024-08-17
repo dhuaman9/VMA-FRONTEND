@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ValidationErrors, Validators  } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Empresa } from 'src/app/_model/empresa';
-import { RegistroVMA } from 'src/app/_model/registroVMA';
-import { RegistroVMAService } from 'src/app/_service/registroVMA.service';
-import { Table } from 'primeng/table';
-import { VmaService } from 'src/app/_service/vma.service';
-import { SessionService } from 'src/app/_service/session.service';
-import { EmpresaService } from 'src/app/_service/empresa.service';
-import {switchMap, tap} from "rxjs/operators";
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Empresa} from 'src/app/_model/empresa';
+import {RegistroVMA} from 'src/app/_model/registroVMA';
+import {RegistroVMAService} from 'src/app/_service/registroVMA.service';
+import {Table} from 'primeng/table';
+import {VmaService} from 'src/app/_service/vma.service';
+import {SessionService} from 'src/app/_service/session.service';
+import {EmpresaService} from 'src/app/_service/empresa.service';
+import {debounceTime, distinctUntilChanged, switchMap, tap} from "rxjs/operators";
 import Swal from "sweetalert2";
+import {LazyLoadEvent} from "primeng/api";
 
 
 @Component({
@@ -35,13 +36,11 @@ export class VmaComponent implements OnInit {
 
   empresasLista: {label: string, value: any}[] = [];
 
-  ListRegistroVMA: RegistroVMA[];  //pendiente
+  ListRegistroVMA: RegistroVMA[] = [];  //pendiente
 
   registroForm: FormGroup;
 
   years = [];
-
-  registrosSeleccionados: RegistroVMA[] = [];
 
   basicData = {
     labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
@@ -64,7 +63,9 @@ export class VmaComponent implements OnInit {
   first = 0;
   rows = 10;
   totalRecords = 0;
-
+  formBusqueda: FormControl = new FormControl('');
+  formCheckBox: FormControl = new FormControl(false);
+  checkManual: boolean = false;
   registroCompleto: boolean = false; //cambiar por registroVMAEnCurso
   isRoleRegistrador: boolean = this.sessionService.obtenerRoleJwt().toUpperCase() === 'REGISTRADOR';
   isRoleAdminAndConsultor: boolean = this.sessionService.obtenerRoleJwt().toUpperCase() === ('ADMINISTRADOR DAP' || 'CONSULTOR');
@@ -93,7 +94,14 @@ export class VmaComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    this.formBusqueda.valueChanges
+      .pipe(
+        debounceTime(700),
+        distinctUntilChanged()
+      )
+      .subscribe(() =>  this.buscar());
+    this.formCheckBox.valueChanges.subscribe(this.toggleSeleccionados);
+    this.buscar();
     this.filtroForm = this.fb.group({
       eps: [''],
       estado: [''],
@@ -110,12 +118,30 @@ export class VmaComponent implements OnInit {
 
     this.initializeYears();
 
-    this.initListRegistroVMA();
-    this.buscar();
+    // this.initListRegistroVMA();
+
      //  this.empresa = new Empresa();
     this.cargarListaEmpresas(); //carga el listdo de empresas
     this.vmaService.isRegistroCompleto().subscribe(response => this.registroCompleto = response);
     this.vmaService.registroCompleto$.subscribe(response => this.registroCompleto = response);
+  }
+
+  private toggleSeleccionados = (seleccionado: boolean): void => {
+    if(this.checkManual) {
+      return;
+    }
+
+    this.ListRegistroVMA.map(item => {
+      item.seleccionado = seleccionado;
+      return item;
+    });
+  }
+
+  onCheckboxChange(event: any, item: any): void {
+    item.seleccionado = !item.seleccionado;
+    this.checkManual = true;
+    this.formCheckBox.setValue(this.getRegistrosSeleccionados().length === this.ListRegistroVMA.length);
+    this.checkManual = false;
   }
 
   fechaDesdeListener(): void {
@@ -214,12 +240,15 @@ export class VmaComponent implements OnInit {
       cancelButtonText: 'No'
     }).then((result) => {
       if (result.isConfirmed) {
+        this.first = 0;
+        this.rows = 10;
+        this.formCheckBox.setValue(false);
         this.vmaService.actualizarEstadoIncompleto(id)
           .pipe(
             tap(this.mostrarMensajeSatisfactorio),
-            switchMap(() => this.registroVMAService.searchRegistroVmas()),
+            switchMap(() => this.registroVMAService.searchRegistroVmas(this.first, this.rows, this.formBusqueda.value)),
             tap((response: any) => {
-              this.ListRegistroVMA= response;
+              this.ListRegistroVMA= response.content;
               this.showResultados = true;
               this.totalRecords = response.length;
               this.isLoading = false;
@@ -239,19 +268,31 @@ export class VmaComponent implements OnInit {
     });
   }
 
-  buscar(){
+  buscar(event?: LazyLoadEvent){
+    this.formCheckBox.setValue(false);
+    if(event) {
+      this.first = event.first! / event.rows!;
+      this.rows = event.rows!;
+    } else {
+      this.first = 0;
+      this.rows = 10;
+    }
+
     if(this.filtroForm.valid) {
       const formValues = this.filtroForm.value;
       this.registroVMAService.searchRegistroVmas(
+        this.first,
+        this.rows,
+        this.formBusqueda.value,
         formValues.eps,
         formValues.estado,
         formValues.fechaDesde,
         formValues.fechaHasta,
         formValues.anio
       ).subscribe(response => {
-        this.ListRegistroVMA= response;
+        this.ListRegistroVMA= response.content;
         this.showResultados = true;
-        this.totalRecords = response.length;
+        this.totalRecords = response.totalElements;
         this.isLoading = false;
       });
     }
@@ -293,6 +334,6 @@ export class VmaComponent implements OnInit {
   }
 
   getRegistrosSeleccionados(): number[] {
-    return this.registrosSeleccionados.map(registro => registro.idRegistroVma);
+    return this.ListRegistroVMA.filter(registro => registro.seleccionado).map(registro => registro.idRegistroVma);
   }
 }

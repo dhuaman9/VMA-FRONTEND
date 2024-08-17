@@ -12,7 +12,7 @@ export class RegistroVMA{
 	//archivos:Archivos[];
 	created_at: string;
 	updated_at: string;
-
+  seleccionado?: boolean;
 
 
 }
