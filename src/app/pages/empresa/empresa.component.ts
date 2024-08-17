@@ -7,6 +7,7 @@ import { EmpresaService } from 'src/app/_service/empresa.service';
 import { Table } from 'primeng/table';
 import { DialogService } from 'primeng/dynamicdialog';
 import { AltaEditEmpresaComponent } from './alta-edit-empresa/alta-edit-empresa.component';
+import { PageableResponse } from 'src/app/_model/pageableResponse';
 
 
 @Component({
@@ -16,27 +17,18 @@ import { AltaEditEmpresaComponent } from './alta-edit-empresa/alta-edit-empresa.
   providers: [DialogService]
 })
 export class EmpresaComponent implements OnInit {
-
-
+  
   isLoading = false;
-  showResultados = false;
   isEdition = false;
   empresa : Empresa;
-  ListEmpresa: Empresa[];
+  pageable: PageableResponse<Empresa[]>;
+  size: number = 10;
+  filter: string = '';
   registroForm: FormGroup;
 
   displayModaAdvice = false;
   modalImage ='';
   modalMessage = '';
- 
- //paginacion
-   currentPage: number= 0;
-   paramsPagination: ParamsPagination;
-   numeroPagina: number = 0;
-
-   first = 0;
-   rows = 10;
-   totalRecords = 0;
 
   regimenOptions: any[] = [
     { label: 'RAT', value: 'RAT' },
@@ -54,63 +46,40 @@ export class EmpresaComponent implements OnInit {
     private router: Router,
     private empresaService : EmpresaService,
     private fb: FormBuilder,
-    private dialogService: DialogService) {
-    
-    this.paramsPagination = new ParamsPagination(0,1,10,0);
- 
+    private dialogService: DialogService) {   
   }
 
   ngOnInit(): void {
-   this.initListEmpresa();
-   
-   this.registroForm = this.fb.group({
-    nombre: ['', Validators.required],
-    tipo: ['', Validators.required],
-    regimen: ['', Validators.required],
-    estado: [true]
-  });
-
-  
-
+    this.loadEmpresasLazy({ first: 0, rows: this.size });
+    this.registroForm = this.fb.group({
+      nombre: ['', Validators.required],
+      tipo: ['', Validators.required],
+      regimen: ['', Validators.required],
+      estado: [true]
+    });
   }
   
-  initListEmpresa() {
-    this.showResultados = false;
-   // this.paramsPagination = new ParamsPagination(0,1,10,0); //?
-    this.onQueryPageEmpresa();  //dhr
-  }
-
- /**
-   * Funcion para el listado de empresas  en la tabla
-   * 
-   */
- onQueryPageEmpresa() {
-   
-  this.empresaService.findAll().subscribe(
-    (data:any) => {
-    console.log("params ",data);
-    this.ListEmpresa = (data.content || data).map((item: Empresa,index: number)=>({
-      ...item,
-      index: index + 1
-    }));
-    this.showResultados = true;
-    this.totalRecords = data.totalElements || this.ListEmpresa.length;
-    this.isLoading = false;
-    },
-    error => {
+  async loadEmpresasLazy(event: any) {
+    this.isLoading = true;
+    const page = event.first / event.rows; 
+    this.empresaService.findAll(page, event.rows, this.filter).subscribe((data: any) => {
+      this.pageable = data;
+      console.log('this.pageable',this.pageable);
+      this.isLoading = false;
+    }, (error) => {
       console.error('No se encontro datos de la empresa.', error);
-    }
-  );
-}
-
-onFilterTableGlobal(table: Table, event:any){
-
-  const filterValue = (event.target as HTMLInputElement).value;
-  if (table) {
-    table.filterGlobal(filterValue, 'contains');
+      this.isLoading = false;
+    });
   }
 
-}
+  onFilterChange() {
+    this.loadEmpresasLazy({ first: 0, rows: this.size });
+  }
+
+  print(a:any){
+    console.log(a);
+    return JSON.stringify(a);
+  }
 
 
 

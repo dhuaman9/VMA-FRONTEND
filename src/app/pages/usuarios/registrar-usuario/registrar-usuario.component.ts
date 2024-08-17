@@ -278,8 +278,8 @@ export class RegistrarUsuarioComponent implements OnInit {
   cargarListaEmpresas(): void {
     this.empresaService.findAll().subscribe(
       
-      (data: any[]) => {        
-        this.empresasLista = data.map(emp => ({
+      (data: any) => {        
+        this.empresasLista = data.content.map(emp => ({
           label: emp.nombre,
           value: emp.idEmpresa
         }));
