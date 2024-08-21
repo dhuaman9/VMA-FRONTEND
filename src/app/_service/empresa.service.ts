@@ -1,9 +1,10 @@
 import { Injectable } from "@angular/core";
 import { environment } from '../../environments/environment';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpErrorResponse, HttpParams } from "@angular/common/http";
 import {  Subject,throwError } from 'rxjs';
 import { Empresa } from "../_model/empresa";
 import { catchError, take, tap } from 'rxjs/operators';
+import { PageableResponse } from "../_model/pageableResponse";
 
 
 @Injectable({
@@ -55,6 +56,21 @@ import { catchError, take, tap } from 'rxjs/operators';
       responseType : 'json'
     });
   }
+
+    findAllPageable(page: number = 0, size: number = 10, filter: string = '') {
+      let params = new HttpParams()
+        .set('page', page.toString())
+        .set('size', size.toString());
+  
+      if (filter) {
+        params = params.set('filter', filter);
+      }
+      return this.http.get<PageableResponse<Empresa[]>>(this.url + '/empresa/listarPaginado', {
+        headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+        responseType: 'json',
+        params: params
+      });
+    }
 
   create(empresa: Empresa) {
     return this.http.post<Empresa>(this.url+'/empresa', empresa, {

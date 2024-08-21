@@ -43,8 +43,12 @@ import { Observable } from 'rxjs';
       return this.http.post<void>(`${this.url}/registroVMA`, request);
     }
 
-    searchRegistroVmas(empresaId?: number, estado?: string, fechaInicio?: Date, fechaFin?: Date, year?: number): Observable<any> {
+    /*searchRegistroVmas(empresaId?: number, estado?: string, fechaInicio?: Date, fechaFin?: Date, year?: number): Observable<any> {
       const params = this.buildParams(empresaId, estado, fechaInicio, fechaFin, year);
+      return this.http.get(`${this.url}/registroVMA/search`, { params });
+    }*/
+    searchRegistroVmas(page:number, size: number, search: string, empresaId?: number, estado?: string, fechaInicio?: Date, fechaFin?: Date, year?: number): Observable<any> {
+      const params = this.buildParams(page, size, search, empresaId, estado, fechaInicio, fechaFin, year);
       return this.http.get(`${this.url}/registroVMA/search`, { params });
     }
 
@@ -65,14 +69,16 @@ import { Observable } from 'rxjs';
       });
     }
 
-    private buildParams(empresaId?: number, estado?: string, fechaInicio?: Date, fechaFin?: Date, year?: number): HttpParams {
+    private buildParams(page:number, size: number, search: string, empresaId?: number, estado?: string, fechaInicio?: Date, fechaFin?: Date, year?: number): HttpParams {
       let params = new HttpParams();
       if (empresaId) params = params.set('empresaId', empresaId.toString());
       if (estado) params = params.set('estado', estado);
       if (fechaInicio) params = params.set('startDate', this.formatearFecha(fechaInicio));
       if (fechaFin) params = params.set('endDate', this.formatearFecha(fechaFin));
       if (year) params = params.set('year', year.toString());
-
+      if (search) params = params.set('search', search);
+      params = params.set('size', size.toString());
+      params = params.set('page', page.toString());
       return params;
     }
 

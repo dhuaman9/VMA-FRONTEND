@@ -26,3 +26,7 @@
   color: red; /* Cambia el color para dar visibilidad */
   vertical-align: middle; /* Alinea verticalmente el texto con el botón */
 }
+
+.custom-checkbox {
+    transform: scale(1.5);
+  }

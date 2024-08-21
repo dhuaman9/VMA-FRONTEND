@@ -9,9 +9,9 @@ export class RegistroVMA{
     estado : boolean;
     empresa: Empresa;
     fichaRegistro: FichaRegistro;
-	//archivos:Archivos[];
 	created_at: string;
 	updated_at: string;
+    seleccionado?: boolean;
 
 
 

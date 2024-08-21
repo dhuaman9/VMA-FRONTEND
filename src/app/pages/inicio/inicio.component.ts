@@ -134,7 +134,7 @@ export class InicioComponent implements OnInit {
       },
       {
         route : "ficha-registro",
-        label : "Periodo de registro VMA",
+        label : "Periodos de registro VMA",
         icon : "pi pi-calendar-plus"
       },
       {
