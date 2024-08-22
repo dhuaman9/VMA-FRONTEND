@@ -93,7 +93,7 @@ h5#tituloModulo{
   /*
   overflow: hidden;
   max-height: 0;
-  
+
   -webkit-transition: all 0.5s ease-out;
 	*/
 }
@@ -176,15 +176,15 @@ h5#tituloModulo{
 .nav-item a span {
     padding-left: 3px;
 }
-  
+
 /* Estilo para el ícono y texto juntos */
 .nav-link.custom-nav-link i, .nav-link.custom-nav-link .pl-5-txt {
 transition: color 0.3s; /* Añadir una transición suave al color */
 }
-    
+
   /* Cambiar color del texto y el ícono a azul al pasar el mouse sobre el nav-item */
-.nav-item:hover .custom-nav-link, 
-.nav-item:hover .custom-nav-link i, 
+.nav-item:hover .custom-nav-link,
+.nav-item:hover .custom-nav-link i,
 .nav-item:hover .custom-nav-link .pl-5-txt {
   color: #5290E5; /* Cambiar el color del texto a azul */
 }
@@ -230,4 +230,7 @@ transition: color 0.3s; /* Añadir una transición suave al color */
   flex-direction: column;
 }
 
-
+:host ::ng-deep p-messages .p-message {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}

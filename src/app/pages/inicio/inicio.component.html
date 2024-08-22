@@ -22,7 +22,7 @@
               <i style="color: #FB2B2B" class="pi pi-sign-out fa-fw sign-out-icon" title="Cerrar sesión"></i>
             </a>
           </div>
-          
+
         </li>
       </ul>
     </nav>
@@ -36,11 +36,11 @@
           <ul class="mainmenu" data-widget="treeview" role="menu" data-accordion="false">
             <li class="nav-item" *ngFor="let m of modules">
               <ng-container>
-                <a [routerLink]="m.route" 
+                <a [routerLink]="m.route"
                   routerLinkActive="active"
                   [routerLinkActiveOptions]="{ exact: true }"
                   class="nav-link custom-nav-link">
-                  <i class="{{m.icon}}"></i> 
+                  <i class="{{m.icon}}"></i>
                   <span class="pl-5-txt">{{m.label}}</span>
                 </a>
               </ng-container>
@@ -51,7 +51,7 @@
     </aside>
 
     <div class="content-wrapper">
-     <!--<p-message severity="warn" text="Message Content" styleClass="p-mr-2"></p-message> --> 
+      <p-messages [(value)]="msgs1" [enableService]="false"></p-messages>
       <router-outlet></router-outlet>
     </div>
   </div>

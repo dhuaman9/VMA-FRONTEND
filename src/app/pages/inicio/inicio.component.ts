@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from './../../_service/user.service';
 import { SessionService } from 'src/app/_service/session.service';
 import { Module } from './module';
-import { MessageService } from 'primeng/api';
+import {Message, MessageService} from 'primeng/api';
 
 declare const $:any;
 declare const attachEventsToPushMenu: any;
@@ -17,7 +17,8 @@ declare const attachEventsToPushMenu: any;
   styleUrls: ['./inicio.component.css']
 })
 export class InicioComponent implements OnInit {
-
+  msgs1: Message[];
+  diasFaltantes: number = 24;
   userName : string;
 
   shortName : string;
@@ -35,20 +36,22 @@ export class InicioComponent implements OnInit {
     private loginService : LoginService,
     private router : Router,
     private sessionService: SessionService,
-    private usuarioService : UserService, 
+    private usuarioService : UserService,
     public route : ActivatedRoute,
     private messageService: MessageService
   ) {
   }
 
   ngOnInit(): void {
-
+    this.msgs1 = [
+      {severity:'warn', summary:'Alerta', detail: `Faltan ${this.diasFaltantes} días para que llene su cuestionario VMA`}
+    ];
     //this.showGenericMessage(); // Muestra el mensaje genérico al iniciar
 
 
     /*
     this.usuarioService.findModules().subscribe((response:any)=>{
-      
+
       if(response.success){
         this.modules = response.items;
         this.shortName = this.sessionService.obtenerShortNameJwt();
@@ -57,9 +60,9 @@ export class InicioComponent implements OnInit {
 
     });
     */
-    
-    /*this.modules = [ 
-      
+
+    /*this.modules = [
+
       {
         route : "usuarios",
         label : "Administracion de Usuarios",
@@ -116,7 +119,7 @@ export class InicioComponent implements OnInit {
     const rol = role;
    if(rol ==="Administrador OTI"){
 
-    this.modules = [ 
+    this.modules = [
       {
         route : "usuarios",
         label : "Usuarios",
@@ -125,8 +128,8 @@ export class InicioComponent implements OnInit {
     ]
 
    }else if(rol ==="Administrador DAP"){
-    this.modules = [ 
-      
+    this.modules = [
+
       {
         route : "empresa",
         label : "Empresas",
@@ -157,8 +160,8 @@ export class InicioComponent implements OnInit {
 
    }else if(rol ==="Registrador"){
 
-    this.modules = [ 
-      
+    this.modules = [
+
       {
         route : "vma",
         label : "Registrar VMA",
@@ -179,8 +182,8 @@ export class InicioComponent implements OnInit {
    }
    else if(rol ==="Consultor"){
 
-    this.modules = [ 
-     
+    this.modules = [
+
       {
         route : "reporte",
         label : "Reportes e Indicadores",
