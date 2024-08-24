@@ -116,12 +116,14 @@ export class VmaComponent implements OnInit {
 
     this.estados = ['COMPLETO', 'INCOMPLETO'];
 
-    this.initializeYears();
-
     // this.initListRegistroVMA();
 
      //  this.empresa = new Empresa();
-    this.cargarListaEmpresas(); //carga el listdo de empresas
+    if(!this.isRoleRegistrador) {
+      this.initializeYears();
+      this.cargarListaEmpresas(); //carga el listdo de empresas
+    }
+
     this.vmaService.isRegistroCompleto().subscribe(response => this.registroCompleto = response);
     this.vmaService.registroCompleto$.subscribe(response => this.registroCompleto = response);
   }

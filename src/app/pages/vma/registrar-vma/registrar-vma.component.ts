@@ -175,10 +175,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
                 allowOutsideClick: false  //evita hacer click fuera del alert
               }).then((result) => {
                 if (result.isConfirmed) {
-                  this.router.navigate(['/inicio/vma']).then(() => {
-                     window.location.reload();
-                    //temporal, no  recomendable
-                  });
+                  this.router.navigate(['/inicio/vma']);
                 }
               });
             }
@@ -214,10 +211,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
       allowOutsideClick: false    //evita hacer click fuera del alert
     });
     //   this.onBackToList();//temporal, no  recomendable
-    this.router.navigate(['/inicio/vma']).then(() => {
-      // Es para forzar la recarga del listado por el momento.no recomendable
-      window.location.reload();
-    });
+    this.router.navigate(['/inicio/vma']);
     this.vmaService.sendRegistroCompleto(true);
   }
 
@@ -473,13 +467,16 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
 
         if(index != -1) {
           formArray.removeAt(index);
-        };
+        }
       })
 
     } else {
       this.preguntasAuxiliar.forEach(pregunta => {
-        const preguntaFormGroup = this.buildPregunta(pregunta);
-        formArray.push(preguntaFormGroup);
+        const index = formArray.controls.findIndex(control => control.get('idPregunta').value === pregunta.idPregunta);
+        if(index === -1) {
+          const preguntaFormGroup = this.buildPregunta(pregunta);
+          formArray.push(preguntaFormGroup);
+        }
       });
     }
   }

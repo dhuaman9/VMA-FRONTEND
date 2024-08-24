@@ -17,14 +17,19 @@
 
               <div class="field col-12 md:col-4">
                   <label for="fechaInicio" class="font-semibold w-10rem">Fecha de inicio <span style="color: #FA7272;" *ngIf="isFieldRequired('fechaInicio')"> * </span></label>
-                  <p-calendar formControlName="fechaInicio"  (onSelect)="onStartDateSelect()" dateFormat="dd/mm/yy" inputId="fechaInicio" appendTo="body" [locale]="es" ></p-calendar>
+                  <p-calendar formControlName="fechaInicio" 
+                  [monthNavigator]="true" 
+                  [yearNavigator]="true" 
+                  [yearRange]="'2000:2030'"  (onSelect)="onStartDateSelect()" dateFormat="dd/mm/yy" inputId="fechaInicio" appendTo="body" [locale]="es" ></p-calendar>
                   <app-validate-inputs-form [form]="registroForm" formInput='fechaInicio' labelInput="Fecha de inicio">
                   </app-validate-inputs-form>
               </div>
 
               <div class="field col-12 md:col-4">
                   <label for="fechaFin" class="font-semibold w-6rem">Fecha Fin <span style="color: #FA7272;" *ngIf="isFieldRequired('fechaFin')"> * </span></label>
-                  <p-calendar formControlName="fechaFin"  [minDate]="minEndDate"  [maxDate]="maxEndDate"  dateFormat="dd/mm/yy" inputId="fechaFin" appendTo="body" [locale]="es"></p-calendar>
+                  <p-calendar formControlName="fechaFin" [monthNavigator]="true" 
+                  [yearNavigator]="true" 
+                  [yearRange]="'2000:2030'"  [minDate]="minEndDate"  [maxDate]="maxEndDate"  dateFormat="dd/mm/yy" inputId="fechaFin" appendTo="body" [locale]="es"></p-calendar>
                   <app-validate-inputs-form [form]="registroForm" formInput='fechaFin' labelInput="Fecha fin">
                   </app-validate-inputs-form>
               </div>

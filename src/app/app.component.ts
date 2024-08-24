@@ -58,7 +58,9 @@ export class AppComponent  implements OnInit{
   }
   
   ngOnInit() {
+    
     this.config.setTranslation({
+      
         accept: 'Accept',
         reject: 'Cancel',
         dayNames: ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'],

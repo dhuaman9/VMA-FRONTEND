@@ -19,6 +19,10 @@ input:disabled {
     display: none;
 }
 
+.p-dialog-mask {
+  pointer-events: inherit !important;
+}
+
 /*Estilos para el accordion tab , al dar click*/
 /* .ui-accordion .custom-active-tab .p-accordion-tab-header {
     background-color: #0DC738 !important;
