@@ -303,6 +303,8 @@ export class VmaComponent implements OnInit {
   descargar(): void {
     if(this.getRegistrosSeleccionados().length > 0) {
       this.registroVMAService.descargarExcel(this.getRegistrosSeleccionados());
+    } else {
+      Swal.fire('Alerta', 'Debe seleccionar al menos 1 registro para descargar', 'warning')
     }
   }
 

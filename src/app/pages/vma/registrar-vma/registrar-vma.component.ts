@@ -405,7 +405,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
   }
 
   private agregarValidadorARespuesta (pregunta: Pregunta): ValidatorFn | null {
-    if(!!pregunta.metadatoArchivo && !pregunta.respuestaDTO) {
+    if(!!pregunta.metadatoArchivo && !pregunta.respuestaDTO && pregunta.tipoPregunta === TipoPregunta.ARCHIVO) {
       return this.fileValidator(pregunta.metadatoArchivo.tipoArchivosPermitidos.map(archivo => archivo.mimeType), pregunta.metadatoArchivo.maxSizeInMB);
     }
     return null
