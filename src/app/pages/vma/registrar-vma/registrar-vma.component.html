@@ -25,8 +25,11 @@
                                   <div class="d-flex flex-column">
                                     <div class="d-flex gap-2 align-items-center" >
                                       <label class="mb-0" >{{alternativa.get('nombreCampo').value}}</label>
-                                      <!--<p-inputNumber  mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2"  class="input-number" formControlName="respuesta"></p-inputNumber>-->
-                                      <p-inputNumber class="input-number" formControlName="respuesta"></p-inputNumber>
+                                      <p-inputNumber class="input-number" formControlName="respuesta"
+                                                     mode="decimal"
+                                                     [minFractionDigits]="pregunta.get('metadatoArchivo').value?.decimal ? 2 : null"
+                                                     [maxFractionDigits]="pregunta.get('metadatoArchivo').value?.decimal ? 2 : null"
+                                      ></p-inputNumber>
                                     </div>
                                       <small *ngIf="alternativa.get('respuesta').errors?.required" style="color: red;">Campo requerido</small>
                                   </div>
@@ -34,8 +37,10 @@
                               </ng-container>
                             </div>
                             <ng-template #inputNumericoUnico>
-                              <!-- <p-inputNumber mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2"  class="input-number" formControlName="respuesta"></p-inputNumber> -->
-                              <p-inputNumber class="input-number" formControlName="respuesta"></p-inputNumber>
+                              <p-inputNumber class="input-number" formControlName="respuesta"
+                                             mode="decimal"
+                                             [minFractionDigits]="pregunta.get('metadatoArchivo').value?.decimal ? 2 : null"
+                                             [maxFractionDigits]="pregunta.get('metadatoArchivo').value?.decimal ? 2 : null"></p-inputNumber>
                               <small *ngIf="pregunta.get('respuesta').errors?.required" style="color: red;">Campo requerido</small>
                             </ng-template>
                           </ng-container>

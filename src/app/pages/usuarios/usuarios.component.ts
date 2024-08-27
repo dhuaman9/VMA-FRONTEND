@@ -18,10 +18,8 @@ export class UsuariosComponent implements OnInit {
 
   isLoading = false;
   showResultados = false;
-
   user : User;
   ListUser: User[];
-
   registerForm: FormGroup;
 
 //paginacion
@@ -54,10 +52,8 @@ export class UsuariosComponent implements OnInit {
  
   }
 
- 
   initListUsers() {
     this.showResultados = false;
-   // this.paramsPagination = new ParamsPagination(0,1,10,0);
     this.onQueryPageUser();
     
   }
@@ -122,20 +118,16 @@ export class UsuariosComponent implements OnInit {
     });
   }
 
-
-
  /**
    * Evento para aplicar filtro a la pagina actual en la consulta de usuarios
    * @param table 
    * @param event 
    */
- onFilterTableGlobal(table: Table, event:any){
-
-  const filterValue = (event.target as HTMLInputElement).value;
-  if (table) {
-    table.filterGlobal(filterValue, 'contains');
+  onFilterTableGlobal(table: Table, event:any){
+    const filterValue = (event.target as HTMLInputElement).value;
+    if (table) {
+      table.filterGlobal(filterValue, 'contains');
+    }
   }
-
-}
 
 }

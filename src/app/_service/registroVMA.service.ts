@@ -52,11 +52,22 @@ import { Observable } from 'rxjs';
       return this.http.get(`${this.url}/registroVMA/search`, { params });
     }
 
-    descargarExcel(ids: number[]): void{
+    descargarExcel(ids?: number[]): void{
+    //descargarExcel(ids: number[]): void{
       let params = new HttpParams();
-      ids.forEach(id => {
+      /*ids.forEach(id => {
         params = params.append('idsVma', id.toString());
-      });
+      });**/
+
+      if (ids && ids.length > 0) {
+        ids.forEach(id => {
+          params = params.append('idsVma', id.toString());
+        });
+      } else {
+        // parámetro específico  "todos los registros"
+         params = params.append('todos', 'true');
+      }
+
       this.http.get(`${this.url}/registroVMA/descargar-excel`, { params, responseType: 'blob' }).subscribe((data: Blob) => {
         const blob = data;
         const a = document.createElement('a');

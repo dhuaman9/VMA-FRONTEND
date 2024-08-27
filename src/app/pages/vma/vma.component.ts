@@ -42,24 +42,6 @@ export class VmaComponent implements OnInit {
 
   years = [];
 
-  basicData = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-    datasets: [
-        {
-            label: 'My First dataset',
-            backgroundColor: '#42A5F5',
-            data: [65, 59, 80, 81, 56, 55, 40]
-        },
-        {
-            label: 'My Second dataset',
-            backgroundColor: '#FFA726',
-            data: [28, 48, 40, 19, 86, 27, 90]
-        }
-    ]
-};
-
-
-
   first = 0;
   rows = 10;
   totalRecords = 0;
@@ -70,11 +52,6 @@ export class VmaComponent implements OnInit {
   isRoleRegistrador: boolean = this.sessionService.obtenerRoleJwt().toUpperCase() === 'REGISTRADOR';
   isRoleAdminAndConsultor: boolean = this.sessionService.obtenerRoleJwt().toUpperCase() === ('ADMINISTRADOR DAP' || 'CONSULTOR');
 
-
- //paginacion
-  /* currentPage: number= 0;
-   paramsPagination: ParamsPagination;
-   numeroPagina: number = 0;*/
 
   constructor(  public route : ActivatedRoute,
     private router: Router,
@@ -115,8 +92,7 @@ export class VmaComponent implements OnInit {
     this.fechaDesdeListener();
 
     this.estados = ['COMPLETO', 'INCOMPLETO'];
-
-    // this.initListRegistroVMA();
+   // this.estados = ['COMPLETO', 'INCOMPLETO' ,'SIN REGISTRO'];
 
      //  this.empresa = new Empresa();
     if(!this.isRoleRegistrador) {
@@ -181,8 +157,7 @@ export class VmaComponent implements OnInit {
   }*/
 
    onQueryListRegistroVMA(event?: any) {
-
-   // this.isLoading = true;
+    console.log("se usa onQueryListRegistroVMA");
     const page = event ? Math.floor(event.first / event.rows) : 0;
     const size = event ? event.rows : this.rows;
     //console.log("paramsPag",paramsPag);
@@ -230,6 +205,7 @@ export class VmaComponent implements OnInit {
     this.router.navigate(['/inicio/vma/registrar-vma', id]);// temporal, luego se setea el ID del registro , en el metodo anterior redirectToForm
   }
 
+  //metodo para cambiar de estado de registro vma, de  completo a incompleto.
   cambiarEstadoIncompleto(id: number): void {
     Swal.fire({
       title: "¿Está seguro de cambiar el estado del registro?",
@@ -301,9 +277,15 @@ export class VmaComponent implements OnInit {
   }
 
   descargar(): void {
-    if(this.getRegistrosSeleccionados().length > 0) {
+
+    this.registroVMAService.descargarExcel(this.getRegistrosSeleccionados());
+
+   /* if(this.getRegistrosSeleccionados().length > 0) {
       this.registroVMAService.descargarExcel(this.getRegistrosSeleccionados());
-    }
+    } else {
+      Swal.fire('Alerta', 'Debe seleccionar al menos un registro para descargar', 'warning')
+    }*/
+   
   }
 
   limpiar(){

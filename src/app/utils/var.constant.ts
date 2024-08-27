@@ -10,6 +10,9 @@ export const  TIPO_EMPRESA_PEQUEÑA='PEQUEÑA';
 export const  TIPO_EMPRESA_MEDIANA='MEDIANA';
 export const  TIPO_EMPRESA_GRANDE='GRANDE';
 export const  TIPO_EMPRESA_SEDAPAL='SEDAPAL';
+
+
+
 //'Registro completado'
 
 //'Registro actualizado'
