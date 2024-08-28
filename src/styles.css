@@ -23,6 +23,14 @@ input:disabled {
   pointer-events: inherit !important;
 }
 
+.p-datepicker .p-datepicker-month, .p-datepicker .p-datepicker-year {
+  padding: 8px;
+  font-size: 14px;
+  border-radius: 25px;
+  background: #fff;
+  border: 1px solid #9f9696;
+}
+
 /*Estilos para el accordion tab , al dar click*/
 /* .ui-accordion .custom-active-tab .p-accordion-tab-header {
     background-color: #0DC738 !important;

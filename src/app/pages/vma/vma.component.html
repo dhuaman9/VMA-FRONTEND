@@ -31,13 +31,17 @@
                   </div>
                   <div>
                     <span class="p-float-label" *ngSwitchCase="'fechaDesde'">
-                      <p-calendar id="fechaDesde" dateFormat="yy-mm-dd" formControlName="fechaDesde" ></p-calendar>
+                                        <p-calendar [monthNavigator]="true"
+                                                    [yearNavigator]="true"
+                                                    [yearRange]="'2000:2030'" inputId="fechaInicio" appendTo="body" id="fechaDesde" dateFormat="yy-mm-dd" formControlName="fechaDesde" ></p-calendar>
                       <label for="fechaDesde">Fecha Desde</label>
                     </span>
                   </div>
                   <div>
                     <span class="p-float-label" *ngSwitchCase="'fechaHasta'">
-                      <p-calendar id="fechaHasta" dateFormat="yy-mm-dd" formControlName="fechaHasta"></p-calendar>
+                      <p-calendar [monthNavigator]="true"
+                                  [yearNavigator]="true"
+                                  [yearRange]="'2000:2030'" inputId="fechaHasta" appendTo="body" id="fechaHasta" dateFormat="yy-mm-dd" formControlName="fechaHasta" ></p-calendar>
                       <br>
                       <small *ngIf="filtroForm.get('fechaHasta').errors?.required" style="color: red;" >La fecha hasta es requerida</small>
                       <label for="fechaHasta">Fecha Hasta</label>
@@ -66,7 +70,7 @@
                      [disabled]="registroCompleto"
                      [pTooltip]="registroCompleto ? 'Ya existe un registro VMA en curso' : 'Registrar nuevo VMA'"
                      tooltipPosition="top"><i class="pi pi-plus"></i>  Registrar</button>
-            
+
             <button pButton label="Descargar Excel" class="p-button-success float-right" icon="pi pi-download" iconPos="right"
                     *ngIf="isRoleAdminAndConsultor"
                     (click)="descargar()"></button>
