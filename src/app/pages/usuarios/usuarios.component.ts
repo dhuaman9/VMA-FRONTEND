@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from 'src/app/_service/user.service';
 import { FormControl,FormBuilder, FormGroup } from '@angular/forms';
@@ -17,7 +17,7 @@ import {debounceTime, distinctUntilChanged, filter, tap} from "rxjs/operators";
 })
 export class UsuariosComponent implements OnInit {
 
-
+  @ViewChild('myTable') table: Table;
   isLoading = false;
   showResultados = false;
   user : User;
@@ -83,10 +83,10 @@ export class UsuariosComponent implements OnInit {
     } else {
       this.first = 0;
       this.rows = 10;
+      this.goToFirstPage();
     }
     this.userService.searchUsers(this.first, this.rows, this.searchFormControl.value)
       .subscribe(response => {
-        console.log(response.content)
         this.ListUser = response.content;
         this.totalRecords = response.totalElements;
       });
@@ -147,4 +147,8 @@ export class UsuariosComponent implements OnInit {
     }
   }
 
+  goToFirstPage(): void {
+    this.table.first = 0;
+    this.table.onLazyLoad.emit({ first: 0, rows: this.table.rows, sortField: this.table.sortField, sortOrder: this.table.sortOrder });
+  }
 }
