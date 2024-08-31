@@ -26,7 +26,6 @@ export class UserService {
   public get pageUsers$() {
     return this.responsePage.asObservable();
   }
-  
 
   listuser(): Observable<any>{
     //'Authorization': 'Bearer '+this.token
@@ -68,7 +67,7 @@ export class UserService {
 
   findAllLDAP() : Observable<User[]>{
 
-  
+
     return this.http.get<User[]>(this.url+'/usuario/listarUsuariosLDAP', {
       headers : new HttpHeaders({'Content-Type':'application/json'}),
       responseType : 'json'
@@ -130,7 +129,7 @@ export class UserService {
         responseType : 'json'
     };
     return this.http.get<User>(this.url+'/usuario/findbyid/'+id, this.httpOptions);
-    
+
   }
 
   findModules() {
@@ -146,7 +145,7 @@ export class UserService {
   }
 
   findOficinas() {
-    
+
     this.httpOptions = {
       headers : new HttpHeaders({
         'Content-type' : 'application/json'
@@ -156,4 +155,7 @@ export class UserService {
     return this.http.get<any>(`${this.url}/oficina/findall`, this.httpOptions);
   }
 
+  searchUsers(page: number, size: number, search: string): Observable<any> {
+    return this.http.get(`${this.url}/usuario?page=${page}&size=${size}&search=${search}`);
+  }
 }

@@ -1,12 +1,14 @@
-import { Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from 'src/app/_service/user.service';
-import { FormControl,FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormControl,FormBuilder, FormGroup } from '@angular/forms';
 import { User } from 'src/app/_model/user';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { ParamsPagination } from 'src/app/_dto/params-pagination';
 import { Table } from 'primeng/table';
+import {LazyLoadEvent} from "primeng/api";
+import {debounceTime, distinctUntilChanged, filter, tap} from "rxjs/operators";
 
 @Component({
   selector: 'app-usuarios',
@@ -31,6 +33,7 @@ export class UsuariosComponent implements OnInit {
   first = 0;
   rows = 10;
   totalRecords = 0;
+  searchFormControl: FormControl = new FormControl('');
 
   paramsPagination: ParamsPagination;
   numeroPagina: number = 0;
@@ -41,21 +44,28 @@ export class UsuariosComponent implements OnInit {
     private router: Router,
     private userService : UserService,
     private fb: FormBuilder
-  ) { 
+  ) {
 
-   
+
   }
 
   ngOnInit(): void {
-  
-    this.initListUsers();
- 
+
+    // this.initListUsers();
+    this.searchFormControl.valueChanges
+      .pipe(
+        distinctUntilChanged(),
+        debounceTime(300),
+        filter(text => text.length > 2 || text === ''),
+        tap(() => this.listUsers())
+      )
+      .subscribe();
   }
 
   initListUsers() {
     this.showResultados = false;
     this.onQueryPageUser();
-    
+
   }
 
   redirectToForm(){
@@ -66,20 +76,27 @@ export class UsuariosComponent implements OnInit {
     this.router.navigate(['/inicio/usuarios/editar-usuario/'+idUser]);
   }
 
-  listar(){
-    this.userService.page(this.currentPage, 5).subscribe((data:any) => {
-      console.log(data);
-      this.ListUser=data.content;
-      this.showResultados = true;
-      this.isLoading = false;
-    });
+  listUsers(event?: LazyLoadEvent): void {
+    if(event) {
+      this.first = event.first! / event.rows!;
+      this.rows = event.rows!;
+    } else {
+      this.first = 0;
+      this.rows = 10;
+    }
+    this.userService.searchUsers(this.first, this.rows, this.searchFormControl.value)
+      .subscribe(response => {
+        console.log(response.content)
+        this.ListUser = response.content;
+        this.totalRecords = response.totalElements;
+      });
   }
 
-  
+
   onQueryPageUser() {
 
     this.userService.findAll().subscribe(
-  
+
       (data:any) => {
         console.log("params ",data);
       this.ListUser= (data.content || data).map((item: User,index: number)=>({
@@ -120,8 +137,8 @@ export class UsuariosComponent implements OnInit {
 
  /**
    * Evento para aplicar filtro a la pagina actual en la consulta de usuarios
-   * @param table 
-   * @param event 
+   * @param table
+   * @param event
    */
   onFilterTableGlobal(table: Table, event:any){
     const filterValue = (event.target as HTMLInputElement).value;
