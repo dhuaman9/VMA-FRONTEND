@@ -4,5 +4,5 @@ export interface Module {
   //fragment?: string;
   label: string;
   icon?: string;
-
+  activo: boolean;
 }

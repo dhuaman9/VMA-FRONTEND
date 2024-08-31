@@ -35,7 +35,7 @@ export class InicioComponent implements OnInit {
     private loginService : LoginService,
     private router : Router,
     private sessionService: SessionService,
-    private usuarioService : UserService, 
+    private usuarioService : UserService,
     public route : ActivatedRoute,
     private messageService: MessageService
   ) {
@@ -48,7 +48,7 @@ export class InicioComponent implements OnInit {
 
     /*
     this.usuarioService.findModules().subscribe((response:any)=>{
-      
+
       if(response.success){
         this.modules = response.items;
         this.shortName = this.sessionService.obtenerShortNameJwt();
@@ -57,9 +57,9 @@ export class InicioComponent implements OnInit {
 
     });
     */
-    
-    /*this.modules = [ 
-      
+
+    /*this.modules = [
+
       {
         route : "usuarios",
         label : "Administracion de Usuarios",
@@ -111,88 +111,49 @@ export class InicioComponent implements OnInit {
   }
 
   renderModules(role: string){
-    console.log("rol : ", role); //dhr
+    const esAdministradorOTI: boolean = role === "Administrador OTI";
+    const esAdministradorDAP: boolean = role === "Administrador DAP";
+    const esRegistrador: boolean = role === "Registrador";
+    const esConsultor: boolean = role === "Consultor";
 
-    const rol = role;
-   if(rol ==="Administrador OTI"){
-
-    this.modules = [ 
+    this.modules = [
       {
         route : "usuarios",
         label : "Usuarios",
-        icon : "pi pi-users"
-      }
-    ]
-
-   }else if(rol ==="Administrador DAP"){
-    this.modules = [ 
-      
+        icon : "pi pi-users",
+        activo: esAdministradorOTI
+      },
       {
         route : "empresa",
         label : "Empresas",
-        icon : "pi pi-home"
+        icon : "pi pi-home",
+        activo: esAdministradorDAP
       },
       {
         route : "ficha-registro",
         label : "Periodos de registro VMA",
-        icon : "pi pi-calendar-plus"
+        icon : "pi pi-calendar-plus",
+        activo: esAdministradorDAP
       },
       {
         route : "vma",
         label : "Registrar VMA",
-        icon : "pi pi-check-square"
+        icon : "pi pi-check-square",
+        activo: esAdministradorDAP || esRegistrador
       },
       {
         route : "reporte",
         label : "Reportes e Indicadores",
-        icon : "pi pi-chart-bar"
+        icon : "pi pi-chart-bar",
+        activo: !esAdministradorOTI
       },
       {
         route : "anexos",
         label : "Anexos",
-        icon : "pi pi-table"
+        icon : "pi pi-table",
+        activo: !esAdministradorOTI
       },
     ]
-
-
-   }else if(rol ==="Registrador"){
-
-    this.modules = [ 
-      
-      {
-        route : "vma",
-        label : "Registrar VMA",
-        icon : "pi pi-check-square"
-      },
-      {
-        route : "reporte",
-        label : "Reportes e Indicadores",
-        icon : "pi pi-chart-bar"
-      },
-      {
-        route : "anexos",
-        label : "Anexos",
-        icon : "pi pi-table"
-      },
-    ]
-
-   }
-   else if(rol ==="Consultor"){
-
-    this.modules = [ 
-     
-      {
-        route : "reporte",
-        label : "Reportes e Indicadores",
-        icon : "pi pi-chart-bar"
-      },
-      {
-        route : "anexos",
-        label : "Anexos",
-        icon : "pi pi-table"
-      },
-    ]
-   }
   }
 
 // dhr pendiente, para mostrar un mensaje generico
