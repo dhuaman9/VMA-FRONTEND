@@ -1,12 +1,12 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {MessageService} from 'primeng/api';
-import {RegistroVmaRequest} from 'src/app/_model/registroVMARequest';
-import {RespuestaDTO} from 'src/app/_model/respuestaRequest';
-import {Alternativa} from 'src/app/_model/alternativa';
-import {Cuestionario} from 'src/app/_model/cuestionario';
-import {Pregunta} from 'src/app/_model/pregunta';
-import {TipoPregunta} from 'src/app/_model/tipo-pregunta';
+import {RegistroVmaRequest} from 'src/app/pages/vma/models/registroVMARequest';
+import {RespuestaDTO} from 'src/app/pages/vma/models/respuestaRequest';
+import {Alternativa} from 'src/app/pages/vma/models/alternativa';
+import {Cuestionario} from 'src/app/pages/vma/models/cuestionario';
+import {Pregunta} from 'src/app/pages/vma/models/pregunta';
+import {TipoPregunta} from 'src/app/pages/vma/models/tipo-pregunta';
 import {CuestionarioService} from 'src/app/_service/cuestionario.service';
 import {VmaService} from 'src/app/_service/vma.service';
 import Swal from 'sweetalert2';
@@ -231,8 +231,8 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
   }
 
   onUpdateFile(formControl: AbstractControl): void {
-    console.log("metadato dhr -", formControl.get('metadatoArchivo').value );
-    let metadato = formControl.get('metadatoArchivo').value;
+    console.log("metadato dhr -", formControl.get('metadato').value );
+    let metadato = formControl.get('metadato').value;
     let validatorFn = this.fileValidator(metadato.tipoArchivosPermitidos.map(archivo => archivo.mimeType), metadato.maxSizeInMB);
     formControl.get('respuesta').setValue(null);
     formControl.get('respuesta').setValidators(validatorFn);
@@ -290,7 +290,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
       ),
       respuesta: [pregunta.respuestaDTO?.respuesta, this.agregarValidadorARespuesta(pregunta)],
       respuestaDTO: this.buildRespuestaForm(pregunta.respuestaDTO),
-      metadatoArchivo: [pregunta.metadatoArchivo]
+      metadato: [pregunta.metadato]
     });
 
     if(pregunta.tipoPregunta === 'RADIO') {
@@ -311,8 +311,8 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
         this.preguntasAuxiliar = preguntasDependientes;
       }
 
-      seccion.preguntas = seccion.preguntas.filter(pregunta => !pregunta.preguntaDependiente || (pregunta.preguntaDependiente && pregunta.preguntaDependiente.respuestaDTO?.respuesta === "Sí"));
-
+      //seccion.preguntas = seccion.preguntas.filter(pregunta => !pregunta.preguntaDependiente || (pregunta.preguntaDependiente && pregunta.preguntaDependiente.respuestaDTO?.respuesta === "Sí"));
+      seccion.preguntas = seccion.preguntas.filter(pregunta => !pregunta.preguntaDependiente || (pregunta.preguntaDependiente && pregunta.preguntaDependiente.respuestaDTO?.respuesta === "SI"));
       const preguntasFormGroup = seccion.preguntas.map(this.buildPregunta);
 
       return this.fb.group({
@@ -340,7 +340,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
         const tipoPregunta = pregunta.get('tipoPregunta').value;
         if ((tipoPregunta === TipoPregunta.TEXTO)||
           (tipoPregunta === TipoPregunta.NUMERICO && alternativasControl.length === 0) ||
-          (tipoPregunta === TipoPregunta.RADIO) && respuestaControl ||(tipoPregunta === TipoPregunta.ARCHIVO && pregunta.get('metadatoArchivo').value.requerido)) {
+          (tipoPregunta === TipoPregunta.RADIO) && respuestaControl ||(tipoPregunta === TipoPregunta.ARCHIVO && pregunta.get('metadato').value.requerido)) {
 //|| pregunta.get('alternativas').get('requerido')
           if(agregarValidacion) {
             respuestaControl.addValidators([Validators.required])
@@ -405,8 +405,8 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
   }
 
   private agregarValidadorARespuesta (pregunta: Pregunta): ValidatorFn | null {
-    if(!!pregunta.metadatoArchivo && !pregunta.respuestaDTO && pregunta.tipoPregunta === TipoPregunta.ARCHIVO) {
-      return this.fileValidator(pregunta.metadatoArchivo.tipoArchivosPermitidos.map(archivo => archivo.mimeType), pregunta.metadatoArchivo.maxSizeInMB);
+    if(!!pregunta.metadato && !pregunta.respuestaDTO && pregunta.tipoPregunta === TipoPregunta.ARCHIVO) {
+      return this.fileValidator(pregunta.metadato.tipoArchivosPermitidos.map(archivo => archivo.mimeType), pregunta.metadato.maxSizeInMB);
     }
     return null
   }
@@ -461,7 +461,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
 
   onRadioButtonChange(seccion: AbstractControl, valor: string): void {
     const formArray = seccion.get('preguntas') as FormArray;
-    if (valor === 'No' || !valor) {
+    if (valor === 'NO' || !valor) {
       this.preguntasAuxiliar.forEach(pregunta => {
         const index = formArray.controls.findIndex(control => control.get('idPregunta').value === pregunta.idPregunta);
 

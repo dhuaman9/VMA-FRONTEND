@@ -68,7 +68,7 @@ export class LoginComponent implements OnInit {
               this.router.navigate(['inicio/usuarios']);
             }
             else if (role == "Administrador DAP"){
-              this.router.navigate(['inicio/empresa']);
+              this.router.navigate(['inicio/vma']);
             }
 
             else if (role == "Registrador"){

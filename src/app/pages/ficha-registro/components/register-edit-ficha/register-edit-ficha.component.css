@@ -1,0 +1,28 @@
+.grid {
+    height: 100%;
+}
+
+.p-fieldset {
+    height: 100%;
+}
+
+/* Ajustar el tamaño del calendario completo */
+.custom-calendar .p-datepicker {
+    width: 200px; /* Ajusta este valor según tus necesidades */
+}
+
+.p-calendar {
+    width: 200px;
+    height: 150px;
+    transform: scale(0.8);
+    font-size: 12px;
+  }
+
+:host ::ng-deep .swal2-custom-zindex {
+    z-index: 2000 !important; /* Ajusta el z-index según sea necesario */
+  }
+
+
+
+
+ 

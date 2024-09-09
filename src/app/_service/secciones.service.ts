@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { take, tap } from 'rxjs/operators';
-import { Seccion } from '../_model/seccion';
+import { Seccion } from '../pages/vma/models/seccion';
 
 
 

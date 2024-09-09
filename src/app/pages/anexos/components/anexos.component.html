@@ -1,0 +1,378 @@
+
+<div class="px-5 py-3 anexo">
+  <div style="text-align: center; margin-bottom: 20px;">
+    <h2 style="margin-bottom: 20px;">Lista de Anexos VMA </h2>
+    <span>Seleccione el año:  </span>
+    <p-dropdown
+      [options]="years"
+      [(ngModel)]="selectedYear"
+      (onChange)="applyFilter()"
+      placeholder="Seleccionar el año"
+      class="combobox-anio">
+    </p-dropdown>
+  
+
+  </div>
+    <div class="mx-5">
+      <span class="p-input-icon-left mb-3">
+        <i class="pi pi-search"></i>
+        <input type="text" pInputText [(ngModel)]="filterText" placeholder="Buscar anexo.">
+      </span>
+      <p-accordion #accordion [multiple]="true">
+        <p-accordionTab header="Anexo N° 01: Relación de las EP que remitieron información y/o implementaron normativa y/o remitieron informes de implementación de los VMA del año en curso."
+          (click)="onTabOpen(0, accordion)"  
+          [hidden]="!filterTabs('anexo 1', 'Anexo N° 01: Relación de las EP que remitieron información y/o implementaron normativa y/o remitieron informes de implementación de los VMA del año en curso.')">
+            <ng-container *ngIf="anexoRegistros.length > 0; else noResults">
+              <p-table [value]="anexoRegistros" responsiveLayout="scroll">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th>N°</th>
+                    <th>Empresa Prestadora</th>
+                    <th>Tamaño</th>
+                    <th style="text-align: center;">RAT</th>
+                    <th style="text-align: center;">EPS remitió información</th>
+                    <th style="text-align: center;">EPS remitió informe</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-anexo let-i="rowIndex">
+                  <tr>
+                    <td>{{i+1}}</td>
+                    <td>{{anexo.nombreEmpresa}}</td>
+                    <ng-container *ngIf="anexo.rowspan; else noRowspan">
+                      <td [attr.rowspan]="anexo.rowspan" class="text-center">{{anexo.tamanioEmpresa}}</td>
+                    </ng-container>
+                    <ng-template #noRowspan></ng-template>
+                    <td style="text-align: center;">{{anexo.esRAT ? 'SI' : 'NO'}}</td>
+                    <td style="text-align: center;">{{anexo.epsRemitioInformacion ? 'SI' : 'NO'}}</td>
+                    <td style="text-align: center;">{{anexo.epsRemitioInforme ? 'SI' : 'NO'}}</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </ng-container>
+        </p-accordionTab>
+        <p-accordionTab header="Anexo N° 02: Relación de las EP que cuentan con un área destinada a la implementación de la norma VMA, y el número de trabajadores que se dedican a tiempo parcial o tiempo completo a la implementación de la norma VMA."
+          (click)="onTabOpen(1, accordion)"  
+          [hidden]="!filterTabs('anexo 2', 'Anexo N° 02: Relación de las EP que cuentan con un área destinada a la implementación de la norma VMA, y el número de trabajadores que se dedican a tiempo parcial o tiempo completo a la implementación de la norma VMA.')">
+          <ng-container *ngIf="anexoRespondieronSi.length > 0; else noResults">
+            <p-table [value]="anexoRespondieronSi" responsiveLayout="scroll">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>N°</th>
+                  <th>Empresa Prestadora</th>
+                  <th>Tamaño</th>
+                  <th style="text-align: center;">Área VMA</th>
+                  <th style="text-align: center;">N° trabajadores</th>
+                </tr>
+              </ng-template>
+      
+              <ng-template pTemplate="body" let-anexo let-i="rowIndex">
+                <tr>
+                  <td>{{i+1}}</td>
+                  <td>{{anexo.nombreEmpresa}}</td>
+                  <ng-container *ngIf="anexo.rowspan; else noRowspan">
+                    <td [attr.rowspan]="anexo.rowspan" class="text-center">{{anexo.tamanioEmpresa}}</td>
+                  </ng-container>
+                  <ng-template #noRowspan></ng-template>
+                  <td style="text-align: center;">{{anexo.respuesta}}</td>
+                  <td style="text-align: center;">{{anexo.nroTrabajadores}}</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </ng-container>
+        </p-accordionTab>
+        <p-accordionTab header="Anexo N° 03: Relación de las EP que han realizado avances en la inspección y/o inscripción en sus registros de los UND bajo su ámbito de influencia."
+          (click)="onTabOpen(2, accordion)"  
+          [hidden]="!filterTabs('anexo 3', 'Anexo N° 03: Relación de las EP que han realizado avances en la inspección y/o inscripción en sus registros de los UND bajo su ámbito de influencia.')">
+          <ng-container *ngIf="anexoUNDregistrados.length > 0; else noResults">
+      <p-table [value]="anexoUNDregistrados" responsiveLayout="scroll">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>N°</th>
+            <th>Empresa Prestadora</th>
+            <th>Tamaño</th>
+            <th style="text-align: center;">N° UND IDENTIFICADOS</th>
+            <th style="text-align: center;">N° UND INSPECCIONADOS</th>
+            <th style="text-align: center;">N° UND INSCRITOS EN EL REGISTRO DE UND</th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-anexo let-i="rowIndex">
+          <tr>
+            <td>{{i+1}}</td>
+            <td style="width: 25%;">{{anexo.nombreEmpresa}}</td>
+            <ng-container *ngIf="anexo.rowspan; else noRowspan">
+              <td [attr.rowspan]="anexo.rowspan" class="text-center">{{anexo.tamanioEmpresa}}</td>
+            </ng-container>
+            <ng-template #noRowspan></ng-template>
+            <td style="text-align: center;">{{anexo.nroUNDidentificados}}</td>
+            <td style="text-align: center;">{{anexo.nroUNDinspeccionados}}</td>
+            <td style="text-align: center;">{{anexo.nroUNDinscritos}}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </ng-container>
+        </p-accordionTab>
+        <p-accordionTab header="Anexo N° 04: Detalle de porcentaje de toma de muestra inopinada de las EP."
+          (click)="onTabOpen(3, accordion)"  
+          [hidden]="!filterTabs('anexo 4', 'Anexo N° 04: Detalle de porcentaje de toma de muestra inopinada de las EP.')">
+          <ng-container *ngIf="anexoTomaMuestrasInopinadas.length > 0; else noResults">
+            <p-table [value]="anexoTomaMuestrasInopinadas" responsiveLayout="scroll">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>N°</th>
+                  <th>Empresa Prestadora</th>
+                  <th>Tamaño</th>
+                  <th style="text-align: center;">N° UND INSCRITOS EN EL REGISTRO DE UND</th>
+                  <th style="text-align: center;">N° MUESTRAS INOPINADAS </th>
+                  <th style="text-align: center;">% MUESTRA INOPINADA</th>
+                </tr>
+              </ng-template>
+      
+              <ng-template pTemplate="body" let-anexo let-i="rowIndex">
+                <tr>
+                  <td>{{i+1}}</td>
+                  <td style="width: 25%;">{{anexo.nombreEmpresa}}</td>
+                  <ng-container *ngIf="anexo.rowspan; else noRowspan">
+                    <td [attr.rowspan]="anexo.rowspan" class="text-center">{{anexo.tamanioEmpresa}}</td>
+                  </ng-container>
+                  <ng-template #noRowspan></ng-template>
+                  <td style="text-align: center;">{{anexo.nroUNDinscritos}}</td>
+                  <td style="text-align: center;">{{anexo.nroMuestraInopinada}}</td>
+                  <td style="text-align: center;">{{anexo.porcentajeMuestraInopinada}}%</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </ng-container>
+
+        </p-accordionTab>
+        <p-accordionTab header="Anexo N° 05: Detalle de las EP que han realizado la evaluación de los VMA del Anexo 1 del reglamento de VMA."
+          (click)="onTabOpen(4, accordion)"  
+          [hidden]="!filterTabs('anexo 5', 'Anexo N° 05: Detalle de las EP que han realizado la evaluación de los VMA del Anexo 1 del reglamento de VMA.')">
+          <ng-container *ngIf="anexoEvaluacionVmaAnexo1.length > 0; else noResults">
+      <p-table [value]="anexoEvaluacionVmaAnexo1" responsiveLayout="scroll">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>N°</th>
+            <th>Empresa Prestadora</th>
+            <th>Tamaño</th>
+            <th style="text-align: center;">N° MUESTRAS INOPINADAS </th>
+            <th style="text-align: center;">N° UND QUE SOPREPASAN PARAMETROS DEL ANEXO 1</th>
+            <th style="text-align: center;">N° UND FACTURADOS POR ANEXO 1</th>
+            <th style="text-align: center;">N° UND QUE REALIZARON PAGO POR ANEXO 1</th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-anexo let-i="rowIndex">
+          <tr>
+            <td>{{i+1}}</td>
+            <td style="width: 25%;">{{anexo.nombreEmpresa}}</td>
+            <ng-container *ngIf="anexo.rowspan; else noRowspan">
+              <td [attr.rowspan]="anexo.rowspan" class="text-center">{{anexo.tamanioEmpresa}}</td>
+            </ng-container>
+            <ng-template #noRowspan></ng-template>
+            <td style="text-align: center;">{{anexo.nroMuestraInopinada}}</td>
+            <td style="text-align: center;">{{anexo.nroUNDSobrepasanParametrosAnexo1}}</td>
+            <td style="text-align: center;">{{anexo.nroUNDFacturadosPorAnexo1}}</td>
+            <td style="text-align: center;">{{anexo.nroUNDRealizaronPagoPorAnexo1}}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </ng-container>
+        </p-accordionTab>
+        <p-accordionTab header="Anexo N° 06: Detalle de las EP que han realizado la evaluación de los VMA del Anexo 2 del reglamento de VMA."
+          (click)="onTabOpen(5, accordion)"  
+          [hidden]="!filterTabs('anexo 6', 'Anexo N° 06: Detalle de las EP que han realizado la evaluación de los VMA del Anexo 2 del reglamento de VMA.')">
+          <ng-container *ngIf="anexoEvaluacionVmaAnexo2.length > 0; else noResults">
+            <p-table [value]="anexoEvaluacionVmaAnexo2" responsiveLayout="scroll">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>N°</th>
+                  <th>Empresa Prestadora</th>
+                  <th>Tamaño</th>
+                  <th style="text-align: center;">N° MUESTRAS INOPINADAS </th>
+                  <th style="text-align: center;">N° UND QUE SOPREPASAN PARAMETROS DEL ANEXO 2</th>
+                  <th style="text-align: center;">N° UND CON PLAZO ADICIONAL </th>
+                  <th style="text-align: center;">N° UND CON ACUERDO SUSCRITO</th>
+                </tr>
+              </ng-template>
+      
+              <ng-template pTemplate="body" let-anexo let-i="rowIndex">
+                <tr>
+                  <td>{{i+1}}</td>
+                  <td style="width: 25%;">{{anexo.nombreEmpresa}}</td>
+                  <ng-container *ngIf="anexo.rowspan; else noRowspan">
+                    <td [attr.rowspan]="anexo.rowspan" class="text-center">{{anexo.tamanioEmpresa}}</td>
+                  </ng-container>
+                  <ng-template #noRowspan></ng-template>
+                  <td style="text-align: center;">{{anexo.nroMuestraInopinada}}</td>
+                  <td style="text-align: center;">{{anexo.nroUNDSobrepasanParametrosAnexo2}}</td>
+                  <td style="text-align: center;">{{anexo.nroUNDConPlazoAdicional}}</td>
+                  <td style="text-align: center;">{{anexo.nroUNDSuscritoAcuerdo}}</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </ng-container>
+        </p-accordionTab>
+        <p-accordionTab header="Anexo N° 07: Detalle de las EP que han realizado la atención de reclamos referidos a VMA."
+          (click)="onTabOpen(6, accordion)"  
+          [hidden]="!filterTabs('anexo 7', 'Anexo N° 07: Detalle de las EP que han realizado la atención de reclamos referidos a VMA.')">
+          <ng-container *ngIf="anexoEPAtenciondeReclamosVMA.length > 0; else noResults">
+            <p-table [value]="anexoEPAtenciondeReclamosVMA" responsiveLayout="scroll">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>N°</th>
+                  <th>Empresa Prestadora</th>
+                  <th>Tamaño</th>
+                  <th style="text-align: center;">N° UND INSCRITOS EN EL REGISTRO DE UND</th>
+                  <th style="text-align: center;">N° RECLAMOS POR VMA</th>
+                  <th style="text-align: center;">N° RECLAMOS RESUELTOS FUNDADOS</th>
+                </tr>
+              </ng-template>
+      
+              <ng-template pTemplate="body" let-anexo let-i="rowIndex">
+                <tr>
+                  <td>{{i+1}}</td>
+                  <td style="width: 25%;">{{anexo.nombreEmpresa}}</td>
+                  <ng-container *ngIf="anexo.rowspan; else noRowspan">
+                    <td [attr.rowspan]="anexo.rowspan" class="text-center">{{anexo.tamanioEmpresa}}</td>
+                  </ng-container>
+                  <ng-template #noRowspan></ng-template>
+                  <td style="text-align: center;">{{anexo.nroUNDInscritos}}</td>
+                  <td style="text-align: center;">{{anexo.nroReclamosRecibidos}}</td>
+                  <td style="text-align: center;">{{anexo.nroReclamosFundados}}</td>
+                
+                </tr>
+              </ng-template>
+            </p-table>
+          </ng-container>
+        </p-accordionTab>
+        <p-accordionTab header="Anexo N° 08: Detalle de los costos de identificación, inspección y registro de los UND."
+          (click)="onTabOpen(7, accordion)"  
+          [hidden]="!filterTabs('anexo 8', 'Anexo N° 08: Detalle de los costos de identificación, inspección y registro de los UND.')">
+          <ng-container *ngIf="anexoCostosUND.length > 0; else noResults">
+            <p-table [value]="anexoCostosUND" responsiveLayout="scroll">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>N°</th>
+                  <th>Empresa Prestadora</th>
+                  <th>Tamaño</th>
+                  <th style="text-align: center;">COSTO EN IDENTIFICACIÓN, INSPECCIÓN Y REGISTRO DE UND (S/)</th>
+                  <th style="text-align: center;">N° UND IDENTIFICADOS (CANT) </th>
+                  <th style="text-align: center;">COSTO ANUAL POR UND (S/)</th>
+                </tr>
+              </ng-template>
+             
+              <ng-template pTemplate="body" let-anexo let-i="rowIndex">
+                <tr>
+                  <td>{{i+1}}</td>
+                  <td style="width: 25%;">{{anexo.nombreEmpresa}}</td>
+                  <ng-container *ngIf="anexo.rowspan; else noRowspan">
+                    <td [attr.rowspan]="anexo.rowspan" class="text-center">{{anexo.tamanioEmpresa}}</td>
+                  </ng-container>
+                  <ng-template #noRowspan></ng-template>
+                  <td style="text-align: right;">{{anexo.costoTotalUND}}</td>
+                  <td style="text-align: center;">{{anexo.nroUNDidentificados}}</td>
+                  <td style="text-align: right;">{{anexo.costoAnualPorUND}}</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </ng-container>
+        </p-accordionTab>
+        <p-accordionTab header="Anexo N° 09: Detalle de los costos totales por toma de muestras inopinadas."
+          (click)="onTabOpen(8, accordion)"  
+          [hidden]="!filterTabs('anexo 9', 'Anexo N° 09: Detalle de los costos totales por toma de muestras inopinadas.')">
+          <ng-container *ngIf="anexoCostoTotalMuestrasInopinadas.length > 0; else noResults">
+            <p-table [value]="anexoCostoTotalMuestrasInopinadas" responsiveLayout="scroll">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>N°</th>
+                  <th style="width: 25%;">Empresa Prestadora</th>
+                  <th>Tamaño</th>
+                  <th style="text-align: center;">COSTO POR TOMAS DE MUESTRA INOPINADAS (S/)</th>
+                  <th style="text-align: center;">N° DE MUESTRAS INOPINADAS (CANT)  </th>
+                  <th style="text-align: center;">COSTO ANUAL POR MUESTRA INOPINADA (S/)</th>
+                </tr>
+              </ng-template>
+             
+              <ng-template pTemplate="body" let-anexo let-i="rowIndex">
+                <tr>
+                  <td>{{i+1}}</td>
+                  <td>{{anexo.nombreEmpresa}}</td>
+                  <ng-container *ngIf="anexo.rowspan; else noRowspan">
+                    <td [attr.rowspan]="anexo.rowspan" class="text-center">{{anexo.tamanioEmpresa}}</td>
+                  </ng-container>
+                  <ng-template #noRowspan></ng-template>
+                  <td style="text-align: right;">{{anexo.costoPorTomaMuestrasInopinadas}}</td>
+                  <td style="text-align: center;">{{anexo.nroMuestrasInopinadas}}</td>
+                  <td style="text-align: right;">{{anexo.costoAnualMuestraInopinada}}</td>
+                  
+                </tr>
+              </ng-template>
+            </p-table>
+          </ng-container>
+        </p-accordionTab>
+        <p-accordionTab header="Anexo N° 10: Detalle de los costos totales incurridos por las Empresas Prestadoras."
+          (click)="onTabOpen(9, accordion)"  
+          [hidden]="!filterTabs('anexo 10', 'Anexo N° 10: Detalle de los costos totales incurridos por las Empresas Prestadoras')">
+          <ng-container *ngIf="anexoCostoTotalesIncurridos.length > 0; else noResults">
+            <p-table [value]="anexoCostoTotalesIncurridos" responsiveLayout="scroll">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>N°</th>
+                  <th>Empresa Prestadora</th>
+                  <th style="text-align: center;">Tamaño</th>
+                  <th style="text-align: center;">COSTO EN IDENTIFICACIÓN, INSPECCIÓN Y REGISTRO DE UND (S/)</th>
+                  <th style="text-align: center;">COSTO POR TOMAS DE MUESTRAS INOPINADAS (S/) </th>
+                  <th style="text-align: center;">COSTO POR OTROS GASTOS DE IMPLEMENTACIÓN (S/)</th>
+                </tr>
+              </ng-template>
+             
+              <ng-template pTemplate="body" let-anexo let-i="rowIndex">
+                <tr>
+                  <td>{{i+1}}</td>
+                  <td style="width: 25%;">{{anexo.nombreEmpresa}}</td>
+                  <ng-container *ngIf="anexo.rowspan; else noRowspan">
+                    <td [attr.rowspan]="anexo.rowspan" class="text-center">{{anexo.tamanioEmpresa}}</td>
+                  </ng-container>
+                  <ng-template #noRowspan></ng-template>
+                  <td style="text-align: right;">{{anexo.costoIdentInspeccionRegistroUND}}</td>
+                  <td style="text-align: right;">{{anexo.costoMuestrasInopinadas}}</td>
+                  <td style="text-align: right;">{{anexo.costosOtrosGastosImplementacion}}</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </ng-container>
+        </p-accordionTab>
+        <p-accordionTab header="Anexo N° 11: Detalle de los ingresos facturados durante el año actual, por conceptos de VMA."
+          (click)="onTabOpen(10, accordion)"  
+          [hidden]="!filterTabs('anexo 11', 'Anexo N° 11: Detalle de los ingresos facturados durante el año actual, por conceptos de VMA.')">
+          <ng-container *ngIf="anexoIngresos.length > 0; else noResults">
+            <p-table [value]="anexoIngresos" responsiveLayout="scroll">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th style="text-align: center;">N°</th>
+                  <th>Empresa Prestadora</th>
+                  <th style="text-align: center;">Tamaño</th>
+                  <th style="text-align: center;">Ingresos por implementación normativa VMA (S/.)</th>
+                </tr>
+              </ng-template>
+      
+              <ng-template pTemplate="body" let-anexo let-i="rowIndex">
+                <tr>
+                  <td style="text-align: center;">{{i+1}}</td>
+                  <td>{{anexo.nombreEmpresa}}</td>
+                  <ng-container *ngIf="anexo.rowspan; else noRowspan">
+                    <td [attr.rowspan]="anexo.rowspan" class="text-center">{{anexo.tamanioEmpresa}}</td>
+                  </ng-container>
+                  <ng-template #noRowspan></ng-template>
+                  <td style="text-align: right;">{{anexo.ingresosVma}}</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </ng-container>
+        </p-accordionTab>
+      </p-accordion>
+</div>
+  <ng-template #noResults>
+    <p-message severity="info" text="No existen registros para este año"></p-message>
+  </ng-template>

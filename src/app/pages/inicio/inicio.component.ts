@@ -3,7 +3,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { environment } from './../../../environments/environment';
 import { LoginService } from 'src/app/_service/login.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserService } from './../../_service/user.service';
+import { UserService } from '../usuarios/services/user.service';
 import { SessionService } from 'src/app/_service/session.service';
 import { Module } from './module';
 import { MessageService } from 'primeng/api';
@@ -35,7 +35,7 @@ export class InicioComponent implements OnInit {
     private loginService : LoginService,
     private router : Router,
     private sessionService: SessionService,
-    private usuarioService : UserService, 
+    private usuarioService : UserService,
     public route : ActivatedRoute,
     private messageService: MessageService
   ) {
@@ -46,52 +46,7 @@ export class InicioComponent implements OnInit {
     //this.showGenericMessage(); // Muestra el mensaje genérico al iniciar
 
 
-    /*
-    this.usuarioService.findModules().subscribe((response:any)=>{
-      
-      if(response.success){
-        this.modules = response.items;
-        this.shortName = this.sessionService.obtenerShortNameJwt();
-        this.role = this.sessionService.obtenerRoleJwt();
-      }
-
-    });
-    */
-    
-    /*this.modules = [ 
-      
-      {
-        route : "usuarios",
-        label : "Administracion de Usuarios",
-        icon : ""
-      },
-      {
-        route : "empresa",
-        label : "Administracion de Empresas",
-        icon : ""
-      },
-      {
-        route : "ficha-registro",
-        label : "Aperturar ficha de registro VMA",
-        icon : ""
-      },
-      {
-        route : "vma",
-        label : "Registrar VMA",
-        icon : ""
-      },
-      {
-        route : "reporte",
-        label : "Reportes e Indicadores",
-        icon : ""
-      },
-      {
-        route : "anexos",
-        label : "Anexos",
-        icon : ""
-      },
-    ]*/
-
+   
    // this.renderModules();
     this.shortName = this.sessionService.obtenerShortNameJwt();
     this.role = this.sessionService.obtenerRoleJwt();
@@ -111,88 +66,49 @@ export class InicioComponent implements OnInit {
   }
 
   renderModules(role: string){
-    console.log("rol : ", role); //dhr
+    const esAdministradorOTI: boolean = role === "Administrador OTI";
+    const esAdministradorDAP: boolean = role === "Administrador DAP";
+    const esRegistrador: boolean = role === "Registrador";
+    const esConsultor: boolean = role === "Consultor";
 
-    const rol = role;
-   if(rol ==="Administrador OTI"){
-
-    this.modules = [ 
+    this.modules = [
       {
         route : "usuarios",
         label : "Usuarios",
-        icon : "pi pi-users"
-      }
-    ]
-
-   }else if(rol ==="Administrador DAP"){
-    this.modules = [ 
-      
+        icon : "pi pi-users",
+        activo: esAdministradorOTI
+      },
       {
         route : "empresa",
         label : "Empresas",
-        icon : "pi pi-home"
+        icon : "pi pi-home",
+        activo: esAdministradorDAP
       },
       {
         route : "ficha-registro",
         label : "Periodos de registro VMA",
-        icon : "pi pi-calendar-plus"
+        icon : "pi pi-calendar-plus",
+        activo: esAdministradorDAP
       },
       {
         route : "vma",
         label : "Registrar VMA",
-        icon : "pi pi-check-square"
+        icon : "pi pi-check-square",
+        activo: esAdministradorDAP || esRegistrador
       },
       {
         route : "reporte",
         label : "Reportes e Indicadores",
-        icon : "pi pi-chart-bar"
+        icon : "pi pi-chart-bar",
+        activo: !esAdministradorOTI
       },
       {
         route : "anexos",
         label : "Anexos",
-        icon : "pi pi-table"
+        icon : "pi pi-table",
+        activo: !esAdministradorOTI
       },
     ]
-
-
-   }else if(rol ==="Registrador"){
-
-    this.modules = [ 
-      
-      {
-        route : "vma",
-        label : "Registrar VMA",
-        icon : "pi pi-check-square"
-      },
-      {
-        route : "reporte",
-        label : "Reportes e Indicadores",
-        icon : "pi pi-chart-bar"
-      },
-      {
-        route : "anexos",
-        label : "Anexos",
-        icon : "pi pi-table"
-      },
-    ]
-
-   }
-   else if(rol ==="Consultor"){
-
-    this.modules = [ 
-     
-      {
-        route : "reporte",
-        label : "Reportes e Indicadores",
-        icon : "pi pi-chart-bar"
-      },
-      {
-        route : "anexos",
-        label : "Anexos",
-        icon : "pi pi-table"
-      },
-    ]
-   }
   }
 
 // dhr pendiente, para mostrar un mensaje generico

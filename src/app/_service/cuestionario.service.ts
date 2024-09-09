@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { Cuestionario } from '../_model/cuestionario';
+import { Cuestionario } from '../pages/vma/models/cuestionario';
 
 
 

@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
-import { RegistroVMA } from "../_model/registroVMA";
+import { RegistroVMA } from "../pages/vma/models/registroVMA";
 import { environment } from '../../environments/environment';
 import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
-import { RegistroVmaRequest } from "../_model/registroVMARequest";
+import { RegistroVmaRequest } from "../pages/vma/models/registroVMARequest";
 import { Observable } from 'rxjs';
 
   @Injectable({

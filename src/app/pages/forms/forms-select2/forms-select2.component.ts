@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
-import { Option } from 'src/app/_model/option';
+import { Option } from 'src/app/pages/vma/models/option';
 import { NgSelectComponent, NgSelectConfig } from '@ng-select/ng-select';
 
 @Component({

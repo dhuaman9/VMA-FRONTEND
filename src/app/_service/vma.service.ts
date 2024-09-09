@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
-import { RegistroVmaRequest } from '../_model/registroVMARequest';
+import { RegistroVmaRequest } from '../pages/vma/models/registroVMARequest';
 
 @Injectable({
   providedIn: 'root'

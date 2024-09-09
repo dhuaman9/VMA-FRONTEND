@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { Empresa } from 'src/app/_model/empresa';
-import { EmpresaService } from 'src/app/_service/empresa.service';
+import { Empresa } from 'src/app/pages/empresa/models/empresa';
+import { EmpresaService } from 'src/app/pages/empresa/services/empresa.service';
 import { ValidateInputs, cleanSpaces, validateInput  } from 'src/app/utils/validate-inputs';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';

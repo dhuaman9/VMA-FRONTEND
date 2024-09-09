@@ -1,5 +1,5 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {BarChartDataset} from "../../../_model/bar-chart-dataset";
+import {BarChartDataset} from "../models/bar-chart-dataset";
 
 @Component({
   selector: 'app-bar-chart',

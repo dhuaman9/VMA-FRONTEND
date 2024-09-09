@@ -3,17 +3,13 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { environment } from "src/environments/environment";
-import { ReporteParamCalidadDto } from "../_dto/reporteParamCalidadDto";
-import { ReporteParamCalidadExportDto } from "../_dto/reporteParamCalidadExportDto";
-import { ReporteVarGestionDto } from "../_dto/reporteVarGestionDto";
-import { ReporteVarOperacionalDto } from "../_dto/reporteVarOperacionalDto";
-import { ListaReporte } from '../_model/reporte';
-import {ChartDto} from "../_model/chart-dto";
-import {RegistroPromedioTrabajadorVMAChartDto} from "../_model/RegistroPromedioTrabajadorVMAChartDto";
-import {PieChartBasicoDto} from "../_model/pie-chart-basico-dto";
-import {BarChartBasicoDto} from "../_model/bar-chart-basico-dto";
-import { ComparativoUNDDTO } from "../_model/comparativo-und-dto";
-import { CostoTotalIncurridoCompletoDTO } from "../_model/costo-total-incurrido-completo";
+import { ListaReporte } from '../pages/reporte/models/reporte';
+import {ChartDto} from "../pages/reporte/models/chart-dto";
+import {RegistroPromedioTrabajadorVMAChartDto} from "../pages/reporte/models/RegistroPromedioTrabajadorVMAChartDto";
+import {PieChartBasicoDto} from "../pages/reporte/models/pie-chart-basico-dto";
+import {BarChartBasicoDto} from "../pages/reporte/models/bar-chart-basico-dto";
+import { ComparativoUNDDTO } from "../pages/reporte/models/comparativo-und-dto";
+import { CostoTotalIncurridoCompletoDTO } from "../pages/reporte/models/costo-total-incurrido-completo";
 
 @Injectable({
     providedIn: 'root'
@@ -241,63 +237,7 @@ export class ReporteService {
             );
     }
 
-    variablesgestion(dto : ReporteVarGestionDto): Observable<any>{
-
-        this.httpOptions = {
-            headers : new HttpHeaders({
-                'Content-type' : 'application/json'
-            }),
-            responseType : 'json'
-        };
-
-        return this.http
-            .post(`${this.url}/manager/reporte/variablesGestion`, dto, this.httpOptions);
-    }
-
-    variablesoperacional(dto : ReporteVarOperacionalDto): Observable<any>{
-
-        this.httpOptions = {
-            headers : new HttpHeaders({
-                'Content-type' : 'application/json'
-            }),
-            responseType : 'json'
-        };
-
-        return this.http
-            .post(`${this.url}/manager/reporte/variablesOperacional`, dto, this.httpOptions);
-    }
-
-    parametroscalidad(dto : ReporteParamCalidadDto): Observable<any>{
-
-        this.httpOptions = {
-            headers : new HttpHeaders({
-                'Content-type' : 'application/json'
-            }),
-            responseType : 'json'
-        };
-
-        return this.http
-            .post(`${this.url}/manager/reporte/parametrosCalidad`, dto, this.httpOptions);
-    }
-
-    exportvariablesgestion(dto : ReporteVarGestionDto){
-        return this.http.post(`${this.url}/manager/export/variablesGestion`,dto, {
-          responseType: 'blob'
-        });
-    }
-
-    exportvariablesoperacional(dto : ReporteVarOperacionalDto){
-        return this.http.post(`${this.url}/manager/export/variablesOperacional`,dto, {
-          responseType: 'blob'
-        });
-    }
-
-    exportparametroscalidad(dto : ReporteParamCalidadExportDto){
-        return this.http.post(`${this.url}/manager/export/parametrosCalidad`,dto, {
-          responseType: 'blob'
-        });
-    }
-
+   
     getListaReportes(cat) {
         return this.http
           .get<any>('assets/lista-reportes.json')

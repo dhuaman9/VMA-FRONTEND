@@ -27,8 +27,8 @@
                                       <label class="mb-0" >{{alternativa.get('nombreCampo').value}}</label>
                                       <p-inputNumber class="input-number" formControlName="respuesta"
                                                      mode="decimal"
-                                                     [minFractionDigits]="pregunta.get('metadatoArchivo').value?.decimal ? 2 : null"
-                                                     [maxFractionDigits]="pregunta.get('metadatoArchivo').value?.decimal ? 2 : null"
+                                                     [minFractionDigits]="pregunta.get('metadato').value?.decimal ? 2 : null"
+                                                     [maxFractionDigits]="pregunta.get('metadato').value?.decimal ? 2 : null"
                                       ></p-inputNumber>
                                     </div>
                                       <small *ngIf="alternativa.get('respuesta').errors?.required" style="color: red;">Campo requerido</small>
@@ -39,8 +39,8 @@
                             <ng-template #inputNumericoUnico>
                               <p-inputNumber class="input-number" formControlName="respuesta"
                                              mode="decimal"
-                                             [minFractionDigits]="pregunta.get('metadatoArchivo').value?.decimal ? 2 : null"
-                                             [maxFractionDigits]="pregunta.get('metadatoArchivo').value?.decimal ? 2 : null"></p-inputNumber>
+                                             [minFractionDigits]="pregunta.get('metadato').value?.decimal ? 2 : null"
+                                             [maxFractionDigits]="pregunta.get('metadato').value?.decimal ? 2 : null"></p-inputNumber>
                               <small *ngIf="pregunta.get('respuesta').errors?.required" style="color: red;">Campo requerido</small>
                             </ng-template>
                           </ng-container>
@@ -68,7 +68,7 @@
                               <div class="field col-12 md:col-12"> <!-- Elemento de archivo -->
                                 <label class="form-label">
                                   {{pregunta.get('texto').value}}
-                                  <span *ngIf="pregunta.get('metadatoArchivo').value?.requerido">(*)</span>
+                                  <span *ngIf="pregunta.get('metadato').value?.requerido">(*)</span>
                                 </label>
                                 <ng-container *ngIf="!pregunta.get('respuestaDTO').value || (pregunta.get('respuestaDTO').value && (pregunta.get('respuesta').value === null || isFile(pregunta.get('respuesta').value))); else descargar">
                                   <p-fileUpload
@@ -89,7 +89,7 @@
                                   </p-fileUpload>
                                   <small *ngIf="pregunta.get('respuesta').errors?.required" style="color: red;">Archivo requerido</small>
                                   <small *ngIf="pregunta.get('respuesta').errors?.fileType" style="color: red;">Tipo de archivo incorrecto</small>
-                                  <small *ngIf="pregunta.get('respuesta').errors?.maxSize" style="color: red;">El archivo no puede ser mayor a {{pregunta.get('metadatoArchivo').value.maxSizeInMB}}MB</small>
+                                  <small *ngIf="pregunta.get('respuesta').errors?.maxSize" style="color: red;">El archivo no puede ser mayor a {{pregunta.get('metadato').value.maxSizeInMB}}MB</small>
                                 </ng-container>
                                 <ng-template #descargar>
                                   <div class="d-flex gap-1">

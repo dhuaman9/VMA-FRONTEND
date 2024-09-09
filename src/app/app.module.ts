@@ -20,12 +20,11 @@ import { FormsSelect2Component } from './pages/forms/forms-select2/forms-select2
 import { NgSelectComponent, NgSelectModule } from '@ng-select/ng-select';
 import { interceptorProvider } from './_service/interceptor.service';
 import { ErrorValidationComponent } from './pages/forms/error-validation/error-validation.component';
-import { UsuariosComponent } from './pages/usuarios/usuarios.component';
-import { ReporteComponent } from './pages/reporte/reporte.component';
-import { EmpresaComponent } from './pages/empresa/empresa.component';
-import { FichaRegistroComponent } from './pages/ficha-registro/ficha-registro.component';
-import { AnexosComponent } from './pages/anexos/anexos.component';
-import { VmaComponent } from './pages/vma/vma.component';
+import { UsuariosComponent } from './pages/usuarios/components/usuarios.component';
+import { ReporteComponent } from 'src/app/pages/reporte/components/reporte.component';
+import { EmpresaComponent } from './pages/empresa/components/empresa.component';
+import { FichaRegistroComponent } from 'src/app/pages/ficha-registro/components/ficha-registro.component';
+import { VmaComponent } from './pages/vma/components/vma.component';
 import { RegistrarVmaComponent } from './pages/vma/registrar-vma/registrar-vma.component';
 import { AlphabeticInputDirective } from './utils/validate-inputs';
 import { TelefonoInputDirective } from './utils/validate-inputs';
@@ -33,8 +32,8 @@ import { UserNameInputDirective } from './utils/validate-inputs';
 
 // Pagination Component
 import { PaginationModule } from 'ngx-bootstrap/pagination';
-import { EditarUsuarioComponent } from './pages/usuarios/editar-usuario/editar-usuario.component';
-import { RegistrarUsuarioComponent } from './pages/usuarios/registrar-usuario/registrar-usuario.component';
+import { EditarUsuarioComponent } from './pages/usuarios/components/editar-usuario/editar-usuario.component';
+import { RegistrarUsuarioComponent } from './pages/usuarios/components/registrar-usuario/registrar-usuario.component';
 import { ModalContentComponent } from './pages/register/modal-content/modal-content.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -52,7 +51,7 @@ import { KeyFilterModule } from 'primeng/keyfilter';
 import { FieldsetModule } from 'primeng/fieldset';
 import { GlobalFormsComponentsModule } from './shared/components/forms/global-forms.module';
 import { AltaEditEmpresaComponent } from './pages/empresa/alta-edit-empresa/alta-edit-empresa.component';
-import { RegisterEditFichaComponent } from './pages/ficha-registro/register-edit-ficha/register-edit-ficha.component';
+import { RegisterEditFichaComponent } from './pages/ficha-registro/components/register-edit-ficha/register-edit-ficha.component';
 import { AccordionModule } from 'primeng/accordion';
 import { ToastModule } from 'primeng/toast';
 import { SplitterModule } from 'primeng/splitter';
@@ -66,6 +65,7 @@ import { ReporteService } from 'src/app/_service/reporte.service';
 import { PieChartComponent } from './pages/reporte/pie-chart/pie-chart.component';
 import { BarChartComponent } from './pages/reporte/bar-chart/bar-chart.component';
 import {MessageModule} from "primeng/message";
+import { AnexosComponent } from './pages/anexos/components/anexos.component';
 
 
 const PRIMENG_COMPONENTS = [
@@ -107,12 +107,12 @@ export function tokenGetter(){
     FormsSelect2Component,
     ErrorValidationComponent,
     UsuariosComponent,
+    AnexosComponent,
     RegistrarUsuarioComponent,
     EditarUsuarioComponent,
     ReporteComponent,
     EmpresaComponent,
     FichaRegistroComponent,
-    AnexosComponent,
     VmaComponent,
     RegistrarVmaComponent,
     ModalContentComponent,
