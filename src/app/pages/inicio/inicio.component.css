@@ -68,12 +68,6 @@ h5#tituloModulo{
   color: #000;
 }
 
-.mainmenu a:hover {
-  /*
-	background-color: #C5C5C5;
-	*/
-}
-
 .mainmenu li:hover .submenu {
   display: block;
   max-height: 200px;
@@ -87,15 +81,6 @@ h5#tituloModulo{
 .submenu a:hover {
   background-color: rgba(199, 216, 255, 0.75);
 	border-radius: 0.5rem;
-}
-
-.submenu {
-  /*
-  overflow: hidden;
-  max-height: 0;
-  
-  -webkit-transition: all 0.5s ease-out;
-	*/
 }
 
 .submenu li.submenu-option.active a {
@@ -133,17 +118,15 @@ h5#tituloModulo{
 
 .icon-circle-list{
 	font-size: 0.45em;
-    line-height: .05em;
-    vertical-align: 0.4001em;
-    padding-left: 12px;
+  line-height: .05em;
+  vertical-align: 0.4001em;
+  padding-left: 12px;
 	color: transparent;
 }
 
 .submenu li.submenu-option.active a i.icon-circle-list{
 	color: #FFFFFF;
 }
-
-/*dhr*/
 
 .custom-nav-link {
     color: inherit; /* Color por defecto */
@@ -152,25 +135,18 @@ h5#tituloModulo{
     display: block; /* Hacer que ocupe todo el ancho disponible */
 }
 
-.mainmenu .nav-item a:hover {
-    background-color: #fff; /* Fondo blanco al pasar el mouse */
-    color: #007bff; /* Texto azul al pasar el mouse */
-}
-
 .mainmenu .nav-item {
     list-style: none; /* Quitar viñetas */
 }
 
 .mainmenu .nav-item a {
-    display: block;
     padding: 10px 15px; /* Espaciado interno */
-    color: #333; /* Color del texto por defecto */
-    text-decoration: none; /* Sin subrayado */
+    border-radius: 0.5rem;
+    transition: background-color 0.2s ease-in-out !important;
 }
 
 .mainmenu .nav-item a:hover {
-    background-color: #fff; /* Fondo blanco al pasar el mouse */
-    color: #007bff; /* Texto azul al pasar el mouse */
+    background-color: #0a77d6;
 }
 
 .nav-item a span {
@@ -182,20 +158,14 @@ h5#tituloModulo{
 transition: color 0.3s; /* Añadir una transición suave al color */
 }
     
-  /* Cambiar color del texto y el ícono a azul al pasar el mouse sobre el nav-item */
-.nav-item:hover .custom-nav-link, 
-.nav-item:hover .custom-nav-link i, 
-.nav-item:hover .custom-nav-link .pl-5-txt {
-  color: #5290E5; /* Cambiar el color del texto a azul */
-}
-
 .custom-nav-link i{
   color: #f0f0f0;
 }
 
 /* Separar cada nav-item con una barra de color blanco */
 .nav-item {
-	border-bottom: 1px solid white; /* Añadir borde inferior blanco */
+	/*border-bottom: 1px solid white;*/ /* Añadir borde inferior blanco */
+  margin-bottom: 0.5rem; /* Espacio entre elementos */
 }
 
 .nav-item:last-child {
@@ -210,14 +180,17 @@ transition: color 0.3s; /* Añadir una transición suave al color */
 
 /* Estilos para el enlace, el ícono y el texto cuando el enlace está activo */
 .nav-item .active {
-  border-left: 4px solid #007bff; /* Línea de borde azul en el lado izquierdo */
-  background-color: #f0f0f0; /* Color de fondo diferente para el elemento activo */
-  color: #5a9be0; /* Color de texto azul para el enlace activo */
+  /*border-left: 6px solid #007bff;*/
+  background-color: #f0f0f0;
+}
+
+.mainmenu .nav-item .active:hover {
+  background-color: #f0f0f0;
 }
 
 .nav-item .active i,
 .nav-item .active .pl-5-txt {
-  color: #5a9be0; /* Color azul para el ícono y el texto del span cuando el enlace está activo */
+  color: #007ad9; /* Color azul para el ícono y el texto del span cuando el enlace está activo */
 }
 
 .sign-out-icon {
@@ -229,5 +202,4 @@ transition: color 0.3s; /* Añadir una transición suave al color */
   display: flex;
   flex-direction: column;
 }
-
 
