@@ -5,7 +5,9 @@
         <div class="card pdn-15">
           <div class="content">
             <div class="col-md-12">
-              <h2>Registrar Valores Maximos Admisibles</h2>
+              <h2  style="text-align: center;">Registrar Valores Maximos Admisibles</h2>
+              <br>
+             
               <!-- dynamic-form.component.html -->
               <form [formGroup]="formularioGeneral" *ngIf="formularioGeneral">
                 <p-accordion  formArrayName="secciones">
@@ -120,7 +122,7 @@
                 </div>
                 <ng-template #botonAdmin>
                   <div class="col-12 flex  justify-content-center">
-                    <p-button type="button" label="Regresar" class="p-button-secondary"
+                    <p-button type="button" label="Regresar" class="p-button-secondary" icon="pi pi-arrow-left"
                               (click)="onRegresar()" >
                     </p-button>
                   </div>

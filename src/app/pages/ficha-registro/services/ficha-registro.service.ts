@@ -54,12 +54,6 @@ export class FichaRegistroService{
         });
     }
 
-    /*create(ficha: FichaRegistro) {
-        return this.http.post<FichaRegistro>(this.url+'/fichas', ficha, {
-        headers: new HttpHeaders().set('Content-Type', 'application/json')
-        });
-    }*/
-
     create(ficha: FichaRegistro) : Observable<any>  {
         return this.http.post<FichaRegistro>(this.url+'/fichas', ficha, {
             headers: new HttpHeaders().set('Content-Type', 'application/json')
@@ -67,14 +61,17 @@ export class FichaRegistroService{
         );
      }
 
-  
-    
     update(ficha: FichaRegistro){
         return this.http.put<FichaRegistro>(this.url+'/fichas', ficha, {
         headers: new HttpHeaders().set('Content-Type', 'application/json')
         }).pipe(catchError(this.handleError) // Manejo de errores
         );
     }
+
+    cantidadDiasFaltantesVMA(): Observable<number> {  //se utiliza para alertar al registrador, los dias faltantes de registro VMA
+        return this.http.get<number>(`${this.url}/dias-faltantes`);
+      }
+
 
     private handleError(error: HttpErrorResponse) {
         let errorMessage = 'Ocurrió un error inesperado';
@@ -91,6 +88,5 @@ export class FichaRegistroService{
         }
         return throwError(errorMessage);
       }
-
 
 }

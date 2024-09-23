@@ -34,4 +34,28 @@
   /* selector del mes y año */
   /* *** */
 
-  /* Estilo para los selectores de mes y año */
+ 
+
+  .flex-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .plazo {
+    font-family: 'Roboto', sans-serif;
+    font-size: 15px;  /* Tamaño de texto para información secundaria */
+    font-weight: bold;
+    color: #333;      /* Un color neutro para mantener la legibilidad */
+  }
+  
+  .anio {
+    font-family: 'Roboto', sans-serif;
+    font-size: 15px;  /* Tamaño de texto ligeramente mayor para resaltar */
+    font-weight: bold; /* Un peso de fuente mayor para destacar el año */
+    color: #333;
+  }
+
+  .card.pdn-15 {
+    padding: 8px; /* O cualquier valor menor que 15px */
+  }

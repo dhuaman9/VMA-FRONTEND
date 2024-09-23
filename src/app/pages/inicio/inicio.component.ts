@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../usuarios/services/user.service';
 import { SessionService } from 'src/app/_service/session.service';
 import { Module } from './module';
-import { MessageService } from 'primeng/api';
+import {Message, MessageService} from 'primeng/api';
 
 declare const $:any;
 declare const attachEventsToPushMenu: any;
@@ -17,6 +17,9 @@ declare const attachEventsToPushMenu: any;
   styleUrls: ['./inicio.component.css']
 })
 export class InicioComponent implements OnInit {
+
+  msgs1: Message[];
+  diasFaltantes: number = 24;
 
   userName : string;
 
@@ -31,6 +34,10 @@ export class InicioComponent implements OnInit {
   optionRepVarOperacionalActive : string = "";
   optionRepParamCalidadActive : string = "";
 
+  //para renderizar el p-message, alerta de registro vma
+
+  isRoleRegistrador: boolean = this.sessionService.obtenerRoleJwt().toUpperCase() === 'REGISTRADOR';
+
   constructor(
     private loginService : LoginService,
     private router : Router,
@@ -42,9 +49,10 @@ export class InicioComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-    //this.showGenericMessage(); // Muestra el mensaje genérico al iniciar
-
+    this.msgs1 = [
+      {severity:'warn', summary:'Alerta', detail: `Tiene ${this.diasFaltantes} días restantes para registrar la información correspondiente a VMA. Por favor, asegúrate de completar el registro antes de la fecha límite.`}
+    ];
+    
 
    
    // this.renderModules();
@@ -111,8 +119,5 @@ export class InicioComponent implements OnInit {
     ]
   }
 
-// dhr pendiente, para mostrar un mensaje generico
-  showGenericMessage() {
-    this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'This is a generic message' });
-  }
+
 }

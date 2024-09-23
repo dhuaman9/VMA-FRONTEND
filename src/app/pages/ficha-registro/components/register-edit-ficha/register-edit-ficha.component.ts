@@ -23,11 +23,9 @@ export class RegisterEditFichaComponent implements OnInit {
   
     titleHeader: string;
     isEdition: boolean =false;
-
     startDate: Date;
     minEndDate: Date;
     maxEndDate: Date;
-
     es: any;
     
     constructor(
@@ -44,7 +42,7 @@ export class RegisterEditFichaComponent implements OnInit {
   ngOnInit(): void {
 
     const currentYear = new Date().getFullYear();
-    for (let year = currentYear; year >= 2022; year--) {
+    for (let year = currentYear; year >= 2022; year--) { //para establecer los años en el combobox, desde el actual hasta el 2022
       this.years.push(year.toString());
     }
 
@@ -178,7 +176,10 @@ export class RegisterEditFichaComponent implements OnInit {
   }
 
   onCancelAction(){
-    Swal.fire({
+    this.closeDialog(false);
+
+
+    /*Swal.fire({
       title: "¿Está seguro que desea cancelar el registro?",
       text: "Si acepta no se guardará ninguna información",
       icon: "warning",
@@ -197,7 +198,7 @@ export class RegisterEditFichaComponent implements OnInit {
       if (result.isConfirmed) {
         this.closeDialog(false);
       }
-    });
+    });*/
     
   }
 

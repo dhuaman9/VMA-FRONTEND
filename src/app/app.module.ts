@@ -29,6 +29,14 @@ import { RegistrarVmaComponent } from './pages/vma/registrar-vma/registrar-vma.c
 import { AlphabeticInputDirective } from './utils/validate-inputs';
 import { TelefonoInputDirective } from './utils/validate-inputs';
 import { UserNameInputDirective } from './utils/validate-inputs';
+import { AnexosComponent } from './pages/anexos/components/anexos.component';
+import { ReporteService } from 'src/app/_service/reporte.service';
+import { PieChartComponent } from './pages/reporte/pie-chart/pie-chart.component';
+import { BarChartComponent } from './pages/reporte/bar-chart/bar-chart.component';
+import { GlobalFormsComponentsModule } from './shared/components/forms/global-forms.module';
+import { AltaEditEmpresaComponent } from './pages/empresa/alta-edit-empresa/alta-edit-empresa.component';
+import { RegisterEditFichaComponent } from './pages/ficha-registro/components/register-edit-ficha/register-edit-ficha.component';
+
 
 // Pagination Component
 import { PaginationModule } from 'ngx-bootstrap/pagination';
@@ -49,9 +57,6 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import { DialogModule } from 'primeng/dialog';
 import { KeyFilterModule } from 'primeng/keyfilter';
 import { FieldsetModule } from 'primeng/fieldset';
-import { GlobalFormsComponentsModule } from './shared/components/forms/global-forms.module';
-import { AltaEditEmpresaComponent } from './pages/empresa/alta-edit-empresa/alta-edit-empresa.component';
-import { RegisterEditFichaComponent } from './pages/ficha-registro/components/register-edit-ficha/register-edit-ficha.component';
 import { AccordionModule } from 'primeng/accordion';
 import { ToastModule } from 'primeng/toast';
 import { SplitterModule } from 'primeng/splitter';
@@ -61,12 +66,8 @@ import {TooltipModule} from 'primeng/tooltip';
 import { ChartModule } from 'primeng/chart';
 import { MessageService } from 'primeng/api';
 import {OrderListModule} from 'primeng/orderlist';
-import { ReporteService } from 'src/app/_service/reporte.service';
-import { PieChartComponent } from './pages/reporte/pie-chart/pie-chart.component';
-import { BarChartComponent } from './pages/reporte/bar-chart/bar-chart.component';
 import {MessageModule} from "primeng/message";
-import { AnexosComponent } from './pages/anexos/components/anexos.component';
-
+import { TagModule } from 'primeng/tag';
 
 const PRIMENG_COMPONENTS = [
   TableModule,
@@ -89,7 +90,8 @@ const PRIMENG_COMPONENTS = [
   FileUploadModule,
   TooltipModule,
   ChartModule,
-  OrderListModule
+  OrderListModule,
+  TagModule
 ]
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
 

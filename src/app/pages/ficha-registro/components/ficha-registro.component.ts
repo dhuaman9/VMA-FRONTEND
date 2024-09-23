@@ -157,15 +157,7 @@ export class FichaRegistroComponent implements OnInit {
         //this.paramsPagination = new ParamsPagination(0,1,10,0);
         this.onQueryPageFicha();
       } 
-      /*else {
-        this.displayModaAdvice = true;
-        this.modalImage = './assets/images/cancel-icon.png';
-        if(this.isEdition){
-          this.modalMessage = 'Edición cancelada';
-        } else {
-          this.modalMessage = 'Registro cancelado';
-        }
-      }*/
+    
     });
   
   }
