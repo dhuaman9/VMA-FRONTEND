@@ -34,54 +34,10 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ModalContentComponent } from './pages/register/modal-content/modal-content.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-// Primeng components
-import { TableModule } from 'primeng/table';
-import { PaginatorModule } from 'primeng/paginator';
-import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
-import { DynamicDialogModule } from 'primeng/dynamicdialog';
-import { RadioButtonModule } from 'primeng/radiobutton';
-import { DropdownModule } from 'primeng/dropdown';
-import { InputSwitchModule } from 'primeng/inputswitch';
-import { DialogModule } from 'primeng/dialog';
-import { KeyFilterModule } from 'primeng/keyfilter';
-import { FieldsetModule } from 'primeng/fieldset';
-import { AccordionModule } from 'primeng/accordion';
-import { ToastModule } from 'primeng/toast';
-import { SplitterModule } from 'primeng/splitter';
-import { CalendarModule } from 'primeng/calendar';
-import { FileUploadModule } from 'primeng/fileupload';
-import {TooltipModule} from 'primeng/tooltip';
-import { ChartModule } from 'primeng/chart';
 import { MessageService } from 'primeng/api';
-import {OrderListModule} from 'primeng/orderlist';
 import {MessageModule} from "primeng/message";
-import { TagModule } from 'primeng/tag';
+import {SharedModule} from "./shared/shared.module";
 
-const PRIMENG_COMPONENTS = [
-  TableModule,
-  PaginatorModule,
-  ButtonModule,
-  InputTextModule,
-  DynamicDialogModule,
-  RadioButtonModule,
-  DropdownModule,
-  InputSwitchModule,
-  DialogModule,
-  KeyFilterModule,
-  FieldsetModule,
-  CalendarModule,
-  BrowserModule,
-  BrowserAnimationsModule,
-  AccordionModule,
-  ToastModule,
-  SplitterModule,
-  FileUploadModule,
-  TooltipModule,
-  ChartModule,
-  OrderListModule,
-  TagModule
-]
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
 
 export function tokenGetter(){
@@ -105,7 +61,6 @@ export function tokenGetter(){
     BarChartComponent
   ],
     imports: [
-
         BrowserModule,
         AppRoutingModule,
         HttpClientModule,
@@ -125,7 +80,7 @@ export function tokenGetter(){
         NgbModule,
         BrowserAnimationsModule,
         GlobalFormsComponentsModule,
-        PRIMENG_COMPONENTS,
+        SharedModule,
         MessageModule
     ],
   providers: [MessageService,

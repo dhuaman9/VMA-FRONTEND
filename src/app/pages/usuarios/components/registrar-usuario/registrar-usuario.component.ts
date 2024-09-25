@@ -33,7 +33,7 @@ export class RegistrarUsuarioComponent implements OnInit {
 
   mostrarCampo: boolean = true;
 
-  usuariosSunass: {label: string, value: any}[] = [];
+  usuariosSunass: {label: string, value: any}[];
 
   ListEmpresa: Empresa[];
   empresasLista: {label: string, value: any}[] = [];
@@ -46,9 +46,6 @@ export class RegistrarUsuarioComponent implements OnInit {
    }
 
   ngOnInit(): void {
-
-
-    this.cargarUsuariosLDAP();
     const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&.,#-_;])([A-Za-z\d$@$!%*?&.,#-_;]|[^ ]){8,15}$/;
     //Entre 8 a 15 caracteres, no espacios, al menos una mayúscula, una minúscula, un número y un caracter especial (@$!%*?&.,#-_;)
     this.registroForm = this.formBuilder.group({
@@ -99,7 +96,9 @@ export class RegistrarUsuarioComponent implements OnInit {
     this.setEnableDisableIputs();
 
     if(this.registroForm.get('tipo').value === 'SUNASS'){
-
+      if(!this.usuariosSunass) {
+        this.cargarUsuariosLDAP();
+      }
       this.perfiles = [
         {id:1, description:'Administrador OTI'},
         {id:2, description:'Administrador DAP'},
@@ -111,7 +110,6 @@ export class RegistrarUsuarioComponent implements OnInit {
       this.perfiles = [
         {id:3, description:'Registrador'},
         {id:4, description:'Consultor'}];
-
     }
   }
 
