@@ -31,7 +31,7 @@ export class RegistrarUsuarioComponent implements OnInit {
   isRequired: boolean = true;
   errorMessage: string | null = null;
 
-  mostrarCampo: boolean = true; 
+  mostrarCampo: boolean = true;
 
   usuariosSunass: {label: string, value: any}[] = [];
 
@@ -47,7 +47,7 @@ export class RegistrarUsuarioComponent implements OnInit {
 
   ngOnInit(): void {
 
-    
+
     this.cargarUsuariosLDAP();
     const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&.,#-_;])([A-Za-z\d$@$!%*?&.,#-_;]|[^ ]){8,15}$/;
     //Entre 8 a 15 caracteres, no espacios, al menos una mayúscula, una minúscula, un número y un caracter especial (@$!%*?&.,#-_;)
@@ -65,17 +65,17 @@ export class RegistrarUsuarioComponent implements OnInit {
       telefono: ['', [Validators.required,Validators.minLength(9)]],
       estado: [true]
     });
-    
+
     this.onTipoUsuarioChange();
     this.cargarListaEmpresas();
 
-    
+
   }
 
   onUserChange(event: any) {
     console.log('event cmb usersldap', event);
     const selectedUser = event.value as User;
-    
+
     if (selectedUser) {
       this.registroForm.patchValue(selectedUser);
     } else {
@@ -97,11 +97,11 @@ export class RegistrarUsuarioComponent implements OnInit {
     this.registroForm.reset();
     this.registroForm.patchValue({'tipo':currentTipo});
     this.setEnableDisableIputs();
-    
+
     if(this.registroForm.get('tipo').value === 'SUNASS'){
 
       this.perfiles = [
-        {id:1, description:'Administrador OTI'}, 
+        {id:1, description:'Administrador OTI'},
         {id:2, description:'Administrador DAP'},
         {id:3, description:'Registrador'},
         {id:4, description:'Consultor'}];
@@ -144,9 +144,9 @@ export class RegistrarUsuarioComponent implements OnInit {
             this.onAceptar(); // se redirige al listado de usuarios
           }
         });
-        
+
       },
-       error => {  
+       error => {
           Swal.fire({
             title: 'Error',
             text: error,
@@ -179,13 +179,12 @@ export class RegistrarUsuarioComponent implements OnInit {
   }
 
   onAceptar(){
-   
+
     this.router.navigate(['/inicio/usuarios']).then(() => {
       // Aquí puedes forzar la recarga de la lista , no recomendable x ahora.
-     window.location.reload();
     });
   //  this.router.navigate(['/inicio/usuarios']);
-    
+
   }
 
   onCancel() {
@@ -194,13 +193,13 @@ export class RegistrarUsuarioComponent implements OnInit {
  //console.error('Error al obtener los usuarios del LDAP', error);
   cargarUsuariosLDAP(): void {
     this.userService.findAllLDAP().subscribe(
-      
-      (data: User[]) => {        
+
+      (data: User[]) => {
         this.usuariosSunass = data.map(user => ({
           label: user.username,
           value: user
         }));
-  
+
       },
       (error) => {
         console.error('Error al obtener los usuarios del LDAP', error);
@@ -232,7 +231,7 @@ export class RegistrarUsuarioComponent implements OnInit {
       this.registroForm.get('usuario').updateValueAndValidity();
 
     } else if(this.registroForm.get('tipo').value === 'EPS') {
-      this.mostrarCampo =true; 
+      this.mostrarCampo =true;
       this.isDropUsersDisable = true;
       this.registroForm.get('unidadOrganica').disable();
       this.registroForm.get('usuario').disable();
@@ -265,8 +264,8 @@ export class RegistrarUsuarioComponent implements OnInit {
 
   cargarListaEmpresas(): void {
     this.empresaService.findAll().subscribe(
-      
-      (data: any[]) => {        
+
+      (data: any[]) => {
         this.empresasLista = data.map(emp => ({
           label: emp.nombre,
           value: emp.idEmpresa

@@ -52,9 +52,9 @@ export class InicioComponent implements OnInit {
     this.msgs1 = [
       {severity:'warn', summary:'Alerta', detail: `Tiene ${this.diasFaltantes} días restantes para registrar la información correspondiente a VMA. Por favor, asegúrate de completar el registro antes de la fecha límite.`}
     ];
-    
 
-   
+
+
    // this.renderModules();
     this.shortName = this.sessionService.obtenerShortNameJwt();
     this.role = this.sessionService.obtenerRoleJwt();

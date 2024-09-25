@@ -20,24 +20,24 @@ export class RegisterEditFichaComponent implements OnInit {
 
     years: string[] = [];
     //selectedYear: number;
-  
+
     titleHeader: string;
     isEdition: boolean =false;
     startDate: Date;
     minEndDate: Date;
     maxEndDate: Date;
     es: any;
-    
+
     constructor(
       private ref: DynamicDialogRef,
       private config: DynamicDialogConfig,
       private fichaRegistroService : FichaRegistroService,
       private router: Router) {
-  
+
         this.titleHeader = this.config.data.titleHeader;
         this.isEdition = false;
     }
-  
+
 
   ngOnInit(): void {
 
@@ -67,12 +67,12 @@ export class RegisterEditFichaComponent implements OnInit {
       moment(this.registroForm.get('fechaInicio').value, "DD/MM/YYYY").toDate());
 
       const ficha = this.prepareFichaData();
-  
+
     if(this.isEdition){
       ficha.idFichaRegistro = this.config.data.idFichaRegistro;
       this.fichaRegistroService.update(ficha).subscribe(data =>{
         this.closeDialog(true);
-    
+
     Swal.fire({
           icon: "success",
           title: 'Se actualizó la Ficha de registro correctamente',
@@ -82,14 +82,11 @@ export class RegisterEditFichaComponent implements OnInit {
           allowOutsideClick: false
         }).then((result) => {
           if (result.isConfirmed) {
-            this.router.navigate(['/inicio/ficha-registro']).then(() => {
-              // Aquí puedes forzar la recarga de la lista de fichas , por el momento no recomendable
-             window.location.reload();
-            });
+            this.router.navigate(['/inicio/ficha-registro']);
           }
         });
       },
-      error => {  
+      error => {
         this.closeDialog(true);
          Swal.fire({
            title: 'Error',
@@ -99,7 +96,7 @@ export class RegisterEditFichaComponent implements OnInit {
            confirmButtonColor: '#d22c21'
          });
       });
-  
+
     } else {
       this.fichaRegistroService.create(ficha).subscribe(data =>{
         this.closeDialog(true);
@@ -118,7 +115,7 @@ export class RegisterEditFichaComponent implements OnInit {
           }
         });
       },
-      error => {  
+      error => {
         this.closeDialog(true);
          Swal.fire({
            title: 'Error',
@@ -154,7 +151,7 @@ export class RegisterEditFichaComponent implements OnInit {
   /** "DD/MM/YYYY
    * Funcion para la asignacion de valores en el formulario
    * de la ficha a editar
-   * @param idFichaRegistro 
+   * @param idFichaRegistro
    */
   private setValuesFormGroup(idFichaRegistro: number) {
     this.fichaRegistroService.findById(idFichaRegistro).subscribe(remoteData => {
@@ -199,11 +196,11 @@ export class RegisterEditFichaComponent implements OnInit {
         this.closeDialog(false);
       }
     });*/
-    
+
   }
 
   onStartDateSelect() {
-    
+
     this.minEndDate = this.registroForm.get('fechaInicio').value;
     const maxEndDate = new Date(this.minEndDate);
     maxEndDate.setMonth(maxEndDate.getMonth() + 6);
@@ -236,5 +233,5 @@ export class RegisterEditFichaComponent implements OnInit {
     return ficha;
   }
 
-  
+
 }

@@ -26,9 +26,9 @@ export class EditarUsuarioComponent implements OnInit {
   modalMessage = '';
   isDropUsersDisable = false;
   perfiles: GenericCombo[] = [];
-  mostrarCampo: boolean = true; 
+  mostrarCampo: boolean = true;
 
-    
+
   usuariosSunass: {label: string, value: any}[] = [];
   empresasLista: {label: string, value: any}[] = [];
 
@@ -114,10 +114,10 @@ export class EditarUsuarioComponent implements OnInit {
 
   onTipoUsuarioChange(): void {
 
-  
+
     if(this.registroForm.get('tipo').value === 'SUNASS'){
       this.perfiles = [
-        {id:1, description:'Administrador OTI'}, 
+        {id:1, description:'Administrador OTI'},
         {id:2, description:'Administrador DAP'},
         {id:3, description:'Registrador'},
         {id:4, description:'Consultor'}];
@@ -151,8 +151,8 @@ export class EditarUsuarioComponent implements OnInit {
 
   cargarUsuariosLDAP(): void {
     this.userService.findAllLDAP().subscribe(
-      
-      (data: User[]) => {        
+
+      (data: User[]) => {
         this.usuariosSunass = data.map(user => ({
           label: user.username,
           value: user.username
@@ -165,7 +165,7 @@ export class EditarUsuarioComponent implements OnInit {
   }
 
   onGuardar() {
- 
+
     if(this.registroForm.valid) {
       console.log("this.registroForm.value",this.registroForm.value);
       let user = new User(this.registroForm.value);
@@ -176,7 +176,7 @@ export class EditarUsuarioComponent implements OnInit {
       let empresa = new Empresa();
       empresa.idEmpresa = this.registroForm.get("selEmpresa").value;
       user.empresa = empresa;
-      
+
       this.userService.update(user).subscribe(responseUser => {
         Swal.fire({
           icon: "success",
@@ -190,7 +190,7 @@ export class EditarUsuarioComponent implements OnInit {
             this.onAceptar(); // se redirige al listado de usuarios
           }
         });
-      },  error => {  
+      },  error => {
           Swal.fire({
             title: 'Error',
             text: error,
@@ -204,7 +204,7 @@ export class EditarUsuarioComponent implements OnInit {
       this.setEnableDisableIputs();
       ValidateInputs.touchedAllFormFields(this.registroForm);
     }
-    
+
   }
 
   onCancelEdit() {
@@ -229,10 +229,9 @@ export class EditarUsuarioComponent implements OnInit {
    // this.userService.findAll().subscribe();
     this.router.navigate(['/inicio/usuarios']).then(() => {
       // Aquí puedes forzar la recarga de la lista de usuarios , x ahora no recomendable
-      window.location.reload();
     });
     //this.router.navigate(['/inicio/usuarios']);
-    
+
   }
 
   onCancel() {
@@ -267,7 +266,7 @@ export class EditarUsuarioComponent implements OnInit {
       this.registroForm.get('telefono').updateValueAndValidity();
 
     } else if(this.registroForm.get('tipo').value === 'EPS') {
-      this.mostrarCampo =true; 
+      this.mostrarCampo =true;
       this.isDropUsersDisable = true;
       this.registroForm.get('unidadOrganica').disable();
       this.registroForm.get('usuario').disable();
@@ -292,7 +291,7 @@ export class EditarUsuarioComponent implements OnInit {
 
   cargarListaEmpresas(): void {
     this.empresaService.findAll().subscribe(
-      (data: any[]) => {        
+      (data: any[]) => {
         this.empresasLista = data.map(emp => ({
           label: emp.nombre,
           value: emp.idEmpresa

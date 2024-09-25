@@ -13,35 +13,24 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ModulosComponent } from './pages/modulos/modulos.component';
 import { IConfig, NgxMaskModule } from 'ngx-mask';
-import { LoadingComponent } from './pages/loading/loading.component';
 
 import { FormsSelect2Component } from './pages/forms/forms-select2/forms-select2.component';
 
-import { NgSelectComponent, NgSelectModule } from '@ng-select/ng-select';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { interceptorProvider } from './_service/interceptor.service';
 import { ErrorValidationComponent } from './pages/forms/error-validation/error-validation.component';
-import { UsuariosComponent } from './pages/usuarios/components/usuarios.component';
 import { ReporteComponent } from 'src/app/pages/reporte/components/reporte.component';
-import { EmpresaComponent } from './pages/empresa/components/empresa.component';
-import { FichaRegistroComponent } from 'src/app/pages/ficha-registro/components/ficha-registro.component';
-import { VmaComponent } from './pages/vma/components/vma.component';
-import { RegistrarVmaComponent } from './pages/vma/registrar-vma/registrar-vma.component';
 import { AlphabeticInputDirective } from './utils/validate-inputs';
 import { TelefonoInputDirective } from './utils/validate-inputs';
 import { UserNameInputDirective } from './utils/validate-inputs';
-import { AnexosComponent } from './pages/anexos/components/anexos.component';
 import { ReporteService } from 'src/app/_service/reporte.service';
 import { PieChartComponent } from './pages/reporte/pie-chart/pie-chart.component';
 import { BarChartComponent } from './pages/reporte/bar-chart/bar-chart.component';
 import { GlobalFormsComponentsModule } from './shared/components/forms/global-forms.module';
-import { AltaEditEmpresaComponent } from './pages/empresa/alta-edit-empresa/alta-edit-empresa.component';
-import { RegisterEditFichaComponent } from './pages/ficha-registro/components/register-edit-ficha/register-edit-ficha.component';
 
 
 // Pagination Component
 import { PaginationModule } from 'ngx-bootstrap/pagination';
-import { EditarUsuarioComponent } from './pages/usuarios/components/editar-usuario/editar-usuario.component';
-import { RegistrarUsuarioComponent } from './pages/usuarios/components/registrar-usuario/registrar-usuario.component';
 import { ModalContentComponent } from './pages/register/modal-content/modal-content.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -105,21 +94,10 @@ export function tokenGetter(){
     InicioComponent,
     LoginComponent,
     ModulosComponent,
-    LoadingComponent,
     FormsSelect2Component,
     ErrorValidationComponent,
-    UsuariosComponent,
-    AnexosComponent,
-    RegistrarUsuarioComponent,
-    EditarUsuarioComponent,
     ReporteComponent,
-    EmpresaComponent,
-    FichaRegistroComponent,
-    VmaComponent,
-    RegistrarVmaComponent,
     ModalContentComponent,
-    AltaEditEmpresaComponent,
-    RegisterEditFichaComponent,
     AlphabeticInputDirective,
     TelefonoInputDirective,
     UserNameInputDirective,
@@ -149,7 +127,7 @@ export function tokenGetter(){
         GlobalFormsComponentsModule,
         PRIMENG_COMPONENTS,
         MessageModule
-    ],  
+    ],
   providers: [MessageService,
     { provide : LocationStrategy, useClass: HashLocationStrategy },
     interceptorProvider, ReporteService
