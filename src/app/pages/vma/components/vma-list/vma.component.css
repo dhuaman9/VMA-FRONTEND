@@ -1,0 +1,61 @@
+:host ::ng-deep .p-datepicker {  transform: scale(0.73);}
+
+:host ::ng-deep .align-left .p-button-label {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+:host ::ng-deep .align-left .p-button-icon-left {
+    margin-right: 0.5rem; /* Ajusta el margen según sea necesario */
+}
+
+:host ::ng-deep .align-left .p-button {
+    justify-content: flex-start;
+}
+
+:host ::ng-deep .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+    background: #007ad9;
+    border-color: #007ad9;
+    color: #ffffff;
+}
+
+.registro-indisponible {
+  margin-left: 10px; /* Ajusta el espacio entre el botón y el mensaje */
+  font-size: 14px; /* Ajusta el tamaño de la fuente según tus necesidades */
+  color: red; /* Cambia el color para dar visibilidad */
+  vertical-align: middle; /* Alinea verticalmente el texto con el botón */
+}
+
+.custom-checkbox {
+    transform: scale(1.5);
+  }
+
+  /* selector del mes y año */
+  /* *** */
+
+ 
+
+  .flex-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .plazo {
+    font-family: 'Roboto', sans-serif;
+    font-size: 15px;  /* Tamaño de texto para información secundaria */
+    font-weight: bold;
+    color: #333;      /* Un color neutro para mantener la legibilidad */
+  }
+  
+  .anio {
+    font-family: 'Roboto', sans-serif;
+    font-size: 15px;  /* Tamaño de texto ligeramente mayor para resaltar */
+    font-weight: bold; /* Un peso de fuente mayor para destacar el año */
+    color: #333;
+  }
+
+  .card.pdn-15 {
+    padding: 8px; /* O cualquier valor menor que 15px */
+  }

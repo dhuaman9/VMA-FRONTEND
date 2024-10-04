@@ -1,0 +1,20 @@
+.pencil-icon {
+    /*color: blue; /* Color del ícono */
+    font-size: 2em; /* Tamaño del ícono */
+    cursor: pointer; /* Cambia el cursor para indicar que es clicable */
+    transition: color 0.3s ease; /* Animación suave al cambiar de color */
+}
+
+.pencil-icon:hover {
+    color: red; /* Color del ícono al pasar el mouse por encima */
+}
+
+.p-datatable tr:hover {
+    background-color: #CCCBCB; /* Cambia este color al que prefieras */
+}
+
+:host ::ng-deep .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+    background: #007ad9;
+    border-color: #007ad9;
+    color: #ffffff;
+}

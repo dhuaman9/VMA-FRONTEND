@@ -1,6 +1,4 @@
 
-
-
 import { Role } from "src/app/_model/role";
 import { Empresa } from "../../empresa/models/empresa";
 import { Profile } from "src/app/_model/profile";
@@ -15,7 +13,6 @@ export class User {
     username : string;
     role: Role;
     password: string;
-   // eps: string;
     empresa: Empresa;
     unidadOrganica: string;
     correo: string;

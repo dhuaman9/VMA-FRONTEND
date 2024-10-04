@@ -55,9 +55,7 @@
     </aside>
 
     <div class="content-wrapper">
-     <!-- <p-messages [(value)]="msgs1" [enableService]="false"></p-messages>  -->
-      <!-- pendiente , en agregar condicion si el registro actual del periodo actual, esta INCOMPLETO, segun el id usuario-->
-    <!--  <p-messages *ngIf="(diasFaltantes>= 0 && diasFaltantes<30) && isRoleRegistrador" [(value)]="msgs1" [enableService]="false"></p-messages>-->
+      <p-messages *ngIf="(this.diasFaltantes>= 0 && this.diasFaltantes<30) && isRoleRegistrador  && this.registroVMA" [(value)]="msgs1" [enableService]="false"></p-messages>
   
       <router-outlet></router-outlet>
     </div>

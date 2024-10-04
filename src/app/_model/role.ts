@@ -5,6 +5,5 @@ export class Role{
     public createdAt: string;
     public updatedAt: string;
     public auth: string;
-   // public usuarios: Usuario[];
 
 }

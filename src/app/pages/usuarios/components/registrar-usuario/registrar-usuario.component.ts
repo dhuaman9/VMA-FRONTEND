@@ -2,13 +2,15 @@ import { Component, ElementRef, Input, OnInit, ViewChild  } from '@angular/core'
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { GenericCombo } from 'src/app/_dto/generic-combo';
+import { GenericCombo } from 'src/app/_model/generic-combo';
 import { Role } from 'src/app/_model/role';
 import { User } from 'src/app/pages/usuarios/models/user';
 import { UserService } from 'src/app/pages/usuarios/services/user.service';
 import { ValidateInputs, validateInput } from 'src/app/utils/validate-inputs';
 import { Empresa } from 'src/app/pages/empresa/models/empresa';
 import { EmpresaService } from 'src/app/pages/empresa/services/empresa.service';
+import { TIPO_SUNASS, TIPO_EPS , PASSWORD_REGEX} from 'src/app/utils/var.constant';
+
 import Swal from 'sweetalert2';
 
 
@@ -20,7 +22,7 @@ import Swal from 'sweetalert2';
 export class RegistrarUsuarioComponent implements OnInit {
 
   registroForm: FormGroup;
-  displayModaAdvice = false;
+ // displayModaAdvice = false;
   isDropUsersDisable = false
   isEdit = true;
   modalImage ='';
@@ -31,9 +33,9 @@ export class RegistrarUsuarioComponent implements OnInit {
   isRequired: boolean = true;
   errorMessage: string | null = null;
 
-  mostrarCampo: boolean = true; 
+  mostrarCampo: boolean = true;
 
-  usuariosSunass: {label: string, value: any}[] = [];
+  usuariosSunass: {label: string, value: any}[];
 
   ListEmpresa: Empresa[];
   empresasLista: {label: string, value: any}[] = [];
@@ -46,10 +48,7 @@ export class RegistrarUsuarioComponent implements OnInit {
    }
 
   ngOnInit(): void {
-
-    
-    this.cargarUsuariosLDAP();
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&.,#-_;])([A-Za-z\d$@$!%*?&.,#-_;]|[^ ]){8,15}$/;
+    //const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&.,#-_;])([A-Za-z\d$@$!%*?&.,#-_;]|[^ ]){8,15}$/;
     //Entre 8 a 15 caracteres, no espacios, al menos una mayúscula, una minúscula, un número y un caracter especial (@$!%*?&.,#-_;)
     this.registroForm = this.formBuilder.group({
       tipo: ['EPS', Validators.required],
@@ -61,21 +60,21 @@ export class RegistrarUsuarioComponent implements OnInit {
       selEmpresa : ['', Validators.required],
       usuario: [''],
       username: ['', Validators.required],
-      password: ['', [Validators.required,Validators.pattern(regex)]],
+      password: ['', [Validators.required,Validators.pattern(PASSWORD_REGEX)]],
       telefono: ['', [Validators.required,Validators.minLength(9)]],
       estado: [true]
     });
-    
+
     this.onTipoUsuarioChange();
     this.cargarListaEmpresas();
 
-    
+
   }
 
   onUserChange(event: any) {
-    console.log('event cmb usersldap', event);
+
     const selectedUser = event.value as User;
-    
+
     if (selectedUser) {
       this.registroForm.patchValue(selectedUser);
     } else {
@@ -97,56 +96,51 @@ export class RegistrarUsuarioComponent implements OnInit {
     this.registroForm.reset();
     this.registroForm.patchValue({'tipo':currentTipo});
     this.setEnableDisableIputs();
-    
-    if(this.registroForm.get('tipo').value === 'SUNASS'){
 
+    if(this.registroForm.get('tipo').value === TIPO_SUNASS){
+      if(!this.usuariosSunass) {
+        this.cargarUsuariosLDAP();
+      }
       this.perfiles = [
-        {id:1, description:'Administrador OTI'}, 
+        {id:1, description:'Administrador OTI'},
         {id:2, description:'Administrador DAP'},
-        {id:3, description:'Registrador'},
         {id:4, description:'Consultor'}];
         this.isRequired = false;
-    } else if(this.registroForm.get('tipo').value === 'EPS') {
+    } else if(this.registroForm.get('tipo').value === TIPO_EPS) {
       this.isRequired = true;
       this.perfiles = [
         {id:3, description:'Registrador'},
         {id:4, description:'Consultor'}];
-
     }
   }
 
   guardar() {
 
     if(this.registroForm.valid) {
-      console.log("this.registroForm.value",this.registroForm.value);
+
       this.registroForm.enable();
       let user = new User(this.registroForm.value);
       this.registroForm.disable();
       let role = new Role();
       role.idRole = this.registroForm.get("perfil").value;
       user.role = role;
-
       let empresa = new Empresa();
-
       empresa.idEmpresa = this.registroForm.get("selEmpresa").value;
       user.empresa = empresa;
-      console.log(user);
       this.userService.create(user).subscribe(responseUser => {
+        this.onAceptar(); 
         Swal.fire({
           icon: "success",
           title: 'Se registró el usuario correctamente',
           showConfirmButton: true,
           confirmButtonText: 'Aceptar',
           confirmButtonColor: '#28a745', // color verde
-          allowOutsideClick: false
         }).then((result) => {
-          if (result.isConfirmed) {
-            this.onAceptar(); // se redirige al listado de usuarios
-          }
+          
         });
-        
+
       },
-       error => {  
+       error => {
           Swal.fire({
             title: 'Error',
             text: error,
@@ -179,28 +173,24 @@ export class RegistrarUsuarioComponent implements OnInit {
   }
 
   onAceptar(){
-   
-    this.router.navigate(['/inicio/usuarios']).then(() => {
-      // Aquí puedes forzar la recarga de la lista , no recomendable x ahora.
-     window.location.reload();
-    });
-  //  this.router.navigate(['/inicio/usuarios']);
-    
+
+    this.router.navigate(['/inicio/usuarios']);
+
   }
 
   onCancel() {
     this.router.navigate(['/inicio/usuarios']);
   }
- //console.error('Error al obtener los usuarios del LDAP', error);
+
   cargarUsuariosLDAP(): void {
     this.userService.findAllLDAP().subscribe(
-      
-      (data: User[]) => {        
+
+      (data: User[]) => {
         this.usuariosSunass = data.map(user => ({
           label: user.username,
           value: user
         }));
-  
+
       },
       (error) => {
         console.error('Error al obtener los usuarios del LDAP', error);
@@ -209,8 +199,10 @@ export class RegistrarUsuarioComponent implements OnInit {
   }
 
   private setEnableDisableIputs(){
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&.,#-_;])([A-Za-z\d$@$!%*?&.,#-_;]|[^ ]){8,15}$/;
-    if(this.registroForm.get('tipo').value === 'SUNASS'){
+
+    //const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&.,#-_;])([A-Za-z\d$@$!%*?&.,#-_;]|[^ ]){8,15}$/;
+    
+    if(this.registroForm.get('tipo').value === TIPO_SUNASS){
       this.mostrarCampo =false; //por ejemplo se va ocultar el campo EPS
       this.isDropUsersDisable = false;
       this.registroForm.get('unidadOrganica').disable();
@@ -231,8 +223,8 @@ export class RegistrarUsuarioComponent implements OnInit {
       this.registroForm.get('password').updateValueAndValidity();
       this.registroForm.get('usuario').updateValueAndValidity();
 
-    } else if(this.registroForm.get('tipo').value === 'EPS') {
-      this.mostrarCampo =true; 
+    } else if(this.registroForm.get('tipo').value === TIPO_EPS) {
+      this.mostrarCampo =true;
       this.isDropUsersDisable = true;
       this.registroForm.get('unidadOrganica').disable();
       this.registroForm.get('usuario').disable();
@@ -245,7 +237,7 @@ export class RegistrarUsuarioComponent implements OnInit {
       this.registroForm.get('selEmpresa').setValidators([Validators.required]);
       this.registroForm.get('telefono').setValidators([Validators.required,Validators.minLength(9)]);
       this.registroForm.get('usuario').setValidators([Validators.nullValidator]);
-      this.registroForm.get('password').setValidators([Validators.required,Validators.pattern(regex)]);
+      this.registroForm.get('password').setValidators([Validators.required,Validators.pattern(PASSWORD_REGEX)]);
 
       this.registroForm.get('usuario').updateValueAndValidity();
       this.registroForm.get('selEmpresa').updateValueAndValidity();
@@ -265,8 +257,8 @@ export class RegistrarUsuarioComponent implements OnInit {
 
   cargarListaEmpresas(): void {
     this.empresaService.findAll().subscribe(
-      
-      (data: any[]) => {        
+
+      (data: any[]) => {
         this.empresasLista = data.map(emp => ({
           label: emp.nombre,
           value: emp.idEmpresa

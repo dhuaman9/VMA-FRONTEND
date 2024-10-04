@@ -1,0 +1,62 @@
+:host {
+  .input-text {
+      width: 350px;
+  }
+
+  .input-number {
+      width: 200px;;
+  }
+
+  .disabled-choose-button .p-button, .disabled-choose-button {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+}
+
+:host ::ng-deep .p-accordion .p-accordion-header:not(.p-highlight):not(.p-disabled):hover .p-accordion-header-link {
+  background-color: #27a0ff;
+  border-color: #27a0ff;
+  color: #ffffff;
+}
+
+:host ::ng-deep .p-accordion .p-accordion-header:not(.p-disabled).p-highlight:hover .p-accordion-header-link {
+  background: #27a0ff;
+  border-color: #27a0ff;
+  color: #ffffff;
+}
+
+:host ::ng-deep .p-accordion .p-accordion-header:not(.p-disabled).p-highlight .p-accordion-header-link {
+  background: #27a0ff;
+  border-color: #27a0ff;
+  color: #ffffff;
+}
+
+:host ::ng-deep .horizontal-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 8px; /* Puedes ajustar este valor según el margen que desees */
+}
+
+
+
+:host ::ng-deep .archivo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Ajusta el tamaño de columna según el contenido */
+  gap: 1rem; /* Espacio entre columnas */
+}
+
+:host ::ng-deep .archivo-item {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+
+
+.flex-container{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+}

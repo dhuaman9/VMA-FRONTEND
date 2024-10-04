@@ -1,0 +1,46 @@
+<div class="grid">
+  <div class="col-12">
+    <p-fieldset [legend]="titleHeader" [toggleable]="false"
+    [style]="{'min-width': '19rem', 'height':'100%'}" [collapsed]="false" >
+      <form [formGroup]="registroForm">
+          <div class="p-fluid grid formgrid">
+            <div [class]="isEdition?'field col-12 md:col-4':'field col-12 md:col-4'">
+              <label for="nombre" class="font-semibold w-6rem">Nombre <span style="color: #FA7272;" *ngIf="isFieldRequired('nombre')"> * </span></label>
+              <input pInputText id="nombre" formControlName="nombre" (input)="validateInputForm('nombre','espacio')"
+                class="w-full" autocomplete="off" />
+              <app-validate-inputs-form [form]="registroForm" formInput='nombre' labelInput="Nombre">
+              </app-validate-inputs-form>
+            </div>
+            <div [class]="isEdition?'field col-12 md:col-3':'field col-12 md:col-4'">
+              <label for="regimen" class="font-semibold w-6rem">Regimen <span style="color: #FA7272;" *ngIf="isFieldRequired('regimen')"> * </span></label>
+              <p-dropdown [options]="regimenOptions" formControlName="regimen" placeholder="Seleccionar Regimen"
+              optionLabel="label" optionValue="value"></p-dropdown>
+              <app-validate-inputs-form [form]="registroForm" formInput='regimen' labelInput="Regimen">
+              </app-validate-inputs-form>
+            </div>
+            <div [class]="isEdition?'field col-12 md:col-3':'field col-12 md:col-4'">
+              <label for="tipo" class="font-semibold w-6rem">Tipo <span style="color: #FA7272;" *ngIf="isFieldRequired('tipo')"> * </span></label>
+              <p-dropdown [options]="tipoOptions" formControlName="tipo" placeholder="Seleccionar Tipo"
+              optionLabel="label" optionValue="value"></p-dropdown>
+              <app-validate-inputs-form [form]="registroForm" formInput='tipo' labelInput="Tipo">
+              </app-validate-inputs-form>
+            </div>
+      
+            <div class="field col-12 md:col-2" *ngIf="isEdition">
+              <p><label for="tipo" class="font-semibold w-6rem">Estado</label></p>
+              <p-inputSwitch  formControlName="estado" id="estado" ></p-inputSwitch>
+            </div>
+          </div>
+          <div class="col-12 flex justify-content-center">
+              <p-button type="button" label="Guardar" class="p-button-secondary p-button-success ml-1"
+              icon="pi pi-save" iconPos="left" (click)="onCreateEmpresa()">
+              </p-button>
+              <p-button type="button" label="Cancelar" class="red-button ml-1" [styleClass]="'p-button-danger'"
+              icon="pi pi-times" iconPos="left" (click)="onCancelAction()">
+              </p-button>
+          </div>
+        </form>
+        
+      </p-fieldset>
+  </div>
+</div>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ReporteService } from 'src/app/_service/reporte.service';
+import { ReporteService } from 'src/app/pages/reporte/services/reporte.service';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Chart } from 'chart.js';
 import {BarChartDataset} from "src/app/pages/reporte/models/bar-chart-dataset";

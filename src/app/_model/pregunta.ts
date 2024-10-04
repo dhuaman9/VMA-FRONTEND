@@ -1,4 +1,4 @@
-import { Alternativa } from "./alternativa";
+import { Alternativa } from "../pages/vma/models/alternativa";
 import { RespuestaDTO } from "./respuestaRequest";
 import { TipoPregunta } from "./tipo-pregunta";
 

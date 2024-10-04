@@ -5,16 +5,19 @@ import { ValidateInputsFormComponent } from './validate-inputs-form/validate-inp
 
 
 
+
 @NgModule({
   declarations: [
     ValidateInputsFormComponent
+    
   ],
   imports: [
     CommonModule
   ],
   exports: [
     ReactiveFormsModule,
-    ValidateInputsFormComponent
+    ValidateInputsFormComponent,
+ 
   ]
 })
 export class GlobalFormsComponentsModule { }

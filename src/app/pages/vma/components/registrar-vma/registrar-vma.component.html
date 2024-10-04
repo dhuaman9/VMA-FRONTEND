@@ -1,0 +1,144 @@
+<div class="content">
+  <div class="container-fluid" >
+    <div class="row" >
+      <div class="col-lg-12 mt-2">
+        <div class="card pdn-15">
+          <div class="content">
+            <div class="col-md-12">
+              <h2  style="text-align: center;">Registrar Valores Maximos Admisibles</h2>
+              <br>
+             
+              <!-- dynamic-form.component.html -->
+              <form [formGroup]="formularioGeneral" *ngIf="formularioGeneral">
+                <p-accordion  formArrayName="secciones">
+                  <p-accordionTab *ngFor="let seccion of seccionesForm().controls; let i = index" [formGroupName]="i" [header]="seccion.get('titulo').value" ><!--[ngClass]="{'custom-active-tab': seccionActiva === i}" (click)="seleccionarSeccion(i)"-->
+                    <div formArrayName="preguntas">
+                      <div class="d-flex flex-column mb-3" *ngFor="let pregunta of preguntasForm(seccion).controls; let j = index" [formGroupName]="j">
+                        <label class="mb-3" *ngIf="pregunta.get('tipoPregunta').value !== 'ARCHIVO'">{{pregunta.get('texto').value}}</label>
+                        <ng-container [ngSwitch]="pregunta.value.tipoPregunta">
+                          <ng-container *ngSwitchCase="'TEXTO'">
+                            <input  type="text" class="input-text" pInputText formControlName="respuesta">
+                            <small *ngIf="pregunta.get('respuesta').errors?.required" style="color: red;">Campo requerido</small>
+                          </ng-container>
+                          <ng-container *ngSwitchCase="'NUMERICO'">
+                            <div class="d-flex gap-5 mb-4" *ngIf="alternativasForm(pregunta).controls.length > 0; else inputNumericoUnico">
+                              <ng-container formArrayName="alternativas">
+                                <ng-container *ngFor="let alternativa of alternativasForm(pregunta).controls; let k = index" [formGroupName]="k">
+                                  <div class="d-flex flex-column">
+                                    <div class="d-flex gap-2 align-items-center" >
+                                      <label class="mb-0" >{{alternativa.get('nombreCampo').value}}</label>
+                                      <p-inputNumber class="input-number" formControlName="respuesta"
+                                                     mode="decimal"
+                                                     [minFractionDigits]="pregunta.get('metadato').value?.decimal ? 2 : null"
+                                                     [maxFractionDigits]="pregunta.get('metadato').value?.decimal ? 2 : null"
+                                      ></p-inputNumber>
+                                    </div>
+                                      <small *ngIf="alternativa.get('respuesta').errors?.required" style="color: red;">Campo requerido</small>
+                                  </div>
+                                </ng-container>
+                              </ng-container>
+                            </div>
+                            <ng-template #inputNumericoUnico>
+                              <p-inputNumber class="input-number" formControlName="respuesta"
+                                             mode="decimal"
+                                             [minFractionDigits]="pregunta.get('metadato').value?.decimal ? 2 : null"
+                                             [maxFractionDigits]="pregunta.get('metadato').value?.decimal ? 2 : null"></p-inputNumber>
+                              <small *ngIf="pregunta.get('respuesta').errors?.required" style="color: red;">Campo requerido</small>
+                            </ng-template>
+                          </ng-container>
+                          <ng-container *ngSwitchCase="'RADIO'">
+                            <div class="d-flex gap-3" >
+                              <div class="d-flex align-items-center gap-1" *ngFor="let alternativa of alternativasForm(pregunta).controls; let j = index">
+                                <p-radioButton
+                                  [value]="alternativa.value.nombreCampo"
+                                  [formControlName]="'respuesta'"
+                                  [inputId]="alternativa.value.nombreCampo+i+j"
+                                  (onClick)="onRadioButtonChange(seccion, alternativa.value.nombreCampo)"
+                                >
+                                </p-radioButton>
+                                <label class="mb-0" [for]="alternativa.value.nombreCampo+i+j">{{alternativa.value.nombreCampo}}</label>
+                                <small *ngIf="pregunta.get('respuesta').errors?.required" style="color: red;">Campo requerido</small>
+                              </div>
+                            </div>
+                          </ng-container>
+                        </ng-container>
+                      </div>
+                      <div class="p-fluid grid formgrid">
+                        <div *ngFor="let pregunta of preguntasForm(seccion).controls; let j = index; let isFirst = first; let isLast = last" [formGroupName]="j">
+                          <ng-container [ngSwitch]="pregunta.value.tipoPregunta">
+                            <ng-container *ngSwitchCase="'ARCHIVO'">
+                              <div class="field col-12 md:col-12"> <!-- Elemento de archivo -->
+                                <label class="form-label">
+                                  {{pregunta.get('texto').value}}
+                                  <span *ngIf="pregunta.get('metadato').value?.requerido">(*)</span>
+                                </label>
+                                <ng-container *ngIf="!pregunta.get('respuestaDTO').value || (pregunta.get('respuestaDTO').value && (pregunta.get('respuesta').value === null || isFile(pregunta.get('respuesta').value))); else descargar">
+                                  <p-fileUpload
+                                    name="file"
+                                    [auto]="false"
+                                    [class.disabled-choose-button]="!isRoleRegistrador || isRegistroCompleto"
+                                    (onSelect)="onFileChange($event, pregunta.get('respuesta'))"
+                                    (onClear)="onCancelFile(pregunta.get('respuesta'), pregunta.value)"
+                                    chooseLabel="Elegir archivo"
+                                    cancelLabel="Cancelar"
+                                    [showUploadButton]="false"
+                                    [showCancelButton]="true">
+                                    <ng-template pTemplate="file" let-file>
+                                      <div class="custom-file-item">
+                                        <span>{{ file.name }}</span>
+                                      </div>
+                                    </ng-template>
+                                  </p-fileUpload>
+                                  <small *ngIf="pregunta.get('respuesta').errors?.required" style="color: red;">Archivo requerido</small>
+                                  <small *ngIf="pregunta.get('respuesta').errors?.fileType" style="color: red;">Tipo de archivo incorrecto</small>
+                                  <small *ngIf="pregunta.get('respuesta').errors?.maxSize" style="color: red;">El archivo no puede ser mayor a {{pregunta.get('metadato').value.maxSizeInMB}}MB</small>
+                                </ng-container>
+                                <ng-template #descargar>
+                                  <div class="d-flex gap-1">
+                                    <p-button label="Descargar archivo" icon="pi pi-download" iconPos="left" (click)="uploadService.downloadFile(pregunta.get('respuesta').value)"></p-button>
+                                    <p-button [class.disabled-choose-button]="!isRoleRegistrador || isRegistroCompleto" label="Cambiar archivo" icon="pi pi-pencil" iconPos="left" (click)="onUpdateFile(pregunta)"></p-button>
+                                  </div>
+                                </ng-template>
+                              </div>
+                            </ng-container>
+                          </ng-container>
+                        </div>
+                      </div>
+
+                    </div>
+                  </p-accordionTab>
+                </p-accordion >
+
+                <div class="col-12 flex  justify-content-center" *ngIf="this.isRoleRegistrador; else botonAdmin">
+                  <p-button type="button" [disabled]="cargandoProceso$ | async" label="Guardar Progresivamente" class="p-button-success p-button-secondary green-button ml-1" icon="pi pi-check" iconPos="left" [styleClass]="'p-button-success'"
+                            (click)="guardadoParcial()"> <!--guardado progresivo, donde ningun campo es requerido, pero si el usuario no llena ningun dato, dar el aviso que no lleno nada, por ende no se guarda nada ni las fechas de registro-->
+                  </p-button>
+                  <p-button type="button" label="Registrar" icon="pi pi-save" iconPos="left" class="p-button-success p-button-secondary green-button ml-1"
+                            (click)="guardadoCompleto()" [disabled]="cargandoProceso$ | async">  <!--guardado final, donde todos los campos son requeridos , exceptos algunos botones de adjuntar archivos-->
+                  </p-button>
+                  <p-button type="button" label="Cancelar" class="p-button-danger red-button ml-1" icon="pi pi-times" iconPos="left" [styleClass]="'p-button-danger'"
+                            (click)="onCancelSave()" >
+                  </p-button>
+                </div>
+                <ng-template #botonAdmin>
+                  <div class="col-12 flex  justify-content-center">
+                    <p-button type="button" label="Regresar" class="p-button-secondary" icon="pi pi-arrow-left"
+                              (click)="onRegresar()" >
+                    </p-button>
+                  </div>
+                </ng-template>
+
+                <!-- Mensaje de campos obligatorios -->
+                <div class="col-12 text-center mt-3"  *ngIf="isRoleRegistrador">
+                  <span>(*) :Indica que son datos obligatorios</span><!--style="color: red;"-->
+                </div>
+
+              </form>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

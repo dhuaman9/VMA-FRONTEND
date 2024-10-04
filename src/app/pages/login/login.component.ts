@@ -1,10 +1,11 @@
-import { ThrowStmt } from '@angular/compiler';
+
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginService } from './../../_service/login.service';
-import { environment } from './../../../environments/environment';
-import { JwtHelperService } from '@auth0/angular-jwt';
 import { SessionService } from 'src/app/_service/session.service';
+import { INP_USUARIO, INP_CONTRASENIA, MSG_USUARIO_PASS_ERROR, ROL_ADMINISTRADOR_OTI, 
+   ROL_ADMINISTRADOR_DAP, ROL_REGISTRADOR, ROL_CONSULTOR} from '../../utils/var.constant';
+
 
 @Component({
   selector: 'app-login',
@@ -23,23 +24,27 @@ export class LoginComponent implements OnInit {
     private router : Router,
     private loginService  : LoginService,
     private sessionService : SessionService
-  ) { }
+  ) { 
+
+  }
 
   ngOnInit(): void {
+
     this.user = "";
     this.password ="";
+    
   }
 
   verificarFrm(){
     let result = true;
 
     if(this.user.trim().length==0){
-      this.msjError = "Ingresar el usuario";
+      this.msjError = INP_USUARIO;
       result = false;
     }
 
     if(this.password.trim().length==0){
-      this.msjError = "Ingresar la contraseña";
+      this.msjError = INP_CONTRASENIA;
       result = false;
     }
 
@@ -64,21 +69,20 @@ export class LoginComponent implements OnInit {
 
             console.log(role);
 
-            if (role == "Administrador OTI"){
+            if (role == ROL_ADMINISTRADOR_OTI){
               this.router.navigate(['inicio/usuarios']);
             }
-            else if (role == "Administrador DAP"){
+            else if (role == ROL_ADMINISTRADOR_DAP){
               this.router.navigate(['inicio/vma']);
             }
 
-            else if (role == "Registrador"){
+            else if (role == ROL_REGISTRADOR){
               this.router.navigate(['inicio/vma']);
             }
-            else if (role == "Consultor"){
+            else if (role == ROL_CONSULTOR){
               this.router.navigate(['inicio/reporte']);
             }
             
-
           } else {
             this.msjError = data.message;
             this.spinnerLogin = false;
@@ -86,7 +90,7 @@ export class LoginComponent implements OnInit {
         },
         (error)=>{
          // this.msjError = "No se ha podido efectuar la validación del usuario";
-          this.msjError = "Usuario y/o contraseña incorrectos";
+          this.msjError = MSG_USUARIO_PASS_ERROR;
           this.spinnerLogin = false;
         }
       );
@@ -96,8 +100,5 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  eyePaswword(){
-    
-  }
 
 }

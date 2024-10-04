@@ -6,7 +6,7 @@ import { Observable, Subject, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { catchError, take, tap } from 'rxjs/operators';
 import { FichaRegistro } from "../models/fichaRegistro";
-
+import { of } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -14,8 +14,7 @@ import { FichaRegistro } from "../models/fichaRegistro";
 export class FichaRegistroService{
 
     url: string = `${environment.HOST}`;
-    //empresaCambio = new Subject<any[]>();
-  
+    
     token: string = sessionStorage.getItem(environment.TOKEN_NAME);
     httpOptions : any;
 
@@ -69,9 +68,25 @@ export class FichaRegistroService{
     }
 
     cantidadDiasFaltantesVMA(): Observable<number> {  //se utiliza para alertar al registrador, los dias faltantes de registro VMA
-        return this.http.get<number>(`${this.url}/dias-faltantes`);
+        return this.http.get<number>(this.url+'/fichas'+'/dias-faltantes');
       }
 
+
+    obtenerPeriodoActivo(): Observable<FichaRegistro | null> {
+        return this.http.get<FichaRegistro>(this.url+'/fichas/periodo-activo', { observe: 'response' }).pipe(
+          map(response => {
+            if (response.status === 204) {
+              console.log('No hay periodo activo disponible');
+              return null;
+            }
+            return response.body;
+          }),
+          catchError((error) => {
+            console.error('Error en la solicitud', error);
+            return of(null); // Retorna null en caso de error para evitar romper la aplicación
+          })
+        );
+    }
 
     private handleError(error: HttpErrorResponse) {
         let errorMessage = 'Ocurrió un error inesperado';

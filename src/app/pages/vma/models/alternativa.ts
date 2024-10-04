@@ -1,5 +1,4 @@
-import { RespuestaDTO } from "./respuestaRequest";
-
+import { RespuestaDTO } from "../../../_model/respuestaRequest";
 
 export class Alternativa {
     

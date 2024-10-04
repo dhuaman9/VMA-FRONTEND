@@ -1,0 +1,5 @@
+:host ::ng-deep .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+    background: #007ad9;
+    border-color: #007ad9;
+    color: #ffffff;
+}

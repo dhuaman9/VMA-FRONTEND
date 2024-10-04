@@ -15,7 +15,7 @@ import {forkJoin, Observable, of, Subscription} from 'rxjs';
 import {SessionService} from 'src/app/_service/session.service';
 import {UploadService} from 'src/app/_service/upload.service';
 import {finalize, switchMap, tap} from "rxjs/operators";
-
+import { ROL_REGISTRADOR, ESTADO_COMPLETO, RADIO_BUTTON_NO, RADIO_BUTTON_SI } from '../../../utils/var.constant';
 
 @Component({
   selector: 'app-registrar-vma',
@@ -36,7 +36,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
 
   isGreenTab = true; // para cambiar al color verde en el tab
   registroCompletoPorEPS: Observable<boolean>;
-  isRoleRegistrador: boolean = this.sessionService.obtenerRoleJwt().toUpperCase() === 'REGISTRADOR';
+  isRoleRegistrador: boolean = this.sessionService.obtenerRoleJwt().toUpperCase() === ROL_REGISTRADOR;
   formGroupPregunta: FormGroup;
   secciones: FormArray;
   preguntasAuxiliar: Pregunta[] = [];
@@ -82,7 +82,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
     if(this.idRegistroVMA) {
       this.vmaService.findById(this.idRegistroVMA)
         .pipe(
-          tap((response: any) => this.isRegistroCompleto = response.estado === 'COMPLETO'),
+          tap((response: any) => this.isRegistroCompleto = response.estado === ESTADO_COMPLETO),
           switchMap(() => this.cuestionarioService.cuestionarioConRespuestas(this.idRegistroVMA)),
           tap((response: any) => {
             this.cuestionario = response.item;
@@ -100,7 +100,6 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
   }
 
   isFile(value: any): boolean {
-    console.log("dhr filename value?-", value); //dhr
     return value instanceof File;
   }
 
@@ -168,7 +167,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
           .subscribe(
             () => {
               Swal.fire({
-                title: isGuardadoCompleto ? 'Registro completado': 'Registro actualizado',
+                title: isGuardadoCompleto ? 'Registro completado': 'Se ha realizado el guardado Progresivo',  // Registro actualizado
                 ///text: isGuardadoCompleto ? 'Su información ha sido registrada y enviada.' : 'Se ha realizado el guardado progresivo',
                 icon: 'success',
                 confirmButtonText: 'Aceptar',
@@ -204,13 +203,13 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
 
   onSuccess(isGuardadoCompleto: boolean) {
     Swal.fire({
-      title: isGuardadoCompleto ? 'Registro completado': 'Registro actualizado',
+      title: isGuardadoCompleto ? 'Registro completado': 'Se ha realizado el guardado Progresivo',   //'Registro actualizado'
       // text:  isGuardadoCompleto? 'Su información ha sido registrada y enviada.' : 'Registrado guardado parcialmente',
       icon: 'success',
       confirmButtonText: 'Aceptar',
       allowOutsideClick: false    //evita hacer click fuera del alert
     });
-    //   this.onBackToList();//temporal, no  recomendable
+   
     this.router.navigate(['/inicio/vma']);
     this.vmaService.sendRegistroCompleto(true);
   }
@@ -231,7 +230,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
   }
 
   onUpdateFile(formControl: AbstractControl): void {
-    console.log("metadato dhr -", formControl.get('metadato').value );
+ 
     let metadato = formControl.get('metadato').value;
     let validatorFn = this.fileValidator(metadato.tipoArchivosPermitidos.map(archivo => archivo.mimeType), metadato.maxSizeInMB);
     formControl.get('respuesta').setValue(null);
@@ -293,7 +292,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
       metadato: [pregunta.metadato]
     });
 
-    if(pregunta.tipoPregunta === 'RADIO') {
+    if(pregunta.tipoPregunta === TipoPregunta.RADIO) {
       this.formGroupPregunta = preguntaFormGroup;
     }
 
@@ -311,8 +310,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
         this.preguntasAuxiliar = preguntasDependientes;
       }
 
-      //seccion.preguntas = seccion.preguntas.filter(pregunta => !pregunta.preguntaDependiente || (pregunta.preguntaDependiente && pregunta.preguntaDependiente.respuestaDTO?.respuesta === "Sí"));
-      seccion.preguntas = seccion.preguntas.filter(pregunta => !pregunta.preguntaDependiente || (pregunta.preguntaDependiente && pregunta.preguntaDependiente.respuestaDTO?.respuesta === "SI"));
+      seccion.preguntas = seccion.preguntas.filter(pregunta => !pregunta.preguntaDependiente || (pregunta.preguntaDependiente && pregunta.preguntaDependiente.respuestaDTO?.respuesta === RADIO_BUTTON_SI));
       const preguntasFormGroup = seccion.preguntas.map(this.buildPregunta);
 
       return this.fb.group({
@@ -341,7 +339,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
         if ((tipoPregunta === TipoPregunta.TEXTO)||
           (tipoPregunta === TipoPregunta.NUMERICO && alternativasControl.length === 0) ||
           (tipoPregunta === TipoPregunta.RADIO) && respuestaControl ||(tipoPregunta === TipoPregunta.ARCHIVO && pregunta.get('metadato').value.requerido)) {
-//|| pregunta.get('alternativas').get('requerido')
+
           if(agregarValidacion) {
             respuestaControl.addValidators([Validators.required])
           } else {
@@ -461,7 +459,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
 
   onRadioButtonChange(seccion: AbstractControl, valor: string): void {
     const formArray = seccion.get('preguntas') as FormArray;
-    if (valor === 'NO' || !valor) {
+    if (valor === RADIO_BUTTON_NO || !valor) {
       this.preguntasAuxiliar.forEach(pregunta => {
         const index = formArray.controls.findIndex(control => control.get('idPregunta').value === pregunta.idPregunta);
 

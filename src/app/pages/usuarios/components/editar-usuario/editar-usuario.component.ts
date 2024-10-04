@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { GenericCombo } from 'src/app/_dto/generic-combo';
+import { GenericCombo } from 'src/app/_model/generic-combo';
 import { Role } from 'src/app/_model/role';
 import { User } from 'src/app/pages/usuarios/models/user';
 import { UserService } from 'src/app/pages/usuarios/services/user.service';
 import { ValidateInputs, validateInput } from 'src/app/utils/validate-inputs';
 import { EmpresaService } from 'src/app/pages/empresa/services/empresa.service';
 import { Empresa } from 'src/app/pages/empresa/models/empresa';
+import { TIPO_SUNASS, TIPO_EPS , PASSWORD_REGEX} from 'src/app/utils/var.constant';
 import Swal from 'sweetalert2'
 
 
@@ -26,9 +27,9 @@ export class EditarUsuarioComponent implements OnInit {
   modalMessage = '';
   isDropUsersDisable = false;
   perfiles: GenericCombo[] = [];
-  mostrarCampo: boolean = true; 
+  mostrarCampo: boolean = true;
 
-    
+
   usuariosSunass: {label: string, value: any}[] = [];
   empresasLista: {label: string, value: any}[] = [];
 
@@ -42,7 +43,7 @@ export class EditarUsuarioComponent implements OnInit {
   ngOnInit(): void {
     this.cargarUsuariosLDAP();
     this.cargarListaEmpresas();
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&.,#-_;])([A-Za-z\d$@$!%*?&.,#-_;]|[^ ]){8,15}$/;
+    //const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&.,#-_;])([A-Za-z\d$@$!%*?&.,#-_;]|[^ ]){8,15}$/;
     this.registroForm = this.formBuilder.group({
       id: ['', Validators.required],
       tipo: ['EPS', Validators.required],
@@ -53,7 +54,7 @@ export class EditarUsuarioComponent implements OnInit {
       correo: ['', [Validators.required, Validators.email]],
       usuario: [''],
       username: [''],
-      password: ['',Validators.pattern(regex)],
+      password: ['',Validators.pattern(PASSWORD_REGEX)],
       telefono: ['', [Validators.required, Validators.minLength(9)]],
       estado: [true, Validators.required],
       selEmpresa : ['', Validators.required],
@@ -76,7 +77,6 @@ export class EditarUsuarioComponent implements OnInit {
   }
 
   getDataUser(idUser: number) {
-    console.log('idUser:', idUser);
     this.userService.findById(idUser).subscribe(responseDataUser => {
       console.log("respons(eDataUser=>", responseDataUser);
       this.setDataUser(responseDataUser);
@@ -109,20 +109,18 @@ export class EditarUsuarioComponent implements OnInit {
       estado: userData.estado
     });
 
-    console.log('Valor del formulario:', this.registroForm.value);
   }
 
   onTipoUsuarioChange(): void {
 
-  
-    if(this.registroForm.get('tipo').value === 'SUNASS'){
+
+    if(this.registroForm.get('tipo').value === TIPO_SUNASS){
       this.perfiles = [
-        {id:1, description:'Administrador OTI'}, 
+        {id:1, description:'Administrador OTI'},
         {id:2, description:'Administrador DAP'},
-        {id:3, description:'Registrador'},
         {id:4, description:'Consultor'}];
 
-    } else if(this.registroForm.get('tipo').value === 'EPS') {
+    } else if(this.registroForm.get('tipo').value === TIPO_EPS) {
       this.perfiles = [
         {id:3, description:'Registrador'},
         {id:4, description:'Consultor'}];
@@ -132,7 +130,7 @@ export class EditarUsuarioComponent implements OnInit {
   }
 
   onUserChange(event: any) {
-    console.log('event cmb usersldap', event);
+
     const selectedUser = event.value as User;
     if (selectedUser) {
       this.registroForm.patchValue(selectedUser);
@@ -151,8 +149,8 @@ export class EditarUsuarioComponent implements OnInit {
 
   cargarUsuariosLDAP(): void {
     this.userService.findAllLDAP().subscribe(
-      
-      (data: User[]) => {        
+
+      (data: User[]) => {
         this.usuariosSunass = data.map(user => ({
           label: user.username,
           value: user.username
@@ -165,32 +163,31 @@ export class EditarUsuarioComponent implements OnInit {
   }
 
   onGuardar() {
- 
+
     if(this.registroForm.valid) {
-      console.log("this.registroForm.value",this.registroForm.value);
+     
       let user = new User(this.registroForm.value);
       let role = new Role();
-
       role.idRole = this.registroForm.get("perfil").value;
       user.role = role;
       let empresa = new Empresa();
       empresa.idEmpresa = this.registroForm.get("selEmpresa").value;
       user.empresa = empresa;
-      
+
       this.userService.update(user).subscribe(responseUser => {
+        this.onAceptar(); 
         Swal.fire({
           icon: "success",
           title: 'Se actualizó el usuario correctamente',
           showConfirmButton: true,
           confirmButtonText: 'Aceptar',
           confirmButtonColor: '#28a745', // color verde
-          allowOutsideClick: false
         }).then((result) => {
-          if (result.isConfirmed) {
+          /*if (result.isConfirmed) {
             this.onAceptar(); // se redirige al listado de usuarios
-          }
+          }*/
         });
-      },  error => {  
+      },  error => {
           Swal.fire({
             title: 'Error',
             text: error,
@@ -198,13 +195,11 @@ export class EditarUsuarioComponent implements OnInit {
             confirmButtonText: 'Aceptar'
           });
       });
-
-
     } else {
       this.setEnableDisableIputs();
       ValidateInputs.touchedAllFormFields(this.registroForm);
     }
-    
+
   }
 
   onCancelEdit() {
@@ -225,30 +220,25 @@ export class EditarUsuarioComponent implements OnInit {
   }
 
   onAceptar(){
-   // this.userService.page(1,10).subscribe();// dhr ?
-   // this.userService.findAll().subscribe();
-    this.router.navigate(['/inicio/usuarios']).then(() => {
-      // Aquí puedes forzar la recarga de la lista de usuarios , x ahora no recomendable
-      window.location.reload();
-    });
-    //this.router.navigate(['/inicio/usuarios']);
-    
+  
+    this.router.navigate(['/inicio/usuarios']);
+
   }
 
   onCancel() {
     this.router.navigate(['/inicio/usuarios']);
   }
 
-  validateAlfabetico(event: Event) {
+  validateAlfabetico(event: Event) {   // dhr: se usa ?
     const inputElement = event.target as HTMLInputElement;
     inputElement.value = inputElement.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑüÜ]/g, '');
     this.val = inputElement.value;
   }
-  //edit
+
 
   private setEnableDisableIputs(){
     console.log('this.registroForm.get(tipo).value', this.registroForm.get('tipo').value);
-    if(this.registroForm.get('tipo').value === 'SUNASS'){
+    if(this.registroForm.get('tipo').value === TIPO_SUNASS){
       this.mostrarCampo =false; //por ejemplo se va ocultar el campo EPS
       this.isDropUsersDisable = false;
       this.registroForm.get('unidadOrganica').disable();
@@ -266,8 +256,8 @@ export class EditarUsuarioComponent implements OnInit {
       this.registroForm.get('perfil').updateValueAndValidity();
       this.registroForm.get('telefono').updateValueAndValidity();
 
-    } else if(this.registroForm.get('tipo').value === 'EPS') {
-      this.mostrarCampo =true; 
+    } else if(this.registroForm.get('tipo').value === TIPO_EPS) {
+      this.mostrarCampo =true;
       this.isDropUsersDisable = true;
       this.registroForm.get('unidadOrganica').disable();
       this.registroForm.get('usuario').disable();
@@ -292,7 +282,7 @@ export class EditarUsuarioComponent implements OnInit {
 
   cargarListaEmpresas(): void {
     this.empresaService.findAll().subscribe(
-      (data: any[]) => {        
+      (data: any[]) => {
         this.empresasLista = data.map(emp => ({
           label: emp.nombre,
           value: emp.idEmpresa

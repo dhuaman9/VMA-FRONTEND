@@ -3,8 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { LoginService } from 'src/app/_service/login.service';
 import { SessionService } from 'src/app/_service/session.service';
-import { environment } from 'src/environments/environment';
-import { ModuleService } from './../../_service/module.service';
 import { UserService } from '../usuarios/services/user.service';
 
 @Component({
@@ -40,7 +38,7 @@ export class ModulosComponent implements OnInit {
   }
 
   cerrarSession(){
-    //this.loginService.cerrarSession();
+ 
     this.sessionService.cerrarSession();
     return false;
   }
