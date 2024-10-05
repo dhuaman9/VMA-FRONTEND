@@ -14,7 +14,6 @@ import {debounceTime, distinctUntilChanged, switchMap, tap} from "rxjs/operators
 import Swal from "sweetalert2";
 import {LazyLoadEvent} from "primeng/api";
 
-
 @Component({
   selector: 'app-vma',
   templateUrl: './vma.component.html',

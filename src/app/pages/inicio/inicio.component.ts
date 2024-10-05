@@ -108,10 +108,10 @@ export class InicioComponent implements OnInit {
   }
 
   renderModules(role: string){
-    const esAdministradorOTI: boolean = role === "Administrador OTI";
-    const esAdministradorDAP: boolean = role === "Administrador DAP";
-    const esRegistrador: boolean = role === "Registrador";
-    const esConsultor: boolean = role === "Consultor";
+    const esAdministradorOTI: boolean = role === "ADMINISTRADOR OTI";
+    const esAdministradorDAP: boolean = role === "ADMINISTRADOR DAP";
+    const esRegistrador: boolean = role === "REGISTRADOR";
+    const esConsultor: boolean = role === "CONSULTOR";
 
     this.modules = [
       {
