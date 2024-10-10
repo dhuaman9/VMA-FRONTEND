@@ -38,6 +38,7 @@ export class VmaComponent implements OnInit {
   empresasLista: {label: string, value: any}[] = [];
 
   ListRegistroVMA: RegistroVMA[] = [];
+  selectedRegistrosVMA: RegistroVMA[] = [];
 
   registroForm: FormGroup;
 
@@ -54,6 +55,8 @@ export class VmaComponent implements OnInit {
   isRoleAdminAndConsultor: boolean = this.sessionService.obtenerRoleJwt().toUpperCase() === ('ADMINISTRADOR DAP' || 'CONSULTOR');
 
   fichaRegistro: FichaRegistro | null = null;
+
+  private lastSearchFilters:{};
 
   constructor(  public route : ActivatedRoute,
     private router: Router,
@@ -94,8 +97,8 @@ export class VmaComponent implements OnInit {
 
     this.fechaDesdeListener();
 
-    this.estados = ['COMPLETO', 'INCOMPLETO'];
-   // this.estados = ['COMPLETO', 'INCOMPLETO' ,'SIN REGISTRO'];
+    //this.estados = ['COMPLETO', 'INCOMPLETO'];
+    this.estados = ['COMPLETO', 'INCOMPLETO' ,'SIN REGISTRO'];
 
  
     if(!this.isRoleRegistrador) {
@@ -253,12 +256,14 @@ export class VmaComponent implements OnInit {
         this.first = event.first! / event.rows!;
         this.rows = event.rows!;
     } else {
+        this.selectedRegistrosVMA = [];
         this.first = 0;
         this.rows = 10;
     }
 
     // Verificar si el formulario de filtros es válido
     if (this.filtroForm.valid) {
+        this.lastSearchFilters = this.filtroForm.value;
         const formValues = this.filtroForm.value;
         this.registroVMAService.searchRegistroVmas(
             this.first,
@@ -275,7 +280,7 @@ export class VmaComponent implements OnInit {
             this.totalRecords = response.totalElements;
             this.isLoading = false;
         });
-    } else {
+    } /*else {
         // Si no hay filtros, obtener todos los registros
         
 
@@ -292,14 +297,13 @@ export class VmaComponent implements OnInit {
             console.error('Error, no hay data de registro VMA', error);
           }
         );
-
-
-    }
+    }*/
   }
 
   descargar(): void {  
 
-      const filtrosSeleccionados = this.filtroForm.value;
+      //const filtrosSeleccionados = this.filtroForm.value;
+      const filtrosSeleccionados = this.lastSearchFilters;
       const textoBusqueda = this.formBusqueda.value; // Obtén el texto del campo de búsqueda
 
       // Verifica si hay registros seleccionados
@@ -356,6 +360,7 @@ export class VmaComponent implements OnInit {
   }
 
   getRegistrosSeleccionados(): number[] {
-    return this.ListRegistroVMA.filter(registro => registro.seleccionado).map(registro => registro.idRegistroVma);
+    //return this.ListRegistroVMA.filter(registro => registro.seleccionado).map(registro => registro.idRegistroVma);
+    return this.selectedRegistrosVMA.map(registro => registro.idRegistroVma);
   }
 }

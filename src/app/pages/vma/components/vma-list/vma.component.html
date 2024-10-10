@@ -103,6 +103,8 @@
                 <p-table #dt1 [value]="ListRegistroVMA"
                          [globalFilterFields]="['empresa.nombre', 'estado', 'empresa.tipo','empresa.regimen','created_at', 'fichaRegistro.anio']"
                          responsiveLayout="scroll"
+                         [(selection)]="selectedRegistrosVMA"
+                         dataKey="idRegistroVma" 
                          [lazy]="true"
                          [paginator]="true"
                          [rows]="10"
@@ -138,8 +140,11 @@
                   <ng-template pTemplate="body" let-item let-ri="rowIndex" let-first="first">
                     <tr>
                      <!--  <td *ngIf="!isRoleRegistrador ">-->
-                      <td *ngIf="!isRoleRegistrador && (item.estado === 'COMPLETO' || item.estado === 'INCOMPLETO')">
-                        <input class="custom-checkbox" type="checkbox" (change)="onCheckboxChange($event, item)"  [checked]="item.seleccionado">
+                      <!--td *ngIf="!isRoleRegistrador && (item.estado === 'COMPLETO' || item.estado === 'INCOMPLETO')"-->
+                      <td>
+                        <!--input class="custom-checkbox" type="checkbox" (change)="onCheckboxChange($event, item)"  [checked]="item.seleccionado"-->
+                        <p-tableCheckbox *ngIf="!isRoleRegistrador && (item.estado === 'COMPLETO' || item.estado === 'INCOMPLETO')" [value]="item"></p-tableCheckbox>
+                        
                       </td>
                       <td style="text-align:center;">{{ri + 1}}</td>
                       <td>{{item.empresa?.nombre}}</td>
@@ -147,14 +152,14 @@
                       <td>{{item.empresa.regimen}}</td>
                       <td>
                         <p-tag styleClass="p-mr-2"  [style]="{'font-size': '15px', 'width': '105px', 'text-align': 'center'}"
-                        [severity]="item.estado === 'COMPLETO' ? 'success' : 'warning'"
-                        [value]="item.estado">
+                        [severity]="item.estado === 'COMPLETO' ? 'success' : (item.estado === 'INCOMPLETO'?'warning':'danger')"
+                        [value]="item.estado?item.estado:'SIN REGISTRO'">
                         </p-tag>
                       </td>
                       <td>{{item.createdAt | date: 'dd-MM-yyyy HH:mm:ss'}}</td>
                       <td style="text-align:center;">{{item.fichaRegistro.anio}}</td>
                       <td style="text-align:center" class="">
-                        <div class="d-flex gap-2">
+                        <div class="d-flex gap-2" *ngIf="!isRoleRegistrador && (item.estado === 'COMPLETO' || item.estado === 'INCOMPLETO')">
                           <button pButton type="button" [icon]="isRoleRegistrador && item.estado !== 'COMPLETO' ? 'pi pi-pencil' : 'pi pi-eye'" style="width: 30px; height: 20px;"
                                   [pTooltip]="isRoleRegistrador && item.estado !== 'COMPLETO' ? 'Editar registro' : 'Visualizar registro'" tooltipPosition="top"
                                   (click)="redirectToFormUpdate(item.idRegistroVma)">
@@ -169,6 +174,13 @@
                       </td>
                     </tr>
                   </ng-template>
+                  <ng-template pTemplate="emptymessage" let-columns>
+                    <tr>
+                        <td [attr.colspan]="9" style="text-align: center;">
+                            No se encontraron registros.
+                        </td>
+                    </tr>
+                </ng-template>
 
                 </p-table>
               </div>
