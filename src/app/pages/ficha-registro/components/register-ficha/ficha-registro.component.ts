@@ -102,7 +102,7 @@ export class FichaRegistroComponent implements OnInit {
     this.displayModaAdvice = false;
   }
 
-  addFichaRegistro() {
+ addFichaRegistro() {
     this.isEdition = false;
     this.openModalAddEditFicha(0, 'Aperturar Ficha de Registro VMA');
   }
@@ -130,10 +130,9 @@ export class FichaRegistroComponent implements OnInit {
     refDialog.onClose.subscribe((resultado: boolean) => {
 
       if (resultado) {
-        console.log('se cerro modal y se muestra valor de resultado', resultado);
-
-       /* this.displayModaAdvice = true;
-        this.modalImage = './assets/images/accept-icon.png';*/
+       
+      // this.displayModaAdvice = true;
+      //  this.modalImage = './assets/images/accept-icon.png';
         let msj = "";
         if(this.isEdition){
          // this.modalMessage = 'Se editó la ficha de registro de manera correcta';

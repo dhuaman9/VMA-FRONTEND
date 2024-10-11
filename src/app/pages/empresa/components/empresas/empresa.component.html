@@ -42,11 +42,7 @@
                                                 <th style="width: 20%;">ESTADO</th>
                                                 <th style="width: 10%;text-align: center;">EDITAR</th></tr>
                                         </ng-template>
-                                        <ng-template pTemplate="emptymessage" let-columns>
-                                            <tr >
-                                                <td colspan="5" style="text-align: center;">No se encontraron resultados.</td>
-                                            </tr>
-                                        </ng-template>
+                                        
 
                                         <ng-template pTemplate="body" let-item let-index="rowIndex">
                                             <tr *ngIf="pageable?.content?.length > 0">
@@ -68,6 +64,12 @@
                                                 </td>
                                             </tr>
 
+                                        </ng-template>
+
+                                        <ng-template pTemplate="emptymessage" let-columns>
+                                            <tr >
+                                                <td colspan="6" style="text-align: center;">No se encontraron registros.</td>
+                                            </tr>
                                         </ng-template>
                                     </p-table>
 

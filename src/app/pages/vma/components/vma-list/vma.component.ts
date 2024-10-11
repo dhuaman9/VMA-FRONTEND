@@ -13,6 +13,8 @@ import { FichaRegistro } from 'src/app/pages/ficha-registro/models/fichaRegistro
 import {debounceTime, distinctUntilChanged, switchMap, tap} from "rxjs/operators";
 import Swal from "sweetalert2";
 import {LazyLoadEvent} from "primeng/api";
+import { ESTADO_COMPLETO, ESTADO_INCOMPLETO, ESTADO_SIN_REGISTRO, 
+  ROL_ADMINISTRADOR_DAP, ROL_REGISTRADOR,ROL_CONSULTOR  } from 'src/app/utils/var.constant';
 
 @Component({
   selector: 'app-vma',
@@ -23,10 +25,9 @@ export class VmaComponent implements OnInit {
 
   activeState: boolean[] = [true, false, false];
 
-  //  arreglo con los estados disponibles : completo e incompleto
+  //  arreglo con los estados disponibles : completo ,incompleto y sin registro
   estados: string[];
 
-  value1: number = 0;
   inputFilterTable: string="";
   filtroForm: FormGroup;
 
@@ -38,6 +39,7 @@ export class VmaComponent implements OnInit {
   empresasLista: {label: string, value: any}[] = [];
 
   ListRegistroVMA: RegistroVMA[] = [];
+  selectedRegistrosVMA: RegistroVMA[] = [];
 
   registroForm: FormGroup;
 
@@ -49,11 +51,15 @@ export class VmaComponent implements OnInit {
   formBusqueda: FormControl = new FormControl('');
   formCheckBox: FormControl = new FormControl(false);
   checkManual: boolean = false;
-  registroCompleto: boolean = false; //cambiar por registroVMAEnCurso
-  isRoleRegistrador: boolean = this.sessionService.obtenerRoleJwt().toUpperCase() === 'REGISTRADOR';
-  isRoleAdminAndConsultor: boolean = this.sessionService.obtenerRoleJwt().toUpperCase() === ('ADMINISTRADOR DAP' || 'CONSULTOR');
-
+  registroCompleto: boolean = false; //cambiar por statusRegistroVMA
+  
+  isRoleRegistrador: boolean;
+  //isRoleRegistrador: boolean = this.sessionService.obtenerRoleJwt().toUpperCase().trim() === 'REGISTRADOR';
+  isRoleAdmin : boolean ;
+  isRoleConsultor: boolean;
   fichaRegistro: FichaRegistro | null = null;
+
+  private lastSearchFilters:{};
 
   constructor(  public route : ActivatedRoute,
     private router: Router,
@@ -74,6 +80,13 @@ export class VmaComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    const role = this.sessionService.obtenerRoleJwt().toUpperCase().trim();
+    this.isRoleAdmin = role === ROL_ADMINISTRADOR_DAP;
+    this.isRoleConsultor= role === ROL_CONSULTOR;
+    this.isRoleRegistrador = role === ROL_REGISTRADOR;
+
+   
     this.formBusqueda.valueChanges
       .pipe(
         debounceTime(700),
@@ -94,10 +107,8 @@ export class VmaComponent implements OnInit {
 
     this.fechaDesdeListener();
 
-    this.estados = ['COMPLETO', 'INCOMPLETO'];
-   // this.estados = ['COMPLETO', 'INCOMPLETO' ,'SIN REGISTRO'];
+    this.estados = [ESTADO_COMPLETO, ESTADO_INCOMPLETO ,ESTADO_SIN_REGISTRO]; //para cargarlos en el combobox
 
- 
     if(!this.isRoleRegistrador) {
       this.initializeYears();
       this.cargarListaEmpresas(); //carga el listdo de empresas
@@ -162,7 +173,7 @@ export class VmaComponent implements OnInit {
   }
 
    onQueryListRegistroVMA(event?: any) {
-    console.log("se usa onQueryListRegistroVMA");
+   
     const page = event ? Math.floor(event.first / event.rows) : 0;
     const size = event ? event.rows : this.rows;
     //console.log("paramsPag",paramsPag);
@@ -196,9 +207,7 @@ export class VmaComponent implements OnInit {
   redirectToForm(){
     this.router.navigate(['/inicio/vma/registrar-vma']);
   }
-  onEditEmpresa(){
-    alert("editar empresa");
-  }
+ 
 
   redirectToFormUpdate(id: number){
     this.router.navigate(['/inicio/vma/registrar-vma', id]);// temporal, luego se setea el ID del registro , en el metodo anterior redirectToForm
@@ -239,7 +248,7 @@ export class VmaComponent implements OnInit {
 
   private mostrarMensajeSatisfactorio = (): void => {
     Swal.fire({
-      title: "El registro se ha actualizado.",
+      title: "El registro se ha actualizado!.",
       //text: "Ahora el usuario puede actualizar el registro",
       icon: "success"
     });
@@ -251,15 +260,26 @@ export class VmaComponent implements OnInit {
     // Determinar el primer elemento y las filas a mostrar
     if (event) {
         this.first = event.first! / event.rows!;
+        //this.first = event.first!;
         this.rows = event.rows!;
+
+        /*this.first = event.first || 0;
+        this.rows = event.rows || 10;*/
+
     } else {
+        this.selectedRegistrosVMA = [];
         this.first = 0;
         this.rows = 10;
     }
 
     // Verificar si el formulario de filtros es válido
     if (this.filtroForm.valid) {
+        this.lastSearchFilters = this.filtroForm.value;
         const formValues = this.filtroForm.value;
+
+        // Resetear el paginador al aplicar el filtro
+        //this.first = 0;
+
         this.registroVMAService.searchRegistroVmas(
             this.first,
             this.rows,
@@ -273,33 +293,17 @@ export class VmaComponent implements OnInit {
             this.ListRegistroVMA = response.content;
             this.showResultados = true;
             this.totalRecords = response.totalElements;
+            // Resetear el paginador al aplicar el filtro
+            //this.first = 0;
             this.isLoading = false;
         });
-    } else {
-        // Si no hay filtros, obtener todos los registros
-        
-
-        this.registroVMAService.findAll().subscribe(
-
-          (data:any) => {
-            console.log("params ",data);
-          this.ListRegistroVMA= data.content || data;
-          this.showResultados = true;
-          this.totalRecords = data.totalElements || this.ListRegistroVMA.length;
-          this.isLoading = false;
-          },
-          error => {
-            console.error('Error, no hay data de registro VMA', error);
-          }
-        );
-
-
-    }
+    } 
   }
 
   descargar(): void {  
 
-      const filtrosSeleccionados = this.filtroForm.value;
+      //const filtrosSeleccionados = this.filtroForm.value;
+      const filtrosSeleccionados = this.lastSearchFilters;
       const textoBusqueda = this.formBusqueda.value; // Obtén el texto del campo de búsqueda
 
       // Verifica si hay registros seleccionados
@@ -356,6 +360,10 @@ export class VmaComponent implements OnInit {
   }
 
   getRegistrosSeleccionados(): number[] {
-    return this.ListRegistroVMA.filter(registro => registro.seleccionado).map(registro => registro.idRegistroVma);
+    //return this.ListRegistroVMA.filter(registro => registro.seleccionado).map(registro => registro.idRegistroVma);
+    return this.selectedRegistrosVMA.map(registro => registro.idRegistroVma);
   }
+
+
+
 }

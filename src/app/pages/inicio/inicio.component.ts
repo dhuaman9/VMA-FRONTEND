@@ -8,7 +8,7 @@ import {Message, MessageService} from 'primeng/api';
 import {RegistroVMAService} from 'src/app/pages/vma/services/registroVMA.service';
 import {RegistroVMA} from 'src/app/pages/vma/models/registroVMA';
 import { FichaRegistroService } from '../ficha-registro/services/ficha-registro.service';
-
+import { ROL_ADMINISTRADOR_OTI,ROL_ADMINISTRADOR_DAP, ROL_REGISTRADOR, ROL_CONSULTOR } from 'src/app/utils/var.constant';
 
 declare const $:any;
 declare const attachEventsToPushMenu: any;
@@ -39,7 +39,7 @@ export class InicioComponent implements OnInit {
 
   //para renderizar el p-message, alerta de registro vma
 
-  isRoleRegistrador: boolean = this.sessionService.obtenerRoleJwt().toUpperCase() === 'REGISTRADOR';
+  isRoleRegistrador: boolean = this.sessionService.obtenerRoleJwt().toUpperCase() === ROL_REGISTRADOR;
 
   constructor(
     private loginService : LoginService,
@@ -92,7 +92,7 @@ export class InicioComponent implements OnInit {
    
    // this.renderModules();
     this.shortName = this.sessionService.obtenerShortNameJwt();
-    this.role = this.sessionService.obtenerRoleJwt();
+    this.role = this.sessionService.obtenerRoleJwt().toUpperCase().trim();
     this.userName = this.sessionService.obtenerUserNameJwt();
     this.renderModules(this.role);
 
@@ -108,10 +108,10 @@ export class InicioComponent implements OnInit {
   }
 
   renderModules(role: string){
-    const esAdministradorOTI: boolean = role === "ADMINISTRADOR OTI";
-    const esAdministradorDAP: boolean = role === "ADMINISTRADOR DAP";
-    const esRegistrador: boolean = role === "REGISTRADOR";
-    const esConsultor: boolean = role === "CONSULTOR";
+    const esAdministradorOTI: boolean = role === ROL_ADMINISTRADOR_OTI;
+    const esAdministradorDAP: boolean = role === ROL_ADMINISTRADOR_DAP;
+    const esRegistrador: boolean = role === ROL_REGISTRADOR;
+    const esConsultor: boolean = role === ROL_CONSULTOR;
 
     this.modules = [
       {
@@ -128,7 +128,7 @@ export class InicioComponent implements OnInit {
       },
       {
         route : "ficha-registro",
-        label : "Periodos de registro VMA",
+        label : "Apertura de Fechas de Registros VMA",
         icon : "pi pi-calendar-plus",
         activo: esAdministradorDAP
       },
@@ -136,7 +136,7 @@ export class InicioComponent implements OnInit {
         route : "vma",
         label : "Registrar VMA",
         icon : "pi pi-check-square",
-        activo: esAdministradorDAP || esRegistrador
+        activo: esAdministradorDAP || esRegistrador || esConsultor
       },
       {
         route : "reporte",
