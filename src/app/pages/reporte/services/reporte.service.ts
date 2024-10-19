@@ -17,7 +17,8 @@ import { CostoTotalIncurridoCompletoDTO } from "../models/costo-total-incurrido-
 export class ReporteService {
 
     private url: string = environment.HOST;
-    private token: string = sessionStorage.getItem(environment.TOKEN_NAME);
+    private token: string = localStorage.getItem(environment.TOKEN_NAME);
+    //private token: string = sessionStorage.getItem(environment.TOKEN_NAME);
     private httpOptions : any;
 
     constructor(

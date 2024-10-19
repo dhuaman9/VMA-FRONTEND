@@ -16,7 +16,8 @@ export class SeccionesService {
     url: string = `${environment.HOST}`;
     userCambio = new Subject<any[]>();
   
-    token: string = sessionStorage.getItem(environment.TOKEN_NAME);
+    //token: string = sessionStorage.getItem(environment.TOKEN_NAME);  //dhr
+    token: string = localStorage.getItem(environment.TOKEN_NAME);
     httpOptions : any;
     private responsePage = new BehaviorSubject<any>(null);
   
@@ -36,21 +37,6 @@ export class SeccionesService {
         responseType : 'json'
       });
     }
-  
-  
-   /* findById(id: number){
-     
-  
-      this.httpOptions = {
-          headers : new HttpHeaders({
-              'Content-type' : 'application/json'
-          }),
-          responseType : 'json'
-      };
-      return this.http.get<User>(this.url+'/usuario/findbyid/'+id, this.httpOptions);
-      
-    }*/
-  
   
   }
   

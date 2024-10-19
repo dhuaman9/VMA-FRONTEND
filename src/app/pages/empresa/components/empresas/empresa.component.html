@@ -11,6 +11,7 @@
                                         <button class="btn btn-success mt-3 mb-4" (click)="onAddEmpresa()"><i class="pi pi-plus"></i>  Registrar</button><!-- redirectToForm() showModalDialog()-->
                                     <p-table #dt1
                                         [value]="pageable?.content || []"
+                                        [rowHover]="true"
                                         dataKey="id"
                                         responsiveLayout="scroll"
                                         [paginator]="true"
@@ -18,7 +19,6 @@
                                         [totalRecords]="pageable?.totalElements || 0"
                                         [lazy]="true"
                                         [loading]="isLoading"
-                                        [rowHover]="true"
                                         [showCurrentPageReport]="true"
                                         [rowsPerPageOptions]="[10, 25, 50, 100]"
                                         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
@@ -36,10 +36,10 @@
                                         <ng-template pTemplate="header">
                                             <tr>
                                                 <th style="width: 5%;text-align: center;">N°</th>
-                                                <th style="width: 35%;">EPS</th>
-                                                <th style="width: 20%;">REGIMEN</th>
-                                                <th style="width: 20%;">TAMAÑO</th>
-                                                <th style="width: 20%;">ESTADO</th>
+                                                <th style="width: 40%;">EPS</th>
+                                                <th style="width: 12%;">REGIMEN</th>
+                                                <th style="width: 16%;">TAMAÑO</th>
+                                                <th style="width: 13%;">ESTADO</th>
                                                 <th style="width: 10%;text-align: center;">EDITAR</th></tr>
                                         </ng-template>
                                         
@@ -77,6 +77,10 @@
                             </div>
                         </div>
                     </div>
+                    <!--<div class="alert alert-info mt-3" role="alert">
+                        Nota: Al deshabilitar una EPS, deberás actualizar los usuarios asociados, ya sea asignándoles una nueva EPS o deshabilitándolos.
+                    </div>  --> <!-- pendiente si procede -  dhr -->
+
                 </div>
             </div>
         </div>

@@ -3,3 +3,11 @@
     border-color: #007ad9;
     color: #ffffff;
 }
+
+.alert-info {
+    background-color: #b6e6f0;
+    color: #07272c;   /* Color del texto oscuro  */
+    border-color: #abdde5;
+    font-family: 'Arial', sans-serif;  /* Fuente moderna */
+    text-align: center;
+}

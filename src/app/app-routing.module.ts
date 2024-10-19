@@ -6,7 +6,11 @@ import { ModulosComponent } from './pages/modulos/modulos.component';
 import { ReporteComponent } from 'src/app/pages/reporte/components/reporte.component';
 import { GuardService } from './_service/guard.service';
 import { AnexoGuard } from 'src/app/pages/anexos/anexo.guard';
-
+import {  ROL_ADMINISTRADOR_DAP,ROL_CONSULTOR, ROL_ADMINISTRADOR_OTI,ROL_REGISTRADOR  } from 'src/app/utils/var.constant';
+import { UsuarioGuard } from './pages/usuarios/usuario.guard';
+import { EmpresaGuard } from './pages/empresa/empresa.guard';
+import { FichaRegistroGuard } from './pages/ficha-registro/ficha-registro.guard';
+  
 const routes : Routes = 
   [
     { path : 'login', component : LoginComponent},
@@ -15,23 +19,26 @@ const routes : Routes =
         [
           {
             path: 'usuarios',
-            canActivate : [GuardService],
+            canActivate : [GuardService, UsuarioGuard],
+            data: {expectedRoles: [ROL_ADMINISTRADOR_OTI]},
             loadChildren: () => import('./pages/usuarios/usuarios.module').then(m => m.UsuariosModule)
           },
           {
             path: 'anexos',
             canActivate : [GuardService, AnexoGuard],
-            data: {expectedRoles: ['ADMINISTRADOR DAP', 'CONSULTOR', 'REGISTRADOR']},
+            data: {expectedRoles: [ROL_ADMINISTRADOR_DAP, ROL_CONSULTOR]},
             loadChildren: () => import('./pages/anexos/anexos.module').then(m => m.AnexosModule)
           },
           {
             path: 'empresa',
-            canActivate : [GuardService],
+            canActivate : [GuardService , EmpresaGuard],
+            data: {expectedRoles: [ROL_ADMINISTRADOR_DAP]},
             loadChildren: () => import('./pages/empresa/empresa.module').then(m => m.EmpresaModule)
           },
           {
             path: 'ficha-registro',
-            canActivate : [GuardService],
+            canActivate : [GuardService , FichaRegistroGuard],
+            data: {expectedRoles: [ROL_ADMINISTRADOR_DAP]},
             loadChildren: () => import('./pages/ficha-registro/ficha-registro.module').then(m => m.FichaRegistroModule)
           },
           {

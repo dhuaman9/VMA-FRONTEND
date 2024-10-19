@@ -41,7 +41,8 @@ import {SharedModule} from "./shared/shared.module";
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
 
 export function tokenGetter(){
-  return sessionStorage.getItem(environment.TOKEN_NAME)
+  //return sessionStorage.getItem(environment.TOKEN_NAME);
+  return localStorage.getItem(environment.TOKEN_NAME);
 }
 
 @NgModule({

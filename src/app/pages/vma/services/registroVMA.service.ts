@@ -15,7 +15,10 @@ import { DatePipe } from '@angular/common';
 
   export class RegistroVMAService {
     url: string = `${environment.HOST}`;
-    token: string = sessionStorage.getItem(environment.TOKEN_NAME);
+    token: string = localStorage.getItem(environment.TOKEN_NAME);
+    //token: string = sessionStorage.getItem(environment.TOKEN_NAME);
+
+
     httpOptions : any;
 
     constructor( private http: HttpClient, private datePipe: DatePipe) {

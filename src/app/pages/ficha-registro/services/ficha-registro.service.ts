@@ -15,7 +15,8 @@ export class FichaRegistroService{
 
     url: string = `${environment.HOST}`;
     
-    token: string = sessionStorage.getItem(environment.TOKEN_NAME);
+    //token: string = sessionStorage.getItem(environment.TOKEN_NAME);
+    token: string = localStorage.getItem(environment.TOKEN_NAME);
     httpOptions : any;
 
     constructor( private http: HttpClient

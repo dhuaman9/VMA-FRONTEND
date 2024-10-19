@@ -5,7 +5,7 @@ import {Empresa} from 'src/app/pages/empresa/models/empresa';
 import {RegistroVMA} from 'src/app/pages/vma/models/registroVMA';
 import {RegistroVMAService} from 'src/app/pages/vma/services/registroVMA.service';
 import {Table} from 'primeng/table';
-import {VmaService} from 'src/app/_service/vma.service';
+import {VmaService} from 'src/app/pages/vma/services/vma.service';
 import {SessionService} from 'src/app/_service/session.service';
 import {EmpresaService} from 'src/app/pages/empresa/services/empresa.service';
 import {FichaRegistroService} from 'src/app/pages/ficha-registro/services/ficha-registro.service';
@@ -13,7 +13,7 @@ import { FichaRegistro } from 'src/app/pages/ficha-registro/models/fichaRegistro
 import {debounceTime, distinctUntilChanged, switchMap, tap} from "rxjs/operators";
 import Swal from "sweetalert2";
 import {LazyLoadEvent} from "primeng/api";
-import { ESTADO_COMPLETO, ESTADO_INCOMPLETO, ESTADO_SIN_REGISTRO,
+import { ESTADO_COMPLETO, ESTADO_INCOMPLETO, ESTADO_SIN_REGISTRO, 
   ROL_ADMINISTRADOR_DAP, ROL_REGISTRADOR,ROL_CONSULTOR  } from 'src/app/utils/var.constant';
 
 @Component({
@@ -52,13 +52,15 @@ export class VmaComponent implements OnInit {
   formCheckBox: FormControl = new FormControl(false);
   checkManual: boolean = false;
   registroCompleto: boolean = false; //cambiar por statusRegistroVMA
-
+  
   isRoleRegistrador: boolean;
   //isRoleRegistrador: boolean = this.sessionService.obtenerRoleJwt().toUpperCase().trim() === 'REGISTRADOR';
   isRoleAdmin : boolean ;
   isRoleConsultor: boolean;
   fichaRegistro: FichaRegistro | null = null;
+  
   @ViewChild('dt1') table!: Table;
+
   private lastSearchFilters:{};
 
   constructor(  public route : ActivatedRoute,
@@ -70,7 +72,8 @@ export class VmaComponent implements OnInit {
     private empresaService : EmpresaService,
     private fichaRegistroService: FichaRegistroService) {
 
-      this.filtroForm = this.fb.group({  //filtros
+      //filtros
+      this.filtroForm = this.fb.group({
         estado: [''], // valor por defecto
         eps: [''],
         fechaDesde: [''],
@@ -82,11 +85,12 @@ export class VmaComponent implements OnInit {
   ngOnInit(): void {
 
     const role = this.sessionService.obtenerRoleJwt().toUpperCase().trim();
+
     this.isRoleAdmin = role === ROL_ADMINISTRADOR_DAP;
     this.isRoleConsultor= role === ROL_CONSULTOR;
     this.isRoleRegistrador = role === ROL_REGISTRADOR;
 
-
+   
     this.formBusqueda.valueChanges
       .pipe(
         debounceTime(700),
@@ -116,7 +120,7 @@ export class VmaComponent implements OnInit {
 
     this.vmaService.isRegistroCompleto().subscribe(response => this.registroCompleto = response);
     this.vmaService.registroCompleto$.subscribe(response => this.registroCompleto = response);
-
+  
     this.fichaRegistroService.obtenerPeriodoActivo().subscribe(
       (data) => {
         this.fichaRegistro = data;
@@ -125,7 +129,7 @@ export class VmaComponent implements OnInit {
         console.error('Error al obtener el periodo activo', error);
       }
     );
-
+  
   }
 
   private toggleSeleccionados = (seleccionado: boolean): void => {
@@ -160,8 +164,7 @@ export class VmaComponent implements OnInit {
 
   initListRegistroVMA() {
     this.showResultados = false;
-   // this.paramsPagination = new ParamsPagination(0,1,10,0); //?
-    this.onQueryListRegistroVMA();  //dhr
+    this.onQueryListRegistroVMA();
   }
 
   initializeYears() {
@@ -173,7 +176,7 @@ export class VmaComponent implements OnInit {
   }
 
    onQueryListRegistroVMA(event?: any) {
-
+   
     const page = event ? Math.floor(event.first / event.rows) : 0;
     const size = event ? event.rows : this.rows;
     //console.log("paramsPag",paramsPag);
@@ -199,15 +202,13 @@ export class VmaComponent implements OnInit {
       table.filterGlobal(filterValue, 'contains');
 
     }
-  console.log("filterValue-",filterValue);
+
   }
-
-
 
   redirectToForm(){
     this.router.navigate(['/inicio/vma/registrar-vma']);
   }
-
+ 
 
   redirectToFormUpdate(id: number){
     this.router.navigate(['/inicio/vma/registrar-vma', id]);// temporal, luego se setea el ID del registro , en el metodo anterior redirectToForm
@@ -222,8 +223,8 @@ export class VmaComponent implements OnInit {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Sí",
-      cancelButtonText: 'No'
+      confirmButtonText: "SI",
+      cancelButtonText: 'NO'
     }).then((result) => {
       if (result.isConfirmed) {
         this.first = 0;
@@ -256,33 +257,27 @@ export class VmaComponent implements OnInit {
 
   buscar(event?: LazyLoadEvent) {
     this.formCheckBox.setValue(false);
-
+    
     // Determinar el primer elemento y las filas a mostrar
     if (event) {
         this.first = event.first! / event.rows!;
-        //this.first = event.first!;
         this.rows = event.rows!;
-
-        /*this.first = event.first || 0;
-        this.rows = event.rows || 10;*/
 
     } else {
         this.selectedRegistrosVMA = [];
         this.first = 0;
         this.rows = 10;
 
-      if (this.table) {
-        this.table.first = 0;
-      }
+        if (this.table) {
+          this.table.first = 0;
+        }
+
     }
 
     // Verificar si el formulario de filtros es válido
     if (this.filtroForm.valid) {
         this.lastSearchFilters = this.filtroForm.value;
         const formValues = this.filtroForm.value;
-
-        // Resetear el paginador al aplicar el filtro
-        //this.first = 0;
 
         this.registroVMAService.searchRegistroVmas(
             this.first,
@@ -297,14 +292,12 @@ export class VmaComponent implements OnInit {
             this.ListRegistroVMA = response.content;
             this.showResultados = true;
             this.totalRecords = response.totalElements;
-            // Resetear el paginador al aplicar el filtro
-            //this.first = 0;
             this.isLoading = false;
         });
-    }
+    } 
   }
 
-  descargar(): void {
+  descargar(): void {  
 
       //const filtrosSeleccionados = this.filtroForm.value;
       const filtrosSeleccionados = this.lastSearchFilters;
@@ -318,7 +311,7 @@ export class VmaComponent implements OnInit {
         // Si no hay registros seleccionados, descarga el reporte basado en los filtros y el texto de búsqueda
         this.registroVMAService.descargarReporteRegistrosVMAExcel([], filtrosSeleccionados, textoBusqueda);
       }
-
+    
   }
 
   descargarReporteEPSsinRegistroVMA(): void {
@@ -328,14 +321,14 @@ export class VmaComponent implements OnInit {
   }
 
   limpiar(){
-
+  
     this.filtroForm.reset(); // Limpia todos los campos del formulario
     this.isLoading = true; // Muestra indicador de carga
     this.first = 0; // Reinicia el primer índice para paginación
     this.rows = 10; // Reinicia el número de filas a mostrar
 
     // Llama a buscar para recargar la tabla sin filtros
-    this.buscar();
+    this.buscar(); 
   }
 
   cargarListaEmpresas(): void {

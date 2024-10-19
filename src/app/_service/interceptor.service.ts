@@ -30,32 +30,31 @@ export class InterceptorService implements HttpInterceptor{
     }
 
     let intReq = req;
-    const token = sessionStorage.getItem(environment.TOKEN_NAME);
+    const token = localStorage.getItem(environment.TOKEN_NAME);  //dhr
 
     intReq = this.addToken(req, token);
     
     //console.log('prev refreshing....');
 
     return next.handle(intReq).pipe(catchError(error => {
-      console.log('catchError-error - ',error); //dhr
+      console.log('catchError-error - ',error);
       if (error instanceof HttpErrorResponse && error.status === 401) {
         return this.handle401Error(intReq, next);
 
-      } else  if (error instanceof HttpErrorResponse && error.status === 400) {  //dhr
-        // Manejar errores 400 aquí y mostrar alerta
-        console.log('error.error.message  - ',error.error.message); //dhr
-        /*Swal.fire({
-          title: 'Error',
-          text: error.error.message,
-          icon: 'error',
-          confirmButtonText: 'OK'
-        });*/
+      } else  if (error instanceof HttpErrorResponse && error.status === 400) {
+        // Manejar errores 400(bad request) , se puede mostrar alerts
+        console.log('error.error.message  - ',error.error.message); 
+      
        
+      }else {  // if (error.status === 500)
+        //this.sessionService.cerrarSession();
 
-      }
-       // Solo cerrar sesión para errores que no sean 400
-       if (error.status !== 400) {
-        this.sessionService.cerrarSession();
+        Swal.fire({
+          icon: 'error',
+          title: 'Error del servidor',
+          text: 'Algo salió mal en el servidor. Por favor, inténtalo más tarde o contacta con soporte si el problema persiste.',
+          confirmButtonText: 'Aceptar'
+        });
       }
      // this.sessionService.cerrarSession();
       
@@ -84,12 +83,20 @@ export class InterceptorService implements HttpInterceptor{
 
             if(data.value){
 
-              sessionStorage.setItem(environment.TOKEN_NAME,data.value);
+              localStorage.setItem(environment.TOKEN_NAME,data.value); //dhr
               this.refreshTokenSubject.next(data.value);
               
               return next.handle(this.addToken(request, data.value));
             }
             else{
+
+             /* Swal.fire({
+                icon: 'warning',
+                title: 'No autorizado',
+                text: 'Tu sesión ha expirado. Por favor, vuelve a iniciar sesión.',
+              }).then(() => {
+                this.sessionService.cerrarSession(); // Llamar al método que cierra la sesión
+              });*/
 
               this.sessionService.cerrarSession();
 

@@ -164,7 +164,8 @@ export class RegistrarUsuarioComponent implements OnInit {
       confirmButtonColor: "#DF2A3D",
       cancelButtonColor: "#3085d6",
       confirmButtonText: "SI",
-      cancelButtonText: "No"
+      cancelButtonText: "NO",
+      allowOutsideClick: false
     }).then((result) => {
       if (result.isConfirmed) {
         this.onCancel();

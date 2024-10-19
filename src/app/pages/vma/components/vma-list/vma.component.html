@@ -87,7 +87,7 @@
                       </span>
             </div>
             <div style="margin-left: auto;">
-            <button pButton label="Descargar Excel" pTooltip="Por defecto, se descargará todo el listado filtrado." tooltipPosition="top" class="p-button-success float-right" icon="pi pi-download" iconPos="right"
+            <button pButton label="Descargar Reporte" pTooltip="Por defecto, se descargará todo el listado filtrado." tooltipPosition="top" class="p-button-success float-right" icon="pi pi-file-excel" iconPos="right"
                     *ngIf="isRoleAdmin || isRoleConsultor"
                     (click)="descargar()"></button>
             </div>
@@ -108,6 +108,7 @@
                          [lazy]="true"
                          [paginator]="true"
                          [rows]="10"
+                         [rowHover]="true"
                          [showCurrentPageReport]="true"
                          [totalRecords]="totalRecords"
                          [rowsPerPageOptions]="[10,25,50,100]"

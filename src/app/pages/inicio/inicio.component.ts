@@ -123,12 +123,12 @@ export class InicioComponent implements OnInit {
       {
         route : "empresa",
         label : "Empresas",
-        icon : "pi pi-home",
+        icon : "pi pi-building",
         activo: esAdministradorDAP
       },
       {
         route : "ficha-registro",
-        label : "Apertura de Fechas de Registros VMA",
+        label : "Apertura de Fichas de Registro VMA",
         icon : "pi pi-calendar-plus",
         activo: esAdministradorDAP
       },
@@ -147,7 +147,7 @@ export class InicioComponent implements OnInit {
       {
         route : "anexos",
         label : "Anexos",
-        icon : "pi pi-table",
+        icon : "pi pi-book",
         activo: esAdministradorDAP || esConsultor
       },
     ]

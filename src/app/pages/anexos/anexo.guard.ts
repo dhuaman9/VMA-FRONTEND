@@ -24,10 +24,12 @@ export class AnexoGuard implements CanActivate {
     expectedRoles = expectedRoles.map(rol => rol.toUpperCase());
     if (!expectedRoles.includes(userRole.toUpperCase())) {
       Swal.fire('Permiso denegado', 'No tiene permisos para ver los anexos', 'info');
-      this.router.navigate(['/inicio/vma']);
+      //this.router.navigate(['/inicio/vma']);
       return false;
     }
 
     return true;
   }
+
+
 }

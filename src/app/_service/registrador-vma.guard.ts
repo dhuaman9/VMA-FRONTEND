@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { EMPTY, Observable, of } from 'rxjs';
 import { SessionService } from './session.service';
-import { VmaService } from './vma.service';
+import { VmaService } from '../pages/vma/services/vma.service';
 import { catchError, map, tap } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 
@@ -19,7 +19,7 @@ export class RegistradorVmaGuard implements CanActivate {
 
   }
 
-  canActivate(
+   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     const expectedRole = route.data['expectedRole'];
@@ -30,12 +30,18 @@ export class RegistradorVmaGuard implements CanActivate {
     )
   }
 
+  // pendiente,  cuando esta en sesion un user perfil 1, no muestra este mensaje de abajo
   private isAbleToRegister = (isRegistroCreado: boolean, expectedRole: string): boolean => {
     const userRole = this.sessionService.obtenerRoleJwt();
     console.log(expectedRole.toUpperCase(), userRole.toUpperCase())
     if (isRegistroCreado || expectedRole.toUpperCase() !== userRole.toUpperCase()) {
-      Swal.fire('Permiso denegado', 'No tiene permisos para registrar  VMA', 'info');
-      this.router.navigate(['/inicio/vma']);
+      Swal.fire({
+        title: 'Permiso denegado',
+        text: 'Usted No tiene permisos para registrar VMA.',
+        icon: 'info',
+        confirmButtonText: 'Aceptar'
+      });
+      //this.router.navigate(['/inicio/vma']);
       return false;
     }
 
@@ -45,7 +51,7 @@ export class RegistradorVmaGuard implements CanActivate {
 
   private onError = () => {
       Swal.fire('Ocurrió un error', 'Ocurrió un error al intentar ingresar al registro VMA', 'error');
-      this.router.navigate(['/inicio/vma']);
+     // this.router.navigate(['/inicio/vma']);  // ? dhr  
       return of(false);
   }
 }
