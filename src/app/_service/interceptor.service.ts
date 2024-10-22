@@ -65,7 +65,7 @@ export class InterceptorService implements HttpInterceptor{
         console.log('error.error.message  - ',error.error.message);
 
 
-      }else {  // if (error.status === 500)
+      }else {
         //this.sessionService.cerrarSession();
 
         Swal.fire({
