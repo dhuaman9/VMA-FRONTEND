@@ -23,8 +23,8 @@
 
   /*color de los tabs*/
   .p-accordion-header-link {
-    background: #19b319 !important;
-    border: 1px solid #19b319 !important;
+    background: #5ec417 !important;
+    border: 1px solid #5ec417 !important;
   }
 
   /*color del la sombra en los bordes*/
@@ -34,8 +34,8 @@
 
   /*color del seleccionado*/
   .p-highlight .p-accordion-header-link {
-    background: #19812d !important;
-    border: 1px solid #19812d !important;
+    background: #58bf10 !important;
+    border: 1px solid #58bf10 !important;
   }
 }
 

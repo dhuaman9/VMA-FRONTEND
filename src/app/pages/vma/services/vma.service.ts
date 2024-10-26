@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../environments/environment';
+import { environment } from '../../../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
-import { RegistroVmaRequest } from '../pages/vma/models/registroVMARequest';
+import { RegistroVmaRequest } from '../models/registroVMARequest';
 
 @Injectable({
   providedIn: 'root'

@@ -8,14 +8,14 @@ import {Cuestionario} from 'src/app/pages/vma/models/cuestionario';
 import {Pregunta} from 'src/app/pages/vma/models/pregunta';
 import {TipoPregunta} from 'src/app/pages/vma/models/tipo-pregunta';
 import {CuestionarioService} from 'src/app/_service/cuestionario.service';
-import {VmaService} from 'src/app/_service/vma.service';
+import {VmaService} from 'src/app/pages/vma/services/vma.service';
 import Swal from 'sweetalert2';
 import {ActivatedRoute, Router} from '@angular/router';
 import {forkJoin, Observable, of, Subscription} from 'rxjs';
 import {SessionService} from 'src/app/_service/session.service';
 import {UploadService} from 'src/app/_service/upload.service';
 import {finalize, switchMap, tap} from "rxjs/operators";
-
+import { RADIO_BUTTON_NO,ESTADO_COMPLETO, ROL_REGISTRADOR } from 'src/app/utils/var.constant';
 
 @Component({
   selector: 'app-registrar-vma',
@@ -28,6 +28,8 @@ import {finalize, switchMap, tap} from "rxjs/operators";
 export class RegistrarVmaComponent implements OnInit, OnDestroy {
   cuestionario: Cuestionario;
   registroForm: FormGroup;
+  registroCompleto: boolean = false; //cambiar por statusRegistroVMA
+
 
   formularioGeneral: FormGroup;
   idRegistroVMA: number = null;
@@ -35,8 +37,8 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
   seccionActiva: number; // Variable para almacenar el índice de la sección activa
 
   isGreenTab = true; // para cambiar al color verde en el tab
-  registroCompletoPorEPS: Observable<boolean>;
-  isRoleRegistrador: boolean = this.sessionService.obtenerRoleJwt().toUpperCase() === 'REGISTRADOR';
+
+  isRoleRegistrador: boolean = this.sessionService.obtenerRoleJwt().toUpperCase() === ROL_REGISTRADOR;
   formGroupPregunta: FormGroup;
   secciones: FormArray;
   preguntasAuxiliar: Pregunta[] = [];
@@ -82,7 +84,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
     if(this.idRegistroVMA) {
       this.vmaService.findById(this.idRegistroVMA)
         .pipe(
-          tap((response: any) => this.isRegistroCompleto = response.estado === 'COMPLETO'),
+          tap((response: any) => this.isRegistroCompleto = response.estado === ESTADO_COMPLETO),
           switchMap(() => this.cuestionarioService.cuestionarioConRespuestas(this.idRegistroVMA)),
           tap((response: any) => {
             this.cuestionario = response.item;
@@ -97,6 +99,10 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
       })
     }
   })
+
+  //this.vmaService.isRegistroCompleto().subscribe(response => this.registroCompleto = response);
+  //this.vmaService.registroCompleto$.subscribe(response => this.registroCompleto = response);
+
   }
 
   isFile(value: any): boolean {
@@ -164,19 +170,17 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
             return of(null);
           }),
           finalize(() => this.cargandoProceso$ = of(false))
-        )
-          .subscribe(
+        ).subscribe(
             () => {
+              console.log("metodo guardar -");
+              this.router.navigate(['/inicio/vma']);
               Swal.fire({
                 title: isGuardadoCompleto ? 'Registro completado': 'Se ha realizado el guardado Progresivo',  // Registro actualizado
-                ///text: isGuardadoCompleto ? 'Su información ha sido registrada y enviada.' : 'Se ha realizado el guardado progresivo',
                 icon: 'success',
                 confirmButtonText: 'Aceptar',
-                allowOutsideClick: false  //evita hacer click fuera del alert
+                //allowOutsideClick: false  //evita hacer click fuera del alert
               }).then((result) => {
-                if (result.isConfirmed) {
-                  this.router.navigate(['/inicio/vma']);
-                }
+              
               });
             }
           );
@@ -190,7 +194,6 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
                 respuestasArchivo.map(respuesta => this.uploadService.uploadFile(respuesta.respuesta, registroVMAId, respuesta.idPregunta, respuesta.idRespuesta))
               )
             }
-
             return of(null);
           })
         )
@@ -203,6 +206,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
   }
 
   onSuccess(isGuardadoCompleto: boolean) {
+    console.log("metodo onsuccess -");
     Swal.fire({
       title: isGuardadoCompleto ? 'Registro completado': 'Se ha realizado el guardado Progresivo',   //'Registro actualizado'
       // text:  isGuardadoCompleto? 'Su información ha sido registrada y enviada.' : 'Registrado guardado parcialmente',
@@ -436,7 +440,8 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
       confirmButtonColor: "#DF2A3D",
       cancelButtonColor: "#3085d6",
       confirmButtonText: "SI",
-      cancelButtonText: "No"
+      cancelButtonText: "NO",
+      allowOutsideClick: false, // Evita que se cierre al hacer clic fuera
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire({
@@ -461,7 +466,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
 
   onRadioButtonChange(seccion: AbstractControl, valor: string): void {
     const formArray = seccion.get('preguntas') as FormArray;
-    if (valor === 'NO' || !valor) {
+    if (valor === RADIO_BUTTON_NO || !valor) {
       this.preguntasAuxiliar.forEach(pregunta => {
         const index = formArray.controls.findIndex(control => control.get('idPregunta').value === pregunta.idPregunta);
 

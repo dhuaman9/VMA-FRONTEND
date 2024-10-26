@@ -24,44 +24,68 @@ export class InterceptorService implements HttpInterceptor{
     private loginService : LoginService,
   ) { }
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {  
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (!this.sessionService.estaLogeado()) {
       return next.handle(req);
     }
 
     let intReq = req;
-    const token = sessionStorage.getItem(environment.TOKEN_NAME);
+    const token = localStorage.getItem(environment.TOKEN_NAME);  //dhr
 
     intReq = this.addToken(req, token);
-    
+
     //console.log('prev refreshing....');
 
     return next.handle(intReq).pipe(catchError(error => {
-      console.log('catchError-error - ',error); //dhr
+
+      if(token) {
+        const tokenPayload = this.decodeToken(token);
+        if (tokenPayload && tokenPayload.exp) {
+          const currentTime = Math.floor(Date.now() / 1000);
+          if (tokenPayload.exp < currentTime) {
+             Swal.fire({
+               icon: 'warning',
+               title: 'Tu sesión ha expirado.',
+               text: 'Deberá volver a iniciar sesión.',
+             })
+
+            this.sessionService.cerrarSession();
+            throw new Error('Token expirado');
+          }
+        }
+      }
+
+
+      console.log('catchError-error - ',error);
       if (error instanceof HttpErrorResponse && error.status === 401) {
         return this.handle401Error(intReq, next);
 
-      } else  if (error instanceof HttpErrorResponse && error.status === 400) {  //dhr
-        // Manejar errores 400 aquí y mostrar alerta
-        console.log('error.error.message  - ',error.error.message); //dhr
-        /*Swal.fire({
-          title: 'Error',
-          text: error.error.message,
-          icon: 'error',
-          confirmButtonText: 'OK'
-        });*/
-       
+      } else  if (error instanceof HttpErrorResponse && error.status === 400) {
+        // Manejar errores 400(bad request) , se puede mostrar alerts
+        console.log('error.error.message  - ',error.error.message);
 
-      }
-       // Solo cerrar sesión para errores que no sean 400
-       if (error.status !== 400) {
-        this.sessionService.cerrarSession();
+
+      }else {  // if (error.status === 500)
+        //this.sessionService.cerrarSession();
+
+        Swal.fire({
+          icon: 'error',
+          title: 'Error del servidor',
+          text: 'Algo salió mal en el servidor. Por favor, inténtalo más tarde o contacta con soporte si el problema persiste.',
+          confirmButtonText: 'Aceptar'
+        });
       }
      // this.sessionService.cerrarSession();
-      
+
       return throwError(error);
     }));
-    
+
+  }
+
+  private decodeToken(token: string): any {
+    const payload = token.split('.')[1];
+    const decodedPayload = atob(payload);
+    return JSON.parse(decodedPayload);
   }
 
   private handle401Error(request: HttpRequest<any>, next: HttpHandler) {
@@ -73,26 +97,24 @@ export class InterceptorService implements HttpInterceptor{
       //const token = sessionStorage.getItem(environment.TOKEN_NAME);
 
       const token = this.sessionService.retornarJwt();
-      
+
       if (token){
 
         const dto: JwtDTO = new JwtDTO(token);
-        
+
         return this.loginService.refresh(dto).pipe(
           switchMap((data: any) => {
             this.isRefreshing = false;
 
-            if(data.value){
+            if(data.value) {
 
-              sessionStorage.setItem(environment.TOKEN_NAME,data.value);
+              localStorage.setItem(environment.TOKEN_NAME,data.value);
               this.refreshTokenSubject.next(data.value);
-              
               return next.handle(this.addToken(request, data.value));
-            }
-            else{
+
+            } else {
 
               this.sessionService.cerrarSession();
-
               return throwError('No se renovo token');
             }
 

@@ -14,7 +14,9 @@ export class UserService {
   url: string = `${environment.HOST}`;
   userCambio = new Subject<any[]>();
 
-  token: string = sessionStorage.getItem(environment.TOKEN_NAME);
+  //token: string = sessionStorage.getItem(environment.TOKEN_NAME);
+  token: string = localStorage.getItem(environment.TOKEN_NAME);
+
   httpOptions : any;
   private responsePage = new BehaviorSubject<any>(null);
 

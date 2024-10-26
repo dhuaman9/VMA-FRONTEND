@@ -79,8 +79,7 @@ export class RegisterEditFichaComponent implements OnInit {
           title: 'Se actualizó la Ficha de registro correctamente',
           showConfirmButton: true,
           confirmButtonText: 'Aceptar',
-          confirmButtonColor: '#28a745',
-          allowOutsideClick: false
+          confirmButtonColor: '#28a745'
         }).then((result) => {
           if (result.isConfirmed) {
             this.router.navigate(['/inicio/ficha-registro']);

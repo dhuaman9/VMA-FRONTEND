@@ -1,4 +1,17 @@
-:host ::ng-deep .p-datepicker {  transform: scale(0.73);}
+:host ::ng-deep .p-datepicker { 
+   transform: scale(0.85);
+}
+
+/*.p-calendar {
+  width: 80px;       
+  height: 40px;       
+  font-size: 14px;    
+}
+
+.p-calendar .p-datepicker {
+  transform: scale(0.80);  
+}*/
+
 
 :host ::ng-deep .align-left .p-button-label {
     display: flex;
@@ -59,3 +72,4 @@
   .card.pdn-15 {
     padding: 8px; /* O cualquier valor menor que 15px */
   }
+

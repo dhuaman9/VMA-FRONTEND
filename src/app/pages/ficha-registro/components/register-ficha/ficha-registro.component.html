@@ -4,8 +4,6 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-lg-12 mt-2">
-          
-
           <div class="card pdn-15" *ngIf="showResultados">
             <div class="content">
               <div class="card-body  p-0">
@@ -22,6 +20,7 @@
                   [rowsPerPageOptions]="[10, 25, 50, 100]"
                   [paginator]="true"
                   styleClass="p-datatable-customers p-datatable-gridlines p-datatable-sm"
+                  emptyMessage="No se encontraron registros"
                   >
                   <ng-template pTemplate="caption">
                     Buscar:
@@ -40,7 +39,7 @@
                       <th style="width: 10%;text-align: center;">EDITAR</th>
                     </tr>
                   </ng-template>
-
+                  
                   <ng-template pTemplate="body" let-item let-ri="rowIndex">
                     <tr>
                       <td style="text-align: center;">{{item.index}}</td>
@@ -53,6 +52,11 @@
                           (click)="onEditFichaRegistro(item.idFichaRegistro)">
                         </button>
                       </td>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="emptymessage" let-columns>
+                    <tr >
+                        <td colspan="5" style="text-align: center;">No se encontraron registros.</td>
                     </tr>
                   </ng-template>
                 </p-table>

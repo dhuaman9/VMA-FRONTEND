@@ -19,7 +19,9 @@ export class GuardService implements CanActivate{
 
     //verificar si esta logeado
     let rpta = this.sessionService.estaLogeado();
-    if(!rpta){
+    return rpta;
+
+    /*if(!rpta){
       this.sessionService.cerrarSession();
       return false;
     } else {
@@ -33,9 +35,9 @@ export class GuardService implements CanActivate{
       if(!helper.isTokenExpired(token)){
 
          //verificar si tienes el rol necesario para acceder a la pagina
-        /*this.usuarioService.findModules().subscribe(response=>{
-          console.log(response);
-        })*/
+        //this.usuarioService.findModules().subscribe(response=>{
+          //console.log(response);
+        //})/
 
         if(route.data.expectedRol){
           const expectedRol  = route.data.expectedRol;
@@ -53,6 +55,6 @@ export class GuardService implements CanActivate{
         this.sessionService.cerrarSession();
         return false;
       }
-    }
+    }*/
   }
 }

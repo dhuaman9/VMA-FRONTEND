@@ -15,7 +15,10 @@ import { PageableResponse } from "src/app/_model/pageableResponse";
   url: string = `${environment.HOST}`;
   empresaCambio = new Subject<any[]>();
 
-  token: string = sessionStorage.getItem(environment.TOKEN_NAME);
+  //token: string = sessionStorage.getItem(environment.TOKEN_NAME);
+
+  token: string = localStorage.getItem(environment.TOKEN_NAME);
+
   httpOptions : any;
 
   constructor( private http: HttpClient

@@ -18,6 +18,7 @@ export const ROL_CONSULTOR='CONSULTOR';
 //estados de registros VMA:
 export const ESTADO_COMPLETO='COMPLETO';
 export const ESTADO_INCOMPLETO='INCOMPLETO';
+export const ESTADO_SIN_REGISTRO='SIN REGISTRO';
 
 //elementos HTML
 export const RADIO_BUTTON_SI="SI";

@@ -9,7 +9,8 @@ import { UserService } from 'src/app/pages/usuarios/services/user.service';
 import { ValidateInputs, validateInput } from 'src/app/utils/validate-inputs';
 import { Empresa } from 'src/app/pages/empresa/models/empresa';
 import { EmpresaService } from 'src/app/pages/empresa/services/empresa.service';
-import { TIPO_SUNASS, TIPO_EPS , PASSWORD_REGEX} from 'src/app/utils/var.constant';
+import { TIPO_SUNASS, TIPO_EPS , ROL_ADMINISTRADOR_OTI,ROL_ADMINISTRADOR_DAP,
+  ROL_REGISTRADOR,ROL_CONSULTOR,PASSWORD_REGEX} from 'src/app/utils/var.constant';
 
 import Swal from 'sweetalert2';
 
@@ -37,7 +38,6 @@ export class RegistrarUsuarioComponent implements OnInit {
 
   usuariosSunass: {label: string, value: any}[];
 
-  ListEmpresa: Empresa[];
   empresasLista: {label: string, value: any}[] = [];
 
   constructor(private formBuilder: FormBuilder, private modalService: NgbModal,
@@ -51,7 +51,7 @@ export class RegistrarUsuarioComponent implements OnInit {
     //const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&.,#-_;])([A-Za-z\d$@$!%*?&.,#-_;]|[^ ]){8,15}$/;
     //Entre 8 a 15 caracteres, no espacios, al menos una mayúscula, una minúscula, un número y un caracter especial (@$!%*?&.,#-_;)
     this.registroForm = this.formBuilder.group({
-      tipo: ['EPS', Validators.required],
+      tipo: [TIPO_EPS, Validators.required],
       perfil: ['', Validators.required],
       unidadOrganica: [''],
       nombres: ['', Validators.required],
@@ -102,15 +102,15 @@ export class RegistrarUsuarioComponent implements OnInit {
         this.cargarUsuariosLDAP();
       }
       this.perfiles = [
-        {id:1, description:'Administrador OTI'},
-        {id:2, description:'Administrador DAP'},
-        {id:4, description:'Consultor'}];
+        {id:1, description:ROL_ADMINISTRADOR_OTI},
+        {id:2, description:ROL_ADMINISTRADOR_DAP},
+        {id:4, description:ROL_CONSULTOR}];
         this.isRequired = false;
     } else if(this.registroForm.get('tipo').value === TIPO_EPS) {
       this.isRequired = true;
       this.perfiles = [
-        {id:3, description:'Registrador'},
-        {id:4, description:'Consultor'}];
+        {id:3, description:ROL_REGISTRADOR},
+        {id:4, description: ROL_CONSULTOR}];
     }
   }
 
@@ -164,7 +164,8 @@ export class RegistrarUsuarioComponent implements OnInit {
       confirmButtonColor: "#DF2A3D",
       cancelButtonColor: "#3085d6",
       confirmButtonText: "SI",
-      cancelButtonText: "No"
+      cancelButtonText: "NO",
+      allowOutsideClick: false
     }).then((result) => {
       if (result.isConfirmed) {
         this.onCancel();
@@ -277,24 +278,4 @@ export class RegistrarUsuarioComponent implements OnInit {
     }
   }
 
-}
-@Component({
-  selector: 'app-modal-component',
-  template: `
-    <div class="modal-header">
-      <h4 class="modal-title">Mensaje</h4>
-      <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss()"></button>
-    </div>
-    <div class="modal-body">
-      <p>{{ message }}</p>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-primary" (click)="activeModal.close('Aceptar')">Aceptar</button>
-    </div>
-  `
-})
-export class ModalComponent {
-  @Input() message: string;
-
-  constructor(public activeModal: NgbActiveModal) {}
 }
