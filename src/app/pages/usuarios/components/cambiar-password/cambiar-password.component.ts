@@ -55,8 +55,8 @@ export class CambiarPasswordComponent implements OnInit {
 
   passwordMatchValidator(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: boolean } | null => {
-      const password = control.get('passwordNuevo');
-      const confirmPassword = control.get('passwordRepetir');
+      const password = control.get('nuevaPassword');
+      const confirmPassword = control.get('confirmarPassword');
 
       if (password && confirmPassword && password.value !== confirmPassword.value) {
         return { passwordDiferente: true };
