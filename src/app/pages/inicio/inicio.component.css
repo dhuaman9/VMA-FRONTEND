@@ -14,6 +14,7 @@ h5#tituloModulo{
 
 .navbar-light-custom{
 	background-color: #fff;
+  position: static;
 }
 
 .navbar-light-custom .navbar-nav .nav-link:focus {
@@ -152,12 +153,12 @@ h5#tituloModulo{
 .nav-item a span {
     padding-left: 3px;
 }
-  
+
 /* Estilo para el ícono y texto juntos */
 .nav-link.custom-nav-link i, .nav-link.custom-nav-link .pl-5-txt {
 transition: color 0.3s; /* Añadir una transición suave al color */
 }
-    
+
 .custom-nav-link i{
   color: #f0f0f0;
 }

@@ -10,8 +10,10 @@ import {  ROL_ADMINISTRADOR_DAP,ROL_CONSULTOR, ROL_ADMINISTRADOR_OTI,ROL_REGISTR
 import { UsuarioGuard } from './pages/usuarios/usuario.guard';
 import { EmpresaGuard } from './pages/empresa/empresa.guard';
 import { FichaRegistroGuard } from './pages/ficha-registro/ficha-registro.guard';
-  
-const routes : Routes = 
+import {CambiarPasswordComponent} from "./pages/usuarios/components/cambiar-password/cambiar-password.component";
+import {CambiarPasswordGuard} from "./pages/usuarios/guards/cambiar-password.guard";
+
+const routes : Routes =
   [
     { path : 'login', component : LoginComponent},
     { path : 'modulos', component : ModulosComponent, canActivate : [GuardService] },
@@ -22,6 +24,11 @@ const routes : Routes =
             canActivate : [GuardService, UsuarioGuard],
             data: {expectedRoles: [ROL_ADMINISTRADOR_OTI]},
             loadChildren: () => import('./pages/usuarios/usuarios.module').then(m => m.UsuariosModule)
+          },
+          {
+            path: 'cambiar-password',
+            component: CambiarPasswordComponent,
+            canActivate: [GuardService, CambiarPasswordGuard]
           },
           {
             path: 'anexos',

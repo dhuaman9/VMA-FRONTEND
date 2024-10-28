@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { catchError, take, tap } from 'rxjs/operators';
 import { User } from 'src/app/pages/usuarios/models/user';
+import {CambiarPassword} from "../../../_model/cambiar-password";
 
 
 @Injectable({
@@ -159,5 +160,9 @@ export class UserService {
 
   searchUsers(page: number, size: number, search: string): Observable<any> {
     return this.http.get(`${this.url}/usuario?page=${page}&size=${size}&search=${search}`);
+  }
+
+  cambiarPassword(request: CambiarPassword): Observable<void> {
+    return this.http.post<void>(`${this.url}/usuario/cambiar-password`, request);
   }
 }

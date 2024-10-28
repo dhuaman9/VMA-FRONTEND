@@ -55,11 +55,17 @@ export class SessionService {
     const decodedToken =  helper.decodeToken(this.retornarJwt());
     return decodedToken.username;
   }
-  
-  
+
+  getTipoUsuario(): string {
+    const helper = new JwtHelperService();
+    const decodedToken =  helper.decodeToken(this.retornarJwt());
+    return decodedToken.typeUser;
+  }
+
+
   cerrarSession(){
     localStorage.clear();
     this.router.navigate(['']);
   }
-  
+
 }

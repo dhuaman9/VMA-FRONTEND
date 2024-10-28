@@ -7,19 +7,23 @@ import {RegistrarUsuarioComponent} from "./components/registrar-usuario/registra
 import {EditarUsuarioComponent} from "./components/editar-usuario/editar-usuario.component";
 import {SharedModule} from "../../shared/shared.module";
 import {GlobalFormsComponentsModule} from "../../shared/components/forms/global-forms.module";
+import { CambiarPasswordComponent } from './components/cambiar-password/cambiar-password.component';
+import {CardModule} from "primeng/card";
 
 
 @NgModule({
   declarations: [
     UsuariosComponent,
     RegistrarUsuarioComponent,
-    EditarUsuarioComponent
+    EditarUsuarioComponent,
+    CambiarPasswordComponent
   ],
   imports: [
     CommonModule,
     UsuariosRoutingModule,
     SharedModule,
-    GlobalFormsComponentsModule
+    GlobalFormsComponentsModule,
+    CardModule
   ]
 })
 export class UsuariosModule { }
