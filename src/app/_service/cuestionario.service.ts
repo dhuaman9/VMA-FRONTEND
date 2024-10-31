@@ -15,7 +15,7 @@ export class CuestionarioService {
     url: string = `${environment.HOST}/cuestionarios`;
     userCambio = new Subject<any[]>();
   
-    token: string = sessionStorage.getItem(environment.TOKEN_NAME);
+    token: string = localStorage.getItem(environment.TOKEN_NAME);//dhr a localStorage
     httpOptions : any;
   
   

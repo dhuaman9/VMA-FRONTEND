@@ -11,17 +11,19 @@ export class SessionService {
   constructor(
     private router : Router) { }
 
-  cargarJwt(token : string){
-    sessionStorage.setItem(environment.TOKEN_NAME, token);
+   // Guardar el token en localStorage
+   cargarJwt(token: string){
+    localStorage.setItem(environment.TOKEN_NAME, token);
   }
 
+  // Retornar el token desde localStorage
   retornarJwt(){
-    return sessionStorage.getItem(environment.TOKEN_NAME);
+    return localStorage.getItem(environment.TOKEN_NAME);
   }
 
+  // Eliminar el token de localStorage
   limpiarJwt(){
-    sessionStorage.removeItem(environment.TOKEN_NAME);
-    //sessionStorage.clear();
+    localStorage.removeItem(environment.TOKEN_NAME);
   }
 
   obtenerSubjectJwt(){
@@ -54,9 +56,16 @@ export class SessionService {
     return decodedToken.username;
   }
   
+  getTipoUsuario(): string {
+    const helper = new JwtHelperService();
+    const decodedToken =  helper.decodeToken(this.retornarJwt());
+    return decodedToken.typeUser;
+  }
+
   
   cerrarSession(){
-    sessionStorage.clear();
+    localStorage.clear();
     this.router.navigate(['']);
   }
+  
 }

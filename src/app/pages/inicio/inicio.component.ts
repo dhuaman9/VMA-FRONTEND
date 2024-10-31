@@ -4,11 +4,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../usuarios/services/user.service';
 import { SessionService } from 'src/app/_service/session.service';
 import { Module } from './module';
-import {Message, MessageService} from 'primeng/api';
+import {MenuItem, Message, MessageService} from 'primeng/api';
 import {RegistroVMAService} from 'src/app/pages/vma/services/registroVMA.service';
 import {RegistroVMA} from 'src/app/pages/vma/models/registroVMA';
 import { FichaRegistroService } from '../ficha-registro/services/ficha-registro.service';
-
+import { ROL_ADMINISTRADOR_OTI,ROL_ADMINISTRADOR_DAP, ROL_REGISTRADOR, ROL_CONSULTOR } from 'src/app/utils/var.constant';
 
 declare const $:any;
 declare const attachEventsToPushMenu: any;
@@ -39,7 +39,8 @@ export class InicioComponent implements OnInit {
 
   //para renderizar el p-message, alerta de registro vma
 
-  isRoleRegistrador: boolean = this.sessionService.obtenerRoleJwt().toUpperCase() === 'REGISTRADOR';
+  isRoleRegistrador: boolean = this.sessionService.obtenerRoleJwt().toUpperCase() === ROL_REGISTRADOR;
+  items: MenuItem[] = [];
 
   constructor(
     private loginService : LoginService,
@@ -51,6 +52,15 @@ export class InicioComponent implements OnInit {
     private registroVmaService: RegistroVMAService,
     private fichaRegistroService: FichaRegistroService
   ) {
+    if(this.sessionService.getTipoUsuario().includes('EPS')) {
+      this.items.push(
+        {
+          label: 'Cambiar contraseña',
+          icon: 'pi pi-key',
+          routerLink: '/inicio/cambiar-password'
+        }
+      );
+    }
   }
 
   ngOnInit(): void {
@@ -89,10 +99,10 @@ export class InicioComponent implements OnInit {
         console.error('Error al obtener el periodo activo', error);
       }
     );
-   
+
    // this.renderModules();
     this.shortName = this.sessionService.obtenerShortNameJwt();
-    this.role = this.sessionService.obtenerRoleJwt();
+    this.role = this.sessionService.obtenerRoleJwt().toUpperCase().trim();
     this.userName = this.sessionService.obtenerUserNameJwt();
     this.renderModules(this.role);
 
@@ -108,10 +118,10 @@ export class InicioComponent implements OnInit {
   }
 
   renderModules(role: string){
-    const esAdministradorOTI: boolean = role === "Administrador OTI";
-    const esAdministradorDAP: boolean = role === "Administrador DAP";
-    const esRegistrador: boolean = role === "Registrador";
-    const esConsultor: boolean = role === "Consultor";
+    const esAdministradorOTI: boolean = role === ROL_ADMINISTRADOR_OTI;
+    const esAdministradorDAP: boolean = role === ROL_ADMINISTRADOR_DAP;
+    const esRegistrador: boolean = role === ROL_REGISTRADOR;
+    const esConsultor: boolean = role === ROL_CONSULTOR;
 
     this.modules = [
       {
@@ -123,12 +133,12 @@ export class InicioComponent implements OnInit {
       {
         route : "empresa",
         label : "Empresas",
-        icon : "pi pi-home",
+        icon : "pi pi-building",
         activo: esAdministradorDAP
       },
       {
         route : "ficha-registro",
-        label : "Periodos de registro VMA",
+        label : "Apertura de Fichas de Registro VMA",
         icon : "pi pi-calendar-plus",
         activo: esAdministradorDAP
       },
@@ -136,7 +146,7 @@ export class InicioComponent implements OnInit {
         route : "vma",
         label : "Registrar VMA",
         icon : "pi pi-check-square",
-        activo: esAdministradorDAP || esRegistrador
+        activo: esAdministradorDAP || esRegistrador || esConsultor
       },
       {
         route : "reporte",
@@ -147,7 +157,7 @@ export class InicioComponent implements OnInit {
       {
         route : "anexos",
         label : "Anexos",
-        icon : "pi pi-table",
+        icon : "pi pi-book",
         activo: esAdministradorDAP || esConsultor
       },
     ]

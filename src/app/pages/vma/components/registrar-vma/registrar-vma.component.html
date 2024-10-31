@@ -109,7 +109,7 @@
                   </p-accordionTab>
                 </p-accordion >
 
-                <div class="col-12 flex  justify-content-center" *ngIf="this.isRoleRegistrador; else botonAdmin">
+                <div class="col-12 flex  justify-content-center" *ngIf="this.isRoleRegistrador && !this.isRegistroCompleto; else botonAdmin">
                   <p-button type="button" [disabled]="cargandoProceso$ | async" label="Guardar Progresivamente" class="p-button-success p-button-secondary green-button ml-1" icon="pi pi-check" iconPos="left" [styleClass]="'p-button-success'"
                             (click)="guardadoParcial()"> <!--guardado progresivo, donde ningun campo es requerido, pero si el usuario no llena ningun dato, dar el aviso que no lleno nada, por ende no se guarda nada ni las fechas de registro-->
                   </p-button>

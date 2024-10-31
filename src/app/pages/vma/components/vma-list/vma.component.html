@@ -12,7 +12,7 @@
           </div>
         </div>
         <!-- Filtros -->
-        <div class="card pdn-15"  *ngIf="isRoleAdminAndConsultor">
+        <div class="card pdn-15"  *ngIf="isRoleAdmin || isRoleConsultor">
           <div class="border-0 text-center">
             <h2>Filtros de búsqueda</h2>
           </div>
@@ -41,7 +41,7 @@
                     <span class="p-float-label" *ngSwitchCase="'fechaDesde'">
                                         <p-calendar  [monthNavigator]="true"
                                                     [yearNavigator]="true"
-                                                    [yearRange]="'2000:3000'" inputId="fechaInicio" id="fechaDesde" dateFormat="dd-mm-yy" formControlName="fechaDesde"></p-calendar>
+                                                    [yearRange]="'2000:2500'" inputId="fechaInicio" id="fechaDesde" dateFormat="dd-mm-yy" formControlName="fechaDesde"></p-calendar>
                       <label for="fechaDesde">Fecha Desde</label>
                     </span>
                   </div>
@@ -49,7 +49,7 @@
                     <span class="p-float-label" *ngSwitchCase="'fechaHasta'">
                       <p-calendar [monthNavigator]="true"
                                   [yearNavigator]="true"
-                                  [yearRange]="'2000:3000'" inputId="fechaHasta" id="fechaHasta" dateFormat="dd-mm-yy"  formControlName="fechaHasta" ></p-calendar>
+                                  [yearRange]="'2000:2500'" inputId="fechaHasta" id="fechaHasta" dateFormat="dd-mm-yy"  formControlName="fechaHasta" ></p-calendar>
                       <br>
                       <small *ngIf="filtroForm.get('fechaHasta').errors?.required" style="color: red;" >La fecha hasta es requerida</small>
                       <label for="fechaHasta">Fecha Hasta</label>
@@ -70,12 +70,12 @@
             </form>
           </div>
         </div>
-        <!-- Botones:  Registrar ,EPs sin registrar y  Descargar   excel -->
+        <!-- Botones:  Registrar  y  Descargar   excel -->
         <div class="card pdn-15">
           <div class="card-header border-0"  style="display: flex; justify-content: space-between; align-items: center;">
             <div style="display: flex; align-items: center;">
-              <button  class="btn btn-danger mt-2 mr-2" *ngIf="isRoleAdminAndConsultor"
-                      (click)="descargarReporteEPSsinRegistroVMA()" ><i class="pi pi-download"></i>  EPS sin registrar</button>
+              <!--<button  class="btn btn-danger mt-2 mr-2" *ngIf="isRoleAdminAndConsultor"
+                      (click)="descargarReporteEPSsinRegistroVMA()" ><i class="pi pi-download"></i>  EPS sin registrar</button> -->
 
               <button  class="btn btn-success mt-2 mr-2" *ngIf="isRoleRegistrador"
                       (click)="redirectToForm()"
@@ -87,8 +87,8 @@
                       </span>
             </div>
             <div style="margin-left: auto;">
-            <button pButton label="Descargar Excel" pTooltip="Por defecto, se descargará todo el listado filtrado." tooltipPosition="top" class="p-button-success float-right" icon="pi pi-download" iconPos="right"
-                    *ngIf="isRoleAdminAndConsultor"
+            <button pButton label="Descargar Reporte" pTooltip="Por defecto, se descargará todo el listado filtrado." tooltipPosition="top" class="p-button-success float-right" icon="pi pi-file-excel" iconPos="right"
+                    *ngIf="isRoleAdmin || isRoleConsultor"
                     (click)="descargar()"></button>
             </div>
           </div>
@@ -103,9 +103,12 @@
                 <p-table #dt1 [value]="ListRegistroVMA"
                          [globalFilterFields]="['empresa.nombre', 'estado', 'empresa.tipo','empresa.regimen','created_at', 'fichaRegistro.anio']"
                          responsiveLayout="scroll"
+                         [(selection)]="selectedRegistrosVMA"
+                         dataKey="idRegistroVma" 
                          [lazy]="true"
                          [paginator]="true"
                          [rows]="10"
+                         [rowHover]="true"
                          [showCurrentPageReport]="true"
                          [totalRecords]="totalRecords"
                          [rowsPerPageOptions]="[10,25,50,100]"
@@ -122,45 +125,45 @@
                   </ng-template>
                   <ng-template pTemplate="header">
                     <tr>
-                      <th style="width: 3rem" *ngIf="!isRoleRegistrador">
+                      <th style="width: 5%;" *ngIf="!isRoleRegistrador">
                         <!--<input type="checkbox" class="custom-checkbox" [formControl]="formCheckBox"> -->
                       </th>
                       <th style="text-align:center;width: 5%;">N°</th>
-                      <th>Empresa EPS</th>
-                      <th style="width: 15%;">Tamaño de la EPS</th>
+                      <th style="width: 19%;">Empresa EPS</th>
+                      <th style="width: 13%;">Tamaño de la EPS</th>
                       <th style="width: 10%;">Régimen</th>
-                      <th style="width: 12%;">Estado</th>
-                      <th style="width: 15%;">Fecha de registro</th>
+                      <th style="width: 13%;">Estado</th>
+                      <th style="width: 13%;">Fecha de registro</th>
                       <th style="text-align:center;width: 7%;">Año</th>
-                      <th style="text-align:center;width: 7%;">Acciones</th>
+                      <th style="text-align:center;width: 8%;">Acciones</th>
                     </tr>
                   </ng-template>
                   <ng-template pTemplate="body" let-item let-ri="rowIndex" let-first="first">
                     <tr>
-                     <!--  <td *ngIf="!isRoleRegistrador ">-->
-                      <td *ngIf="!isRoleRegistrador && (item.estado === 'COMPLETO' || item.estado === 'INCOMPLETO')">
-                        <input class="custom-checkbox" type="checkbox" (change)="onCheckboxChange($event, item)"  [checked]="item.seleccionado">
+                     <td *ngIf="!isRoleRegistrador">
+                       <p-tableCheckbox *ngIf="!isRoleRegistrador && (item.estado === estados[0]  || item.estado === estados[1] )" [value]="item"></p-tableCheckbox>
                       </td>
+                      
                       <td style="text-align:center;">{{ri + 1}}</td>
                       <td>{{item.empresa?.nombre}}</td>
                       <td>{{item.empresa.tipo}}</td>
                       <td>{{item.empresa.regimen}}</td>
                       <td>
-                        <p-tag styleClass="p-mr-2"  [style]="{'font-size': '15px', 'width': '105px', 'text-align': 'center'}"
-                        [severity]="item.estado === 'COMPLETO' ? 'success' : 'warning'"
-                        [value]="item.estado">
+                        <p-tag styleClass="p-mr-2"  [style]="{'font-size': '14px', 'width': '115px'}"
+                        [severity]="item.estado === estados[0] ? 'success' : (item.estado === estados[1]?'warning':'danger')"
+                        [value]="item.estado?item.estado:estados[2]">
                         </p-tag>
                       </td>
                       <td>{{item.createdAt | date: 'dd-MM-yyyy HH:mm:ss'}}</td>
                       <td style="text-align:center;">{{item.fichaRegistro.anio}}</td>
                       <td style="text-align:center" class="">
                         <div class="d-flex gap-2">
-                          <button pButton type="button" [icon]="isRoleRegistrador && item.estado !== 'COMPLETO' ? 'pi pi-pencil' : 'pi pi-eye'" style="width: 30px; height: 20px;"
-                                  [pTooltip]="isRoleRegistrador && item.estado !== 'COMPLETO' ? 'Editar registro' : 'Visualizar registro'" tooltipPosition="top"
+                          <button  pButton type="button" [icon]="isRoleRegistrador && item.estado !== estados[0]  ? 'pi pi-pencil' : 'pi pi-eye'" style="width: 30px; height: 20px;"
+                                  [pTooltip]="isRoleRegistrador && item.estado !== estados[0] ? 'Editar registro' : 'Visualizar registro'" tooltipPosition="top"
                                   (click)="redirectToFormUpdate(item.idRegistroVma)">
                           </button>
                           <button pButton type="button" style="width: 30px; height: 20px;"
-                                  *ngIf="isRoleAdminAndConsultor && item.estado === 'COMPLETO'"
+                                  *ngIf="isRoleAdmin && item.estado === estados[0] "
                                   [pTooltip]="'Volver a editar'" tooltipPosition="top"
                                   [icon]="'pi pi-pencil'"
                                   (click)="cambiarEstadoIncompleto(item.idRegistroVma)">
@@ -169,6 +172,13 @@
                       </td>
                     </tr>
                   </ng-template>
+                  <ng-template pTemplate="emptymessage" let-columns>
+                    <tr>
+                        <td [attr.colspan]="9" style="text-align: center;">
+                            No se encontraron registros.
+                        </td>
+                    </tr>
+                </ng-template>
 
                 </p-table>
               </div>

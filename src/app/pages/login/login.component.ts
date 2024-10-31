@@ -3,8 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginService } from './../../_service/login.service';
 import { SessionService } from 'src/app/_service/session.service';
-import { INP_USUARIO, INP_CONTRASENIA, MSG_USUARIO_PASS_ERROR, ROL_ADMINISTRADOR_OTI, 
-   ROL_ADMINISTRADOR_DAP, ROL_REGISTRADOR, ROL_CONSULTOR} from '../../utils/var.constant';
+import { INP_USUARIO, INP_CONTRASENIA, MSG_USUARIO_PASS_ERROR, ROL_ADMINISTRADOR_OTI, ROL_ADMINISTRADOR_DAP, ROL_REGISTRADOR, ROL_CONSULTOR} from '../../utils/var.constant';
 
 
 @Component({

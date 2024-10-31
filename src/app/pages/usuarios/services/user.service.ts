@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { catchError, take, tap } from 'rxjs/operators';
 import { User } from 'src/app/pages/usuarios/models/user';
+import {CambiarPassword} from "../../../_model/cambiar-password";
 
 
 @Injectable({
@@ -14,7 +15,9 @@ export class UserService {
   url: string = `${environment.HOST}`;
   userCambio = new Subject<any[]>();
 
-  token: string = sessionStorage.getItem(environment.TOKEN_NAME);
+  //token: string = sessionStorage.getItem(environment.TOKEN_NAME);
+  token: string = localStorage.getItem(environment.TOKEN_NAME);
+
   httpOptions : any;
   private responsePage = new BehaviorSubject<any>(null);
 
@@ -74,11 +77,7 @@ export class UserService {
     });
   }
 
-  /*create(user: User) {
-    return this.http.post<User>(this.url+'/usuario', user, {
-      headers: new HttpHeaders().set('Content-Type', 'application/json')
-    });
-  }*/
+
 
   create(user: User) : Observable<any>  {
      return this.http.post<any>(this.url +'/usuario', user, {
@@ -120,7 +119,6 @@ export class UserService {
     return this.http.get<any>(`${this.url}/sunass/user/findbyusername?userName=` + nombre);
   }
 
-  //dhr
   findById(id: number){
     this.httpOptions = {
         headers : new HttpHeaders({
@@ -157,5 +155,9 @@ export class UserService {
 
   searchUsers(page: number, size: number, search: string): Observable<any> {
     return this.http.get(`${this.url}/usuario?page=${page}&size=${size}&search=${search}`);
+  }
+
+  cambiarPassword(request: CambiarPassword): Observable<void> {
+    return this.http.post<void>(`${this.url}/usuario/cambiar-password`, request);
   }
 }

@@ -8,8 +8,9 @@ import { UserService } from 'src/app/pages/usuarios/services/user.service';
 import { ValidateInputs, validateInput } from 'src/app/utils/validate-inputs';
 import { EmpresaService } from 'src/app/pages/empresa/services/empresa.service';
 import { Empresa } from 'src/app/pages/empresa/models/empresa';
-import { TIPO_SUNASS, TIPO_EPS , PASSWORD_REGEX} from 'src/app/utils/var.constant';
-import Swal from 'sweetalert2'
+import { TIPO_SUNASS, TIPO_EPS , ROL_ADMINISTRADOR_OTI,ROL_ADMINISTRADOR_DAP,
+  ROL_REGISTRADOR,ROL_CONSULTOR,PASSWORD_REGEX} from 'src/app/utils/var.constant';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -78,7 +79,6 @@ export class EditarUsuarioComponent implements OnInit {
 
   getDataUser(idUser: number) {
     this.userService.findById(idUser).subscribe(responseDataUser => {
-      console.log("respons(eDataUser=>", responseDataUser);
       this.setDataUser(responseDataUser);
       this.onTipoUsuarioChange();
     });
@@ -92,8 +92,7 @@ export class EditarUsuarioComponent implements OnInit {
   }
 
   setDataUser(userData: any) {
-    console.log('Datos de usuario:', userData);
-
+   
     this.registroForm.patchValue({
       id: userData.id,
       tipo: userData.tipo,
@@ -116,14 +115,14 @@ export class EditarUsuarioComponent implements OnInit {
 
     if(this.registroForm.get('tipo').value === TIPO_SUNASS){
       this.perfiles = [
-        {id:1, description:'Administrador OTI'},
-        {id:2, description:'Administrador DAP'},
-        {id:4, description:'Consultor'}];
+        {id:1, description: ROL_ADMINISTRADOR_OTI},
+        {id:2, description: ROL_ADMINISTRADOR_DAP},
+        {id:4, description: ROL_CONSULTOR}];
 
     } else if(this.registroForm.get('tipo').value === TIPO_EPS) {
       this.perfiles = [
-        {id:3, description:'Registrador'},
-        {id:4, description:'Consultor'}];
+        {id:3, description:ROL_REGISTRADOR},
+        {id:4, description: ROL_CONSULTOR}];
 
     }
     this.setEnableDisableIputs();
@@ -211,7 +210,8 @@ export class EditarUsuarioComponent implements OnInit {
       confirmButtonColor: "#DF2A3D",
       cancelButtonColor: "#3085d6",
       confirmButtonText: "SI",
-      cancelButtonText: "No"
+      cancelButtonText: "NO",
+      allowOutsideClick: false
     }).then((result) => {
       if (result.isConfirmed) {
         this.onCancel();
@@ -237,7 +237,7 @@ export class EditarUsuarioComponent implements OnInit {
 
 
   private setEnableDisableIputs(){
-    console.log('this.registroForm.get(tipo).value', this.registroForm.get('tipo').value);
+  
     if(this.registroForm.get('tipo').value === TIPO_SUNASS){
       this.mostrarCampo =false; //por ejemplo se va ocultar el campo EPS
       this.isDropUsersDisable = false;
