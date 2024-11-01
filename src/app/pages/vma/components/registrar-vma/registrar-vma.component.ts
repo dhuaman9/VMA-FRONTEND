@@ -16,6 +16,7 @@ import {SessionService} from 'src/app/_service/session.service';
 import {UploadService} from 'src/app/_service/upload.service';
 import {finalize, switchMap, tap} from "rxjs/operators";
 import { RADIO_BUTTON_NO,ESTADO_COMPLETO, ROL_REGISTRADOR } from 'src/app/utils/var.constant';
+import {isVmaVigente} from "../../vma.utils";
 
 @Component({
   selector: 'app-registrar-vma',
@@ -45,6 +46,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
   cargandoProceso$: Observable<boolean>;
   suscripcionRegistro: Subscription;
   isRegistroCompleto: boolean;
+  isVmaVigente: boolean;
 
   constructor(
     private router: Router,
@@ -84,7 +86,10 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
     if(this.idRegistroVMA) {
       this.vmaService.findById(this.idRegistroVMA)
         .pipe(
-          tap((response: any) => this.isRegistroCompleto = response.estado === ESTADO_COMPLETO),
+          tap((response: any) => {
+            this.isVmaVigente = isVmaVigente(response);
+            this.isRegistroCompleto = response.estado === ESTADO_COMPLETO;
+          }),
           switchMap(() => this.cuestionarioService.cuestionarioConRespuestas(this.idRegistroVMA)),
           tap((response: any) => {
             this.cuestionario = response.item;
@@ -106,7 +111,6 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
   }
 
   isFile(value: any): boolean {
- 
     return value instanceof File;
   }
 
@@ -180,7 +184,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
                 confirmButtonText: 'Aceptar',
                 //allowOutsideClick: false  //evita hacer click fuera del alert
               }).then((result) => {
-              
+
               });
             }
           );
@@ -214,7 +218,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
       confirmButtonText: 'Aceptar'
      // allowOutsideClick: false    //evita hacer click fuera del alert
     });
-   
+
     this.router.navigate(['/inicio/vma']);
     this.vmaService.sendRegistroCompleto(true);
   }
@@ -229,7 +233,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
   onFileChange(event: any, formControl: AbstractControl): void {
     const file = event.files[0];
     if (file) {
-      
+
       formControl.patchValue(file);
     }
   }
@@ -301,7 +305,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
       this.formGroupPregunta = preguntaFormGroup;
     }
 
-    if (!this.isRoleRegistrador || this.isRegistroCompleto) {
+    if (!this.isRoleRegistrador || this.isRegistroCompleto || !this.isVmaVigente) {
       preguntaFormGroup.disable();
     }
 
