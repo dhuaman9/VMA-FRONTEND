@@ -211,8 +211,8 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
       title: isGuardadoCompleto ? 'Registro completado': 'Se ha realizado el guardado Progresivo',   //'Registro actualizado'
       // text:  isGuardadoCompleto? 'Su información ha sido registrada y enviada.' : 'Registrado guardado parcialmente',
       icon: 'success',
-      confirmButtonText: 'Aceptar',
-      allowOutsideClick: false    //evita hacer click fuera del alert
+      confirmButtonText: 'Aceptar'
+     // allowOutsideClick: false    //evita hacer click fuera del alert
     });
    
     this.router.navigate(['/inicio/vma']);

@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../usuarios/services/user.service';
 import { SessionService } from 'src/app/_service/session.service';
 import { Module } from './module';
-import {Message, MessageService} from 'primeng/api';
+import {MenuItem, Message, MessageService} from 'primeng/api';
 import {RegistroVMAService} from 'src/app/pages/vma/services/registroVMA.service';
 import {RegistroVMA} from 'src/app/pages/vma/models/registroVMA';
 import { FichaRegistroService } from '../ficha-registro/services/ficha-registro.service';
@@ -40,6 +40,7 @@ export class InicioComponent implements OnInit {
   //para renderizar el p-message, alerta de registro vma
 
   isRoleRegistrador: boolean = this.sessionService.obtenerRoleJwt().toUpperCase() === ROL_REGISTRADOR;
+  items: MenuItem[] = [];
 
   constructor(
     private loginService : LoginService,
@@ -51,6 +52,15 @@ export class InicioComponent implements OnInit {
     private registroVmaService: RegistroVMAService,
     private fichaRegistroService: FichaRegistroService
   ) {
+    if(this.sessionService.getTipoUsuario().includes('EPS')) {
+      this.items.push(
+        {
+          label: 'Cambiar contraseña',
+          icon: 'pi pi-key',
+          routerLink: '/inicio/cambiar-password'
+        }
+      );
+    }
   }
 
   ngOnInit(): void {
@@ -89,7 +99,7 @@ export class InicioComponent implements OnInit {
         console.error('Error al obtener el periodo activo', error);
       }
     );
-   
+
    // this.renderModules();
     this.shortName = this.sessionService.obtenerShortNameJwt();
     this.role = this.sessionService.obtenerRoleJwt().toUpperCase().trim();

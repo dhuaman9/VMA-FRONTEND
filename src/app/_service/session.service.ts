@@ -56,6 +56,12 @@ export class SessionService {
     return decodedToken.username;
   }
   
+  getTipoUsuario(): string {
+    const helper = new JwtHelperService();
+    const decodedToken =  helper.decodeToken(this.retornarJwt());
+    return decodedToken.typeUser;
+  }
+
   
   cerrarSession(){
     localStorage.clear();

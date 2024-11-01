@@ -37,6 +37,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MessageService } from 'primeng/api';
 import {MessageModule} from "primeng/message";
 import {SharedModule} from "./shared/shared.module";
+import {MenuModule} from "primeng/menu";
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
 
@@ -82,8 +83,9 @@ export function tokenGetter(){
         BrowserAnimationsModule,
         GlobalFormsComponentsModule,
         SharedModule,
-        MessageModule
-    ], 
+        MessageModule,
+        MenuModule
+    ],
   providers: [MessageService,DatePipe,
     { provide : LocationStrategy, useClass: HashLocationStrategy },
     interceptorProvider, ReporteService

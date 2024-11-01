@@ -224,7 +224,8 @@ export class VmaComponent implements OnInit {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "SI",
-      cancelButtonText: 'NO'
+      cancelButtonText: 'NO',
+      allowOutsideClick: false
     }).then((result) => {
       if (result.isConfirmed) {
         this.first = 0;

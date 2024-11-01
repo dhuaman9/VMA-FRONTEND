@@ -158,8 +158,8 @@
                       <td style="text-align:center;">{{item.fichaRegistro.anio}}</td>
                       <td style="text-align:center" class="">
                         <div class="d-flex gap-2">
-                          <button pButton type="button" [icon]="isRoleRegistrador && item.estado !== estados[0]  ? 'pi pi-pencil' : 'pi pi-eye'" style="width: 30px; height: 20px;"
-                                  [pTooltip]="isRoleRegistrador && item.estado !== estados[0]  ? 'Editar registro' : 'Visualizar registro'" tooltipPosition="top"
+                          <button  pButton type="button" [icon]="isRoleRegistrador && item.estado !== estados[0]  ? 'pi pi-pencil' : 'pi pi-eye'" style="width: 30px; height: 20px;"
+                                  [pTooltip]="isRoleRegistrador && item.estado !== estados[0] ? 'Editar registro' : 'Visualizar registro'" tooltipPosition="top"
                                   (click)="redirectToFormUpdate(item.idRegistroVma)">
                           </button>
                           <button pButton type="button" style="width: 30px; height: 20px;"
