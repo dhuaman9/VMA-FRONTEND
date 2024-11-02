@@ -18,3 +18,7 @@
     border-color: #007ad9;
     color: #ffffff;
 }
+
+::ng-deep p-dialog .p-dialog-mask {
+  z-index: 1059 !important;
+}

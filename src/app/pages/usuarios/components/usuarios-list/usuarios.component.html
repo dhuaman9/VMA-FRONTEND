@@ -43,7 +43,7 @@
                                                 <th style="width: 5%;text-align:center;">EDITAR</th>
                                             </tr>
                                         </ng-template>
-                                        
+
                                         <ng-template pTemplate="body" let-item let-ri="rowIndex">
                                             <tr>
                                                 <td style="text-align: center;">{{ ri+1 }}</td>
@@ -53,12 +53,17 @@
                                                 <td>{{ item.apellidos | uppercase}}</td>
                                                 <td>{{ item.nombres | uppercase}}</td>
                                                 <td>
-                                                    <p-tag styleClass="p-mr-2"  
+                                                    <p-tag styleClass="p-mr-2"
                                                         [style]="{'font-size': '14px', 'width': '100px', 'text-align': 'center'}"
-                                                        [severity]="item.estado === true ? 'success' : 'danger'" 
+                                                        [severity]="item.estado === true ? 'success' : 'danger'"
                                                         [value]="item.estado === true ? 'ACTIVO' : 'INACTIVO'">
                                                     </p-tag>
                                                 </td>
+                                              <td class="text-center">
+                                                <button pButton type="button" icon="pi pi-lock" style="width: 30px; height: 20px;"
+                                                        pTooltip="Actualizar contraseña" tooltipPosition="top" (click)="cambiarPasswordUsuario(item.username)">
+                                                </button>
+                                              </td>
                                                 <td style="text-align:center">
                                                     <button pButton type="button" icon="pi pi-pencil" style="width: 30px; height: 20px;"
                                                         pTooltip="Editar registro" tooltipPosition="top" (click)="redirectToFormUpdate(item.id)">
@@ -82,5 +87,8 @@
         </div>
     </div>
 </div>
+<p-dialog  header="Actualizar contraseña" [(visible)]="modalAbierto" [style]="{width: '30vw'}" [modal]="true" (onHide)="usernameSeleccionado = undefined">
+  <app-cambiar-password-usuario (cerrarModal)="modalAbierto = false" [username]="usernameSeleccionado" *ngIf="usernameSeleccionado"></app-cambiar-password-usuario>
+</p-dialog>
 
 <!--<app-loading *ngIf="isLoading"></app-loading>-->

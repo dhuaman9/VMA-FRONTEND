@@ -9,6 +9,7 @@ import {SharedModule} from "../../shared/shared.module";
 import {GlobalFormsComponentsModule} from "../../shared/components/forms/global-forms.module";
 import { CambiarPasswordComponent } from './components/cambiar-password/cambiar-password.component';
 import {CardModule} from "primeng/card";
+import { CambiarPasswordUsuarioComponent } from './components/cambiar-password-usuario/cambiar-password-usuario.component';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import {CardModule} from "primeng/card";
     UsuariosComponent,
     RegistrarUsuarioComponent,
     EditarUsuarioComponent,
-    CambiarPasswordComponent
+    CambiarPasswordComponent,
+    CambiarPasswordUsuarioComponent
   ],
   imports: [
     CommonModule,

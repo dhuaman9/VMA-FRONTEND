@@ -38,6 +38,8 @@ export class UsuariosComponent implements OnInit {
   paramsPagination: ParamsPagination;
   numeroPagina: number = 0;
   private pageUsers$: Subscription;
+  modalAbierto: boolean;
+  usernameSeleccionado: string;
 
   constructor(
     public route : ActivatedRoute,
@@ -129,7 +131,7 @@ export class UsuariosComponent implements OnInit {
     console.log('Number items per page: ' + event.itemsPerPage);
     this.cantidadRegistrosLista();
     this.userService.page( event.page,this.sizeSort).subscribe((data:any) => {
-   
+
       this.ListUser=data.content;
     });
   }
@@ -149,5 +151,10 @@ export class UsuariosComponent implements OnInit {
   goToFirstPage(): void {
     this.table.first = 0;
     this.table.onLazyLoad.emit({ first: 0, rows: this.table.rows, sortField: this.table.sortField, sortOrder: this.table.sortOrder });
+  }
+
+  cambiarPasswordUsuario(usuername: string): void {
+    this.modalAbierto = true;
+    this.usernameSeleccionado = usuername;
   }
 }
