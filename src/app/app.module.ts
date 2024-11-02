@@ -38,6 +38,7 @@ import { MessageService } from 'primeng/api';
 import {MessageModule} from "primeng/message";
 import {SharedModule} from "./shared/shared.module";
 import {MenuModule} from "primeng/menu";
+import { RecuperarPasswordComponent } from './pages/anonimo/components/recuperar-password/recuperar-password.component';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
 
@@ -60,7 +61,8 @@ export function tokenGetter(){
     TelefonoInputDirective,
     UserNameInputDirective,
     PieChartComponent,
-    BarChartComponent
+    BarChartComponent,
+    RecuperarPasswordComponent
   ],
     imports: [
         BrowserModule,

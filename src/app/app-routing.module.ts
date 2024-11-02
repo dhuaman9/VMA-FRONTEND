@@ -12,10 +12,12 @@ import { EmpresaGuard } from './pages/empresa/empresa.guard';
 import { FichaRegistroGuard } from './pages/ficha-registro/ficha-registro.guard';
 import {CambiarPasswordComponent} from "./pages/usuarios/components/cambiar-password/cambiar-password.component";
 import {CambiarPasswordGuard} from "./pages/usuarios/guards/cambiar-password.guard";
+import {RecuperarPasswordComponent} from "./pages/anonimo/components/recuperar-password/recuperar-password.component";
 
 const routes : Routes =
   [
     { path : 'login', component : LoginComponent},
+    { path : 'recuperar-password/:token', component : RecuperarPasswordComponent},
     { path : 'modulos', component : ModulosComponent, canActivate : [GuardService] },
     { path : 'inicio', component : InicioComponent , children :
         [
