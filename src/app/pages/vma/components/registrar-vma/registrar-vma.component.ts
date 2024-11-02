@@ -100,6 +100,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
     } else {
       this.cuestionarioService.findCuestionarioByIdMax().subscribe((response: any) => {
         this.cuestionario = response.item;
+        this.isVmaVigente = true;
         this.buildForm();
       })
     }
