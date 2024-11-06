@@ -11,5 +11,6 @@ export class RegistroVMA{
 	createdAt: String;  //String
 	updatedAt: String;  //String
     seleccionado?: boolean;
+    vigente?: boolean;
 
 }

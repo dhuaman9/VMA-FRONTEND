@@ -70,12 +70,12 @@
             <app-validate-inputs-form [form]="registroForm" formInput='username' labelInput="Usuario">
             </app-validate-inputs-form>
           </div>
-          <div class="field col-12 md:col-4">
+         <!-- <div class="field col-12 md:col-4">
             <label>Contraseña:</label>
             <input id="password" type="password" pInputText formControlName="password" maxlength="255" autocomplete="off"  />
             <app-validate-inputs-form [form]="registroForm" formInput='password' labelInput="Contraseña">
             </app-validate-inputs-form>
-          </div>
+          </div>  -->
           <div class="field col-12 md:col-4">
             <label>Teléfono <span style="color: #FA7272;" *ngIf="isFieldRequired('telefono')"> * </span></label>
             <input id="telefono" formControlName="telefono" (input)="validateInputForm('telefono','numerico')" maxlength="9"

@@ -5,6 +5,7 @@ import { environment } from '../../../../environments/environment';
 import { catchError, take, tap } from 'rxjs/operators';
 import { User } from 'src/app/pages/usuarios/models/user';
 import {CambiarPassword} from "../../../_model/cambiar-password";
+import {CambiarPasswordUsuario} from "../models/cambiar-password-usuario";
 
 
 @Injectable({
@@ -159,5 +160,9 @@ export class UserService {
 
   cambiarPassword(request: CambiarPassword): Observable<void> {
     return this.http.post<void>(`${this.url}/usuario/cambiar-password`, request);
+  }
+
+  cambiarPasswordUsuario(request: CambiarPasswordUsuario): Observable<void> {
+    return this.http.post<void>(`${this.url}/usuario/cambiar-password-usuario`, request);
   }
 }

@@ -104,7 +104,7 @@
                          [globalFilterFields]="['empresa.nombre', 'estado', 'empresa.tipo','empresa.regimen','created_at', 'fichaRegistro.anio']"
                          responsiveLayout="scroll"
                          [(selection)]="selectedRegistrosVMA"
-                         dataKey="idRegistroVma" 
+                         dataKey="idRegistroVma"
                          [lazy]="true"
                          [paginator]="true"
                          [rows]="10"
@@ -143,7 +143,7 @@
                      <td *ngIf="!isRoleRegistrador">
                        <p-tableCheckbox *ngIf="!isRoleRegistrador && (item.estado === estados[0]  || item.estado === estados[1] )" [value]="item"></p-tableCheckbox>
                       </td>
-                      
+
                       <td style="text-align:center;">{{ri + 1}}</td>
                       <td>{{item.empresa?.nombre}}</td>
                       <td>{{item.empresa.tipo}}</td>
@@ -158,8 +158,8 @@
                       <td style="text-align:center;">{{item.fichaRegistro.anio}}</td>
                       <td style="text-align:center" class="">
                         <div class="d-flex gap-2">
-                          <button  pButton type="button" [icon]="isRoleRegistrador && item.estado !== estados[0]  ? 'pi pi-pencil' : 'pi pi-eye'" style="width: 30px; height: 20px;"
-                                  [pTooltip]="isRoleRegistrador && item.estado !== estados[0] ? 'Editar registro' : 'Visualizar registro'" tooltipPosition="top"
+                          <button pButton type="button" [icon]="isRoleRegistrador && item.estado !== estados[0] && item.vigente  ? 'pi pi-pencil' : 'pi pi-eye'" style="width: 30px; height: 20px;"
+                                  [pTooltip]="isRoleRegistrador && item.estado !== estados[0] && item.vigente  ? 'Editar registro' : 'Visualizar registro'" tooltipPosition="top"
                                   (click)="redirectToFormUpdate(item.idRegistroVma)">
                           </button>
                           <button pButton type="button" style="width: 30px; height: 20px;"
