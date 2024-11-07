@@ -165,4 +165,8 @@ export class UserService {
   cambiarPasswordUsuario(request: CambiarPasswordUsuario): Observable<void> {
     return this.http.post<void>(`${this.url}/usuario/cambiar-password-usuario`, request);
   }
+
+  actualizarTokenPassword(userId: number): Observable<void> {
+    return this.http.put<void>(`${this.url}/usuario/actualizar-token-password?userId=${userId || ''}`, {});
+  }
 }
