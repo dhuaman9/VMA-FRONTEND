@@ -87,7 +87,7 @@
             <p><label>Estado:</label></p>
             <p-inputSwitch formControlName="estado" id="estado"></p-inputSwitch>
           </div>
-          <div class="col-4">
+          <div class="col-4" *ngIf="isUsuarioEPS">
             <button pButton type="button" label="RESTABLECER PASSWORD" class="p-button-text" (click)="actualizarTokenPassword()"></button>
           </div>
           <div class="col-12 flex  justify-content-center">

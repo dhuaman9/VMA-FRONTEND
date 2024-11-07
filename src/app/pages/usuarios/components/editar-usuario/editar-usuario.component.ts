@@ -30,6 +30,7 @@ export class EditarUsuarioComponent implements OnInit {
   isDropUsersDisable = false;
   perfiles: GenericCombo[] = [];
   mostrarCampo: boolean = true;
+  isUsuarioEPS: boolean = false;
 
 
   usuariosSunass: {label: string, value: any}[] = [];
@@ -101,7 +102,8 @@ export class EditarUsuarioComponent implements OnInit {
   }
 
   getDataUser(idUser: number) {
-    this.userService.findById(idUser).subscribe(responseDataUser => {
+    this.userService.findById(idUser).subscribe((responseDataUser: any) => {
+      this.isUsuarioEPS = responseDataUser.tipo === 'EPS';
       this.setDataUser(responseDataUser);
       this.onTipoUsuarioChange();
     });

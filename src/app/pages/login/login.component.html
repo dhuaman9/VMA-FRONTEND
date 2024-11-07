@@ -23,13 +23,13 @@
             <img src="./assets/images/isotipo-sunass.png" alt="isotipo sunass" style="max-width: 90px;">
           </div>
           <h2 class="text-center txt-colorblue">Inicio de Sesión</h2>
-         
+
         </div>
 
         <form (ngSubmit)="iniciarSesion()">
 
           <div class="form-outline mb-to-login-v1 inputWithIcon">
-            <input type="text" [(ngModel)]="user" name="user" class="form-control form-control-lg input-form-login" 
+            <input type="text" [(ngModel)]="user" name="user" class="form-control form-control-lg input-form-login"
             autofocus="autofocus" placeholder="Usuario" autocomplete="off" data-1p-ignore data-bwignore
             data-lpignore="true" data-form-type="other">
             <i class="fa fa-user fa-lg fa-fw" aria-hidden="true"></i>
@@ -41,9 +41,9 @@
             <i class="fa fa-lock fa-lg fa-fw" aria-hidden="true"></i>
           </div>
 
-          
+
           <button class="btn btn-blue btn-custom-login btn-md btn-block paddinglr3 mt-5" type="submit" *ngIf="!spinnerLogin">Iniciar sesión</button>
-          
+
         </form>
 
         <div class="text-center pt-4">
@@ -51,15 +51,19 @@
             <span class="sr-only">Cargando...</span>
           </div>
         </div>
-  
+
+        <div class="alert alert-default-warning alert-error-form" *ngIf="isPasswordNoCambiado">
+          Para acceder al sistema debe cambiar su contraseña en el siguiente enlace: <a style="color: #0b6e95" [routerLink]="['/recuperar-password', token]">Clic aquí</a>
+        </div>
+
         <div id="msjFailed" class="alert alert-danger text-center alert-error-form" *ngIf="msjError">
           {{msjError}}
         </div>
 
       </div>
 
-      
-      
+
+
     </div>
 
   </div>

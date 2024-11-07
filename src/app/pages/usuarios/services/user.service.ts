@@ -167,6 +167,6 @@ export class UserService {
   }
 
   actualizarTokenPassword(userId: number): Observable<void> {
-    return this.http.put<void>(`${this.url}/usuario/actualizar-token-password?userId=${userId || ''}`, {});
+    return this.http.put<void>(`${this.url}/usuario/${userId}/actualizar-token-password`, {});
   }
 }
