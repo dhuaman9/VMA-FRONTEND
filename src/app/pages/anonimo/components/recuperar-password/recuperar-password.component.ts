@@ -16,11 +16,11 @@ export class RecuperarPasswordComponent implements OnInit {
   form: FormGroup;
   cargando: boolean;
   token: TokenPassword;
+  tokenExpirado: boolean;
 
   constructor(private activatedRoute: ActivatedRoute,
               private tokenPasswordService: TokenPasswordService,
               private router: Router) {
-    const pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,15}$/;
     this.form = new FormGroup({
       nuevaPassword: new FormControl(null, [Validators.required, Validators.pattern(PASSWORD_REGEX)]),
       repetirPassword: new FormControl(null, [Validators.required, Validators.pattern(PASSWORD_REGEX)])
@@ -31,7 +31,6 @@ export class RecuperarPasswordComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
       const token = params['token'];
-      console.log(token)
 
       if(token) {
         this.tokenPasswordService.getTokenPassword(token)
@@ -44,12 +43,13 @@ export class RecuperarPasswordComponent implements OnInit {
     });
   }
 
-  private onSuccess = (token: TokenPassword) => {
+  private onSuccess = (token: TokenPassword): void => {
     this.token = token;
+    this.tokenExpirado = new Date() > new Date(token.fechaExpiracion);
+    console.log(new Date(token.fechaExpiracion) > new Date())
   }
 
   cambiarPassword(): void {
-    console.log(this.form)
     if(this.form.valid) {
       this.tokenPasswordService.recuperarPassword(this.token.token, this.form.value)
         .pipe(
