@@ -12,7 +12,7 @@
             <p-radioButton name="tipo" value="SUNASS" formControlName="tipo" label="Sunass" (onClick)="onTipoUsuarioChange()" class="mr-4"></p-radioButton>  <!--  style="margin-right: 50px" , pendiente de ubicar este style en el css. sale error en la consola-->
             <p-radioButton name="tipo" value="EPS" formControlName="tipo" label="Empresa EPS" (onClick)="onTipoUsuarioChange()" class="ml-4"></p-radioButton>
           </div>
-         
+
           <div class="field col-12 md:col-4">
             <label>Perfil <span style="color: #FA7272;" *ngIf="isFieldRequired('perfil')"> * </span></label>
                 <p-dropdown inputId="perfil" [options]="perfiles" optionLabel="description"
@@ -25,7 +25,7 @@
           <div class="field col-12 md:col-4" >
             <label>Usuario <span style="color: #FA7272;" *ngIf="isFieldRequired('usuario')"> * </span></label>
             <p-dropdown inputId="usuario" [options]="usuariosSunass" placeholder="Seleccionar"
-              formControlName="usuario" [showClear]="true" [disabled]="isDropUsersDisable" 
+              formControlName="usuario" [showClear]="true" [disabled]="isDropUsersDisable"
               [filter]="true" (onChange)="onUserChange($event)">
             </p-dropdown>
             <app-validate-inputs-form [form]="registroForm" formInput='usuario' labelInput="Usuario">
@@ -39,14 +39,14 @@
           </div>
           <div class="field col-12 md:col-4">
             <label>Nombres <span style="color: #FA7272;" *ngIf="isFieldRequired('nombres')"> * </span></label>
-            <input id="nombre" type="text" pInputText (input)="validateInputForm('nombres','alfabetico')" 
+            <input id="nombre" type="text" pInputText (input)="validateInputForm('nombres','alfabetico')"
               formControlName="nombres" maxlength="30" dirAlphabeticInput autocomplete="off" />
             <app-validate-inputs-form [form]="registroForm" formInput='nombres' labelInput="Nombres">
             </app-validate-inputs-form>
           </div>
           <div class="field col-12 md:col-4">
             <label>Apellidos <span style="color: #FA7272;" *ngIf="isFieldRequired('apellidos')"> * </span></label>
-            <input id="apellidos" type="text" pInputText (input)="validateInputForm('apellidos','alfabetico')" 
+            <input id="apellidos" type="text" pInputText (input)="validateInputForm('apellidos','alfabetico')"
               formControlName="apellidos" maxlength="30" dirAlphabeticInput autocomplete="off" />
             <app-validate-inputs-form [form]="registroForm" formInput='apellidos' labelInput="Apellidos">
             </app-validate-inputs-form>
@@ -59,7 +59,7 @@
           </div>
           <div *ngIf="mostrarCampo" class="field col-12 md:col-4" >
             <label>EPS <span style="color: #FA7272;" *ngIf="isFieldRequired('selEmpresa')"> * </span></label>
-            <p-dropdown inputId="selEmpresa" [options]="empresasLista" placeholder="Seleccionar" formControlName="selEmpresa" 
+            <p-dropdown inputId="selEmpresa" [options]="empresasLista" placeholder="Seleccionar" formControlName="selEmpresa"
               [showClear]="true" [filter]="true">
             </p-dropdown>
             <app-validate-inputs-form [form]="registroForm" formInput='selEmpresa' labelInput="Empresa"></app-validate-inputs-form>
@@ -83,13 +83,16 @@
               <app-validate-inputs-form [form]="registroForm" formInput='telefono' labelInput="Teléfono">
               </app-validate-inputs-form>
           </div>
-          <div class=" col-12 md:col-8">
+          <div class=" col-1 md:col-8">
             <p><label>Estado:</label></p>
             <p-inputSwitch formControlName="estado" id="estado"></p-inputSwitch>
           </div>
+          <div class="col-4" *ngIf="isUsuarioEPS">
+            <button pButton type="button" label="RESTABLECER PASSWORD" class="p-button-text" (click)="actualizarTokenPassword()"></button>
+          </div>
           <div class="col-12 flex  justify-content-center">
             <p-button type="button" label="Guardar" icon="pi pi-save" iconPos="left" class="p-button-secondary ml-1"
-              (click)="onGuardar()"> 
+              (click)="onGuardar()">
             </p-button>
             <p-button type="button" label="Cancelar" icon="pi pi-times" iconPos="left" class="ml-1" [styleClass]="'p-button-danger'"
               (click)="onCancelEdit()">
@@ -100,5 +103,5 @@
     </div>
   </div>
 
-   
+
 </div>

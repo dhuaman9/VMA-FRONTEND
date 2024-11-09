@@ -61,10 +61,10 @@
                                                     </p-tag>
                                                 </td>
                                               <td class="text-center">
-                                                <button pButton type="button" icon="pi pi-lock" style="width: 30px; height: 20px;"
+                                                <button *ngIf="item.tipo === 'EPS'" pButton type="button" icon="pi pi-lock" style="width: 30px; height: 20px;"
                                                         pTooltip="Actualizar contraseña" tooltipPosition="top" (click)="cambiarPasswordUsuario(item.username)">
                                                 </button>
-                                              </td> 
+                                              </td>
                                                 <td style="text-align:center">
                                                     <button pButton type="button" icon="pi pi-pencil" style="width: 30px; height: 20px;"
                                                         pTooltip="Editar registro" tooltipPosition="top" (click)="redirectToFormUpdate(item.id)">

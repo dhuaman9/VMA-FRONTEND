@@ -25,6 +25,7 @@ export class InicioComponent implements OnInit {
   registroVMA: RegistroVMA | null = null;
 
   userName : string;
+  tipoUsuario : string;
 
   shortName : string;
   role : string;
@@ -60,10 +61,13 @@ export class InicioComponent implements OnInit {
           routerLink: '/inicio/cambiar-password'
         }
       );
+    }else{
+      console.log("this.sessionService.getTipoUsuario().includes('SUNASS')" ,this.sessionService.getTipoUsuario().includes('SUNASS') );
     }
   }
 
   ngOnInit(): void {
+    console.log("this.sessionService.getTipoUsuario().includes('SUNASS') -" ,this.sessionService.getTipoUsuario().includes('SUNASS'));
     this.fichaRegistroService.cantidadDiasFaltantesVMA()
     .subscribe(dias => {
       this.diasFaltantes = dias;
@@ -104,6 +108,7 @@ export class InicioComponent implements OnInit {
     this.shortName = this.sessionService.obtenerShortNameJwt();
     this.role = this.sessionService.obtenerRoleJwt().toUpperCase().trim();
     this.userName = this.sessionService.obtenerUserNameJwt();
+    this.tipoUsuario = this.sessionService.getTipoUsuario();
     this.renderModules(this.role);
 
   }
@@ -121,8 +126,8 @@ export class InicioComponent implements OnInit {
     const esAdministradorOTI: boolean = role === ROL_ADMINISTRADOR_OTI;
     const esAdministradorDAP: boolean = role === ROL_ADMINISTRADOR_DAP;
     const esRegistrador: boolean = role === ROL_REGISTRADOR;
-    const esConsultor: boolean = role === ROL_CONSULTOR;
-
+    const esConsultor: boolean = (role === ROL_CONSULTOR);
+    const tipoUsuarioSunass : boolean = (this.sessionService.getTipoUsuario().includes('SUNASS'));
     this.modules = [
       {
         route : "usuarios",
@@ -152,13 +157,13 @@ export class InicioComponent implements OnInit {
         route : "reporte",
         label : "Reportes e Indicadores",
         icon : "pi pi-chart-bar",
-        activo: esAdministradorDAP || esConsultor
+        activo: esAdministradorDAP || (esConsultor && tipoUsuarioSunass)
       },
       {
         route : "anexos",
         label : "Anexos",
         icon : "pi pi-book",
-        activo: esAdministradorDAP || esConsultor
+        activo: esAdministradorDAP || (esConsultor && tipoUsuarioSunass)
       },
     ]
   }

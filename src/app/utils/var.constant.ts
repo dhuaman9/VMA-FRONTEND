@@ -35,7 +35,7 @@ export const MSG_USUARIO_PASS_ERROR="Usuario y/o contraseña incorrectos";
 /*exp para password: Entre 8 a 15 caracteres, no espacios, al menos una mayúscula,
  una minúscula, un número y un caracter especial (@$!%*?&.,#-_;)*/
 export const PASSWORD_REGEX= /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&.,#-_;])([A-Za-z\d$@$!%*?&.,#-_;]|[^ ]){8,15}$/;
-    
+
 
 
 

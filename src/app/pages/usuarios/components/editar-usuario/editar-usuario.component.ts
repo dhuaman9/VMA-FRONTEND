@@ -11,6 +11,7 @@ import { Empresa } from 'src/app/pages/empresa/models/empresa';
 import { TIPO_SUNASS, TIPO_EPS , ROL_ADMINISTRADOR_OTI,ROL_ADMINISTRADOR_DAP,
   ROL_REGISTRADOR,ROL_CONSULTOR,PASSWORD_REGEX} from 'src/app/utils/var.constant';
 import Swal from 'sweetalert2';
+import {tap} from "rxjs/operators";
 
 
 @Component({
@@ -29,6 +30,7 @@ export class EditarUsuarioComponent implements OnInit {
   isDropUsersDisable = false;
   perfiles: GenericCombo[] = [];
   mostrarCampo: boolean = true;
+  isUsuarioEPS: boolean = false;
 
 
   usuariosSunass: {label: string, value: any}[] = [];
@@ -42,7 +44,7 @@ export class EditarUsuarioComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.cargarUsuariosLDAP();
+    //this.cargarUsuariosLDAP();
     this.cargarListaEmpresas();
     //const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&.,#-_;])([A-Za-z\d$@$!%*?&.,#-_;]|[^ ]){8,15}$/;
     this.registroForm = this.formBuilder.group({
@@ -68,6 +70,28 @@ export class EditarUsuarioComponent implements OnInit {
 
   }
 
+  actualizarTokenPassword(): void {
+    Swal.fire({
+      icon: "question",
+      title: '¿Desea enviar correo para restablecer contraseña?',
+      showConfirmButton: true,
+      confirmButtonText: 'Sí',
+      confirmButtonColor: '#28a745',
+      showCancelButton: true,
+      cancelButtonText: 'No',
+      cancelButtonColor: '#e91224',
+      allowOutsideClick: false
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.userService.actualizarTokenPassword(this.registroForm.get('id').value)
+          .pipe(
+            tap(() =>  Swal.fire('Se envio el correo con éxito','','success'))
+          )
+          .subscribe();
+      }
+    });
+  }
+
   isFieldRequired(field: string): boolean {
     const control = this.registroForm.get(field);
     if (!control) {
@@ -78,7 +102,8 @@ export class EditarUsuarioComponent implements OnInit {
   }
 
   getDataUser(idUser: number) {
-    this.userService.findById(idUser).subscribe(responseDataUser => {
+    this.userService.findById(idUser).subscribe((responseDataUser: any) => {
+      this.isUsuarioEPS = responseDataUser.tipo === 'EPS';
       this.setDataUser(responseDataUser);
       this.onTipoUsuarioChange();
     });
@@ -92,7 +117,7 @@ export class EditarUsuarioComponent implements OnInit {
   }
 
   setDataUser(userData: any) {
-   
+
     this.registroForm.patchValue({
       id: userData.id,
       tipo: userData.tipo,
@@ -114,6 +139,10 @@ export class EditarUsuarioComponent implements OnInit {
 
 
     if(this.registroForm.get('tipo').value === TIPO_SUNASS){
+      if(!this.usuariosSunass) {
+        this.cargarUsuariosLDAP();
+      }
+
       this.perfiles = [
         {id:1, description: ROL_ADMINISTRADOR_OTI},
         {id:2, description: ROL_ADMINISTRADOR_DAP},
@@ -164,7 +193,7 @@ export class EditarUsuarioComponent implements OnInit {
   onGuardar() {
 
     if(this.registroForm.valid) {
-     
+
       let user = new User(this.registroForm.value);
       let role = new Role();
       role.idRole = this.registroForm.get("perfil").value;
@@ -174,7 +203,7 @@ export class EditarUsuarioComponent implements OnInit {
       user.empresa = empresa;
 
       this.userService.update(user).subscribe(responseUser => {
-        this.onAceptar(); 
+        this.onAceptar();
         Swal.fire({
           icon: "success",
           title: 'Se actualizó el usuario correctamente',
@@ -220,7 +249,7 @@ export class EditarUsuarioComponent implements OnInit {
   }
 
   onAceptar(){
-  
+
     this.router.navigate(['/inicio/usuarios']);
 
   }
@@ -237,7 +266,7 @@ export class EditarUsuarioComponent implements OnInit {
 
 
   private setEnableDisableIputs(){
-  
+
     if(this.registroForm.get('tipo').value === TIPO_SUNASS){
       this.mostrarCampo =false; //por ejemplo se va ocultar el campo EPS
       this.isDropUsersDisable = false;
