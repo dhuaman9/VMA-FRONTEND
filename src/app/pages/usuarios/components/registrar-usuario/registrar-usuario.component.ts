@@ -128,7 +128,7 @@ export class RegistrarUsuarioComponent implements OnInit {
       empresa.idEmpresa = this.registroForm.get("selEmpresa").value;
       user.empresa = empresa;
       this.userService.create(user).subscribe(responseUser => {
-        this.onAceptar(); 
+        this.onAceptar();
         Swal.fire({
           icon: "success",
           title: 'Se registró el usuario correctamente',
@@ -136,7 +136,7 @@ export class RegistrarUsuarioComponent implements OnInit {
           confirmButtonText: 'Aceptar',
           confirmButtonColor: '#28a745', // color verde
         }).then((result) => {
-          
+
         });
 
       },
@@ -148,6 +148,7 @@ export class RegistrarUsuarioComponent implements OnInit {
             confirmButtonText: 'Aceptar',
             confirmButtonColor: '#d22c21'
           });
+         this.setEnableDisableIputs();
        });
     } else {
       this.setEnableDisableIputs();
@@ -202,7 +203,7 @@ export class RegistrarUsuarioComponent implements OnInit {
   private setEnableDisableIputs(){
 
     //const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&.,#-_;])([A-Za-z\d$@$!%*?&.,#-_;]|[^ ]){8,15}$/;
-    
+
     if(this.registroForm.get('tipo').value === TIPO_SUNASS){
       this.mostrarCampo =false; //por ejemplo se va ocultar el campo EPS
       this.isDropUsersDisable = false;
@@ -234,6 +235,10 @@ export class RegistrarUsuarioComponent implements OnInit {
       this.registroForm.get('username').enable();
       this.registroForm.get('correo').enable();
       this.registroForm.get('password').enable();
+      this.registroForm.get('perfil').enable();
+      this.registroForm.get('selEmpresa').enable();
+      this.registroForm.get('telefono').enable();
+      this.registroForm.get('tipo').enable();
 
       this.registroForm.get('selEmpresa').setValidators([Validators.required]);
       this.registroForm.get('telefono').setValidators([Validators.required,Validators.minLength(9)]);

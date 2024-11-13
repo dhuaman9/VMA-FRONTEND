@@ -12,8 +12,8 @@ import { CostoTotalConcurridoDto } from 'src/app/pages/reporte/models/costo-tota
 import { CostoTotalIncurridoCompletoDTO } from 'src/app/pages/reporte/models/costo-total-incurrido-completo';
 import { RegistroPromedioTrabajadorVMAChartDto } from '../models/RegistroPromedioTrabajadorVMAChartDto';
 import {tap, switchMap, delay} from 'rxjs/operators';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf/dist/jspdf.es.min.js';
+import html2canvas from 'html2canvas/dist/html2canvas.esm.js';
 //npm install chartjs-plugin-datalabels
 Chart.register(ChartDataLabels);
 import { of,forkJoin } from 'rxjs';
