@@ -30,7 +30,6 @@ export class RegistrarUsuarioComponent implements OnInit {
   modalMessage = '';
   perfiles: GenericCombo[] =[];
   continue : boolean  = true;  // en caso aparesca algun error de validacion no siga con los dems metodos.
-  @ViewChild('perfil') perfilInput: ElementRef<HTMLInputElement>;
   isRequired: boolean = true;
   errorMessage: string | null = null;
 

@@ -11,10 +11,10 @@
               <!-- dynamic-form.component.html -->
               <form [formGroup]="formularioGeneral" *ngIf="formularioGeneral">
                 <p-accordion  formArrayName="secciones">
-                  <p-accordionTab *ngFor="let seccion of seccionesForm().controls; let i = index" [formGroupName]="i" [header]="seccion.get('titulo').value" ><!--[ngClass]="{'custom-active-tab': seccionActiva === i}" (click)="seleccionarSeccion(i)"-->
+                  <p-accordionTab *ngFor="let seccion of seccionesForm().controls; let i = index" [formGroupName]="i" [header]="i+1+'. ' + seccion.get('titulo').value" ><!--[ngClass]="{'custom-active-tab': seccionActiva === i}" (click)="seleccionarSeccion(i)"-->
                     <div formArrayName="preguntas">
                       <div class="d-flex flex-column mb-3" *ngFor="let pregunta of preguntasForm(seccion).controls; let j = index" [formGroupName]="j">
-                        <label class="mb-3" *ngIf="pregunta.get('tipoPregunta').value !== 'ARCHIVO'">{{pregunta.get('texto').value}}</label>
+                        <label class="mb-3" *ngIf="pregunta.get('tipoPregunta').value !== 'ARCHIVO'">{{(i+1)+"."+(j+1)+" "+pregunta.get('texto').value}}</label>
                         <ng-container [ngSwitch]="pregunta.value.tipoPregunta">
                           <ng-container *ngSwitchCase="'TEXTO'">
                             <input  type="text" class="input-text" pInputText formControlName="respuesta">
