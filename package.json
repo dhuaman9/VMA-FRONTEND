@@ -46,6 +46,7 @@
     "html2canvas": "^1.4.1",
     "jquery": "^3.6.0",
     "jspdf": "^2.5.2",
+    "jspdf-autotable": "^3.8.4",
     "moment": "^2.29.4",
     "ngx-bootstrap": "^6.2.0",
     "ngx-mask": "^10.0.4",
