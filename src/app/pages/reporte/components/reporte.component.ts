@@ -12,8 +12,8 @@ import { CostoTotalConcurridoDto } from 'src/app/pages/reporte/models/costo-tota
 import { CostoTotalIncurridoCompletoDTO } from 'src/app/pages/reporte/models/costo-total-incurrido-completo';
 import { RegistroPromedioTrabajadorVMAChartDto } from '../models/RegistroPromedioTrabajadorVMAChartDto';
 import {tap, switchMap, delay} from 'rxjs/operators';
-import jsPDF from 'jspdf/dist/jspdf.es.min.js';
-import html2canvas from 'html2canvas/dist/html2canvas.esm.js';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 //npm install chartjs-plugin-datalabels
 Chart.register(ChartDataLabels);
 import { of,forkJoin } from 'rxjs';
@@ -658,23 +658,21 @@ export class ReporteComponent implements OnInit {
       if (accordionElement) {
         const canvas = await html2canvas(accordionElement);
         const imgData = canvas.toDataURL('image/png');
-
         const imgHeight = (canvas.height * defaultWidth) / canvas.width;
         const x = (pageWidth - defaultWidth) / 2;
 
-        // Check if the image fits on the current page
         if (y + imgHeight > pageHeight - margin) {
           pdf.addPage();
           y = margin;
-
-          pdf.addImage(imgData, 'PNG', x, y, defaultWidth, imgHeight, undefined, 'FAST');
-          y += imgHeight + margin;
         }
+
+        pdf.addImage(imgData, 'PNG', x, y, defaultWidth, imgHeight,undefined, 'FAST');
+        y += imgHeight + margin;
       }
     }
 
     // Save the PDF
-    pdf.save('resportes-indicadores.pdf');
+    pdf.save('reportes-indicadores.pdf');
   }
 
   getReporte(tabIndex: number, accordion: any, reload?: boolean): void {
