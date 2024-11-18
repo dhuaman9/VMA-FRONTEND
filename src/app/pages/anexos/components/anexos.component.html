@@ -24,15 +24,15 @@
           [hidden]="!filterTabs('anexo 1', 'Anexo N° 01: Relación de las EP que remitieron información y/o implementaron normativa y/o remitieron informes de implementación de los VMA del año en curso.')">
             <ng-container *ngIf="anexoRegistros.length > 0; else noResults">
               <div class="mb-1 d-flex justify-content-end">
-                <button pButton (click)="downloadPDF(['Empresa Prestadora','Tamaño','RAT','EPS remitió información','EPS remitió informe'],anexoRegistros)"
+                <button pButton (click)="downloadPDF(['EMPRESA PRESTADORA','TAMAÑO','RAT','EPS remitió información','EPS remitió informe'],anexoRegistros,1)"
                         type="button" label="Descargar"></button>
               </div>
               <p-table [value]="anexoRegistros" responsiveLayout="scroll">
                 <ng-template pTemplate="header">
                   <tr>
                     <th>N°</th>
-                    <th>Empresa Prestadora</th>
-                    <th>Tamaño</th>
+                    <th>EMPRESA PRESTADORA</th>
+                    <th>TAMAÑO</th>
                     <th style="text-align: center;">RAT</th>
                     <th style="text-align: center;">EPS remitió información</th>
                     <th style="text-align: center;">EPS remitió informe</th>
@@ -60,7 +60,7 @@
           <ng-container *ngIf="anexoRespondieronSi.length > 0; else noResults">
 
             <div class="mb-1 d-flex justify-content-end">
-              <button pButton (click)="downloadPDF(['Empresa Prestadora', 'Tamaño', 'Área VMA', 'N° Trabajadroes'], anexoRespondieronSi)"
+              <button pButton (click)="downloadPDF(['EMPRESA PRESTADORA', 'TAMAÑO', 'Área VMA', 'N° Trabajadroes'], anexoRespondieronSi,2)"
                       type="button" label="Descargar"></button>
             </div>
 
@@ -68,8 +68,8 @@
               <ng-template pTemplate="header">
                 <tr>
                   <th>N°</th>
-                  <th>Empresa Prestadora</th>
-                  <th>Tamaño</th>
+                  <th>EMPRESA PRESTADORA</th>
+                  <th>TAMAÑO</th>
                   <th style="text-align: center;">Área VMA</th>
                   <th style="text-align: center;">N° trabajadores</th>
                 </tr>
@@ -96,15 +96,15 @@
           <ng-container *ngIf="anexoUNDregistrados.length > 0; else noResults">
 
             <div class="mb-1 d-flex justify-content-end">
-              <button pButton (click)="downloadPDF(['Empresa Prestadora', 'Tamaño', 'N° UND IDENTIFICADOS', 'N° UND INSPECCIONADOS','N° UND INSCRITOS EN EL REGISTRO DE UND'], anexoUNDregistrados)"
+              <button pButton (click)="downloadPDF(['EMPRESA PRESTADORA', 'TAMAÑO', 'N° UND IDENTIFICADOS', 'N° UND INSPECCIONADOS','N° UND INSCRITOS EN EL REGISTRO DE UND'], anexoUNDregistrados,3)"
                       type="button" label="Descargar"></button>
             </div>
       <p-table [value]="anexoUNDregistrados" responsiveLayout="scroll">
         <ng-template pTemplate="header">
           <tr>
             <th>N°</th>
-            <th>Empresa Prestadora</th>
-            <th>Tamaño</th>
+            <th>EMPRESA PRESTADORA</th>
+            <th>TAMAÑO</th>
             <th style="text-align: center;">N° UND IDENTIFICADOS</th>
             <th style="text-align: center;">N° UND INSPECCIONADOS</th>
             <th style="text-align: center;">N° UND INSCRITOS EN EL REGISTRO DE UND</th>
@@ -132,15 +132,15 @@
           [hidden]="!filterTabs('anexo 4', 'Anexo N° 04: Detalle de porcentaje de toma de muestra inopinada de las EP.')">
           <ng-container *ngIf="anexoTomaMuestrasInopinadas.length > 0; else noResults">
             <div class="mb-1 d-flex justify-content-end">
-              <button pButton (click)="downloadPDF(['Empresa Prestadora', 'Tamaño', 'N° UND INSCRITOS EN EL REGISTRO DE UND', 'N° MUESTRAS INOPINADAS','% MUESTRA INOPINADA'], anexoTomaMuestrasInopinadas)"
+              <button pButton (click)="downloadPDF(['EMPRESA PRESTADORA', 'TAMAÑO', 'N° UND INSCRITOS EN EL REGISTRO DE UND', 'N° MUESTRAS INOPINADAS','% MUESTRA INOPINADA'], anexoTomaMuestrasInopinadas,4)"
                       type="button" label="Descargar"></button>
             </div>
             <p-table [value]="anexoTomaMuestrasInopinadas" responsiveLayout="scroll">
               <ng-template pTemplate="header">
                 <tr>
                   <th>N°</th>
-                  <th>Empresa Prestadora</th>
-                  <th>Tamaño</th>
+                  <th>EMPRESA PRESTADORA</th>
+                  <th>TAMAÑO</th>
                   <th style="text-align: center;">N° UND INSCRITOS EN EL REGISTRO DE UND</th>
                   <th style="text-align: center;">N° MUESTRAS INOPINADAS </th>
                   <th style="text-align: center;">% MUESTRA INOPINADA</th>
@@ -170,15 +170,15 @@
           <ng-container *ngIf="anexoEvaluacionVmaAnexo1.length > 0; else noResults">
             <div class="mb-1 d-flex justify-content-end">
               <button pButton
-                      (click)="downloadPDF(['Empresa Prestadora', 'Tamaño', 'N° MUESTRAS INOPINADA', 'N° UND QUE SOPREPASAN PARAMETROS DEL ANEXO 1','N° UND FACTURADOS POR ANEXO 1','N° UND QUE REALIZARON PAGO POR ANEXO 1'], anexoEvaluacionVmaAnexo1)"
+                      (click)="downloadPDF(['EMPRESA PRESTADORA', 'TAMAÑO', 'N° MUESTRAS INOPINADA', 'N° UND QUE SOPREPASAN PARAMETROS DEL ANEXO 1','N° UND FACTURADOS POR ANEXO 1','N° UND QUE REALIZARON PAGO POR ANEXO 1'], anexoEvaluacionVmaAnexo1,5)"
                       type="button" label="Descargar"></button>
             </div>
       <p-table [value]="anexoEvaluacionVmaAnexo1" responsiveLayout="scroll">
         <ng-template pTemplate="header">
           <tr>
             <th>N°</th>
-            <th>Empresa Prestadora</th>
-            <th>Tamaño</th>
+            <th>EMPRESA PRESTADORA</th>
+            <th>TAMAÑO</th>
             <th style="text-align: center;">N° MUESTRAS INOPINADAS </th>
             <th style="text-align: center;">N° UND QUE SOPREPASAN PARAMETROS DEL ANEXO 1</th>
             <th style="text-align: center;">N° UND FACTURADOS POR ANEXO 1</th>
@@ -209,15 +209,15 @@
           <ng-container *ngIf="anexoEvaluacionVmaAnexo2.length > 0; else noResults">
             <div class="mb-1 d-flex justify-content-end">
               <button pButton
-                      (click)="downloadPDF(['Empresa Prestadora', 'Tamaño', 'N° MUESTRAS INOPINADAS', 'N° UND QUE SOPREPASAN PARAMETROS DEL ANEXO 2','N° UND CON PLAZO ADICIONAL','N° UND CON ACUERDO SUSCRITO'], anexoEvaluacionVmaAnexo2)"
+                      (click)="downloadPDF(['EMPRESA PRESTADORA', 'TAMAÑO', 'N° MUESTRAS INOPINADAS', 'N° UND QUE SOPREPASAN PARAMETROS DEL ANEXO 2','N° UND CON PLAZO ADICIONAL','N° UND CON ACUERDO SUSCRITO'], anexoEvaluacionVmaAnexo2,6)"
                       type="button" label="Descargar"></button>
             </div>
             <p-table [value]="anexoEvaluacionVmaAnexo2" responsiveLayout="scroll">
               <ng-template pTemplate="header">
                 <tr>
                   <th>N°</th>
-                  <th>Empresa Prestadora</th>
-                  <th>Tamaño</th>
+                  <th>EMPRESA PRESTADORA</th>
+                  <th>TAMAÑO</th>
                   <th style="text-align: center;">N° MUESTRAS INOPINADAS </th>
                   <th style="text-align: center;">N° UND QUE SOPREPASAN PARAMETROS DEL ANEXO 2</th>
                   <th style="text-align: center;">N° UND CON PLAZO ADICIONAL </th>
@@ -248,15 +248,15 @@
           <ng-container *ngIf="anexoEPAtenciondeReclamosVMA.length > 0; else noResults">
             <div class="mb-1 d-flex justify-content-end">
               <button pButton
-                      (click)="downloadPDF(['Empresa Prestadora', 'Tamaño', 'N° UND INSCRITOS EN EL REGISTRO DE UND', 'N° RECLAMOS POR VMA','N° RECLAMOS RESUELTOS FUNDADOS'], anexoEPAtenciondeReclamosVMA)"
+                      (click)="downloadPDF(['EMPRESA PRESTADORA', 'TAMAÑO', 'N° UND INSCRITOS EN EL REGISTRO DE UND', 'N° RECLAMOS POR VMA','N° RECLAMOS RESUELTOS FUNDADOS'], anexoEPAtenciondeReclamosVMA,7)"
                       type="button" label="Descargar"></button>
             </div>
             <p-table [value]="anexoEPAtenciondeReclamosVMA" responsiveLayout="scroll">
               <ng-template pTemplate="header">
                 <tr>
                   <th>N°</th>
-                  <th>Empresa Prestadora</th>
-                  <th>Tamaño</th>
+                  <th>EMPRESA PRESTADORA</th>
+                  <th>TAMAÑO</th>
                   <th style="text-align: center;">N° UND INSCRITOS EN EL REGISTRO DE UND</th>
                   <th style="text-align: center;">N° RECLAMOS POR VMA</th>
                   <th style="text-align: center;">N° RECLAMOS RESUELTOS FUNDADOS</th>
@@ -286,15 +286,15 @@
           <ng-container *ngIf="anexoCostosUND.length > 0; else noResults">
             <div class="mb-1 d-flex justify-content-end">
               <button pButton
-                      (click)="downloadPDF(['Empresa Prestadora', 'Tamaño', 'COSTO EN IDENTIFICACIÓN, INSPECCIÓN Y REGISTRO DE UND (S/)', 'N° UND IDENTIFICADOS (CANT)','COSTO ANUAL POR UND (S/)'], anexoCostosUND)"
+                      (click)="downloadPDF(['EMPRESA PRESTADORA', 'TAMAÑO', 'COSTO EN IDENTIFICACIÓN, INSPECCIÓN Y REGISTRO DE UND (S/)', 'N° UND IDENTIFICADOS (CANT)','COSTO ANUAL POR UND (S/)'], anexoCostosUND,8)"
                       type="button" label="Descargar"></button>
             </div>
             <p-table [value]="anexoCostosUND" responsiveLayout="scroll">
               <ng-template pTemplate="header">
                 <tr>
                   <th>N°</th>
-                  <th>Empresa Prestadora</th>
-                  <th>Tamaño</th>
+                  <th>EMPRESA PRESTADORA</th>
+                  <th>TAMAÑO</th>
                   <th style="text-align: center;">COSTO EN IDENTIFICACIÓN, INSPECCIÓN Y REGISTRO DE UND (S/)</th>
                   <th style="text-align: center;">N° UND IDENTIFICADOS (CANT) </th>
                   <th style="text-align: center;">COSTO ANUAL POR UND (S/)</th>
@@ -323,15 +323,15 @@
           <ng-container *ngIf="anexoCostoTotalMuestrasInopinadas.length > 0; else noResults">
             <div class="mb-1 d-flex justify-content-end">
               <button pButton
-                      (click)="downloadPDF(['Empresa Prestadora', 'Tamaño', 'COSTO POR TOMAS DE MUESTRA INOPINADAS (S/)', 'N° DE MUESTRAS INOPINADAS (CANT)','COSTO ANUAL POR MUESTRA INOPINADA (S/)'], anexoCostoTotalMuestrasInopinadas)"
+                      (click)="downloadPDF(['EMPRESA PRESTADORA', 'TAMAÑO', 'COSTO POR TOMAS DE MUESTRA INOPINADAS (S/)', 'N° DE MUESTRAS INOPINADAS (CANT)','COSTO ANUAL POR MUESTRA INOPINADA (S/)'], anexoCostoTotalMuestrasInopinadas,9)"
                       type="button" label="Descargar"></button>
             </div>
             <p-table [value]="anexoCostoTotalMuestrasInopinadas" responsiveLayout="scroll">
               <ng-template pTemplate="header">
                 <tr>
                   <th>N°</th>
-                  <th style="width: 25%;">Empresa Prestadora</th>
-                  <th>Tamaño</th>
+                  <th style="width: 25%;">EMPRESA PRESTADORA</th>
+                  <th>TAMAÑO</th>
                   <th style="text-align: center;">COSTO POR TOMAS DE MUESTRA INOPINADAS (S/)</th>
                   <th style="text-align: center;">N° DE MUESTRAS INOPINADAS (CANT)  </th>
                   <th style="text-align: center;">COSTO ANUAL POR MUESTRA INOPINADA (S/)</th>
@@ -361,15 +361,15 @@
           <ng-container *ngIf="anexoCostoTotalesIncurridos.length > 0; else noResults">
             <div class="mb-1 d-flex justify-content-end">
               <button pButton
-                      (click)="downloadPDF(['Empresa Prestadora', 'Tamaño', 'COSTO EN IDENTIFICACIÓN, INSPECCIÓN Y REGISTRO DE UND (S/)', 'COSTO POR TOMAS DE MUESTRAS INOPINADAS (S/)','COSTO POR OTROS GASTOS DE IMPLEMENTACIÓN (S/)'], anexoCostoTotalesIncurridos)"
+                      (click)="downloadPDF(['EMPRESA PRESTADORA', 'TAMAÑO', 'COSTO EN IDENTIFICACIÓN, INSPECCIÓN Y REGISTRO DE UND (S/)', 'COSTO POR TOMAS DE MUESTRAS INOPINADAS (S/)','COSTO POR OTROS GASTOS DE IMPLEMENTACIÓN (S/)'], anexoCostoTotalesIncurridos,10)"
                       type="button" label="Descargar"></button>
             </div>
             <p-table [value]="anexoCostoTotalesIncurridos" responsiveLayout="scroll">
               <ng-template pTemplate="header">
                 <tr>
                   <th>N°</th>
-                  <th>Empresa Prestadora</th>
-                  <th style="text-align: center;">Tamaño</th>
+                  <th>EMPRESA PRESTADORA</th>
+                  <th style="text-align: center;">TAMAÑO</th>
                   <th style="text-align: center;">COSTO EN IDENTIFICACIÓN, INSPECCIÓN Y REGISTRO DE UND (S/)</th>
                   <th style="text-align: center;">COSTO POR TOMAS DE MUESTRAS INOPINADAS (S/) </th>
                   <th style="text-align: center;">COSTO POR OTROS GASTOS DE IMPLEMENTACIÓN (S/)</th>
@@ -398,15 +398,15 @@
           <ng-container *ngIf="anexoIngresos.length > 0; else noResults">
             <div class="mb-1 d-flex justify-content-end">
               <button pButton
-                      (click)="downloadPDF(['Empresa Prestadora', 'Tamaño', 'Ingresos por implementación normativa VMA (S/.)'], anexoIngresos)"
+                      (click)="downloadPDF(['EMPRESA PRESTADORA', 'TAMAÑO', 'Ingresos por implementación normativa VMA (S/.)'], anexoIngresos,11)"
                       type="button" label="Descargar"></button>
             </div>
             <p-table [value]="anexoIngresos" responsiveLayout="scroll">
               <ng-template pTemplate="header">
                 <tr>
                   <th style="text-align: center;">N°</th>
-                  <th>Empresa Prestadora</th>
-                  <th style="text-align: center;">Tamaño</th>
+                  <th>EMPRESA PRESTADORA</th>
+                  <th style="text-align: center;">TAMAÑO</th>
                   <th style="text-align: center;">Ingresos por implementación normativa VMA (S/.)</th>
                 </tr>
               </ng-template>

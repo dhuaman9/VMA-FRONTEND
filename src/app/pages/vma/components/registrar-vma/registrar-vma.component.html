@@ -34,7 +34,11 @@
                                       ></p-inputNumber>
                                     </div>
                                       <small *ngIf="alternativa.get('respuesta').errors?.required" style="color: red;">Campo requerido</small>
-                                  </div>
+                                       <!-- Validación de comparación personalizada -->
+                                      <small *ngIf="alternativasForm(pregunta).errors?.comparacionInvalida" style="color: red;">
+                                        El acumulado debe ser mayor o igual que el parcial.
+                                      </small>
+                                    </div>
                                 </ng-container>
                               </ng-container>
                             </div>

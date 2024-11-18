@@ -46,10 +46,15 @@ export class AnexosComponent implements OnInit, OnDestroy {
     this.initializeYears();
   }
 
-  downloadPDF(headers: string[], dataList: any[]): void {
+  downloadPDF(headers: string[], dataList: any[],nroAnexo:number): void {
     const doc = new jsPDF();
     this.generatePDF(doc, dataList, headers);
-    doc.save('table-data.pdf');
+
+     // Formatear el número del anexo con dos dígitos
+     const formattedAnexo = nroAnexo.toString().padStart(2, '0');
+     const fileName = `Anexo ${formattedAnexo}.pdf`;
+     doc.save(fileName);
+
   }
 
   generatePDF(doc: jsPDF, dataArray: any[], headers: string[]): void {
@@ -70,8 +75,8 @@ export class AnexosComponent implements OnInit, OnDestroy {
         valign: 'middle',
       },
       headStyles: {
-        fillColor: [22, 160, 133],
-        textColor: [255, 255, 255],
+        fillColor: [184, 187, 189], //color RGB , gris
+        textColor: [0, 0, 0], // [255, 255, 255] - blanco
       },
     });
   }

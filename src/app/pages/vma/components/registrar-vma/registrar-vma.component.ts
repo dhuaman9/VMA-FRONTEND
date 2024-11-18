@@ -106,9 +106,6 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
     }
   })
 
-  //this.vmaService.isRegistroCompleto().subscribe(response => this.registroCompleto = response);
-  //this.vmaService.registroCompleto$.subscribe(response => this.registroCompleto = response);
-
   }
 
   isFile(value: any): boolean {
@@ -337,51 +334,67 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
     });
   }
 
-  private addValidatorsToRespuesta(agregarValidacion: boolean) {
-    const secciones = this.formularioGeneral.get('secciones') as FormArray;
-    this.formularioValido = agregarValidacion;
-    secciones.controls.forEach(seccion => {
-      const preguntas = seccion.get('preguntas') as FormArray;
+ //dhr modificado
+ private addValidatorsToRespuesta(agregarValidacion: boolean): void {
+  const secciones = this.formularioGeneral.get('secciones') as FormArray;
+  this.formularioValido = agregarValidacion;
 
-      preguntas.controls.forEach(pregunta => {
-        const respuestaControl = pregunta.get('respuesta');
-        const alternativasControl = pregunta.get('alternativas').value as FormArray;
-        const tipoPregunta = pregunta.get('tipoPregunta').value;
-        if ((tipoPregunta === TipoPregunta.TEXTO)||
+  secciones.controls.forEach(seccion => {
+    const preguntas = seccion.get('preguntas') as FormArray;
+
+    preguntas.controls.forEach(pregunta => {
+      const respuestaControl = pregunta.get('respuesta');
+      const alternativasControl = pregunta.get('alternativas') as FormArray;
+      const tipoPregunta = pregunta.get('tipoPregunta').value;
+
+      // Validaciones previas (texto, numérico, radio, archivo)
+      if ((tipoPregunta === TipoPregunta.TEXTO) ||
           (tipoPregunta === TipoPregunta.NUMERICO && alternativasControl.length === 0) ||
-          (tipoPregunta === TipoPregunta.RADIO) && respuestaControl ||(tipoPregunta === TipoPregunta.ARCHIVO && pregunta.get('metadato').value.requerido)) {
-//|| pregunta.get('alternativas').get('requerido')
-          if(agregarValidacion) {
-            respuestaControl.addValidators([Validators.required])
-          } else {
-            respuestaControl.setValidators([]);
-          }
+          (tipoPregunta === TipoPregunta.RADIO && respuestaControl) ||
+          (tipoPregunta === TipoPregunta.ARCHIVO && pregunta.get('metadato').value.requerido)) {
+        if (agregarValidacion) {
+          respuestaControl.addValidators([Validators.required]);
+        } else {
+          respuestaControl.setValidators([]);
+        }
 
-          respuestaControl.updateValueAndValidity();
-          if (!respuestaControl.valid) {
+        respuestaControl.updateValueAndValidity();
+
+        if (!respuestaControl.valid) {
+          this.formularioValido = false;
+        }
+      }
+
+      // Validación personalizada para alternativas
+      alternativasControl.controls.forEach(alternativa => {
+        const respuestaAlternativaControl = alternativa.get('respuesta');
+        if (tipoPregunta === TipoPregunta.NUMERICO && respuestaAlternativaControl) {
+          respuestaAlternativaControl.setValidators(
+            agregarValidacion && alternativa.get('requerido').value ? [Validators.required] : []
+          );
+          respuestaAlternativaControl.updateValueAndValidity();
+
+          if (!respuestaAlternativaControl.valid) {
             this.formularioValido = false;
           }
         }
-
-        const alternativas = pregunta.get('alternativas') as FormArray;
-        alternativas.controls.forEach(alternativa => {
-          const respuestaAlternativaControl = alternativa.get('respuesta');
-          if (pregunta.get('tipoPregunta').value === TipoPregunta.NUMERICO && respuestaAlternativaControl) {
-            respuestaAlternativaControl.setValidators(agregarValidacion && alternativa.get('requerido').value ? [Validators.required] : []);
-            respuestaAlternativaControl.updateValueAndValidity();
-
-            if (!respuestaAlternativaControl.valid) {
-              this.formularioValido = false;
-            }
-          }
-        })
       });
 
-      seccion.updateValueAndValidity();
+      // Aplicar la validación personalizada a las alternativas
+      alternativasControl.setValidators(() => {
+        const esValido = this.compararParcialYAcumulado(alternativasControl);
+        return esValido ? null : { comparacionInvalida: true };
+      });
+
+      alternativasControl.updateValueAndValidity();
     });
 
-    this.formularioGeneral.updateValueAndValidity();
-  }
+    seccion.updateValueAndValidity();
+  });
+
+  this.formularioGeneral.updateValueAndValidity();
+}
+
 
   private buildRespuestaForm(respuesta: RespuestaDTO) {
     return !respuesta ? null : this.fb.group({
@@ -418,6 +431,24 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
       return this.fileValidator(pregunta.metadato.tipoArchivosPermitidos.map(archivo => archivo.mimeType), pregunta.metadato.maxSizeInMB);
     }
     return null
+  }
+
+  private compararParcialYAcumulado(alternativas: FormArray): boolean {
+    let parcialValor = 0;
+    let acumuladoValor = 0;
+
+    alternativas.controls.forEach((alternativa: FormGroup) => {
+      const nombreCampo = alternativa.get('nombreCampo')?.value;
+      const valor = alternativa.get('valor')?.value;
+
+      if (nombreCampo?.toLowerCase().includes('parcial')) {
+        parcialValor = valor;
+      } else if (nombreCampo?.toLowerCase().includes('acumulado')) {
+        acumuladoValor = valor;
+      }
+    });
+
+    return acumuladoValor >= parcialValor;
   }
 
   seccionesForm(): FormArray {
@@ -491,6 +522,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
     }
   }
 
+  
   ngOnDestroy(): void {
     if(this.suscripcionRegistro) {
       this.suscripcionRegistro.unsubscribe();
