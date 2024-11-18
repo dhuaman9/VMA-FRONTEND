@@ -35,9 +35,9 @@
                                     </div>
                                       <small *ngIf="alternativa.get('respuesta').errors?.required" style="color: red;">Campo requerido</small>
                                        <!-- Validación de comparación personalizada -->
-                                      <small *ngIf="alternativasForm(pregunta).errors?.comparacionInvalida" style="color: red;">
-                                        El acumulado debe ser mayor o igual que el parcial.
-                                      </small>
+                                   <!--<small *ngIf="alternativasForm(pregunta).errors?.comparacionInvalida" style="color: red;">
+                                      El acumulado debe ser mayor o igual que el parcial.
+                                    </small>--> 
                                     </div>
                                 </ng-container>
                               </ng-container>

@@ -334,59 +334,45 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
     });
   }
 
- //dhr modificado
- private addValidatorsToRespuesta(agregarValidacion: boolean): void {
+ //dhr , falta modificar, para que acumulado sea mayor que parcial.
+ private addValidatorsToRespuesta(agregarValidacion: boolean) {
   const secciones = this.formularioGeneral.get('secciones') as FormArray;
   this.formularioValido = agregarValidacion;
-
   secciones.controls.forEach(seccion => {
     const preguntas = seccion.get('preguntas') as FormArray;
 
     preguntas.controls.forEach(pregunta => {
       const respuestaControl = pregunta.get('respuesta');
-      const alternativasControl = pregunta.get('alternativas') as FormArray;
+      const alternativasControl = pregunta.get('alternativas').value as FormArray;
       const tipoPregunta = pregunta.get('tipoPregunta').value;
-
-      // Validaciones previas (texto, numérico, radio, archivo)
-      if ((tipoPregunta === TipoPregunta.TEXTO) ||
-          (tipoPregunta === TipoPregunta.NUMERICO && alternativasControl.length === 0) ||
-          (tipoPregunta === TipoPregunta.RADIO && respuestaControl) ||
-          (tipoPregunta === TipoPregunta.ARCHIVO && pregunta.get('metadato').value.requerido)) {
-        if (agregarValidacion) {
-          respuestaControl.addValidators([Validators.required]);
+      if ((tipoPregunta === TipoPregunta.TEXTO)||
+        (tipoPregunta === TipoPregunta.NUMERICO && alternativasControl.length === 0) ||
+        (tipoPregunta === TipoPregunta.RADIO) && respuestaControl ||(tipoPregunta === TipoPregunta.ARCHIVO && pregunta.get('metadato').value.requerido)) {
+//|| pregunta.get('alternativas').get('requerido')
+        if(agregarValidacion) {
+          respuestaControl.addValidators([Validators.required])
         } else {
           respuestaControl.setValidators([]);
         }
 
         respuestaControl.updateValueAndValidity();
-
         if (!respuestaControl.valid) {
           this.formularioValido = false;
         }
       }
 
-      // Validación personalizada para alternativas
-      alternativasControl.controls.forEach(alternativa => {
+      const alternativas = pregunta.get('alternativas') as FormArray;
+      alternativas.controls.forEach(alternativa => {
         const respuestaAlternativaControl = alternativa.get('respuesta');
-        if (tipoPregunta === TipoPregunta.NUMERICO && respuestaAlternativaControl) {
-          respuestaAlternativaControl.setValidators(
-            agregarValidacion && alternativa.get('requerido').value ? [Validators.required] : []
-          );
+        if (pregunta.get('tipoPregunta').value === TipoPregunta.NUMERICO && respuestaAlternativaControl) {
+          respuestaAlternativaControl.setValidators(agregarValidacion && alternativa.get('requerido').value ? [Validators.required] : []);
           respuestaAlternativaControl.updateValueAndValidity();
 
           if (!respuestaAlternativaControl.valid) {
             this.formularioValido = false;
           }
         }
-      });
-
-      // Aplicar la validación personalizada a las alternativas
-      alternativasControl.setValidators(() => {
-        const esValido = this.compararParcialYAcumulado(alternativasControl);
-        return esValido ? null : { comparacionInvalida: true };
-      });
-
-      alternativasControl.updateValueAndValidity();
+      })
     });
 
     seccion.updateValueAndValidity();
