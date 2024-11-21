@@ -116,6 +116,12 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
   }
 
   guardar(isGuardadoCompleto: boolean){
+
+    if(!isGuardadoCompleto && this.validarAlternativas()) {
+      Swal.fire('Existe un  valor acumulado menor al parcial','','warning');
+      return;
+    }
+
     this.cargandoProceso$ = of(true);
     const preguntasArray = this.formularioGeneral.value.secciones.map(seccion => seccion.preguntas);
     let preguntas: Pregunta[] = preguntasArray.reduce((acc, cur) => acc.concat(cur), []);
@@ -289,6 +295,45 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
     return respuesta;
   }
 
+  private validarAlternativasNumericas() {
+    return (group: AbstractControl) => {
+      const alternativas = (group.get('alternativas') as FormArray)?.controls;
+
+      if (alternativas && alternativas.length === 2) {
+        const respuesta1 = alternativas[0].get('respuesta')?.value;
+        const respuesta2 = alternativas[1].get('respuesta')?.value;
+
+        if (respuesta1 != null && respuesta2 != null && respuesta1 > respuesta2) {
+          return { invalidAlternativeOrder: true };
+        }
+      }
+      return null;
+    };
+  }
+
+  private validarAlternativas(): boolean {
+    let hasErrors = false;
+
+    const secciones =  this.formularioGeneral.get('secciones') as FormArray;
+    secciones.controls.forEach(seccion => {
+      const preguntas = seccion.get('preguntas') as FormArray;
+
+      preguntas.controls.forEach(pregunta => {
+        const tipoPregunta = pregunta.get('tipoPregunta')?.value;
+
+        if (tipoPregunta === TipoPregunta.NUMERICO) {
+          const error = this.validarAlternativasNumericas()(pregunta);
+
+          if (error) {
+            hasErrors = true;
+          }
+        }
+      });
+    });
+
+    return hasErrors;
+  }
+
   private buildPregunta = (pregunta: Pregunta) => {
     const preguntaFormGroup = this.fb.group({
       idPregunta: [pregunta.idPregunta],
@@ -300,7 +345,8 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
       respuesta: [pregunta.respuestaDTO?.respuesta, this.agregarValidadorARespuesta(pregunta)],
       respuestaDTO: this.buildRespuestaForm(pregunta.respuestaDTO),
       metadato: [pregunta.metadato]
-    });
+    },
+      pregunta.tipoPregunta === TipoPregunta.NUMERICO ? { validators: this.validarAlternativasNumericas() } : {});
 
     if(pregunta.tipoPregunta === 'RADIO') {
       this.formGroupPregunta = preguntaFormGroup;

@@ -34,6 +34,9 @@
                                       ></p-inputNumber>
                                     </div>
                                       <small *ngIf="alternativa.get('respuesta').errors?.required" style="color: red;">Campo requerido</small>
+                                    <div class="text-danger" *ngIf="pregunta.hasError('invalidAlternativeOrder')">
+                                      El acumulado debe ser mayor o igual  al parcial
+                                    </div>
                                   </div>
                                 </ng-container>
                               </ng-container>
