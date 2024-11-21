@@ -112,6 +112,24 @@
                   </p-accordionTab>
                 </p-accordion >
 
+                <div class="my-2" *ngIf="cuestionario?.datosUsuarioRegistradorDto">
+                  <h2>Responsable de registor VMA</h2>
+                  <div class="d-flex gap-2 flex-wrap pt-10" >
+                    <div class="d-flex gap-2 align-items-center">
+                      <label class="mb-0">Nombres y apellidos</label>
+                      <input type="text" pInputText [value]="cuestionario.datosUsuarioRegistradorDto.nombreCompleto" readonly>
+                    </div>
+                    <div class="d-flex gap-2 align-items-center">
+                      <label class="mb-0">Correo</label>
+                      <input type="text"  pInputText [value]="cuestionario.datosUsuarioRegistradorDto.email" readonly>
+                    </div>
+                    <div class="d-flex gap-2 align-items-center">
+                      <label class="mb-0">Teléfono</label>
+                      <input type="text" pInputText [value]="cuestionario.datosUsuarioRegistradorDto.telefono" readonly>
+                    </div>
+                  </div>
+                </div>
+
                 <div class="col-12 flex  justify-content-center" *ngIf="this.isRoleRegistrador && !this.isRegistroCompleto && isVmaVigente; else botonAdmin">
                   <p-button type="button" [disabled]="cargandoProceso$ | async" label="Guardar Progresivamente" class="p-button-success p-button-secondary green-button ml-1" icon="pi pi-check" iconPos="left" [styleClass]="'p-button-success'"
                             (click)="guardadoParcial()"> <!--guardado progresivo, donde ningun campo es requerido, pero si el usuario no llena ningun dato, dar el aviso que no lleno nada, por ende no se guarda nada ni las fechas de registro-->

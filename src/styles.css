@@ -30,3 +30,18 @@ input:disabled {
   background: #fff;
   border: 1px solid #9f9696;
 }
+
+.modal-sweet-ancho {
+  width: 700px;
+}
+
+.grid-inputs-modal {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: center;
+}
+
+.text-left {
+  text-align: left;
+}
