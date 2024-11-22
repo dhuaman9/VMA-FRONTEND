@@ -169,4 +169,8 @@ export class UserService {
   actualizarTokenPassword(userId: number): Observable<void> {
     return this.http.put<void>(`${this.url}/usuario/${userId}/actualizar-token-password`, {});
   }
+
+  generarClaveAleatorio(): Observable<string> {
+    return this.http.get(`${this.url}/usuario/generar-clave-aleatoria`, { responseType: 'text' })
+  }
 }

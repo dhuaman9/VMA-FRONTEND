@@ -57,7 +57,7 @@ export class EditarUsuarioComponent implements OnInit {
       correo: ['', [Validators.required, Validators.email]],
       usuario: [''],
       username: [''],
-      password: ['',Validators.pattern(PASSWORD_REGEX)],
+      password: [''],
       telefono: ['', [Validators.required, Validators.minLength(9)]],
       estado: [true, Validators.required],
       selEmpresa : ['', Validators.required],
@@ -130,7 +130,8 @@ export class EditarUsuarioComponent implements OnInit {
       usuario: userData.username,
       username: userData.username,
       telefono: userData.telefono,
-      estado: userData.estado
+      estado: userData.estado,
+      password: userData.passwordPlain
     });
 
   }
@@ -321,6 +322,11 @@ export class EditarUsuarioComponent implements OnInit {
         console.error('Error al obtener la lista de las empresas', error);
       }
     );
+  }
+
+  generarClaveAleatorio(): void {
+    this.userService.generarClaveAleatorio()
+      .subscribe(response => this.registroForm.get('password').setValue(response));
   }
 
 }

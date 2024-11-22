@@ -59,7 +59,7 @@ export class RegistrarUsuarioComponent implements OnInit {
       selEmpresa : ['', Validators.required],
       usuario: [''],
       username: ['', Validators.required],
-      password: ['', [Validators.required,Validators.pattern(PASSWORD_REGEX)]],
+      password: ['', [Validators.required]],
       telefono: ['', [Validators.required,Validators.minLength(9)]],
       estado: [true]
     });
@@ -282,4 +282,8 @@ export class RegistrarUsuarioComponent implements OnInit {
     }
   }
 
+  generarClaveAleatorio(): void {
+    this.userService.generarClaveAleatorio()
+      .subscribe(response => this.registroForm.get('password').setValue(response));
+  }
 }
