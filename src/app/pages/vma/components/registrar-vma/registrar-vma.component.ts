@@ -277,7 +277,13 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
   }
 
   guardadoCompleto(): void {
+    if(this.validarAlternativas()) {
+      Swal.fire('Existe un  valor acumulado menor al parcial','','warning');
+      return;
+    }
+
     this.addValidatorsToRespuesta(true);
+
     if(this.formularioValido) {
       this.modalDatosRegistrador()
         .then((result: any) => {
