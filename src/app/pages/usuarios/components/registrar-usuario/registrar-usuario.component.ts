@@ -189,12 +189,19 @@ export class RegistrarUsuarioComponent implements OnInit {
   }
 
   cargarUsuariosLDAP(): void {
-    this.usuariosSunass = [
-      {
-        label: "Ander",
-        value: "Bengolea",
+    this.userService.findAllLDAP().subscribe(
+
+      (data: User[]) => {
+        this.usuariosSunass = data.map(user => ({
+          label: user.username,
+          value: user
+        }));
+
+      },
+      (error) => {
+        console.error('Error al obtener los usuarios del LDAP', error);
       }
-    ]
+    );
   }
 
   private setEnableDisableIputs(){
