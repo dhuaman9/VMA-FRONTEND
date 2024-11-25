@@ -13,6 +13,8 @@ import { AnexoCostoTotalMuestrasInopinadas } from 'src/app/pages/anexos/models/a
 import { AnexoCostosUND } from 'src/app/pages/anexos/models/anexo-costos-und';
 import { AnexoCostoTotalesIncurridos } from 'src/app/pages/anexos/models/anexo-costo_totales-incurridos';
 import { AnexoIngresos } from 'src/app/pages/anexos/models/anexo-ingresos';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 @Component({
   selector: 'app-anexos',
@@ -42,6 +44,63 @@ export class AnexosComponent implements OnInit, OnDestroy {
 
   constructor(private anexoService: AnexoService) {
     this.initializeYears();
+  }
+
+  downloadPDF(headers: string[], dataList: any[],nroAnexo:number): void {
+    const doc = new jsPDF();
+
+    const formattedData = dataList.map((data, index) => ({
+      N: index + 1,
+      ...data
+    }));
+
+   // this.generatePDF(doc, dataList, headers);
+    this.generatePDF(doc, formattedData, headers);
+    
+     // Formatear el número del anexo con dos dígitos
+     const formattedAnexo = nroAnexo.toString().padStart(2, '0');
+     const fileName = `Anexo ${formattedAnexo}.pdf`;
+     doc.save(fileName);
+
+  }
+
+  generatePDF(doc: jsPDF, dataArray: any[], headers: string[]): void {
+    const headersTable = [headers.map(field => this.primeraLetraMayuscula(field))];
+
+    const data = dataArray.map(item =>
+      Object.keys(item).map(key => this.formatData(item, key))
+    );
+
+    autoTable(doc, {
+      head: headersTable,
+      body: data,
+      startY: 20,
+      styles: {
+        fontSize: 10,
+        cellPadding: 5,
+        halign: 'center',
+        valign: 'middle',
+      },
+      headStyles: {
+        fillColor: [184, 187, 189], //color RGB , gris
+        textColor: [0, 0, 0], // [255, 255, 255] - blanco
+      },
+    });
+  }
+
+  primeraLetraMayuscula(str: string): string {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
+  formatData(item: any, key: string): string | number {
+    if (key in item) {
+      const value = item[key];
+      if (typeof value === 'boolean') {
+        return value ? 'SI' : 'NO';
+      }
+      return value;
+    }
+    return '';
   }
 
   ngOnInit(): void {
@@ -122,7 +181,7 @@ export class AnexosComponent implements OnInit, OnDestroy {
             .pipe(
               takeUntil(this.unsubscribe$),
               tap(response => this.anexoEvaluacionVmaAnexo2 = this.processAnexoRegistros(response))
-            ).subscribe();        
+            ).subscribe();
           }
         break;
         case 6:
@@ -226,8 +285,6 @@ export class AnexosComponent implements OnInit, OnDestroy {
   }
 
 
-
-
   setDefaultYear(): void {
     this.selectedYear = new Date().getFullYear();
   }
@@ -281,7 +338,7 @@ export class AnexosComponent implements OnInit, OnDestroy {
   }
 
   cleanData(): void {
-    
+
     this.anexoRespondieronSi = [];
     this.anexoUNDregistrados = [];
     this.anexoTomaMuestrasInopinadas= [];

@@ -8,7 +8,7 @@ import {MenuItem, Message, MessageService} from 'primeng/api';
 import {RegistroVMAService} from 'src/app/pages/vma/services/registroVMA.service';
 import {RegistroVMA} from 'src/app/pages/vma/models/registroVMA';
 import { FichaRegistroService } from '../ficha-registro/services/ficha-registro.service';
-import { ROL_ADMINISTRADOR_OTI,ROL_ADMINISTRADOR_DAP, ROL_REGISTRADOR, ROL_CONSULTOR } from 'src/app/utils/var.constant';
+import { ROL_ADMINISTRADOR_OTI,ROL_ADMINISTRADOR_DF, ROL_REGISTRADOR, ROL_CONSULTOR } from 'src/app/utils/var.constant';
 
 declare const $:any;
 declare const attachEventsToPushMenu: any;
@@ -53,7 +53,7 @@ export class InicioComponent implements OnInit {
     private registroVmaService: RegistroVMAService,
     private fichaRegistroService: FichaRegistroService
   ) {
-    if(this.sessionService.getTipoUsuario().includes('EPS')) {
+    /*if(this.sessionService.getTipoUsuario().includes('EPS')) {
       this.items.push(
         {
           label: 'Cambiar contraseña',
@@ -61,9 +61,10 @@ export class InicioComponent implements OnInit {
           routerLink: '/inicio/cambiar-password'
         }
       );
-    }else{
+    }*/  //se deja comentado, porque el user EPS no debe cambiar su clave. Validar este caso con DF.
+    /*else{
       console.log("this.sessionService.getTipoUsuario().includes('SUNASS')" ,this.sessionService.getTipoUsuario().includes('SUNASS') );
-    }
+    }*/
   }
 
   ngOnInit(): void {
@@ -124,7 +125,7 @@ export class InicioComponent implements OnInit {
 
   renderModules(role: string){
     const esAdministradorOTI: boolean = role === ROL_ADMINISTRADOR_OTI;
-    const esAdministradorDAP: boolean = role === ROL_ADMINISTRADOR_DAP;
+    const esAdministradorDAP: boolean = role === ROL_ADMINISTRADOR_DF;
     const esRegistrador: boolean = role === ROL_REGISTRADOR;
     const esConsultor: boolean = (role === ROL_CONSULTOR);
     const tipoUsuarioSunass : boolean = (this.sessionService.getTipoUsuario().includes('SUNASS'));

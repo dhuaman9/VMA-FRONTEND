@@ -18,6 +18,7 @@ export class BarChartComponent implements OnInit, OnChanges {
   @Input() maximoX: number;
   @Input() stepSize: number;
   @Input() moneda: string;
+  @Input() ultimaBarrAdentro: boolean;
   barChartConfig: any;
   barChartOptions: any;
 
@@ -51,13 +52,31 @@ export class BarChartComponent implements OnInit, OnChanges {
           color: this.colorDataLabel,
           font: {
             weight: 'bold',
-            size: 16,
+            size: 14,
           },
           formatter: (value) => {
             return this.esPorcentaje ? value.toFixed(this.tieneDecimalesDataLabel ? 2 : 0)+'%' : (this.moneda || '')+value.toFixed(this.tieneDecimalesDataLabel ? 2 : 0);
           },
-          anchor: this.esLabelDataAfuera ? 'end' : 'center',
-          align: this.esLabelDataAfuera ? 'end' : 'center',
+          anchor: (context) => {
+            const index = context.dataIndex;
+            const dataset = context.dataset;
+
+            if (this.ultimaBarrAdentro && index === dataset.data.length - 1) {
+              return 'center';
+            }
+
+            return this.esLabelDataAfuera ? 'end' : 'center';
+          },
+          align: (context) => {
+            const index = context.dataIndex;
+            const dataset = context.dataset;
+
+            if (this.ultimaBarrAdentro && index === dataset.data.length - 1) {
+              return 'center';
+            }
+
+            return this.esLabelDataAfuera ? 'end' : 'center';
+          },
         }
       },
       scales: {

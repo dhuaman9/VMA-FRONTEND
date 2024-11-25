@@ -9,7 +9,7 @@ import { UserService } from 'src/app/pages/usuarios/services/user.service';
 import { ValidateInputs, validateInput } from 'src/app/utils/validate-inputs';
 import { Empresa } from 'src/app/pages/empresa/models/empresa';
 import { EmpresaService } from 'src/app/pages/empresa/services/empresa.service';
-import { TIPO_SUNASS, TIPO_EPS , ROL_ADMINISTRADOR_OTI,ROL_ADMINISTRADOR_DAP,
+import { TIPO_SUNASS, TIPO_EPS , ROL_ADMINISTRADOR_OTI,ROL_ADMINISTRADOR_DF,
   ROL_REGISTRADOR,ROL_CONSULTOR,PASSWORD_REGEX} from 'src/app/utils/var.constant';
 
 import Swal from 'sweetalert2';
@@ -23,18 +23,22 @@ import Swal from 'sweetalert2';
 export class RegistrarUsuarioComponent implements OnInit {
 
   registroForm: FormGroup;
- // displayModaAdvice = false;
+ 
+  valorPrefixUsuario: string = 'U_';
+
   isDropUsersDisable = false
   isEdit = true;
   modalImage ='';
   modalMessage = '';
   perfiles: GenericCombo[] =[];
   continue : boolean  = true;  // en caso aparesca algun error de validacion no siga con los dems metodos.
-  @ViewChild('perfil') perfilInput: ElementRef<HTMLInputElement>;
+  //@ViewChild('perfil') perfilInput: ElementRef<HTMLInputElement>;  //? dhr
   isRequired: boolean = true;
   errorMessage: string | null = null;
 
-  mostrarCampo: boolean = true;
+  
+  mostrarCampo: boolean = true;  //para mostrar u ocultar campos
+  mostrarCamposSunass: boolean = true;  //para mostrar u ocultar campos
 
   usuariosSunass: {label: string, value: any}[];
 
@@ -60,7 +64,7 @@ export class RegistrarUsuarioComponent implements OnInit {
       selEmpresa : ['', Validators.required],
       usuario: [''],
       username: ['', Validators.required],
-      password: ['', [Validators.required,Validators.pattern(PASSWORD_REGEX)]],
+      password: ['', [Validators.required]],
       telefono: ['', [Validators.required,Validators.minLength(9)]],
       estado: [true]
     });
@@ -103,9 +107,9 @@ export class RegistrarUsuarioComponent implements OnInit {
       }
       this.perfiles = [
         {id:1, description:ROL_ADMINISTRADOR_OTI},
-        {id:2, description:ROL_ADMINISTRADOR_DAP},
+        {id:2, description:ROL_ADMINISTRADOR_DF},
         {id:4, description:ROL_CONSULTOR}];
-        this.isRequired = false;
+        this.isRequired = false;  // se usa?
     } else if(this.registroForm.get('tipo').value === TIPO_EPS) {
       this.isRequired = true;
       this.perfiles = [
@@ -148,6 +152,7 @@ export class RegistrarUsuarioComponent implements OnInit {
             confirmButtonText: 'Aceptar',
             confirmButtonColor: '#d22c21'
           });
+          this.setEnableDisableIputs();
        });
     } else {
       this.setEnableDisableIputs();
@@ -201,10 +206,10 @@ export class RegistrarUsuarioComponent implements OnInit {
 
   private setEnableDisableIputs(){
 
-    //const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&.,#-_;])([A-Za-z\d$@$!%*?&.,#-_;]|[^ ]){8,15}$/;
-    
     if(this.registroForm.get('tipo').value === TIPO_SUNASS){
+      
       this.mostrarCampo =false; //por ejemplo se va ocultar el campo EPS
+      this.mostrarCamposSunass=true;
       this.isDropUsersDisable = false;
       this.registroForm.get('unidadOrganica').disable();
       this.registroForm.get('nombres').disable();
@@ -213,6 +218,7 @@ export class RegistrarUsuarioComponent implements OnInit {
       this.registroForm.get('password').disable();
       this.registroForm.get('username').disable();
       this.registroForm.get('usuario').enable();
+      this.registroForm.get('tipo').enable();
 
       this.registroForm.get('selEmpresa').setValidators([Validators.nullValidator]);
       this.registroForm.get('telefono').setValidators([Validators.minLength(9)]);
@@ -226,6 +232,7 @@ export class RegistrarUsuarioComponent implements OnInit {
 
     } else if(this.registroForm.get('tipo').value === TIPO_EPS) {
       this.mostrarCampo =true;
+      this.mostrarCamposSunass=false;
       this.isDropUsersDisable = true;
       this.registroForm.get('unidadOrganica').disable();
       this.registroForm.get('usuario').disable();
@@ -234,6 +241,10 @@ export class RegistrarUsuarioComponent implements OnInit {
       this.registroForm.get('username').enable();
       this.registroForm.get('correo').enable();
       this.registroForm.get('password').enable();
+      this.registroForm.get('perfil').enable();
+      this.registroForm.get('selEmpresa').enable();
+      this.registroForm.get('telefono').enable();
+      this.registroForm.get('tipo').enable();
 
       this.registroForm.get('selEmpresa').setValidators([Validators.required]);
       this.registroForm.get('telefono').setValidators([Validators.required,Validators.minLength(9)]);
@@ -244,6 +255,12 @@ export class RegistrarUsuarioComponent implements OnInit {
       this.registroForm.get('selEmpresa').updateValueAndValidity();
       this.registroForm.get('telefono').updateValueAndValidity();
       this.registroForm.get('password').updateValueAndValidity();
+
+      const usernameValue = this.registroForm.get('username').value || '';
+      if (!usernameValue.startsWith('U_')) {
+        this.registroForm.get('username').setValue('U_' + usernameValue.replace(/^U_/, ''));
+      }
+
     }
   }
 
@@ -277,5 +294,28 @@ export class RegistrarUsuarioComponent implements OnInit {
       validateInput(control, validationType);
     }
   }
+
+  generarClaveAleatorio(): void {
+    this.userService.generarClaveAleatorio()
+      .subscribe(response => this.registroForm.get('password').setValue(response));
+  }
+
+
+  enforcePrefix(event?: KeyboardEvent) {
+    // Verifica si se está presionando Delete o Backspace
+    if (event && (event.key === 'Delete' || event.key === 'Backspace')) {
+      // Si el campo solo contiene el prefijo "U_", evita borrar o modificarlo
+      if (this.valorPrefixUsuario === 'U_') {
+        event.preventDefault(); // Evita borrar el prefijo
+        return;
+      }
+    }
+  
+    // Garantiza que el valor siempre comience con "U_"
+    if (!this.valorPrefixUsuario.startsWith('U_')) {
+      this.valorPrefixUsuario = 'U_' + this.valorPrefixUsuario.replace(/^U_/, '');
+    }
+  }
+
 
 }

@@ -23,7 +23,7 @@
                 <app-validate-inputs-form [form]="registroForm" formInput='perfil' labelInput="Perfil">
                 </app-validate-inputs-form>
           </div>
-          <div class="field col-12 md:col-4" >
+          <div *ngIf="mostrarCamposSunass" class="field col-12 md:col-4" >
             <label>Usuario <span style="color: #FA7272;" *ngIf="isFieldRequired('usuario')"> * </span></label>
             <p-dropdown inputId="usuario" [options]="usuariosSunass" placeholder="Seleccionar"
               formControlName="usuario" [showClear]="true" [disabled]="isDropUsersDisable" 
@@ -32,27 +32,27 @@
             <app-validate-inputs-form [form]="registroForm" formInput='usuario' labelInput="Usuario">
             </app-validate-inputs-form>
           </div>
-          <div class="field col-12 md:col-4" >
+          <div *ngIf="mostrarCamposSunass" class="field col-12 md:col-4" >
             <label>Unidad Orgánica <span style="color: #FA7272;" *ngIf="isFieldRequired('unidadOrganica')"> * </span></label>
             <input id="unidadOrganica" type="text" pInputText   formControlName="unidadOrganica" maxlength="30"  />
             <app-validate-inputs-form [form]="registroForm" formInput='unidadOrganica' labelInput="Unidad Orgánica">
             </app-validate-inputs-form>
           </div>
-          <div class="field col-12 md:col-4">
+          <div *ngIf="mostrarCamposSunass" class="field col-12 md:col-4">
             <label>Nombres <span style="color: #FA7272;" *ngIf="isFieldRequired('nombres')"> * </span></label>
             <input id="nombres" type="text" pInputText (input)="validateInputForm('nombres','alfabetico')" 
               formControlName="nombres" maxlength="30" dirAlphabeticInput autocomplete="off" />
             <app-validate-inputs-form [form]="registroForm" formInput='nombres' labelInput="Nombres">
             </app-validate-inputs-form>
           </div>
-          <div class="field col-12 md:col-4">
+          <div *ngIf="mostrarCamposSunass" class="field col-12 md:col-4">
             <label>Apellidos <span style="color: #FA7272;" *ngIf="isFieldRequired('apellidos')"> * </span></label>
             <input id="apellidos" type="text" pInputText (input)="validateInputForm('apellidos','alfabetico')" 
               autocomplete="off" formControlName="apellidos" maxlength="50" dirAlphabeticInput/>
             <app-validate-inputs-form [form]="registroForm" formInput='apellidos' labelInput="Apellidos">
             </app-validate-inputs-form>
           </div>
-          <div class="field col-12 md:col-4">
+          <div *ngIf="mostrarCamposSunass" class="field col-12 md:col-4">
             <label>Correo Electrónico <span style="color: #FA7272;" *ngIf="isFieldRequired('correo')"> * </span></label>
             <input id="correo" type="text" pInputText   formControlName="correo" maxlength="100" autocomplete="off" />
             <app-validate-inputs-form [form]="registroForm" formInput='correo' labelInput="Correo">
@@ -68,17 +68,25 @@
           </div>
           <div class="field col-12 md:col-4">
             <label>Usuario <span style="color: #FA7272;" *ngIf="isFieldRequired('username')"> * </span></label>
-            <input id="username" type="text" pInputText formControlName="username" maxlength="30" dirUserNameInput autocomplete="off" />
+            <input id="username" type="text" pInputText formControlName="username" maxlength="30" dirUserNameInput autocomplete="off"   [(ngModel)]="valorPrefixUsuario" (keydown)="enforcePrefix($event)"   />
             <app-validate-inputs-form [form]="registroForm" formInput='username' labelInput="Usuario">
             </app-validate-inputs-form>
           </div>
           <div class="field col-12 md:col-4">
             <label>Contraseña <span style="color: #FA7272;" *ngIf="isFieldRequired('password')"> * </span></label>
-            <input id="password" type="password" pInputText formControlName="password" maxlength="255" minlength="8" autocomplete="off" />
+            <input id="password" type="text" readonly pInputText formControlName="password" maxlength="255" minlength="8" autocomplete="off" />
             <app-validate-inputs-form [form]="registroForm" formInput='password' labelInput="Contraseña">
             </app-validate-inputs-form>
           </div>
           <div class="field col-12 md:col-4">
+            <div class="d-flex flex-column">
+              <label>Generar clave</label>
+              <p-button type="button" label="Generar clave" icon="pi pi-key" iconPos="left" class="p-button-secondary green-button" (click)="generarClaveAleatorio()">
+              </p-button>
+            </div>
+          </div>
+
+          <div *ngIf="mostrarCamposSunass" class="field col-12 md:col-4">
             <label>Teléfono <span style="color: #FA7272;" *ngIf="isFieldRequired('telefono')"> * </span></label>
             <input id="telefono" type="text" pInputText pKeyFilter="int" formControlName="telefono" (input)="validateInputForm('telefono','numerico')"
               autocomplete="off" minlength="9" maxlength="9" dirTelefonoInput/>

@@ -24,6 +24,13 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "core-js",
+              "html2canvas",
+              "jspdf",
+              "raf",
+              "canvg"
+            ],
             "outputPath": "dist/vmafrontend",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -145,7 +152,7 @@
               ],
               "outputHashing": "all"
             }
-            
+
           },
           "defaultConfiguration": "production"
         },

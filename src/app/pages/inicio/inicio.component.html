@@ -13,7 +13,7 @@
       <ul class="navbar-nav ml-auto d-flex align-items-center">
         <li class="li-user d-none d-md-inline-block d-flex align-items-center">
           <div style="color: #007ad9;" class="user-info d-flex align-items-center">
-            <i class="pi pi-user fa-fw sign-out-icon cursor-pointer" (click)="items.length ? menu.toggle($event) : null"></i>
+            <i class="pi pi-user fa-fw sign-out-icon" ></i>  <!--se quito el cursor-pointer   y  (click)="items.length ? menu.toggle($event) : null" -->
             <p-menu #menu [popup]="true" [model]="items"></p-menu>
             <div class="user-details ml-2">
               <span class="user-name">{{userName}}</span>

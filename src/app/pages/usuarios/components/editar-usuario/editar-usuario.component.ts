@@ -8,7 +8,7 @@ import { UserService } from 'src/app/pages/usuarios/services/user.service';
 import { ValidateInputs, validateInput } from 'src/app/utils/validate-inputs';
 import { EmpresaService } from 'src/app/pages/empresa/services/empresa.service';
 import { Empresa } from 'src/app/pages/empresa/models/empresa';
-import { TIPO_SUNASS, TIPO_EPS , ROL_ADMINISTRADOR_OTI,ROL_ADMINISTRADOR_DAP,
+import { TIPO_SUNASS, TIPO_EPS , ROL_ADMINISTRADOR_OTI,ROL_ADMINISTRADOR_DF,
   ROL_REGISTRADOR,ROL_CONSULTOR,PASSWORD_REGEX} from 'src/app/utils/var.constant';
 import Swal from 'sweetalert2';
 import {tap} from "rxjs/operators";
@@ -57,7 +57,8 @@ export class EditarUsuarioComponent implements OnInit {
       correo: ['', [Validators.required, Validators.email]],
       usuario: [''],
       username: [''],
-      password: ['',Validators.pattern(PASSWORD_REGEX)],
+      //password: ['',Validators.pattern(PASSWORD_REGEX)], //si se desea ingresar manualmente cumpliendo el regex
+      password: [''],
       telefono: ['', [Validators.required, Validators.minLength(9)]],
       estado: [true, Validators.required],
       selEmpresa : ['', Validators.required],
@@ -130,7 +131,8 @@ export class EditarUsuarioComponent implements OnInit {
       usuario: userData.username,
       username: userData.username,
       telefono: userData.telefono,
-      estado: userData.estado
+      estado: userData.estado,
+      password: userData.passwordPlain
     });
 
   }
@@ -145,7 +147,7 @@ export class EditarUsuarioComponent implements OnInit {
 
       this.perfiles = [
         {id:1, description: ROL_ADMINISTRADOR_OTI},
-        {id:2, description: ROL_ADMINISTRADOR_DAP},
+        {id:2, description: ROL_ADMINISTRADOR_DF},
         {id:4, description: ROL_CONSULTOR}];
 
     } else if(this.registroForm.get('tipo').value === TIPO_EPS) {
@@ -211,9 +213,7 @@ export class EditarUsuarioComponent implements OnInit {
           confirmButtonText: 'Aceptar',
           confirmButtonColor: '#28a745', // color verde
         }).then((result) => {
-          /*if (result.isConfirmed) {
-            this.onAceptar(); // se redirige al listado de usuarios
-          }*/
+         //?
         });
       },  error => {
           Swal.fire({
@@ -222,6 +222,7 @@ export class EditarUsuarioComponent implements OnInit {
             icon: 'error',
             confirmButtonText: 'Aceptar'
           });
+          this.setEnableDisableIputs();
       });
     } else {
       this.setEnableDisableIputs();
@@ -295,6 +296,11 @@ export class EditarUsuarioComponent implements OnInit {
       this.registroForm.get('correo').enable();
       this.registroForm.get('password').enable();
 
+      this.registroForm.get('perfil').enable();
+      this.registroForm.get('selEmpresa').enable();
+      this.registroForm.get('telefono').enable();
+      this.registroForm.get('tipo').enable();
+
       this.registroForm.get('usuario').setValidators([Validators.required]);
       this.registroForm.get('username').setValidators([Validators.required]);
       this.registroForm.get('telefono').setValidators([Validators.required, Validators.minLength(9)]);
@@ -322,5 +328,12 @@ export class EditarUsuarioComponent implements OnInit {
       }
     );
   }
+
+  generarClaveAleatorio(): void {
+    this.userService.generarClaveAleatorio()
+      .subscribe(response => this.registroForm.get('password').setValue(response));
+  }
+
+
 
 }

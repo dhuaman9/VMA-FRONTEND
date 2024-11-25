@@ -17,6 +17,7 @@ import {UploadService} from 'src/app/_service/upload.service';
 import {finalize, switchMap, tap} from "rxjs/operators";
 import { RADIO_BUTTON_NO,ESTADO_COMPLETO, ROL_REGISTRADOR } from 'src/app/utils/var.constant';
 import {isVmaVigente} from "../../vma.utils";
+import {DatosUsuariosRegistrador} from "../../../../_model/datos-usuarios-registrador.interface";
 
 @Component({
   selector: 'app-registrar-vma',
@@ -115,7 +116,13 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
     return value instanceof File;
   }
 
-  guardar(isGuardadoCompleto: boolean){
+  guardar(isGuardadoCompleto: boolean, datosRegistrador: DatosUsuariosRegistrador){
+
+    if(!isGuardadoCompleto && this.validarAlternativas()) {
+      Swal.fire('Existe un  valor acumulado menor al parcial','','warning');
+      return;
+    }
+
     this.cargandoProceso$ = of(true);
     const preguntasArray = this.formularioGeneral.value.secciones.map(seccion => seccion.preguntas);
     let preguntas: Pregunta[] = preguntasArray.reduce((acc, cur) => acc.concat(cur), []);
@@ -160,6 +167,10 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
     registroVMA.registroValido = isGuardadoCompleto;
    // registroVMA.idEmpresa = 1;   //temporal, hasta definir
     registroVMA.respuestas = respuestas;
+
+    if(isGuardadoCompleto && datosRegistrador) {
+      registroVMA.datosUsuarioRegistradorDto = datosRegistrador;
+    }
 
     if(this.idRegistroVMA) {
 
@@ -266,18 +277,74 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
   }
 
   guardadoCompleto(): void {
+    if(this.validarAlternativas()) {
+      Swal.fire('Existe un  valor acumulado menor al parcial','','warning');
+      return;
+    }
+
     this.addValidatorsToRespuesta(true);
+
     if(this.formularioValido) {
-      this.guardar(true);
+      this.modalDatosRegistrador()
+        .then((result: any) => {
+          if(result.isConfirmed && result.value) {
+            this.guardar(true, result.value);
+          }
+        });
     } else {
       this.formularioGeneral.markAllAsTouched();
       Swal.fire('Registrado final','Para registrar todo debe completar el formulario.','info')
     }
   }
 
+  modalDatosRegistrador() {
+    return Swal.fire({
+      title: 'Para finalizar el registro VMA, es necesario llenar estos campos:',
+      html: `
+        <div class="d-flex flex-column gap-3">
+          <div class="grid-inputs-modal"><label class="text-left" for="input1">Nombres y apellidos del responsable:</label><input id="input1" class="form-control"></div>
+          <div class="grid-inputs-modal"><label class="text-left" for="input2">Correo electrónico:</label><input id="input2" class="form-control"></div>
+          <div class="grid-inputs-modal"><label class="text-left" for="input3">Teléfono:</label><input id="input3" class="form-control"></div>
+        </div>
+    `,customClass: {
+        popup: 'modal-sweet-ancho'
+      },
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonText: 'Guardar',
+      confirmButtonColor: '#34A835',
+      cancelButtonColor: '#d22c21',
+      cancelButtonText: 'Cancel',
+      preConfirm: () => {
+        const nombreCompleto = (document.getElementById('input1') as HTMLInputElement)?.value;
+        const email = (document.getElementById('input2') as HTMLInputElement)?.value;
+        const telefono = (document.getElementById('input3') as HTMLInputElement)?.value;
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const telefonoRegex = /^9\d{8}$/;
+
+        if (!nombreCompleto || !email || !telefono) {
+          Swal.showValidationMessage('Todos los campos son requeridos');
+          return null;
+        }
+        if (!emailRegex.test(email)) {
+          Swal.showValidationMessage('Ingrese un email válido');
+          return null;
+        }
+
+        if (!telefonoRegex.test(telefono)) {
+          Swal.showValidationMessage('Ingrese un teléfono válido');
+          return null;
+        }
+
+        return { nombreCompleto, email, telefono };
+      }
+    })
+  }
+
   guardadoParcial(): void {
     this.addValidatorsToRespuesta(false);
-    this.guardar(false);
+    this.guardar(false, null);
   }
 
   private mapToRespuestaDTO(pregunta: Pregunta): RespuestaDTO {
@@ -287,6 +354,45 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
         respuesta.respuesta = pregunta.respuesta;
         respuesta.idRegistroVMA = this.idRegistroVMA;
     return respuesta;
+  }
+
+  private validarAlternativasNumericas() {
+    return (group: AbstractControl) => {
+      const alternativas = (group.get('alternativas') as FormArray)?.controls;
+
+      if (alternativas && alternativas.length === 2) {
+        const respuesta1 = alternativas[0].get('respuesta')?.value;
+        const respuesta2 = alternativas[1].get('respuesta')?.value;
+
+        if (respuesta1 != null && respuesta2 != null && respuesta1 > respuesta2) {
+          return { invalidAlternativeOrder: true };
+        }
+      }
+      return null;
+    };
+  }
+
+  private validarAlternativas(): boolean {
+    let hasErrors = false;
+
+    const secciones =  this.formularioGeneral.get('secciones') as FormArray;
+    secciones.controls.forEach(seccion => {
+      const preguntas = seccion.get('preguntas') as FormArray;
+
+      preguntas.controls.forEach(pregunta => {
+        const tipoPregunta = pregunta.get('tipoPregunta')?.value;
+
+        if (tipoPregunta === TipoPregunta.NUMERICO) {
+          const error = this.validarAlternativasNumericas()(pregunta);
+
+          if (error) {
+            hasErrors = true;
+          }
+        }
+      });
+    });
+
+    return hasErrors;
   }
 
   private buildPregunta = (pregunta: Pregunta) => {
@@ -300,7 +406,8 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
       respuesta: [pregunta.respuestaDTO?.respuesta, this.agregarValidadorARespuesta(pregunta)],
       respuestaDTO: this.buildRespuestaForm(pregunta.respuestaDTO),
       metadato: [pregunta.metadato]
-    });
+    },
+      pregunta.tipoPregunta === TipoPregunta.NUMERICO ? { validators: this.validarAlternativasNumericas() } : {});
 
     if(pregunta.tipoPregunta === 'RADIO') {
       this.formGroupPregunta = preguntaFormGroup;

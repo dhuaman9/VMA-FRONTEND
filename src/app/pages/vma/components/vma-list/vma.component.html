@@ -20,7 +20,7 @@
             <form [formGroup]="filtroForm"  class="d-flex flex-wrap gap-2">
               <div *ngFor="let field of ['eps', 'estado', 'fechaDesde', 'fechaHasta', 'anio']; let i = index">
                 <div [ngSwitch]="field" >
-                  <div>
+                  <div *ngIf="!isRoleConsultorEPS">  <!-- dhr ,  es correcto ocultarlo y seguira funcionando ese  filtro para ese tipo de usuario?-->
                     <span class="p-float-label" *ngSwitchCase="'eps'">
                       <p-dropdown inputId="selEmpresa" [options]="empresasLista" placeholder="Seleccionar EPS" formControlName="eps"
                                   [showClear]="true" [filter]="true"></p-dropdown>

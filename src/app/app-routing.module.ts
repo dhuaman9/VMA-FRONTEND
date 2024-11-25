@@ -6,7 +6,7 @@ import { ModulosComponent } from './pages/modulos/modulos.component';
 import { ReporteComponent } from 'src/app/pages/reporte/components/reporte.component';
 import { GuardService } from './_service/guard.service';
 import { AnexoGuard } from 'src/app/pages/anexos/anexo.guard';
-import {  ROL_ADMINISTRADOR_DAP,ROL_CONSULTOR, ROL_ADMINISTRADOR_OTI,ROL_REGISTRADOR  } from 'src/app/utils/var.constant';
+import {  ROL_ADMINISTRADOR_DF,ROL_CONSULTOR, ROL_ADMINISTRADOR_OTI,ROL_REGISTRADOR  } from 'src/app/utils/var.constant';
 import { UsuarioGuard } from './pages/usuarios/usuario.guard';
 import { EmpresaGuard } from './pages/empresa/empresa.guard';
 import { FichaRegistroGuard } from './pages/ficha-registro/ficha-registro.guard';
@@ -35,19 +35,19 @@ const routes : Routes =
           {
             path: 'anexos',
             canActivate : [GuardService, AnexoGuard],
-            data: {expectedRoles: [ROL_ADMINISTRADOR_DAP, ROL_CONSULTOR]},
+            data: {expectedRoles: [ROL_ADMINISTRADOR_DF, ROL_CONSULTOR]},
             loadChildren: () => import('./pages/anexos/anexos.module').then(m => m.AnexosModule)
           },
           {
             path: 'empresa',
             canActivate : [GuardService , EmpresaGuard],
-            data: {expectedRoles: [ROL_ADMINISTRADOR_DAP]},
+            data: {expectedRoles: [ROL_ADMINISTRADOR_DF]},
             loadChildren: () => import('./pages/empresa/empresa.module').then(m => m.EmpresaModule)
           },
           {
             path: 'ficha-registro',
             canActivate : [GuardService , FichaRegistroGuard],
-            data: {expectedRoles: [ROL_ADMINISTRADOR_DAP]},
+            data: {expectedRoles: [ROL_ADMINISTRADOR_DF]},
             loadChildren: () => import('./pages/ficha-registro/ficha-registro.module').then(m => m.FichaRegistroModule)
           },
           {

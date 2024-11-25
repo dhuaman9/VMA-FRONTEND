@@ -14,7 +14,7 @@ import {debounceTime, distinctUntilChanged, switchMap, tap} from "rxjs/operators
 import Swal from "sweetalert2";
 import {LazyLoadEvent} from "primeng/api";
 import { ESTADO_COMPLETO, ESTADO_INCOMPLETO, ESTADO_SIN_REGISTRO,
-  ROL_ADMINISTRADOR_DAP, ROL_REGISTRADOR,ROL_CONSULTOR  } from 'src/app/utils/var.constant';
+  ROL_ADMINISTRADOR_DF, ROL_REGISTRADOR,ROL_CONSULTOR  } from 'src/app/utils/var.constant';
 import {isVmaVigente} from "../../vma.utils";
 
 @Component({
@@ -58,6 +58,7 @@ export class VmaComponent implements OnInit {
   //isRoleRegistrador: boolean = this.sessionService.obtenerRoleJwt().toUpperCase().trim() === 'REGISTRADOR';
   isRoleAdmin : boolean ;
   isRoleConsultor: boolean;
+  isRoleConsultorEPS: boolean;
   fichaRegistro: FichaRegistro | null = null;
 
   @ViewChild('dt1') table!: Table;
@@ -86,9 +87,11 @@ export class VmaComponent implements OnInit {
   ngOnInit(): void {
 
     const role = this.sessionService.obtenerRoleJwt().toUpperCase().trim();
+    const esUsuarioEPS =  this.sessionService.getTipoUsuario().includes('EPS');
 
-    this.isRoleAdmin = role === ROL_ADMINISTRADOR_DAP;
+    this.isRoleAdmin = role === ROL_ADMINISTRADOR_DF;
     this.isRoleConsultor= role === ROL_CONSULTOR;
+    this.isRoleConsultorEPS = this.isRoleConsultor && esUsuarioEPS; //pendiente de usar
     this.isRoleRegistrador = role === ROL_REGISTRADOR;
 
 
