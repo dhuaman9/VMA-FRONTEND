@@ -60,7 +60,7 @@ export class VmaComponent implements OnInit {
   isRoleConsultor: boolean;
   isRoleConsultorEPS: boolean;
   fichaRegistro: FichaRegistro | null = null;
-
+  private isListadoPrimeraVezIniciado = false;
   @ViewChild('dt1') table!: Table;
 
   private lastSearchFilters:{};
@@ -85,7 +85,8 @@ export class VmaComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    this.buscar();
+    this.isListadoPrimeraVezIniciado = true;
     const role = this.sessionService.obtenerRoleJwt().toUpperCase().trim();
     const esUsuarioEPS =  this.sessionService.getTipoUsuario().includes('EPS');
 
@@ -102,7 +103,7 @@ export class VmaComponent implements OnInit {
       )
       .subscribe(() =>  this.buscar());
     this.formCheckBox.valueChanges.subscribe(this.toggleSeleccionados);
-    this.buscar();
+
     this.filtroForm = this.fb.group({
       eps: [''],
       estado: [''],
@@ -261,6 +262,11 @@ export class VmaComponent implements OnInit {
   }
 
   buscar(event?: LazyLoadEvent) {
+    if (this.isListadoPrimeraVezIniciado) {
+      this.isListadoPrimeraVezIniciado = false;
+      return;
+    }
+
     this.formCheckBox.setValue(false);
 
     // Determinar el primer elemento y las filas a mostrar
