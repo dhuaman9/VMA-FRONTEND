@@ -1,7 +1,7 @@
-import { Component, ElementRef, Input, OnInit, ViewChild  } from '@angular/core';
+import { Component, OnInit  } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GenericCombo } from 'src/app/_model/generic-combo';
 import { Role } from 'src/app/_model/role';
 import { User } from 'src/app/pages/usuarios/models/user';
@@ -23,7 +23,7 @@ import Swal from 'sweetalert2';
 export class RegistrarUsuarioComponent implements OnInit {
 
   registroForm: FormGroup;
- 
+
   valorPrefixUsuario: string = 'U_';
 
   isDropUsersDisable = false
@@ -36,9 +36,9 @@ export class RegistrarUsuarioComponent implements OnInit {
   isRequired: boolean = true;
   errorMessage: string | null = null;
 
-  
+
   mostrarCampo: boolean = true;  //para mostrar u ocultar campos
-  mostrarCamposSunass: boolean = true;  //para mostrar u ocultar campos
+  mostrarCamposSunass: boolean = false;  //para mostrar u ocultar campos
 
   usuariosSunass: {label: string, value: any}[];
 
@@ -58,14 +58,14 @@ export class RegistrarUsuarioComponent implements OnInit {
       tipo: [TIPO_EPS, Validators.required],
       perfil: ['', Validators.required],
       unidadOrganica: [''],
-      nombres: ['', Validators.required],
-      apellidos: ['', Validators.required],
-      correo: ['', [Validators.required, Validators.email]],
+      nombres: ['', this.mostrarCamposSunass ? Validators.required : []],
+      apellidos: ['', this.mostrarCamposSunass ? Validators.required : []],
+      correo: ['', this.mostrarCamposSunass ? [Validators.required, Validators.email]: []],
       selEmpresa : ['', Validators.required],
       usuario: [''],
       username: ['', Validators.required],
       password: ['', [Validators.required]],
-      telefono: ['', [Validators.required,Validators.minLength(9)]],
+      telefono: ['', this.mostrarCamposSunass ? [Validators.required,Validators.minLength(9)]: []],
       estado: [true]
     });
 
@@ -132,7 +132,7 @@ export class RegistrarUsuarioComponent implements OnInit {
       empresa.idEmpresa = this.registroForm.get("selEmpresa").value;
       user.empresa = empresa;
       this.userService.create(user).subscribe(responseUser => {
-        this.onAceptar(); 
+        this.onAceptar();
         Swal.fire({
           icon: "success",
           title: 'Se registró el usuario correctamente',
@@ -140,7 +140,7 @@ export class RegistrarUsuarioComponent implements OnInit {
           confirmButtonText: 'Aceptar',
           confirmButtonColor: '#28a745', // color verde
         }).then((result) => {
-          
+
         });
 
       },
@@ -189,25 +189,18 @@ export class RegistrarUsuarioComponent implements OnInit {
   }
 
   cargarUsuariosLDAP(): void {
-    this.userService.findAllLDAP().subscribe(
-
-      (data: User[]) => {
-        this.usuariosSunass = data.map(user => ({
-          label: user.username,
-          value: user
-        }));
-
-      },
-      (error) => {
-        console.error('Error al obtener los usuarios del LDAP', error);
+    this.usuariosSunass = [
+      {
+        label: "Ander",
+        value: "Bengolea",
       }
-    );
+    ]
   }
 
   private setEnableDisableIputs(){
 
     if(this.registroForm.get('tipo').value === TIPO_SUNASS){
-      
+
       this.mostrarCampo =false; //por ejemplo se va ocultar el campo EPS
       this.mostrarCamposSunass=true;
       this.isDropUsersDisable = false;
@@ -236,24 +229,22 @@ export class RegistrarUsuarioComponent implements OnInit {
       this.isDropUsersDisable = true;
       this.registroForm.get('unidadOrganica').disable();
       this.registroForm.get('usuario').disable();
-      this.registroForm.get('nombres').enable();
-      this.registroForm.get('apellidos').enable();
+      this.registroForm.get('nombres').disable();
+      this.registroForm.get('apellidos').disable();
       this.registroForm.get('username').enable();
-      this.registroForm.get('correo').enable();
+      this.registroForm.get('correo').disable();
       this.registroForm.get('password').enable();
       this.registroForm.get('perfil').enable();
       this.registroForm.get('selEmpresa').enable();
-      this.registroForm.get('telefono').enable();
+      this.registroForm.get('telefono').disable();
       this.registroForm.get('tipo').enable();
 
       this.registroForm.get('selEmpresa').setValidators([Validators.required]);
-      this.registroForm.get('telefono').setValidators([Validators.required,Validators.minLength(9)]);
       this.registroForm.get('usuario').setValidators([Validators.nullValidator]);
       this.registroForm.get('password').setValidators([Validators.required,Validators.pattern(PASSWORD_REGEX)]);
 
       this.registroForm.get('usuario').updateValueAndValidity();
       this.registroForm.get('selEmpresa').updateValueAndValidity();
-      this.registroForm.get('telefono').updateValueAndValidity();
       this.registroForm.get('password').updateValueAndValidity();
 
       const usernameValue = this.registroForm.get('username').value || '';
@@ -310,7 +301,7 @@ export class RegistrarUsuarioComponent implements OnInit {
         return;
       }
     }
-  
+
     // Garantiza que el valor siempre comience con "U_"
     if (!this.valorPrefixUsuario.startsWith('U_')) {
       this.valorPrefixUsuario = 'U_' + this.valorPrefixUsuario.replace(/^U_/, '');
