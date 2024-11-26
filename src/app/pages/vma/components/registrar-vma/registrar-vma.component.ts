@@ -128,11 +128,11 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
     let preguntas: Pregunta[] = preguntasArray.reduce((acc, cur) => acc.concat(cur), []);
     const respuestas: RespuestaDTO[] = [];
     const respuestasArchivo: RespuestaDTO[] = [];
-    preguntas = preguntas.filter(pregunta => pregunta.respuesta || (pregunta.tipoPregunta === TipoPregunta.NUMERICO && pregunta.alternativas.length > 0))
+    preguntas = preguntas.filter(pregunta => (pregunta.respuesta !== null && pregunta.respuesta !== "") || (pregunta.tipoPregunta === TipoPregunta.NUMERICO && pregunta.alternativas.length > 0))
     preguntas.forEach(pregunta => {
       if(pregunta.tipoPregunta === TipoPregunta.NUMERICO && pregunta.alternativas.length > 0) {
         pregunta.alternativas.forEach(alternativa => {
-          if(alternativa.respuesta) {
+          if(alternativa.respuesta !== null && alternativa.respuesta !== "") {
             const respuesta = new RespuestaDTO();
             respuesta.idRespuesta = alternativa.respuestaDTO?.idRespuesta;
             respuesta.idPregunta = pregunta.idPregunta;
