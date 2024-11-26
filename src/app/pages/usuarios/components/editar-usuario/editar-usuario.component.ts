@@ -31,7 +31,7 @@ export class EditarUsuarioComponent implements OnInit {
   perfiles: GenericCombo[] = [];
   mostrarCampo: boolean = true;
   isUsuarioEPS: boolean = false;
-
+  mostrarCamposSunass: boolean = false;
 
   usuariosSunass: {label: string, value: any}[] = [];
   empresasLista: {label: string, value: any}[] = [];
@@ -52,14 +52,14 @@ export class EditarUsuarioComponent implements OnInit {
       tipo: ['EPS', Validators.required],
       perfil: ['', Validators.required],
       unidadOrganica: [''],
-      nombres: ['', Validators.required],
-      apellidos: ['', Validators.required],
-      correo: ['', [Validators.required, Validators.email]],
+      nombres: ['', this.mostrarCamposSunass ? Validators.required : []],
+      apellidos: ['', this.mostrarCamposSunass ? Validators.required : []],
+      correo: ['', this.mostrarCamposSunass ? [Validators.required, Validators.email]: []],
       usuario: [''],
       username: [''],
       //password: ['',Validators.pattern(PASSWORD_REGEX)], //si se desea ingresar manualmente cumpliendo el regex
       password: [''],
-      telefono: ['', [Validators.required, Validators.minLength(9)]],
+      telefono: ['', this.mostrarCamposSunass ? [Validators.required,Validators.minLength(9)]: []],
       estado: [true, Validators.required],
       selEmpresa : ['', Validators.required],
     });
@@ -270,6 +270,7 @@ export class EditarUsuarioComponent implements OnInit {
 
     if(this.registroForm.get('tipo').value === TIPO_SUNASS){
       this.mostrarCampo =false; //por ejemplo se va ocultar el campo EPS
+      this.mostrarCamposSunass = true;
       this.isDropUsersDisable = false;
       this.registroForm.get('unidadOrganica').disable();
       this.registroForm.get('nombres').disable();
@@ -277,11 +278,13 @@ export class EditarUsuarioComponent implements OnInit {
       this.registroForm.get('correo').disable();
       this.registroForm.get('password').disable();
       this.registroForm.get('usuario').enable();
+      this.registroForm.get('username').disable();
 
       this.registroForm.get('usuario').setValidators([Validators.required]);
       this.registroForm.get('perfil').setValidators([Validators.required]);
       this.registroForm.get('telefono').setValidators([Validators.nullValidator]);
 
+     // this.registroForm.get('username').updateValueAndValidity();
       this.registroForm.get('usuario').updateValueAndValidity();
       this.registroForm.get('perfil').updateValueAndValidity();
       this.registroForm.get('telefono').updateValueAndValidity();
@@ -289,25 +292,24 @@ export class EditarUsuarioComponent implements OnInit {
     } else if(this.registroForm.get('tipo').value === TIPO_EPS) {
       this.mostrarCampo =true;
       this.isDropUsersDisable = true;
+      this.mostrarCamposSunass = false;
       this.registroForm.get('unidadOrganica').disable();
       this.registroForm.get('usuario').disable();
-      this.registroForm.get('nombres').enable();
-      this.registroForm.get('apellidos').enable();
-      this.registroForm.get('correo').enable();
+      this.registroForm.get('nombres').disable();
+      this.registroForm.get('apellidos').disable();
+      this.registroForm.get('correo').disable();
       this.registroForm.get('password').enable();
 
       this.registroForm.get('perfil').enable();
       this.registroForm.get('selEmpresa').enable();
-      this.registroForm.get('telefono').enable();
+      this.registroForm.get('telefono').disable();
       this.registroForm.get('tipo').enable();
 
       this.registroForm.get('usuario').setValidators([Validators.required]);
       this.registroForm.get('username').setValidators([Validators.required]);
-      this.registroForm.get('telefono').setValidators([Validators.required, Validators.minLength(9)]);
 
       this.registroForm.get('usuario').updateValueAndValidity();
       this.registroForm.get('username').updateValueAndValidity();
-      this.registroForm.get('telefono').updateValueAndValidity();
 
     }
 

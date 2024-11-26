@@ -128,11 +128,11 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
     let preguntas: Pregunta[] = preguntasArray.reduce((acc, cur) => acc.concat(cur), []);
     const respuestas: RespuestaDTO[] = [];
     const respuestasArchivo: RespuestaDTO[] = [];
-    preguntas = preguntas.filter(pregunta => pregunta.respuesta || (pregunta.tipoPregunta === TipoPregunta.NUMERICO && pregunta.alternativas.length > 0))
+    preguntas = preguntas.filter(pregunta => (pregunta.respuesta !== null && pregunta.respuesta !== "") || (pregunta.tipoPregunta === TipoPregunta.NUMERICO && pregunta.alternativas.length > 0))
     preguntas.forEach(pregunta => {
       if(pregunta.tipoPregunta === TipoPregunta.NUMERICO && pregunta.alternativas.length > 0) {
         pregunta.alternativas.forEach(alternativa => {
-          if(alternativa.respuesta) {
+          if(alternativa.respuesta !== null && alternativa.respuesta !== "") {
             const respuesta = new RespuestaDTO();
             respuesta.idRespuesta = alternativa.respuestaDTO?.idRespuesta;
             respuesta.idPregunta = pregunta.idPregunta;
@@ -142,7 +142,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
             respuestas.push(respuesta);
           }
         })
-      } else if(pregunta.tipoPregunta === TipoPregunta.ARCHIVO) {
+      }  else if(pregunta.tipoPregunta === TipoPregunta.ARCHIVO) {
         if(this.isFile(pregunta.respuesta)) {
           respuestasArchivo.push({
             idRespuesta: pregunta.respuestaDTO?.idRespuesta,
@@ -304,7 +304,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
         <div class="d-flex flex-column gap-3">
           <div class="grid-inputs-modal"><label class="text-left" for="input1">Nombres y apellidos del responsable:</label><input id="input1" class="form-control"></div>
           <div class="grid-inputs-modal"><label class="text-left" for="input2">Correo electrónico:</label><input id="input2" class="form-control"></div>
-          <div class="grid-inputs-modal"><label class="text-left" for="input3">Teléfono:</label><input id="input3" class="form-control"></div>
+          <div class="grid-inputs-modal"><label class="text-left" for="input3">Teléfono:</label><input id="input3" class="form-control" maxlength="9"></div>
         </div>
     `,customClass: {
         popup: 'modal-sweet-ancho'
@@ -321,7 +321,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
         const telefono = (document.getElementById('input3') as HTMLInputElement)?.value;
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        const telefonoRegex = /^9\d{8}$/;
+        const telefonoRegex = /^\d{9}$/;
 
         if (!nombreCompleto || !email || !telefono) {
           Swal.showValidationMessage('Todos los campos son requeridos');

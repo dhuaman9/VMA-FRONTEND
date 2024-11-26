@@ -14,7 +14,7 @@ const routes: Routes = [
     path: "registrar-vma", component : RegistrarVmaComponent, data: { tituloModulo : 'Sistema de Valores Maximos Admisibles', expectedRole: ROL_REGISTRADOR }, canActivate: [RegistradorVmaGuard]
   },
   {
-    path: "registrar-vma/:id", component : RegistrarVmaComponent, data: { tituloModulo : 'Sistema de Valores Maximos Admisibles'}
+    path: "registrar-vma/:id", component : RegistrarVmaComponent, data: { tituloModulo : 'Sistema de Valores Maximos Admisibles', expectedRoles: [ROL_ADMINISTRADOR_DF, ROL_CONSULTOR]}
    // path: "registrar-vma/:id", component : RegistrarVmaComponent, data: { tituloModulo : 'Sistema de Valores Maximos Admisibles', expectedRole: [ROL_REGISTRADOR, ROL_ADMINISTRADOR_DF, ROL_CONSULTOR]}, canActivate: [RegistradorVmaGuard] 
   
   },

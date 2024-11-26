@@ -2,6 +2,9 @@ import {RegistroVMA} from "./models/registroVMA";
 
 export const isVmaVigente = (vma: RegistroVMA): boolean =>  {
 
+  console.log("vma.fichaRegistro.fechaInicio",vma.fichaRegistro.fechaInicio);
+  console.log("vma.fichaRegistro.fechaFin",vma.fichaRegistro.fechaFin);
+
   if(!vma.fichaRegistro.fechaInicio || !vma.fichaRegistro.fechaFin) return false;
 
   const fechaInicio = parseDate(vma.fichaRegistro.fechaInicio);

@@ -28,7 +28,7 @@
                                     <div class="d-flex gap-2 align-items-center" >
                                       <label class="mb-0" >{{alternativa.get('nombreCampo').value}}</label>
                                       <p-inputNumber class="input-number" formControlName="respuesta"
-                                                     mode="decimal"
+                                                     mode="decimal" [min]="0"
                                                      [minFractionDigits]="pregunta.get('metadato').value?.decimal ? 2 : null"
                                                      [maxFractionDigits]="pregunta.get('metadato').value?.decimal ? 2 : null"
                                       ></p-inputNumber>
@@ -43,7 +43,7 @@
                             </div>
                             <ng-template #inputNumericoUnico>
                               <p-inputNumber class="input-number" formControlName="respuesta"
-                                             mode="decimal"
+                                             mode="decimal" [min]="0"
                                              [minFractionDigits]="pregunta.get('metadato').value?.decimal ? 2 : null"
                                              [maxFractionDigits]="pregunta.get('metadato').value?.decimal ? 2 : null"></p-inputNumber>
                               <small *ngIf="pregunta.get('respuesta').errors?.required" style="color: red;">Campo requerido</small>

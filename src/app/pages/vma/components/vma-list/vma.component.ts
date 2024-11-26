@@ -55,12 +55,14 @@ export class VmaComponent implements OnInit {
   registroCompleto: boolean = false; //cambiar por statusRegistroVMA
 
   isRoleRegistrador: boolean;
-  //isRoleRegistrador: boolean = this.sessionService.obtenerRoleJwt().toUpperCase().trim() === 'REGISTRADOR';
+  
   isRoleAdmin : boolean ;
   isRoleConsultor: boolean;
+  isRoleConsultorSunass: boolean;
   isRoleConsultorEPS: boolean;
-  fichaRegistro: FichaRegistro | null = null;
 
+  fichaRegistro: FichaRegistro | null = null;
+  private isListadoPrimeraVezIniciado = false;
   @ViewChild('dt1') table!: Table;
 
   private lastSearchFilters:{};
@@ -85,12 +87,15 @@ export class VmaComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    this.buscar();
+    this.isListadoPrimeraVezIniciado = true;
     const role = this.sessionService.obtenerRoleJwt().toUpperCase().trim();
     const esUsuarioEPS =  this.sessionService.getTipoUsuario().includes('EPS');
+    const esUsuarioSUNASS =  this.sessionService.getTipoUsuario().includes('SUNASS');
 
     this.isRoleAdmin = role === ROL_ADMINISTRADOR_DF;
     this.isRoleConsultor= role === ROL_CONSULTOR;
+    this.isRoleConsultorSunass = this.isRoleConsultor && esUsuarioSUNASS;
     this.isRoleConsultorEPS = this.isRoleConsultor && esUsuarioEPS; //pendiente de usar
     this.isRoleRegistrador = role === ROL_REGISTRADOR;
 
@@ -102,7 +107,7 @@ export class VmaComponent implements OnInit {
       )
       .subscribe(() =>  this.buscar());
     this.formCheckBox.valueChanges.subscribe(this.toggleSeleccionados);
-    this.buscar();
+
     this.filtroForm = this.fb.group({
       eps: [''],
       estado: [''],
@@ -172,18 +177,26 @@ export class VmaComponent implements OnInit {
   }
 
   initializeYears() {
-    const currentYear = new Date().getFullYear();
+    /*const currentYear = new Date().getFullYear();
     this.years = [];
     for (let year = currentYear; year >= 2022; year--) {
       this.years.push({ label: year.toString(), value: year });
+    }*/
+
+    const startYear = 2024; // año desde que se publica y/o se registrara informacion de vma
+    const currentYear = new Date().getFullYear();//año actual
+    this.years = [];
+    for (let year = currentYear; year >= startYear; year--) {
+      this.years.push({ label: year.toString(), value: year });
     }
+
   }
 
    onQueryListRegistroVMA(event?: any) {
 
     const page = event ? Math.floor(event.first / event.rows) : 0;
     const size = event ? event.rows : this.rows;
-    //console.log("paramsPag",paramsPag);
+
     this.registroVMAService.findAll().subscribe(
 
       (data:any) => {
@@ -221,7 +234,7 @@ export class VmaComponent implements OnInit {
   //metodo para cambiar de estado de registro vma, de  completo a incompleto.
   cambiarEstadoIncompleto(id: number): void {
     Swal.fire({
-      title: "¿Está seguro de cambiar el estado del registro?",
+      title: "¿Está seguro de cambiar el estado del registro a Incompleto?",
       //text: "Se cambiará el estado del registro a INCOMPLETO",
       icon: "warning",
       showCancelButton: true,
@@ -261,6 +274,11 @@ export class VmaComponent implements OnInit {
   }
 
   buscar(event?: LazyLoadEvent) {
+    if (this.isListadoPrimeraVezIniciado) {
+      this.isListadoPrimeraVezIniciado = false;
+      return;
+    }
+
     this.formCheckBox.setValue(false);
 
     // Determinar el primer elemento y las filas a mostrar
@@ -299,7 +317,12 @@ export class VmaComponent implements OnInit {
             this.totalRecords = response.totalElements;
             this.isLoading = false;
 
-            this.ListRegistroVMA.forEach(vma => vma.vigente = isVmaVigente(vma));
+            //this.ListRegistroVMA.forEach(vma => vma.vigente = isVmaVigente(vma));
+            this.ListRegistroVMA.forEach(vma => {
+              vma.vigente = isVmaVigente(vma); // Asigna el valor de `vigente`
+              console.log(`Registro ID: ${vma.idRegistroVma}, Vigente: ${vma.vigente}`); // Muestra el valor de `vigente`
+          });
+           
         });
     }
   }

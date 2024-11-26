@@ -27,11 +27,11 @@ const routes : Routes =
             data: {expectedRoles: [ROL_ADMINISTRADOR_OTI]},
             loadChildren: () => import('./pages/usuarios/usuarios.module').then(m => m.UsuariosModule)
           },
-          {
+          /*{
             path: 'cambiar-password',
             component: CambiarPasswordComponent,
             canActivate: [GuardService, CambiarPasswordGuard]
-          },
+          },*/  //cuando se necesite   cambiar password , previamente enviando el correo al usuario eps
           {
             path: 'anexos',
             canActivate : [GuardService, AnexoGuard],

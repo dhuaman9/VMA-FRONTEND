@@ -24,6 +24,8 @@ import Swal from 'sweetalert2';
   styleUrls: ['./reporte.component.css']
 })
 export class ReporteComponent implements OnInit {
+
+  filterText: string = '';
   title = 'GFG';
   isLoading = false;
   years: any[];
@@ -151,7 +153,8 @@ export class ReporteComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.setDefaultYear();//cargara el año actual
+
+    this.setDefaultYear();//se carga el año actual
   }
 
   private cargarDatosBarChartSiNo = (registrosSiNoChart: ChartDto[]): void => {
@@ -466,11 +469,14 @@ export class ReporteComponent implements OnInit {
 
 
   private initializeYears(): void {
+
+    const startYear = 2024; // año desde que se publica y/o se registrara informacion de vma
     const currentYear = new Date().getFullYear();
     this.years = [];
-    for (let year = currentYear; year >= 2022; year--) {
+    for (let year = currentYear; year >= startYear; year--) {
       this.years.push({ label: year.toString(), value: year });
     }
+
   }
 
   applyFilter(): void {
@@ -481,9 +487,6 @@ export class ReporteComponent implements OnInit {
   private setDefaultYear() {
     this.selectedYear = new Date().getFullYear();
   }
-
-  filterText: string = '';
-
 
   filterTabs(header: string, content: string): boolean {
     if (!this.filterText) {

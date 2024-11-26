@@ -46,6 +46,13 @@ export class AnexosComponent implements OnInit, OnDestroy {
     this.initializeYears();
   }
 
+  ngOnInit(): void {
+    
+    this.applyFilter();
+    this.setDefaultYear();
+
+  }
+
   downloadPDF(headers: string[], dataList: any[],nroAnexo:number): void {
     const doc = new jsPDF();
 
@@ -103,17 +110,19 @@ export class AnexosComponent implements OnInit, OnDestroy {
     return '';
   }
 
-  ngOnInit(): void {
-    this.applyFilter();
-  }
+  
 
   initializeYears(): void {
-    this.setDefaultYear();
-    const currentYear = new Date().getFullYear();
+   // this.setDefaultYear();
+   
+   const startYear = 2024; // año desde que se publica y/o se registrara informacion de vma
+    const currentYear = new Date().getFullYear(); //año actual
     this.years = [];
-    for (let year = currentYear; year >= 2022; year--) {
+    for (let year = currentYear; year >= startYear; year--) {
       this.years.push({ label: year.toString(), value: year });
     }
+
+
   }
 
   applyFilter(): void {

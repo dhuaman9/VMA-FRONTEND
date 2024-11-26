@@ -12,7 +12,7 @@
           </div>
         </div>
         <!-- Filtros -->
-        <div class="card pdn-15"  *ngIf="isRoleAdmin || isRoleConsultor">
+        <div class="card pdn-15"  *ngIf="isRoleAdmin || isRoleConsultorSunass">
           <div class="border-0 text-center">
             <h2>Filtros de búsqueda</h2>
           </div>
@@ -20,7 +20,7 @@
             <form [formGroup]="filtroForm"  class="d-flex flex-wrap gap-2">
               <div *ngFor="let field of ['eps', 'estado', 'fechaDesde', 'fechaHasta', 'anio']; let i = index">
                 <div [ngSwitch]="field" >
-                  <div *ngIf="!isRoleConsultorEPS">  <!-- dhr ,  es correcto ocultarlo y seguira funcionando ese  filtro para ese tipo de usuario?-->
+                  <div>  <!-- dhr ,  es correcto ocultarlo y seguira funcionando ese  filtro para ese tipo de usuario?-->
                     <span class="p-float-label" *ngSwitchCase="'eps'">
                       <p-dropdown inputId="selEmpresa" [options]="empresasLista" placeholder="Seleccionar EPS" formControlName="eps"
                                   [showClear]="true" [filter]="true"></p-dropdown>
@@ -71,12 +71,10 @@
           </div>
         </div>
         <!-- Botones:  Registrar  y  Descargar   excel -->
-        <div class="card pdn-15">
+        <div *ngIf="isRoleRegistrador || isRoleAdmin || isRoleConsultorSunass" class="card pdn-15">
           <div class="card-header border-0"  style="display: flex; justify-content: space-between; align-items: center;">
             <div style="display: flex; align-items: center;">
-              <!--<button  class="btn btn-danger mt-2 mr-2" *ngIf="isRoleAdminAndConsultor"
-                      (click)="descargarReporteEPSsinRegistroVMA()" ><i class="pi pi-download"></i>  EPS sin registrar</button> -->
-
+            
               <button  class="btn btn-success mt-2 mr-2" *ngIf="isRoleRegistrador"
                       (click)="redirectToForm()"
                       [disabled]="registroCompleto"
@@ -88,7 +86,7 @@
             </div>
             <div style="margin-left: auto;">
             <button pButton label="Descargar Reporte" pTooltip="Por defecto, se descargará todo el listado filtrado." tooltipPosition="top" class="p-button-success float-right" icon="pi pi-file-excel" iconPos="right"
-                    *ngIf="isRoleAdmin || isRoleConsultor"
+                    *ngIf="isRoleAdmin || isRoleConsultorSunass"
                     (click)="descargar()"></button>
             </div>
           </div>
@@ -125,7 +123,7 @@
                   </ng-template>
                   <ng-template pTemplate="header">
                     <tr>
-                      <th style="width: 5%;" *ngIf="!isRoleRegistrador">
+                      <th style="width: 5%;" *ngIf="!(isRoleRegistrador || isRoleConsultorEPS)">
                         <!--<input type="checkbox" class="custom-checkbox" [formControl]="formCheckBox"> -->
                       </th>
                       <th style="text-align:center;width: 5%;">N°</th>
@@ -140,7 +138,7 @@
                   </ng-template>
                   <ng-template pTemplate="body" let-item let-ri="rowIndex" let-first="first">
                     <tr>
-                     <td *ngIf="!isRoleRegistrador">
+                     <td *ngIf="!(isRoleRegistrador || isRoleConsultorEPS)">
                        <p-tableCheckbox *ngIf="!isRoleRegistrador && (item.estado === estados[0]  || item.estado === estados[1] )" [value]="item"></p-tableCheckbox>
                       </td>
 
@@ -158,13 +156,13 @@
                       <td style="text-align:center;">{{item.fichaRegistro.anio}}</td>
                       <td style="text-align:center" class="">
                         <div class="d-flex gap-2">
-                          <button pButton type="button" [icon]="isRoleRegistrador && item.estado !== estados[0] && item.vigente  ? 'pi pi-pencil' : 'pi pi-eye'" style="width: 30px; height: 20px;"
+                          <button pButton type="button" *ngIf="item.estado" [icon]="isRoleRegistrador && item.estado !== estados[0] && item.vigente  ? 'pi pi-pencil' : 'pi pi-eye'" style="width: 30px; height: 20px;"
                                   [pTooltip]="isRoleRegistrador && item.estado !== estados[0] && item.vigente  ? 'Editar registro' : 'Visualizar registro'" tooltipPosition="top"
                                   (click)="redirectToFormUpdate(item.idRegistroVma)">
                           </button>
                           <button pButton type="button" style="width: 30px; height: 20px;"
                                   *ngIf="isRoleAdmin && item.estado === estados[0] "
-                                  [pTooltip]="'Volver a editar'" tooltipPosition="top"
+                                  [pTooltip]="'Volver a habilitar'" tooltipPosition="top"
                                   [icon]="'pi pi-pencil'"
                                   (click)="cambiarEstadoIncompleto(item.idRegistroVma)">
                           </button>

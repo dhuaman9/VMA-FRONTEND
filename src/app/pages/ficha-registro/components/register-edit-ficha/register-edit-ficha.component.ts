@@ -41,8 +41,14 @@ export class RegisterEditFichaComponent implements OnInit {
 
   ngOnInit(): void {
 
-    const currentYear = new Date().getFullYear();
-    for (let year = currentYear; year >= 2022; year--) { //para establecer los años en el combobox, desde el actual hasta el 2022
+    /*const currentYear = new Date().getFullYear();
+    for (let year = currentYear; year >= 2022; year--) { //para setear los años al combobox, desde el año del pase a prod  hasta el actual.
+      this.years.push(year.toString());
+    }*/
+
+    const startYear = 2024;  // año desde que se publica y/o se registrara informacion de vma
+    const currentYear = new Date().getFullYear(); // Año actual
+    for (let year = startYear; year <= currentYear; year++) {
       this.years.push(year.toString());
     }
 

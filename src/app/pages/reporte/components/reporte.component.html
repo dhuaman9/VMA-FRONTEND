@@ -3,7 +3,7 @@
 <div class="reporte">
   <div style="text-align: center; margin-bottom: 20px;">
     <h2 style="margin-bottom: 20px;">Gráficos estadisticos VMA</h2>
-    <span>Seleccionar el año: </span>
+    <span>Seleccione el año de registro VMA: </span>
     <p-dropdown
       [options]="years"
       [(ngModel)]="selectedYear"
@@ -59,7 +59,7 @@
         <ng-container *ngIf="chartTrabajadoresDedicadosRegistroData; else loading">
           <app-bar-chart [barChartDataset]="chartTrabajadoresDedicadosRegistroData"
                          [labels]="chartTrabajadoresDedicadosRegistroLabels"
-                         [colorDataLabel]="'#000'"
+                         [colorDataLabel]="'#ffffff'"
                          [tieneDecimalesDataLabel]="true"
                         ></app-bar-chart>
         </ng-container>
@@ -300,8 +300,8 @@
           <app-bar-chart [barChartDataset]="chartCostoTotalConcurridoData"
                          [labels]="chartCostoTotalConcurridoLabels"
                          [tieneDecimalesDataLabel]="true"
-                         [esLabelDataAfuera]="true"
-                         [colorDataLabel]="'#3c3b3b'"
+                         [esLabelDataAfuera]="false"
+                         [colorDataLabel]="'#FFFFFF'"
                          [stepSize]="2000">
           </app-bar-chart>
         </ng-container>
@@ -316,8 +316,8 @@
          <app-bar-chart [barChartDataset]="chartreporteCostoTotalAnualIncurridoData"
                       [labels]="chartreporteCostoTotalAnualIncurridoLabels"
                       [tieneDecimalesDataLabel]="true"
-                      [esLabelDataAfuera]="true"
-                      [colorDataLabel]="'#3c3b3b'"
+                      [esLabelDataAfuera]="false"
+                      [colorDataLabel]="'#FFFFFF'"
                       [stepSize]="1000">
          </app-bar-chart>
         </ng-container>
@@ -354,8 +354,8 @@
                         <app-bar-chart [barChartDataset]="chartCostoAnualMuestrasInopinadasData"
                                        [labels]="chartCostoTotalConcurridoLabels"
                                        [tieneDecimalesDataLabel]="true"
-                                       [esLabelDataAfuera]="true"
-                                       [colorDataLabel]="'#3c3b3b'"
+                                       [esLabelDataAfuera]="false"
+                                       [colorDataLabel]="'#FFFFFF'"
                                        [stepSize]="10000">
                         </app-bar-chart>
                       </ng-container>
@@ -369,8 +369,8 @@
                 <app-bar-chart [barChartDataset]="chartCostoAnualIncurridoMuestrasInopinadasAllData"
                     [labels]="chartCostoAnualIncurridoMuestrasInopinadasAllLabels"
                     [tieneDecimalesDataLabel]="true"
-                    [esLabelDataAfuera]="true"
-                    [colorDataLabel]="'#3c3b3b'"
+                    [esLabelDataAfuera]="false"
+                    [colorDataLabel]="'#FFFFFF'"
                     [stepSize]="2000">
                 </app-bar-chart>
              </ng-container>
@@ -385,8 +385,8 @@
                          [labels]="chartCostoTotalConcurridoOtrosLabels"
                          [tieneDecimalesDataLabel]="true"
                          [esVertical]="true"
-                         [esLabelDataAfuera]="true"
-                         [colorDataLabel]="'#3c3b3b'"
+                         [esLabelDataAfuera]="false"
+                         [colorDataLabel]="'#FFFFFF'"
                          [moneda]="'S/.'"
                          [ultimaBarrAdentro]="true"
                          [stepSize]="20"></app-bar-chart>
