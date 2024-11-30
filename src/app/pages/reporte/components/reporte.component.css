@@ -75,3 +75,12 @@
 :host ::ng-deep .p-datatable thead {
   border: 1px solid #ccc;
 }
+
+
+/*pendiente
+
+p-table td {
+  text-align: center;
+}
+
+*/

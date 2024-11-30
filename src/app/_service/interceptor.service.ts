@@ -55,7 +55,6 @@ export class InterceptorService implements HttpInterceptor{
         }
       }
 
-
       console.log('catchError-error - ',error);
       if (error instanceof HttpErrorResponse && error.status === 401) {
         return this.handle401Error(intReq, next);
@@ -65,9 +64,18 @@ export class InterceptorService implements HttpInterceptor{
         console.log('error.error.message  - ',error.error.message);
 
 
-      }else {  // if (error.status === 500)
-        //this.sessionService.cerrarSession();
+      }else  if (error instanceof HttpErrorResponse && error.status === 403) {
 
+        console.log('error.error.message  - ',error.error.message);
+        Swal.fire({
+          icon: 'error',
+          title: 'Permiso denegado.',
+          text: 'No puede ingresar a otro registro.',
+          confirmButtonText: 'Aceptar'
+        });
+
+      }else {  // if (error.status === 500)
+      
         Swal.fire({
           icon: 'error',
           title: 'Error del servidor',

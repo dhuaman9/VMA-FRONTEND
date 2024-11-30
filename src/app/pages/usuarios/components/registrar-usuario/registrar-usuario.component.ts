@@ -243,7 +243,7 @@ export class RegistrarUsuarioComponent implements OnInit {
       this.registroForm.get('password').enable();
       this.registroForm.get('perfil').enable();
       this.registroForm.get('selEmpresa').enable();
-      this.registroForm.get('telefono').disable();
+      //this.registroForm.get('telefono').disable();
       this.registroForm.get('tipo').enable();
 
       this.registroForm.get('selEmpresa').setValidators([Validators.required]);

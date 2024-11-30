@@ -18,7 +18,6 @@ export class CuestionarioService {
     token: string = localStorage.getItem(environment.TOKEN_NAME);//dhr a localStorage
     httpOptions : any;
   
-  
     constructor(
       private http: HttpClient
     ) { }

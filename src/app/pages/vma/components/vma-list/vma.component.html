@@ -73,16 +73,23 @@
         <!-- Botones:  Registrar  y  Descargar   excel -->
         <div *ngIf="isRoleRegistrador || isRoleAdmin || isRoleConsultorSunass" class="card pdn-15">
           <div class="card-header border-0"  style="display: flex; justify-content: space-between; align-items: center;">
-            <div style="display: flex; align-items: center;">
-            
-              <button  class="btn btn-success mt-2 mr-2" *ngIf="isRoleRegistrador"
+            <div style="display: flex; align-items: center; gap: 10px;"> 
+              <button class="btn btn-success mt-2 mr-2" *ngIf="isRoleRegistrador"
                       (click)="redirectToForm()"
                       [disabled]="registroCompleto"
-                      [pTooltip]="registroCompleto ? 'Ya existe un registro VMA en curso' : 'Registrar nuevo VMA'"
-                      tooltipPosition="top"><i class="pi pi-plus"></i>  Registrar</button>
-                      <span *ngIf="registroCompleto && isRoleRegistrador" class="registro-indisponible">
-                        No es posible registrar un nuevo VMA. Ya existe uno en curso o la fecha actual no está dentro del período programado.
-                      </span>
+                      [pTooltip]="registroCompleto ? 'No es posible registrar' : 'Registrar nuevo VMA'"
+                      tooltipPosition="top">
+                <i class="pi pi-plus"></i> Registrar
+              </button>
+              
+              <span *ngIf="registroCompleto && isRoleRegistrador" class="registro-indisponible">
+                Ya no está permitido registrar otro nuevo, por alguno de estos motivos:
+                <ul class="motivos">
+                  <li>Porque ya existe un registro VMA en curso.</li>
+                  <li>Porque la fecha actual no está dentro del período programado.</li>
+                  <li>La empresa EP/EPS está deshabilitada.</li>
+                </ul>
+              </span>
             </div>
             <div style="margin-left: auto;">
             <button pButton label="Descargar Reporte" pTooltip="Por defecto, se descargará todo el listado filtrado." tooltipPosition="top" class="p-button-success float-right" icon="pi pi-file-excel" iconPos="right"

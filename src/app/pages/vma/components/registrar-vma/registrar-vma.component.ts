@@ -29,7 +29,7 @@ import {DatosUsuariosRegistrador} from "../../../../_model/datos-usuarios-regist
 
 export class RegistrarVmaComponent implements OnInit, OnDestroy {
   cuestionario: Cuestionario;
-  registroForm: FormGroup;
+ 
   registroCompleto: boolean = false; //cambiar por statusRegistroVMA
 
 
@@ -66,21 +66,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-  this.registroForm = this.fb.group({
-    tipo: ['EPS', Validators.required],
-    perfil: ['', Validators.required],
-    unidadOrganica: [''],
-    nombres: ['', Validators.required],
-    apellidos: ['', Validators.required],
-    correo: ['', [Validators.required, Validators.email]],
-    eps: ['', Validators.required],
-    usuario: [''],
-    username: [''],
-    password: ['', Validators.required],
-    telefono: ['', Validators.required],
-    estado: [true]
-  });
-
+ 
   this.activatedRoute.params.subscribe(params => {
     this.idRegistroVMA = params['id'];
 
@@ -107,9 +93,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
     }
   })
 
-  //this.vmaService.isRegistroCompleto().subscribe(response => this.registroCompleto = response);
-  //this.vmaService.registroCompleto$.subscribe(response => this.registroCompleto = response);
-
+ 
   }
 
   isFile(value: any): boolean {

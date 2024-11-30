@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ReporteService } from 'src/app/pages/reporte/services/reporte.service';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
@@ -147,7 +147,8 @@ export class ReporteComponent implements OnInit {
 
   constructor(
     public route : ActivatedRoute,
-    private reporteService: ReporteService
+    private reporteService: ReporteService,
+    private cdr: ChangeDetectorRef
   ) {
     this.initializeYears();
   }
@@ -440,6 +441,8 @@ export class ReporteComponent implements OnInit {
       backgroundColor: '#36a2eb',
       data: data.barChartData.map(item => item.value)
     });
+
+   
   }
 
   // grafico 26  : Costo anual por conexión incurrido por realizar las tomas de muestras inopinadas
@@ -615,10 +618,9 @@ export class ReporteComponent implements OnInit {
   }
 
   async abrir() {
+
     const tabsSelected = [];
-
     this.openedTabs.forEach(() => tabsSelected.push({selected: true}));
-
     const requests = [];
     tabsSelected.forEach((isOpen, index) => {
       const request = this.getReporteByIndex(index, { tabs: tabsSelected }, false);
@@ -629,7 +631,7 @@ export class ReporteComponent implements OnInit {
 
     Swal.fire({
       title: "Cargando...",
-      html: "Se está generando el archivo con los reportes e indicadores",
+      html: "Se está generando el reporte de graficos estadísticos.",
       timerProgressBar: true,
       allowEscapeKey: false,
       allowOutsideClick: false,
@@ -645,6 +647,7 @@ export class ReporteComponent implements OnInit {
         switchMap(() => this.crearPdf().then(() => Swal.close()))
       )
       .subscribe();
+
   }
 
   async crearPdf() {
@@ -674,7 +677,7 @@ export class ReporteComponent implements OnInit {
     }
 
     // Save the PDF
-    pdf.save('reportes-indicadores.pdf');
+    pdf.save('reporte de graficos vma.pdf');
   }
 
   getReporte(tabIndex: number, accordion: any, reload?: boolean): void {

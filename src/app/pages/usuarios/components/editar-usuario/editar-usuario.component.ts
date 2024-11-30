@@ -132,7 +132,7 @@ export class EditarUsuarioComponent implements OnInit {
       username: userData.username,
       telefono: userData.telefono,
       estado: userData.estado,
-      password: userData.passwordPlain
+      //password: userData.passwordPlain  //dhr no se usaria, porque se expondria la clave
     });
 
   }

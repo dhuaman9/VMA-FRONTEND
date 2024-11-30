@@ -53,6 +53,7 @@ export class InicioComponent implements OnInit {
     private registroVmaService: RegistroVMAService,
     private fichaRegistroService: FichaRegistroService
   ) {
+    //pendiente por consultar si debe incluir
     /*if(this.sessionService.getTipoUsuario().includes('EPS')) {
       this.items.push(
         {

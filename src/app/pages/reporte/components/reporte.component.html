@@ -20,7 +20,7 @@
         <input type="text" pInputText [(ngModel)]="filterText" placeholder="Buscar grafico">
       </span>
       <div>
-        <button pButton (click)="abrir()" type="button" label="Descargar reporte"></button>
+        <button pButton (click)="abrir()" type="button" label="Descargar Reporte"></button>
       </div>
     </div>
     <p-accordion #accordion [multiple]="true" [(activeIndex)]="activeIndex">
@@ -136,13 +136,13 @@
                             </tr>
                           </ng-template>
                           <ng-template pTemplate="footer">
-                            <tr>
-                              <td>{{ totalRow.empresa }}</td>
-                              <td>{{ totalRow.registrados }}</td>
-                              <td>{{ totalRow.inspeccionados }}</td>
-                              <td>{{ totalRow.porcentajeAB }}%</td>
-                              <td>{{ totalRow.identificados }}</td>
-                              <td>{{ totalRow.porcentajeAC }}%</td>
+                            <tr >
+                              <td style="text-align: center;">{{ totalRow.empresa }}</td>
+                              <td style="text-align: center;">{{ totalRow.registrados }}</td>
+                              <td style="text-align: center;">{{ totalRow.inspeccionados }}</td>
+                              <td style="text-align: center;">{{ totalRow.porcentajeAB }}%</td>
+                              <td style="text-align: center;">{{ totalRow.identificados }}</td>
+                              <td style="text-align: center;">{{ totalRow.porcentajeAC }}%</td>
                             </tr>
                           </ng-template>
                         </p-table>
@@ -352,7 +352,7 @@
                         <br>
                         <h2>Grafico: Costo anual incurrido por realizar las tomas de muestras inopinadas,por cada EP.</h2>
                         <app-bar-chart [barChartDataset]="chartCostoAnualMuestrasInopinadasData"
-                                       [labels]="chartCostoTotalConcurridoLabels"
+                                       [labels]="chartCostoAnualMuestrasInopinadasLabels"
                                        [tieneDecimalesDataLabel]="true"
                                        [esLabelDataAfuera]="false"
                                        [colorDataLabel]="'#FFFFFF'"
