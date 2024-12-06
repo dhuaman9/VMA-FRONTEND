@@ -11,6 +11,7 @@ import { Empresa } from 'src/app/pages/empresa/models/empresa';
 import { EmpresaService } from 'src/app/pages/empresa/services/empresa.service';
 import { TIPO_SUNASS, TIPO_EPS , ROL_ADMINISTRADOR_OTI,ROL_ADMINISTRADOR_DF,
   ROL_REGISTRADOR,ROL_CONSULTOR,PASSWORD_REGEX} from 'src/app/utils/var.constant';
+import { MessageService } from 'primeng/api';
 
 import Swal from 'sweetalert2';
 
@@ -43,10 +44,13 @@ export class RegistrarUsuarioComponent implements OnInit {
   usuariosSunass: {label: string, value: any}[];
 
   empresasLista: {label: string, value: any}[] = [];
+  claveCopiada: boolean = false;
 
   constructor(private formBuilder: FormBuilder, private modalService: NgbModal,
     private userService : UserService,
-    private router: Router,  private empresaService : EmpresaService
+    private router: Router,  
+    private empresaService : EmpresaService,
+    private messageService: MessageService
   ) {
 
    }
@@ -315,5 +319,26 @@ export class RegistrarUsuarioComponent implements OnInit {
     }
   }
 
+  copiarAlPortapapeles(): void {
+    const passwordValue = this.registroForm.get('password')?.value;
+
+    if (passwordValue) {
+      if (navigator.clipboard) {
+        navigator.clipboard
+          .writeText(passwordValue)
+          .then(() => {
+            this.messageService.add({ severity: 'success', summary: 'Copiado', detail: 'Clave copiada al portapapeles' });
+          })
+          .catch((error) => {
+            console.error('Error al copiar al portapapeles: ', error);
+          });
+      } else {
+        console.error('El navegador no soporta la API de portapapeles.');
+      }
+    } else {
+      console.error('No se encontró la clave.');
+    }
+  }
+  
 
 }

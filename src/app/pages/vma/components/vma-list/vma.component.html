@@ -82,14 +82,39 @@
                 <i class="pi pi-plus"></i> Registrar
               </button>
               
-              <span *ngIf="registroCompleto && isRoleRegistrador" class="registro-indisponible">
-                Ya no está permitido registrar otro nuevo, por alguno de estos motivos:
+            <span *ngIf="registroCompleto && isRoleRegistrador" class="registro-indisponible">
+                El boton Registrar no está habilitado por alguno de estos motivos:
                 <ul class="motivos">
-                  <li>Porque ya existe un registro VMA en curso.</li>
-                  <li>Porque la fecha actual no está dentro del período programado.</li>
-                  <li>La empresa EP/EPS está deshabilitada.</li>
+                  <li>Porque existe un registro VMA dentro del plazo de registro</li>
+                  <li>Porque la fecha actual no está dentro del plazo de registro.</li>
+                  <li>Porque su empresa EP está deshabilitada.</li>
                 </ul>
               </span>
+
+              <!-- <p-button *ngIf="registroCompleto && isRoleRegistrador" icon="pi pi-question-circle" 
+              pTooltip="Este es el mensaje de ayuda" tooltipPosition="top">
+            </p-button> -->
+            <!--<p-button *ngIf="registroCompleto && isRoleRegistrador" icon="pi pi-check" class="p-button-rounded" style="width: 50px; height: 50px;"></p-button> -->
+
+           <!-- <button *ngIf="registroCompleto && isRoleRegistrador" pButton icon="pi pi-question" class="circular-button"></button>  --> 
+
+           <!--  <button pButton icon="pi pi-question" class="circular-button" 
+                  pTooltip="El boton Registrar no está habilitado por alguno de estos motivos:<ul class='motivos'><li>Porque existe un registro VMA dentro del plazo actual.</li><li>Porque la fecha actual está fuera del plazo de registro.</li><li>Porque su empresa EP está deshabilitada.</li></ul>" 
+                  tooltipPosition="right" [tooltipStyleClass]="'custom-tooltip'"  (click)="display = true">
+                </button> -->
+
+
+         <!--  <label class="circular-button" 
+              pTooltip="El botón no está habilitado por alguno de estos motivos:
+                        <ul class='motivos'>
+                          <li>Porque existe un registro VMA dentro del plazo de registro</li>
+                          <li>Porque la fecha actual no está dentro del plazo de registro.</li>
+                          <li>Porque su empresa EP está deshabilitada.</li>
+                        </ul>" 
+              tooltipPosition="right" [tooltipStyleClass]="'custom-tooltip'">
+          <i class="pi pi-question"></i>
+        </label> -->
+
             </div>
             <div style="margin-left: auto;">
             <button pButton label="Descargar Reporte" pTooltip="Por defecto, se descargará todo el listado filtrado." tooltipPosition="top" class="p-button-success float-right" icon="pi pi-file-excel" iconPos="right"

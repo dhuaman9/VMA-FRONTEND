@@ -71,7 +71,6 @@ export class UserService {
 
   findAllLDAP() : Observable<User[]>{
 
-
     return this.http.get<User[]>(this.url+'/usuario/listarUsuariosLDAP', {
       headers : new HttpHeaders({'Content-Type':'application/json'}),
       responseType : 'json'

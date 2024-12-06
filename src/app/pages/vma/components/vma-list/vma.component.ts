@@ -28,7 +28,7 @@ export class VmaComponent implements OnInit {
 
   //  arreglo con los estados disponibles : completo ,incompleto y sin registro
   estados: string[];
-
+  display: boolean = false;
   inputFilterTable: string="";
   filtroForm: FormGroup;
 
@@ -171,10 +171,10 @@ export class VmaComponent implements OnInit {
     });
   }
 
-  initListRegistroVMA() {
+  /*initListRegistroVMA() {
     this.showResultados = false;
     this.onQueryListRegistroVMA();
-  }
+  }*/
 
   initializeYears() {
     /*const currentYear = new Date().getFullYear();
@@ -192,11 +192,12 @@ export class VmaComponent implements OnInit {
 
   }
 
-   onQueryListRegistroVMA(event?: any) {
+  /* onQueryListRegistroVMA(event?: any) {
 
     const page = event ? Math.floor(event.first / event.rows) : 0;
     const size = event ? event.rows : this.rows;
 
+    console.log("onQueryListRegistroVMA event ",event);
     this.registroVMAService.findAll().subscribe(
 
       (data:any) => {
@@ -210,7 +211,7 @@ export class VmaComponent implements OnInit {
         console.error('Error, no hay data de registro VMA', error);
       }
     );
-  }
+  }*/
 
   onFilterTableGlobal(table: Table, event:any){
 

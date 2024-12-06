@@ -45,19 +45,4 @@ export class VmaService {
     }
 
 
-    private handleError(error: HttpErrorResponse) {
-      let errorMessage = 'Ocurrió un error inesperado';
-      if (error.error instanceof ErrorEvent) {
-        // Error del lado del cliente o de la red
-        errorMessage = `Error: ${error.error.message}`;
-      } else {
-        // El backend retornó un código de error y el mensaje
-        if (error.error && error.error.message) {
-          errorMessage = error.error.message;
-        } else {
-          errorMessage = `Error ${error.status}: ${error.message}`;
-        }
-      }
-      return throwError(errorMessage);
-    }
 }

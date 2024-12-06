@@ -70,19 +70,23 @@
             <app-validate-inputs-form [form]="registroForm" formInput='username' labelInput="Usuario">
             </app-validate-inputs-form>
           </div>
-          <div class="field col-12 md:col-4">
+          
+          <!-- se deja comentado lo de abajo, para ocultar el cuadro de contraseña y el boton generar clave, 
+           no son necesarios para editar usuarios-->
+
+          <!-- <div class="field col-12 md:col-4">
             <label>Contraseña <span style="color: #FA7272;" *ngIf="isFieldRequired('password')"> * </span></label>
             <input id="password" type="text" readonly pInputText formControlName="password" maxlength="255" minlength="8" autocomplete="off" />
             <app-validate-inputs-form [form]="registroForm" formInput='password' labelInput="Contraseña">
             </app-validate-inputs-form>
-          </div>
-          <div class="field col-12 md:col-4" *ngIf="!mostrarCamposSunass">
+          </div> -->
+          <!--<div class="field col-12 md:col-4" *ngIf="!mostrarCamposSunass">
             <div class="d-flex flex-column">
               <label>Generar clave</label>
               <p-button type="button" label="Generar clave" icon="pi pi-key" iconPos="left" class="p-button-secondary green-button" (click)="generarClaveAleatorio()">
               </p-button>
             </div>
-          </div>
+          </div> -->
           <div *ngIf="mostrarCamposSunass" class="field col-12 md:col-4">
             <label>Teléfono <span style="color: #FA7272;" *ngIf="isFieldRequired('telefono')"> * </span></label>
             <input id="telefono" formControlName="telefono" (input)="validateInputForm('telefono','numerico')" maxlength="9"

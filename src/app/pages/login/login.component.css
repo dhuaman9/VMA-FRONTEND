@@ -17,7 +17,7 @@
 .background {
     width: 100%;
     height: 100vh; /* Ocupa toda la altura de la ventana */
-    background: url(~src/assets/images/image-bg-login-1.jpeg);
+    background: url(~src/assets/images/image-bg-login.jpeg);
     background-repeat: no-repeat;
     background-position: center center; /* Centra la imagen */
     background-size: 100% 100%; /* Ajusta la imagen para ocupar todo el contenedor sin recortes */

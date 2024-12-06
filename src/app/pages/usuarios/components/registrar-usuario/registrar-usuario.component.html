@@ -78,10 +78,20 @@
             <app-validate-inputs-form [form]="registroForm" formInput='password' labelInput="Contraseña">
             </app-validate-inputs-form>
           </div>
+        
           <div class="field col-12 md:col-4" *ngIf="!mostrarCamposSunass">
             <div class="d-flex flex-column">
-              <label>Generar clave</label>
+              <label style="visibility: hidden;">.</label><!--falta quitar este label, y despues se debe alinear con el campo contraseña-->
+              
               <p-button type="button" label="Generar clave" icon="pi pi-key" iconPos="left" class="p-button-secondary green-button" (click)="generarClaveAleatorio()">
+              </p-button>
+            </div>
+          </div>
+          <div class="field col-12 md:col-4" *ngIf="!mostrarCamposSunass">
+            <div class="d-flex flex-column">
+              <label style="visibility: hidden;">.</label> <!--falta quitar este label, y alinear el boton con el anterior-->
+              <p-toast></p-toast>
+              <p-button type="button" label="Copiar clave" icon="pi pi-copy" iconPos="left" class="p-button-success" (click)="copiarAlPortapapeles()">
               </p-button>
             </div>
           </div>

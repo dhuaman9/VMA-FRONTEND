@@ -40,7 +40,7 @@
                                                 <th style="width: 17%;">APELLIDOS</th>
                                                 <th style="width: 16%;">NOMBRES</th>
                                                 <th style="width: 5%; text-align:center;">ESTADO</th>
-                                               <!-- <th style="width: 4%;text-align:center;">CLAVE</th> -->
+                                                <th style="width: 4%;text-align:center;">CLAVE</th>
                                                 <th style="width: 4%;text-align:center;">EDITAR</th>
                                             </tr>
                                         </ng-template>
@@ -60,11 +60,11 @@
                                                         [value]="item.estado === true ? 'ACTIVO' : 'INACTIVO'">
                                                     </p-tag>
                                                 </td>
-                                             <!--<td class="text-center">
+                                             <td class="text-center">
                                                 <button *ngIf="item.tipo === 'EPS'" pButton type="button" icon="pi pi-lock" style="width: 30px; height: 20px;"
                                                         pTooltip="Actualizar contraseña" tooltipPosition="top" (click)="cambiarPasswordUsuario(item.username)">
                                                 </button>
-                                              </td> --> 
+                                              </td> 
                                                 <td style="text-align:center">
                                                     <button pButton type="button" icon="pi pi-pencil" style="width: 30px; height: 20px;"
                                                         pTooltip="Editar registro" tooltipPosition="top" (click)="redirectToFormUpdate(item.id)">

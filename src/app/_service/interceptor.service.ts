@@ -79,7 +79,7 @@ export class InterceptorService implements HttpInterceptor{
         Swal.fire({
           icon: 'error',
           title: 'Error del servidor',
-          text: 'Algo salió mal en el servidor. Por favor, inténtalo más tarde o contacta con soporte si el problema persiste.',
+          text: 'Hemos tenido un inconveniente en el servidor. Por favor, intenta nuevamente. Si el problema persiste, no dudes en contactar con nuestro equipo de soporte técnico.',
           confirmButtonText: 'Aceptar'
         });
       }
