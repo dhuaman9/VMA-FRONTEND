@@ -442,7 +442,7 @@ export class ReporteComponent implements OnInit {
       data: data.barChartData.map(item => item.value)
     });
 
-   
+
   }
 
   // grafico 26  : Costo anual por conexión incurrido por realizar las tomas de muestras inopinadas
@@ -631,22 +631,27 @@ export class ReporteComponent implements OnInit {
 
     Swal.fire({
       title: "Cargando...",
-      html: "Se está generando el reporte de graficos estadísticos.",
+      html: `
+    <div>Se está generando el reporte de graficos estadísticos.</div>
+    <div style="width: 100%; background-color: #f3f3f3; border-radius: 5px; margin-top: 10px;">
+      <div id="progress-bar"
+        style="width: 0%; height: 20px; background-color: #4caf50; border-radius: 5px;"></div>
+    </div>
+    <p id="progress-text" style="margin-top: 10px;">0%</p>
+  `,
       timerProgressBar: true,
       allowEscapeKey: false,
       allowOutsideClick: false,
-      didOpen: () => {
-        Swal.showLoading();
-      },
+      showConfirmButton: false
     });
 
     forkJoin(requests)
       .pipe(
-        tap(()=> this.activeIndex = Array.from({ length: this.openedTabs.length }, (_, i) => i)),
+        tap(() => this.activeIndex = Array.from({ length: this.openedTabs.length }, (_, i) => i)),
         delay(300),
-        switchMap(() => this.crearPdf().then(() => Swal.close()))
+        switchMap(() => this.crearPdf())
       )
-      .subscribe();
+      .subscribe(() => Swal.close());
 
   }
 
@@ -657,6 +662,16 @@ export class ReporteComponent implements OnInit {
     const pageHeight = pdf.internal.pageSize.height;
     const pageWidth = pdf.internal.pageSize.width;
     const defaultWidth = 150;
+
+    const totalSteps = this.activeIndex.length;
+    let currentStep = 0;
+
+    const updateProgress = (progress: number) => {
+      const progressBar = document.getElementById("progress-bar")!;
+      const progressText = document.getElementById("progress-text")!;
+      progressBar.style.width = `${progress}%`;
+      progressText.innerText = `${progress}%`;
+    };
 
     for (let i = 0; i < this.activeIndex.length; i++) {
       const accordionElement = document.getElementById(`acc${i + 1}`);
@@ -671,12 +686,15 @@ export class ReporteComponent implements OnInit {
           y = margin;
         }
 
-        pdf.addImage(imgData, 'PNG', x, y, defaultWidth, imgHeight,undefined, 'FAST');
+        pdf.addImage(imgData, 'PNG', x, y, defaultWidth, imgHeight, undefined, 'FAST');
         y += imgHeight + margin;
+
+        currentStep++;
+        const progress = Math.round((currentStep / totalSteps) * 100);
+        updateProgress(progress);
       }
     }
 
-    // Save the PDF
     pdf.save('reporte de graficos vma.pdf');
   }
 
