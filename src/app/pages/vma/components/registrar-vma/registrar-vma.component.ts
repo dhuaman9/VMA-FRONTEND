@@ -61,7 +61,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
   isRegistroCompleto: boolean;
   isVmaVigente: boolean;
   archivoInvalido: boolean;
- 
+
  // maliciousHtml: String;
 
   constructor(
@@ -134,15 +134,15 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
   // Recorrer las secciones y preguntas para validar archivos
   secciones.controls.forEach((seccion) => {
     const preguntas = seccion.get('preguntas') as FormArray;
-  
+
     preguntas.controls.forEach((pregunta) => {
       if (pregunta.get('tipoPregunta')?.value === TipoPregunta.ARCHIVO) {
         const file = pregunta.get('respuesta')?.value;
         const metadato = pregunta.get('metadato')?.value;
-  
+
         if (file && metadato) { // Validación adicional
           const validation = this.validateFile(file, metadato);
-  
+
           if (!validation.isValid) {
              // Establecer manualmente el error en el FormControl para mantener la validación
             const respuestaControl = pregunta.get('respuesta');
@@ -426,7 +426,23 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
 
   guardadoParcial(): void {
     this.addValidatorsToRespuesta(false);
-    this.guardar(false, null);
+    if (this.formularioValido && !this.archivoInvalido) {  // && 
+      this.guardar(false, null);
+
+    } else if(!this.formularioValido && this.archivoInvalido) {
+
+      Swal.fire(
+        'Archivo inválido',
+        'Para registrar todo debe completar el formulario.',
+        'info'
+      );
+    }else{
+      Swal.fire(
+        'Formulario inválido',
+        'Para registrar todo debe completar el formulario.',
+        'info'
+      );
+    }
   }
 
   private mapToRespuestaDTO(pregunta: Pregunta): RespuestaDTO {
@@ -449,7 +465,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
         if (
           respuesta1 != null &&
           respuesta2 != null &&
-          respuesta1 > respuesta2
+          +respuesta1 > +respuesta2
         ) {
           return { invalidAlternativeOrder: true };
         }
@@ -552,7 +568,8 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
 
   private addValidatorsToRespuesta(agregarValidacion: boolean) {
     const secciones = this.formularioGeneral.get('secciones') as FormArray;
-    this.formularioValido = agregarValidacion;
+    this.archivoInvalido=false;  //dhr
+    this.formularioValido = true;
     secciones.controls.forEach((seccion) => {
       const preguntas = seccion.get('preguntas') as FormArray;
 
@@ -566,20 +583,30 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
           (tipoPregunta === TipoPregunta.NUMERICO &&
             alternativasControl.length === 0) ||
           (tipoPregunta === TipoPregunta.RADIO && respuestaControl) ||
-          (tipoPregunta === TipoPregunta.ARCHIVO &&
-            pregunta.get('metadato').value.requerido)
+          (tipoPregunta === TipoPregunta.ARCHIVO)
         ) {
           //|| pregunta.get('alternativas').get('requerido')
+          const validators = [];
+
           if (agregarValidacion) {
-            respuestaControl.addValidators([Validators.required]);
-          } else {
-            respuestaControl.setValidators([]);
+            validators.push(Validators.required);
           }
 
+          if (tipoPregunta === TipoPregunta.ARCHIVO) {
+            validators.push(this.agregarValidadorARespuesta(pregunta.value));
+          }
+
+          respuestaControl.setValidators(validators);
           respuestaControl.updateValueAndValidity();
-          if (!respuestaControl.valid) {
+          if (respuestaControl.invalid) {
+            if (tipoPregunta === TipoPregunta.ARCHIVO) {
+             this.archivoInvalido=true;
+
+            }
+
             this.formularioValido = false;
           }
+          //if (respuestaControl.)
         }
 
         const alternativas = pregunta.get('alternativas') as FormArray;

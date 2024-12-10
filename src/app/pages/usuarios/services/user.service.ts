@@ -115,10 +115,6 @@ export class UserService {
 
 
 
-  findbyusername(nombre: string) {
-    return this.http.get<any>(`${this.url}/sunass/user/findbyusername?userName=` + nombre);
-  }
-
   findById(id: number){
     this.httpOptions = {
         headers : new HttpHeaders({

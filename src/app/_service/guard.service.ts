@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot } from '@angular/router';
+import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { environment } from './../../environments/environment';
 import { UserService } from '../pages/usuarios/services/user.service';
@@ -12,26 +12,32 @@ export class GuardService implements CanActivate{
 
   constructor(
     private sessionService : SessionService,
-    private usuarioService : UserService
+    private usuarioService : UserService,
+    private router: Router
   ) { }
 
   canActivate(route : ActivatedRouteSnapshot, state : RouterStateSnapshot){
 
     //verificar si esta logeado
     let rpta = this.sessionService.estaLogeado();
-    return rpta;
+    if(rpta) {
+      return rpta;
+    }else {
+      this.router.navigate(['/login']);
+      return rpta;
+    }
 
     /*if(!rpta){
       this.sessionService.cerrarSession();
       return false;
     } else {
-      
+
       //verificar si el token no ha expirado
       const helper = new JwtHelperService();
-      
+
       //let token = sessionStorage.getItem(environment.TOKEN_NAME);
       let token = this.sessionService.retornarJwt();
-      
+
       if(!helper.isTokenExpired(token)){
 
          //verificar si tienes el rol necesario para acceder a la pagina
@@ -48,9 +54,9 @@ export class GuardService implements CanActivate{
             return false;
           }
         }
-        
+
         return true;
-      
+
       } else{
         this.sessionService.cerrarSession();
         return false;
