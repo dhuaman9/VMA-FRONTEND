@@ -1,13 +1,16 @@
+//tipos de datos:
+export const BOOLEAN = 'boolean';
+
 
 // sobre Empresas:
 export const REGIMEN_RAT = 'RAT';
 export const REGIMEN_NO_RAT = 'NO RAT';
 export const  TIPO_SUNASS='SUNASS';
 export const  TIPO_EPS='EPS';
-export const  TIPO_EMPRESA_PEQUEÑA='PEQUEÑA';
-export const  TIPO_EMPRESA_MEDIANA='MEDIANA';
-export const  TIPO_EMPRESA_GRANDE='GRANDE';
-export const  TIPO_EMPRESA_SEDAPAL='SEDAPAL';
+export const  TIPO_EPS_PEQUEÑA='PEQUEÑA';
+export const  TIPO_EPS_MEDIANA='MEDIANA';
+export const  TIPO_EPS_GRANDE='GRANDE';
+export const  TIPO_EPS_SEDAPAL='SEDAPAL';
 
 //roles de usuarios
 export const ROL_ADMINISTRADOR_OTI='ADMINISTRADOR OTI';
@@ -36,6 +39,11 @@ export const MSG_USUARIO_PASS_ERROR="Usuario y/o contraseña incorrectos";
 /*exp para password: Entre 8 a 15 caracteres, no espacios, al menos una mayúscula,
  una minúscula, un número y un caracter especial (@$!%*?&.,#-_;)*/
 export const PASSWORD_REGEX= /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&.,#-_;])([A-Za-z\d$@$!%*?&.,#-_;]|[^ ]){8,15}$/;
+export const NUMBER_REGEX= /\B(?=(\d{3})+(?!\d))/g;
+
+//FORMATOS
+
+export const FORMATO_FECHA= "DD/MM/YYYY"  //Orden: Día - Mes - Año. 
 
 
 

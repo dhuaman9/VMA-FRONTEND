@@ -4,68 +4,64 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SessionService {
+  constructor(private router: Router) {}
 
-  constructor(
-    private router : Router) { }
-
-   // Guardar el token en localStorage
-   cargarJwt(token: string){
+  // Guardar el token en localStorage
+  cargarJwt(token: string) {
     localStorage.setItem(environment.TOKEN_NAME, token);
   }
 
   // Retornar el token desde localStorage
-  retornarJwt(){
+  retornarJwt() {
     return localStorage.getItem(environment.TOKEN_NAME);
   }
 
   // Eliminar el token de localStorage
-  limpiarJwt(){
+  limpiarJwt() {
     localStorage.removeItem(environment.TOKEN_NAME);
   }
 
-  obtenerSubjectJwt(){
+  obtenerSubjectJwt() {
     const helper = new JwtHelperService();
-    const decodedToken =  helper.decodeToken(this.retornarJwt());
+    const decodedToken = helper.decodeToken(this.retornarJwt());
     return decodedToken.sub;
   }
 
-  obtenerShortNameJwt(){
+  obtenerShortNameJwt() {
     const helper = new JwtHelperService();
-    const decodedToken =  helper.decodeToken(this.retornarJwt());
+    const decodedToken = helper.decodeToken(this.retornarJwt());
     return decodedToken.shortname;
   }
 
-  obtenerRoleJwt(){
+  obtenerRoleJwt() {
     const helper = new JwtHelperService();
-    const decodedToken =  helper.decodeToken(this.retornarJwt());
+    const decodedToken = helper.decodeToken(this.retornarJwt());
     return decodedToken.role;
   }
 
-  estaLogeado(){
+  estaLogeado() {
     //let token = sessionStorage.getItem(environment.TOKEN_NAME);
     let token = this.retornarJwt();
-    return token!=null;
+    return token != null;
   }
 
-  obtenerUserNameJwt(){
+  obtenerUserNameJwt() {
     const helper = new JwtHelperService();
-    const decodedToken =  helper.decodeToken(this.retornarJwt());
+    const decodedToken = helper.decodeToken(this.retornarJwt());
     return decodedToken.username;
   }
-  
+
   getTipoUsuario(): string {
     const helper = new JwtHelperService();
-    const decodedToken =  helper.decodeToken(this.retornarJwt());
+    const decodedToken = helper.decodeToken(this.retornarJwt());
     return decodedToken.typeUser;
   }
 
-  
-  cerrarSession(){
+  cerrarSession() {
     localStorage.clear();
     this.router.navigate(['']);
   }
-  
 }

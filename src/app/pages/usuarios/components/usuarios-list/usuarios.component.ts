@@ -46,14 +46,10 @@ export class UsuariosComponent implements OnInit {
     private router: Router,
     private userService : UserService,
     private fb: FormBuilder
-  ) {
-
-
-  }
+  ) { }
 
   ngOnInit(): void {
 
-    // this.initListUsers();
     this.searchFormControl.valueChanges
       .pipe(
         distinctUntilChanged(),
@@ -73,6 +69,7 @@ export class UsuariosComponent implements OnInit {
   redirectToForm(){
     this.router.navigate(['/inicio/usuarios/registrar-usuario']);
   }
+  
   redirectToFormUpdate(idUser : number){
     console.log('redirectToFormUpdate -> idUser:', idUser);
     this.router.navigate(['/inicio/usuarios/editar-usuario/'+idUser]);

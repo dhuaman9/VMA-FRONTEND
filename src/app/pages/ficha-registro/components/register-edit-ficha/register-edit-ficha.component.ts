@@ -7,6 +7,7 @@ import * as moment from 'moment';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { FichaRegistroService } from '../../services/ficha-registro.service';
+import { FORMATO_FECHA} from 'src/app/utils/var.constant';
 
 @Component({
   selector: 'app-register-edit-ficha',
@@ -41,11 +42,7 @@ export class RegisterEditFichaComponent implements OnInit {
 
   ngOnInit(): void {
 
-    /*const currentYear = new Date().getFullYear();
-    for (let year = currentYear; year >= 2022; year--) { //para setear los años al combobox, desde el año del pase a prod  hasta el actual.
-      this.years.push(year.toString());
-    }*/
-
+   
     const startYear = 2024;  // año desde que se publica y/o se registrara informacion de vma
     const currentYear = new Date().getFullYear(); // Año actual
     for (let year = startYear; year <= currentYear; year++) {
@@ -68,12 +65,8 @@ export class RegisterEditFichaComponent implements OnInit {
   console.log('this.registroForm.valid',this.registroForm.valid, this.registroForm.value);
 
   if(this.registroForm.valid){
-    //dhr ?
-    //aqui debes de convertir las fechas al formato que necesitas antes de madarlas al backend
-    console.log('moment(remoteData.fechaInicio, "DD/MM/YYYY").toDate()',
-      moment(this.registroForm.get('fechaInicio').value, "DD/MM/YYYY").toDate());
-
-      const ficha = this.prepareFichaData();
+    
+    const ficha = this.prepareFichaData();
 
     if(this.isEdition){
       ficha.idFichaRegistro = this.config.data.idFichaRegistro;
@@ -163,8 +156,8 @@ export class RegisterEditFichaComponent implements OnInit {
     this.fichaRegistroService.findById(idFichaRegistro).subscribe(remoteData => {
       this.registroForm.patchValue({
         anio: remoteData.anio,
-        fechaInicio: moment(remoteData.fechaInicio, "DD/MM/YYYY").toDate(),
-        fechaFin:moment(remoteData.fechaFin, "DD/MM/YYYY").toDate()
+        fechaInicio: moment(remoteData.fechaInicio, FORMATO_FECHA).toDate(),
+        fechaFin:moment(remoteData.fechaFin, FORMATO_FECHA).toDate()
       });
     });
   }
@@ -211,8 +204,8 @@ export class RegisterEditFichaComponent implements OnInit {
     const formValues = this.registroForm.value;
     const ficha: FichaRegistro = {
       ...formValues,
-      fechaInicio:   moment((new Date(this.registroForm.get('fechaInicio').value))).format('DD/MM/YYYY'),
-      fechaFin:    moment((new Date(this.registroForm.get('fechaFin').value))).format('DD/MM/YYYY')
+      fechaInicio:   moment((new Date(this.registroForm.get('fechaInicio').value))).format(FORMATO_FECHA),
+      fechaFin:    moment((new Date(this.registroForm.get('fechaFin').value))).format(FORMATO_FECHA)
     };
     return ficha;
   }

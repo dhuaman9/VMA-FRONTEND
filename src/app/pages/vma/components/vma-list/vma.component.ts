@@ -24,10 +24,10 @@ import {isVmaVigente} from "../../vma.utils";
 })
 export class VmaComponent implements OnInit {
 
-  activeState: boolean[] = [true, false, false];
+  activeState: boolean[] = [true, false, false];  // dhr , se usa?
 
-  //  arreglo con los estados disponibles : completo ,incompleto y sin registro
-  estados: string[];
+  estados: string[];  //  arreglo con los estados disponibles : completo ,incompleto y sin registro
+  
   display: boolean = false;
   inputFilterTable: string="";
   filtroForm: FormGroup;

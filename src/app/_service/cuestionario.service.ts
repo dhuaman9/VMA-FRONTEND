@@ -4,35 +4,27 @@ import { Observable, Subject } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Cuestionario } from '../pages/vma/models/cuestionario';
 
-
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
 export class CuestionarioService {
+  url: string = `${environment.HOST}/cuestionarios`;
+  userCambio = new Subject<any[]>();
 
-    url: string = `${environment.HOST}/cuestionarios`;
-    userCambio = new Subject<any[]>();
-  
-    token: string = localStorage.getItem(environment.TOKEN_NAME);//dhr a localStorage
-    httpOptions : any;
-  
-    constructor(
-      private http: HttpClient
-    ) { }
+  token: string = localStorage.getItem(environment.TOKEN_NAME); //dhr a localStorage
+  httpOptions: any;
 
-    findById(idCuestionario: number): Observable<Cuestionario> {
-      return this.http.get<Cuestionario>(`${this.url}/${idCuestionario}`);
-    }
+  constructor(private http: HttpClient) {}
 
-    findCuestionarioByIdMax(): Observable<Cuestionario> {
-      return this.http.get<Cuestionario>(`${this.url}/lastId`);
-    }
-
-    cuestionarioConRespuestas(registroId: number): Observable<Cuestionario> {
-      return this.http.get<Cuestionario>(`${this.url}/respuestas/${registroId}`);
-    }
-  
+  findById(idCuestionario: number): Observable<Cuestionario> {
+    return this.http.get<Cuestionario>(`${this.url}/${idCuestionario}`);
   }
-  
+
+  findCuestionarioByIdMax(): Observable<Cuestionario> {
+    return this.http.get<Cuestionario>(`${this.url}/lastId`);
+  }
+
+  cuestionarioConRespuestas(registroId: number): Observable<Cuestionario> {
+    return this.http.get<Cuestionario>(`${this.url}/respuestas/${registroId}`);
+  }
+}

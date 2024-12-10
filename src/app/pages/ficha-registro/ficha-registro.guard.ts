@@ -27,7 +27,7 @@ export class FichaRegistroGuard implements CanActivate {
         if (!expectedRoles.includes(userRole.toUpperCase())) {
             Swal.fire({
                 title: 'Permiso denegado',
-                text: 'Usted no tiene permisos para Aperturar fechas de registro VMA.',
+                text: 'Usted no tiene permisos a esta ruta.',
                 icon: 'info',
                 confirmButtonText: 'Aceptar'
               });
@@ -37,6 +37,4 @@ export class FichaRegistroGuard implements CanActivate {
         return true;
       }
     
-
-
 }

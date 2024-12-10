@@ -1,5 +1,5 @@
 
-import { Role } from "src/app/_model/role";
+import { Role } from "src/app/pages/usuarios/models/role";
 import { Empresa } from "../../empresa/models/empresa";
 import { Profile } from "src/app/_model/profile";
 

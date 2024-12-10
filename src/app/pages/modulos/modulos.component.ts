@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { LoginService } from 'src/app/_service/login.service';
+import { LoginService } from 'src/app/pages/login/services/login.service';
 import { SessionService } from 'src/app/_service/session.service';
 import { UserService } from '../usuarios/services/user.service';
 

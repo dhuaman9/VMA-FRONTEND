@@ -1,4 +1,4 @@
-import { RespuestaDTO } from "../../../_model/respuestaRequest";
+import { RespuestaDTO } from "./respuestaRequest";
 
 export class Alternativa {
     
@@ -6,5 +6,5 @@ export class Alternativa {
     nombreCampo: string;
     respuesta: string;
     respuestaDTO: RespuestaDTO;
-    requerido: boolean; //dhr
+    requerido: boolean;
 }

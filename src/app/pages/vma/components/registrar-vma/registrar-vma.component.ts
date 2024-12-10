@@ -127,42 +127,6 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // Validación de ficheros  - pendiente  dhr
-    /*const secciones = this.formularioGeneral.get('secciones') as FormArray;
-  this.archivoInvalido = false;
-
-  // Recorrer las secciones y preguntas para validar archivos
-  secciones.controls.forEach((seccion) => {
-    const preguntas = seccion.get('preguntas') as FormArray;
-
-    preguntas.controls.forEach((pregunta) => {
-      if (pregunta.get('tipoPregunta')?.value === TipoPregunta.ARCHIVO) {
-        const file = pregunta.get('respuesta')?.value;
-        const metadato = pregunta.get('metadato')?.value;
-
-        if (file && metadato) { // Validación adicional
-          const validation = this.validateFile(file, metadato);
-
-          if (!validation.isValid) {
-             // Establecer manualmente el error en el FormControl para mantener la validación
-            const respuestaControl = pregunta.get('respuesta');
-            if (respuestaControl) {
-              respuestaControl.setErrors({ ...respuestaControl.errors, fileType: true });
-            }
-            Swal.fire('Error en archivos', validation.message, 'error');
-            this.archivoInvalido = true;
-          }
-        } else {
-          Swal.fire('Error', 'Faltan datos del archivo o metadatos.', 'error');
-          this.archivoInvalido = true;
-        }
-      }
-    });
-  }); */ //pendiente
-
-    // Si hay archivos inválidos, se detiene el flujo
-    //if (this.archivoInvalido) return;
-
     this.cargandoProceso$ = of(true);
     const preguntasArray = this.formularioGeneral.value.secciones.map(
       (seccion) => seccion.preguntas
@@ -376,10 +340,10 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
   modalDatosRegistrador() {
     return Swal.fire({
       title:
-        'Para finalizar el registro VMA, es necesario llenar estos campos:',
+        'Para completar el registro VMA, es necesario que llene los siguientes datos:',
       html: `
         <div class="d-flex flex-column gap-3">
-          <div class="grid-inputs-modal"><label class="text-left" for="input1">Nombres y apellidos del responsable:</label><input id="input1" class="form-control"></div>
+          <div class="grid-inputs-modal"><label class="text-left" for="input1">Nombres y apellidos:</label><input id="input1" class="form-control"></div>
           <div class="grid-inputs-modal"><label class="text-left" for="input2">Correo electrónico:</label><input id="input2" class="form-control"></div>
           <div class="grid-inputs-modal"><label class="text-left" for="input3">Teléfono:</label><input id="input3" class="form-control" maxlength="9"></div>
         </div>
@@ -432,8 +396,8 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
     } else if(!this.formularioValido && this.archivoInvalido) {
 
       Swal.fire(
-        'Archivo inválido',
-        'Para registrar todo debe completar el formulario.',
+        'Error de archivo',
+        'Debe adjuntar un archivo válido.',
         'info'
       );
     }else{
@@ -760,49 +724,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
     }
   }
 
-  validateFile(
-    file: File,
-    metadato: { maxSize: number; allowedTypes: string[] }
-  ): { isValid: boolean; message: string } {
-    if (!file || !metadato) {
-      return {
-        isValid: false,
-        message: 'Archivo o metadatos no proporcionados.',
-      };
-    }
-
-    const { maxSize, allowedTypes } = metadato;
-
-    if (file.size > maxSize) {
-      return {
-        isValid: false,
-        message: `El archivo supera el tamaño máximo permitido de ${(
-          maxSize /
-          1024 /
-          1024
-        ).toFixed(2)} MB.`,
-      };
-    }
-
-    // Obtener el tipo de archivo
-    let fileType = file.type;
-
-    // Si no se puede determinar a través de file.type, intentar obtenerlo de la extensión del nombre
-    if (!fileType && file.name) {
-      const extension = file.name.split('.').pop();
-      fileType = extension ? extension.toLowerCase() : '';
-    }
-
-    if (!fileType || !allowedTypes.includes(fileType)) {
-      return {
-        isValid: false,
-        message: `El tipo de archivo  no está permitido.`,
-      };
-    }
-
-    return { isValid: true, message: 'Archivo válido.' };
-  }
-
+ 
   getSafeHTML(content: string) {
     const cleanHtml = DOMPurify.sanitize(content); // Limpia contenido
     return this.sanitizer.bypassSecurityTrustHtml(cleanHtml);

@@ -9,6 +9,7 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { AltaEditEmpresaComponent } from '../alta-edit-empresa/alta-edit-empresa.component';
 import { PageableResponse } from 'src/app/_model/pageableResponse';
 import {debounceTime, distinctUntilChanged, tap} from "rxjs/operators";
+import { REGIMEN_RAT, REGIMEN_NO_RAT,TIPO_EPS_PEQUEÑA, TIPO_EPS_MEDIANA,TIPO_EPS_GRANDE, TIPO_EPS_SEDAPAL } from 'src/app/utils/var.constant';
 
 
 @Component({
@@ -32,14 +33,14 @@ export class EmpresaComponent implements OnInit {
   modalMessage = '';
 
   regimenOptions: any[] = [
-    { label: 'RAT', value: 'RAT' },
-    { label: 'NO RAT', value: 'NO RAT' }
+    { label: REGIMEN_RAT, value: REGIMEN_RAT },
+    { label: REGIMEN_NO_RAT, value: REGIMEN_NO_RAT },
   ];
   tipoOptions: any[] = [
-    { label: 'PEQUEÑA', value: 'PEQUEÑA' },
-    { label: 'MEDIANA', value: 'MEDIANA' },
-    { label: 'GRANDE', value: 'GRANDE' },
-    { label: 'SEDAPAL', value: 'SEDAPAL' }
+    { label: TIPO_EPS_PEQUEÑA, value: TIPO_EPS_PEQUEÑA },
+    { label: TIPO_EPS_MEDIANA, value: TIPO_EPS_MEDIANA},
+    { label: TIPO_EPS_GRANDE, value: TIPO_EPS_GRANDE },
+    { label: TIPO_EPS_SEDAPAL, value: TIPO_EPS_SEDAPAL },
   ];
 
   @ViewChild('dt1') myTable: Table;
@@ -140,28 +141,7 @@ private openModalAddEditEmpresa(idEmpresa: number, titleModal: string){
       this.loadEmpresasLazy({ first: 0, rows: this.size });
     }
 
-    /*if (resultado) {
-      console.log('se cerro modal y se muestra valor de resultado', resultado);
-
-      this.displayModaAdvice = true;
-      this.modalImage = './assets/images/accept-icon.png';
-      if(this.isEdition){
-        this.modalMessage = 'Se editó la empresa de manera correcta';
-      } else {
-        this.modalMessage = 'Se registró la empresa de manera correcta';
-      }
-
-    //  this.paramsPagination = new ParamsPagination(0,1,10,0); //?
-      this.onQueryPageEmpresa();  //dhr
-    }*/ /*else {
-      this.displayModaAdvice = true;
-      this.modalImage = './assets/images/cancel-icon.png';
-      if(this.isEdition){
-        this.modalMessage = 'Edición cancelada';
-      } else {
-        this.modalMessage = 'Registro cancelado';
-      }
-    }*/
+   
   });
 
 }
