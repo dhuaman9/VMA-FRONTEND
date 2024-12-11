@@ -270,7 +270,8 @@ export class VmaComponent implements OnInit {
     Swal.fire({
       title: "El registro se ha actualizado!.",
       //text: "Ahora el usuario puede actualizar el registro",
-      icon: "success"
+      icon: "success",
+      confirmButtonText: 'Aceptar'
     });
   }
 

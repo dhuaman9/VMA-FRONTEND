@@ -69,7 +69,7 @@ export class InicioComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log("this.sessionService.getTipoUsuario().includes('SUNASS') -" ,this.sessionService.getTipoUsuario().includes('SUNASS'));
+
     this.fichaRegistroService.cantidadDiasFaltantesVMA()
     .subscribe(dias => {
       this.diasFaltantes = dias;

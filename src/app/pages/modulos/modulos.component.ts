@@ -38,7 +38,6 @@ export class ModulosComponent implements OnInit {
   }
 
   cerrarSession(){
- 
     this.sessionService.cerrarSession();
     return false;
   }

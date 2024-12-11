@@ -31,7 +31,7 @@ export class CambiarPasswordComponent implements OnInit {
   }
 
   cambiarPassword(): void {
-    if(this.form.valid) {
+    if (this.form.valid) {
       this.userService.cambiarPassword(this.form.value)
         .pipe(
           tap(this.onSuccess),
@@ -39,12 +39,23 @@ export class CambiarPasswordComponent implements OnInit {
         )
         .subscribe();
     } else {
-      Swal.fire('Verifique los campos ingresados.', '','info');
+      Swal.fire({
+        title: 'Verifique los campos ingresados.',
+        text: '',
+        icon: 'info',
+        confirmButtonText: 'Aceptar', // Texto personalizado del botón
+      });
     }
   }
 
   private onSuccess = (): void => {
-    Swal.fire('Se actualizó su contraseña!.', '','success');
+  
+    Swal.fire({
+      title: 'Se actualizó su contraseña!.',
+      text: '',
+      icon: 'success',
+      confirmButtonText: 'Aceptar', // Texto personalizado del botón
+    });
    // this.form.reset();
     //this.router.navigate(['/inicio/vma']);
     this.location.back();

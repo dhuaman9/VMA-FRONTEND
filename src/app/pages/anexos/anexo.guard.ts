@@ -32,12 +32,13 @@ export class AnexoGuard implements CanActivate {
     const userRole = this.sessionService.obtenerRoleJwt();
     expectedRoles = expectedRoles.map((rol) => rol.toUpperCase());
     if (!expectedRoles.includes(userRole.toUpperCase())) {
-      Swal.fire(
-        'Permiso denegado',
-        'No tiene permisos para ver los anexos',
-        'info'
-      );
-      //this.router.navigate(['/inicio/vma']);
+      Swal.fire({
+        title: 'Permiso denegado',
+        text: 'Usted no tiene los permisos necesarios para acceder a esta ruta.',
+        icon: 'info',
+        confirmButtonText: 'Aceptar',
+      });
+    
       return false;
     }
 

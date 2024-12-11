@@ -27,7 +27,7 @@ export class UsuarioGuard implements CanActivate {
         if (!expectedRoles.includes(userRole.toUpperCase())) {
           Swal.fire({
             title: 'Permiso denegado',
-            text: 'Usted no tiene permisos a esta ruta.',
+            text: 'Usted no tiene los permisos necesarios para acceder a esta ruta.',
             icon: 'info',
             confirmButtonText: 'Aceptar'
           });

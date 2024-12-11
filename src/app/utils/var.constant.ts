@@ -29,8 +29,8 @@ export const RADIO_BUTTON_SI="SI";
 export const RADIO_BUTTON_NO="NO";
 
 //mensajes de login
-export const INP_USUARIO="Ingresar el usuario";
-export const INP_CONTRASENIA="Ingresar el usuario";
+export const INP_USUARIO="Ingrese su usuario";
+export const INP_CONTRASENIA="Ingrese su contraseña";
 export const MSG_USUARIO_PASS_ERROR="Usuario y/o contraseña incorrectos";
 
 

@@ -50,16 +50,29 @@ export class RecuperarPasswordComponent implements OnInit {
   }
 
   cambiarPassword(): void {
-    if(this.form.valid) {
-      this.tokenPasswordService.recuperarPassword(this.token.token, this.form.value)
+    if (this.form.valid) {
+      this.tokenPasswordService
+        .recuperarPassword(this.token.token, this.form.value)
         .pipe(
-          tap(() => Swal.fire('Contraseña actualizada', 'La contraseña se actualizó con éxito', 'success')),
+          tap(() =>
+            Swal.fire({
+              title: 'Contraseña actualizada',
+              text: 'La contraseña se actualizó con éxito',
+              icon: 'success',
+              confirmButtonText: 'Aceptar', // Texto personalizado del botón
+            })
+          ),
           switchMap(() => this.router.navigate(['/login']))
         )
         .subscribe();
     } else {
       this.form.markAllAsTouched();
-      Swal.fire('Verifique los campos', '','info');
+      Swal.fire({
+        title: 'Verifique los campos',
+        text: '',
+        icon: 'info',
+        confirmButtonText: 'Aceptar', // Texto personalizado del botón
+      });
     }
   }
 

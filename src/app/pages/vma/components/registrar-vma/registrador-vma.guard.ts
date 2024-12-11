@@ -7,8 +7,8 @@ import {
   UrlTree,
 } from '@angular/router';
 import { EMPTY, Observable, of } from 'rxjs';
-import { SessionService } from './session.service';
-import { VmaService } from '../pages/vma/services/vma.service';
+import { SessionService } from '../../../../_service/session.service';
+import { VmaService } from '../../services/vma.service';
 import { catchError, map, tap } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 
@@ -59,7 +59,7 @@ export class RegistradorVmaGuard implements CanActivate {
         icon: 'info',
         confirmButtonText: 'Aceptar',
       });
-      //this.router.navigate(['/inicio/vma']);
+     
       return false;
     }
 
@@ -72,7 +72,7 @@ export class RegistradorVmaGuard implements CanActivate {
       'Ocurrió un error al intentar ingresar al registro VMA',
       'error'
     );
-    // this.router.navigate(['/inicio/vma']);  // ? dhr
+    
     return of(false);
   };
 }

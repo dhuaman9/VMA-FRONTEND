@@ -194,22 +194,23 @@ export class EditarUsuarioComponent implements OnInit {
 
   cargarUsuariosLDAP(): void {
     //ESTO ES DATA DE PRUEBA, SIMULACIÓN PARA USUARIOS LDAP
-    this.usuariosSunass = [
+    /*this.usuariosSunass = [
       { label: 'dhuaman', value: 'dhuaman' },
       { label: 'aortega2', value: 'aortega2' },
-    ];
-    // this.userService.findAllLDAP().subscribe(
-    //
-    //   (data: User[]) => {
-    //     this.usuariosSunass = data.map(user => ({
-    //       label: user.username,
-    //       value: user.username
-    //     }));
-    //   },
-    //   (error) => {
-    //     console.error('Error, no se obtuvo los usuarios del LDAP', error);
-    //   }
-    // );
+    ];*/
+    
+     this.userService.findAllLDAP().subscribe(
+    
+       (data: User[]) => {
+         this.usuariosSunass = data.map(user => ({
+           label: user.username,
+           value: user.username
+         }));
+       },
+       (error) => {
+         console.error('Error, no se obtuvo los usuarios del LDAP', error);
+       }
+     );
   }
 
   onGuardar() {

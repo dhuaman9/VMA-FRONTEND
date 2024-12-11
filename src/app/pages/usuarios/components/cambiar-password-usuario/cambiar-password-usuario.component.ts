@@ -55,7 +55,12 @@ export class CambiarPasswordUsuarioComponent implements OnInit {
   }
 
   private onSuccess = (): void => {
-    Swal.fire('Se actualizó su contraseña!.', '', 'success');
+    Swal.fire({
+      title: 'Se actualizó su contraseña!.',
+      text: '',
+      icon: 'success',
+      confirmButtonText: 'Aceptar', // Texto personalizado del botón
+    });
     this.form.reset();
     this.cerrarModal.emit();
   };

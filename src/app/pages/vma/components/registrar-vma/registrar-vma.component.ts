@@ -123,7 +123,12 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
     datosRegistrador: DatosUsuariosRegistrador
   ) {
     if (!isGuardadoCompleto && this.validarAlternativas()) {
-      Swal.fire('Existe un  valor acumulado menor al parcial', '', 'warning');
+      Swal.fire({
+        title: 'Existe un valor acumulado menor al parcial',
+        text: '',
+        icon: 'warning',
+        confirmButtonText: 'Aceptar',
+      });
       return;
     }
 
@@ -175,11 +180,12 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
     });
 
     if (respuestas.length === 0) {
-      Swal.fire(
-        'Guardado progresivo',
-        'Debe responder al menos una pregunta',
-        'info'
-      );
+      Swal.fire({
+        title: 'Guardado progresivo.',
+        text: 'Debe responder al menos una pregunta.',
+        icon: 'info',
+        confirmButtonText: 'Aceptar',
+      });
       return;
     }
 
@@ -314,7 +320,12 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
 
   guardadoCompleto(): void {
     if (this.validarAlternativas()) {
-      Swal.fire('Existe un  valor acumulado menor al parcial', '', 'warning');
+      Swal.fire({
+        title: 'Existe un valor acumulado menor al parcial',
+        text: '',
+        icon: 'warning', // Mantiene el icono de advertencia
+        confirmButtonText: 'Aceptar', 
+      });
       return;
     }
 
@@ -329,18 +340,19 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
       });
     } else {
       this.formularioGeneral.markAllAsTouched();
-      Swal.fire(
-        'Registrado final',
-        'Para registrar todo debe completar el formulario.',
-        'info'
-      );
+      Swal.fire({
+        title: 'Registrado final',
+        text: 'Para registrar todo debe completar el formulario.',
+        icon: 'info',
+        confirmButtonText: 'Aceptar',
+      });
     }
   }
 
   modalDatosRegistrador() {
     return Swal.fire({
       title:
-        'Para completar el registro VMA, es necesario que llene los siguientes datos:',
+        'Para completar el registro VMA, es necesario que ingrese los siguientes datos:',
       html: `
         <div class="d-flex flex-column gap-3">
           <div class="grid-inputs-modal"><label class="text-left" for="input1">Nombres y apellidos:</label><input id="input1" class="form-control"></div>
@@ -395,17 +407,20 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
 
     } else if(!this.formularioValido && this.archivoInvalido) {
 
-      Swal.fire(
-        'Error de archivo',
-        'Debe adjuntar un archivo válido.',
-        'info'
-      );
+      Swal.fire({
+        title: 'Error de archivo',
+        text: 'Debe adjuntar un archivo válido.',
+        icon: 'info',
+        confirmButtonText: 'Aceptar', // Botón con el texto "Aceptar"
+      });
+
     }else{
-      Swal.fire(
-        'Formulario inválido',
-        'Para registrar todo debe completar el formulario.',
-        'info'
-      );
+      Swal.fire({
+        title: 'Formulario incompleto',
+        text: 'Para completar el registro, debe llenar todo el formulario.',
+        icon: 'info',
+        confirmButtonText: 'Aceptar', // Botón con el texto "Aceptar"
+      });
     }
   }
 
@@ -684,6 +699,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
           title: 'Cancelado.',
           text: 'No se ha registrado o actualizado.',
           icon: 'error',
+          confirmButtonText: 'Aceptar',
         });
         //this.backTo();
         this.router.navigate(['/inicio/vma']);

@@ -57,6 +57,7 @@ export class InterceptorService implements HttpInterceptor {
                 icon: 'warning',
                 title: 'Su sesión ha expirado.',
                 text: 'Debe volver a iniciar sesión.',
+                confirmButtonText: 'Aceptar'
               });
 
               this.sessionService.cerrarSession();
@@ -83,8 +84,8 @@ export class InterceptorService implements HttpInterceptor {
          
           Swal.fire({
             icon: 'error',
-            title: 'Error del servidor',
-            text: 'Hemos tenido un inconveniente en el servidor. Por favor, intenta nuevamente. Si el problema persiste, no dudes en contactar con nuestro equipo de soporte técnico.',
+            title: 'Error del servidor.',
+            text: 'Hemos tenido un inconveniente en el servidor. Por favor, inténtelo  nuevamente. Si el problema persiste, no dudes en contactar con nuestro equipo de soporte técnico.',
             confirmButtonText: 'Aceptar',
           });
         }

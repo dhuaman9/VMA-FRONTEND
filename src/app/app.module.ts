@@ -14,18 +14,15 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ModulosComponent } from './pages/modulos/modulos.component';
 import { IConfig, NgxMaskModule } from 'ngx-mask';
 
-import { FormsSelect2Component } from './pages/forms/forms-select2/forms-select2.component';
-
 import { NgSelectModule } from '@ng-select/ng-select';
 import { interceptorProvider } from './_service/interceptor.service';
-import { ErrorValidationComponent } from './pages/forms/error-validation/error-validation.component';
-import { ReporteComponent } from 'src/app/pages/reporte/components/reporte.component';
+import { ReporteComponent } from 'src/app/pages/reportes/components/reporte.component';
 import { AlphabeticInputDirective } from './utils/validate-inputs';
 import { TelefonoInputDirective } from './utils/validate-inputs';
 import { UserNameInputDirective } from './utils/validate-inputs';
-import { ReporteService } from 'src/app/pages/reporte/services/reporte.service';
-import { PieChartComponent } from './pages/reporte/pie-chart/pie-chart.component';
-import { BarChartComponent } from './pages/reporte/bar-chart/bar-chart.component';
+import { ReporteService } from 'src/app/pages/reportes/services/reporte.service';
+import { PieChartComponent } from './pages/reportes/pie-chart/pie-chart.component';
+import { BarChartComponent } from './pages/reportes/bar-chart/bar-chart.component';
 import { GlobalFormsComponentsModule } from './shared/components/forms/global-forms.module';
 
 
@@ -53,8 +50,6 @@ export function tokenGetter(){
     InicioComponent,
     LoginComponent,
     ModulosComponent,
-    FormsSelect2Component,
-    ErrorValidationComponent,
     ReporteComponent,
     ModalContentComponent,
     AlphabeticInputDirective,

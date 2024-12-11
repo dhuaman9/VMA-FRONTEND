@@ -81,7 +81,7 @@ export class LoginComponent implements OnInit {
             else if (role == ROL_REGISTRADOR){
               this.router.navigate(['inicio/vma']);
             }
-            else if (role == ROL_CONSULTOR){  //dhr falta mejorar en el backend, para los   usuario  EPS ,solo puedan ver registros de su EPS
+            else if (role == ROL_CONSULTOR){
               this.router.navigate(['inicio/vma']);
             }
 
