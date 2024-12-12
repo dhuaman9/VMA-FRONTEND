@@ -15,7 +15,6 @@ import { RegistradorVmaGuard } from './components/registrar-vma/registrador-vma.
     },
     {
       path: "registrar-vma/:id", component : RegistrarVmaComponent, data: { tituloModulo : 'Sistema de Valores Maximos Admisibles', expectedRoles: [ROL_ADMINISTRADOR_DF, ROL_CONSULTOR]}
-     // path: "registrar-vma/:id", component : RegistrarVmaComponent, data: { tituloModulo : 'Sistema de Valores Maximos Admisibles', expectedRole: [ROL_REGISTRADOR, ROL_ADMINISTRADOR_DF, ROL_CONSULTOR]}, canActivate: [RegistradorVmaGuard] 
     
     },
   ];

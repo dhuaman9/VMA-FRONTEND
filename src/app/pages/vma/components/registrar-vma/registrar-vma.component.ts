@@ -332,7 +332,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
     this.addValidatorsToRespuesta(true);
 
     if (this.formularioValido) {
-      //dhr  colocar otra cond
+ 
       this.modalDatosRegistrador().then((result: any) => {
         if (result.isConfirmed && result.value) {
           this.guardar(true, result.value);
@@ -547,7 +547,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
 
   private addValidatorsToRespuesta(agregarValidacion: boolean) {
     const secciones = this.formularioGeneral.get('secciones') as FormArray;
-    this.archivoInvalido=false;  //dhr
+    this.archivoInvalido=false;
     this.formularioValido = true;
     secciones.controls.forEach((seccion) => {
       const preguntas = seccion.get('preguntas') as FormArray;

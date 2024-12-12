@@ -40,7 +40,7 @@ export class InterceptorService implements HttpInterceptor {
     }
 
     let intReq = req;
-    const token = localStorage.getItem(environment.TOKEN_NAME); //dhr
+    const token = localStorage.getItem(environment.TOKEN_NAME); 
 
     intReq = this.addToken(req, token);
 
@@ -55,8 +55,8 @@ export class InterceptorService implements HttpInterceptor {
             if (tokenPayload.exp < currentTime) {
               Swal.fire({
                 icon: 'warning',
-                title: 'Su sesión ha expirado.',
-                text: 'Debe volver a iniciar sesión.',
+                title: 'Sesión Terminada.',
+                text: 'Tu sesión terminó tras una hora de inactividad. Inicia sesión nuevamente para continuar.',
                 confirmButtonText: 'Aceptar'
               });
 

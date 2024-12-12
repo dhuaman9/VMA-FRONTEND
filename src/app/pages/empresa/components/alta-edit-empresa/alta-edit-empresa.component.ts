@@ -180,10 +180,10 @@ export class AltaEditEmpresaComponent implements OnInit {
         updateOn: 'change',
         validators: [Validators.required],
       }),
-      estado: new FormControl(true, {
+      /*estado: new FormControl(true, {
         updateOn: 'change',
         validators: [Validators.nullValidator],
-      }),
+      }),*/
     });
   }
 
@@ -198,7 +198,7 @@ export class AltaEditEmpresaComponent implements OnInit {
         nombre: remoteData.nombre,
         tipo: remoteData.tipo,
         regimen: remoteData.regimen.trim(),
-        estado: remoteData.estado,
+       // estado: remoteData.estado,
       });
     });
   }

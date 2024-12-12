@@ -138,7 +138,7 @@ export class UserService {
     return this.http.get<any>(`${this.url}/modulo/findmodules`, this.httpOptions);
   }
 
-  findOficinas() {
+  /*findOficinas() {
 
     this.httpOptions = {
       headers : new HttpHeaders({
@@ -147,7 +147,7 @@ export class UserService {
       responseType : 'json'
     };
     return this.http.get<any>(`${this.url}/oficina/findall`, this.httpOptions);
-  }
+  }*/
 
   searchUsers(page: number, size: number, search: string): Observable<any> {
     return this.http.get(`${this.url}/usuario?page=${page}&size=${size}&search=${search}`);

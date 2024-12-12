@@ -53,7 +53,8 @@ export class InicioComponent implements OnInit {
     private registroVmaService: RegistroVMAService,
     private fichaRegistroService: FichaRegistroService
   ) {
-    //pendiente por consultar si debe incluir
+    //si en caso se  desea incluir , que el usuario EPS  pueda cambiar su clave dentro del sistema:
+    //inicio
     /*if(this.sessionService.getTipoUsuario().includes('EPS')) {
       this.items.push(
         {
@@ -62,10 +63,11 @@ export class InicioComponent implements OnInit {
           routerLink: '/inicio/cambiar-password'
         }
       );
-    }*/  //se deja comentado, porque el user EPS no debe cambiar su clave. Validar este caso con DF.
+    }*/  
     /*else{
       console.log("this.sessionService.getTipoUsuario().includes('SUNASS')" ,this.sessionService.getTipoUsuario().includes('SUNASS') );
     }*/
+   //fin
   }
 
   ngOnInit(): void {
@@ -75,15 +77,25 @@ export class InicioComponent implements OnInit {
       this.diasFaltantes = dias;
 
       // Asegúrate de que dias no sea undefined
-      if (this.diasFaltantes !== undefined) {
+      if (this.diasFaltantes !== undefined && (this.diasFaltantes<31 && this.diasFaltantes>0) ) {
         this.msgs1 = [
           {
             severity: 'warn',
             summary: 'Alerta',
-            detail: `Tiene ${this.diasFaltantes} días restantes para registrar la información correspondiente a VMA. Por favor, asegúrate de completar el registro antes de la fecha límite.`
+            detail: `Tiene ${this.diasFaltantes} días restantes para registrar toda su información. Por favor, complételo antes de la fecha límite.`
           }
         ];
-      } else {
+      }else if(this.diasFaltantes === 0){
+
+        this.msgs1 = [
+          {
+            severity: 'warn',
+            summary: 'Alerta',
+            detail: `Tiene plazo hasta hoy para registrar toda su información. Por favor, complételo antes de que termine el día.`
+          }
+        ];
+
+      }else {
         // Maneja el caso en el que no hay días faltantes
         this.msgs1 = [
           {
@@ -106,7 +118,6 @@ export class InicioComponent implements OnInit {
       }
     );
 
-   // this.renderModules();
     this.shortName = this.sessionService.obtenerShortNameJwt();
     this.role = this.sessionService.obtenerRoleJwt().toUpperCase().trim();
     this.userName = this.sessionService.obtenerUserNameJwt();
@@ -118,18 +129,19 @@ export class InicioComponent implements OnInit {
   redimensiona(){
     attachEventsToPushMenu();
   }
-
+//dhr , no deberia
   cerrarSession1(){
     this.sessionService.cerrarSession();
-    return false;
+    return false;   //este metodo está asociada a un evento, como un clic al botón, y el enlace tiene un atributo href o algún otro comportamiento por default, return false evita que dicho comportamiento ocurra.
   }
 
   renderModules(role: string){
     const esAdministradorOTI: boolean = role === ROL_ADMINISTRADOR_OTI;
-    const esAdministradorDAP: boolean = role === ROL_ADMINISTRADOR_DF;
+    const esAdministradorDF: boolean = role === ROL_ADMINISTRADOR_DF;
     const esRegistrador: boolean = role === ROL_REGISTRADOR;
     const esConsultor: boolean = (role === ROL_CONSULTOR);
     const tipoUsuarioSunass : boolean = (this.sessionService.getTipoUsuario().includes('SUNASS'));
+
     this.modules = [
       {
         route : "usuarios",
@@ -141,31 +153,31 @@ export class InicioComponent implements OnInit {
         route : "empresa",
         label : "Empresas",
         icon : "pi pi-building",
-        activo: esAdministradorDAP
+        activo: esAdministradorDF
       },
       {
         route : "ficha-registro",
         label : "Apertura de Fichas de Registro VMA",
         icon : "pi pi-calendar-plus",
-        activo: esAdministradorDAP
+        activo: esAdministradorDF
       },
       {
         route : "vma",
         label : "Registrar VMA",
         icon : "pi pi-check-square",
-        activo: esAdministradorDAP || esRegistrador || esConsultor
+        activo: esAdministradorDF || esRegistrador || esConsultor
       },
       {
         route : "reporte",
         label : "Reportes e Indicadores",
         icon : "pi pi-chart-bar",
-        activo: esAdministradorDAP || (esConsultor && tipoUsuarioSunass)
+        activo: esAdministradorDF || (esConsultor) // si en caso exista consultores EPS, añadir esto: && tipoUsuarioSunass
       },
       {
         route : "anexos",
         label : "Anexos",
         icon : "pi pi-book",
-        activo: esAdministradorDAP || (esConsultor && tipoUsuarioSunass)
+        activo: esAdministradorDF || (esConsultor && tipoUsuarioSunass) // si en caso exista consultores EPS, añadir esto: && tipoUsuarioSunass
       },
     ]
   }

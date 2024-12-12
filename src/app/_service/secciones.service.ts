@@ -2,7 +2,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { take, tap } from 'rxjs/operators';
 import { Seccion } from '../pages/vma/models/seccion';
 
 @Injectable({
@@ -13,7 +12,6 @@ export class SeccionesService {
   url: string = `${environment.HOST}`;
   userCambio = new Subject<any[]>();
 
-  //token: string = sessionStorage.getItem(environment.TOKEN_NAME);  //dhr
   token: string = localStorage.getItem(environment.TOKEN_NAME);
   httpOptions: any;
   private responsePage = new BehaviorSubject<any>(null);

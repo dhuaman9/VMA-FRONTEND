@@ -55,11 +55,12 @@ export class EmpresaComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadEmpresasLazy({ first: 0, rows: this.size });
+
     this.registroForm = this.fb.group({
       nombre: ['', Validators.required],
       tipo: ['', Validators.required],
       regimen: ['', Validators.required],
-      estado: [true]
+      //estado: [true]
     });
 
     this.filterFC.valueChanges

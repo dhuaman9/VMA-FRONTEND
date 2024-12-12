@@ -40,7 +40,7 @@ import { DatePipe } from '@angular/common';
     }
 
     findAll(){
-      console.log("/registroVMA/listar"); //dhr
+      console.log("/registroVMA/listar");
       return this.http.get<RegistroVMA[]>(this.url+'/registroVMA/listar', {
         headers : new HttpHeaders({'Content-Type':'application/json'}),
         responseType : 'json'

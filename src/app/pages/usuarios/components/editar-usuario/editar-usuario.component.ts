@@ -171,7 +171,7 @@ export class EditarUsuarioComponent implements OnInit {
     } else if (this.registroForm.get('tipo').value === TIPO_EPS) {
       this.perfiles = [
         { id: 3, description: ROL_REGISTRADOR },
-        { id: 4, description: ROL_CONSULTOR },
+        //{ id: 4, description: ROL_CONSULTOR },//POR el momento DF, no lo necesita 
       ];
     }
     this.setEnableDisableIputs();

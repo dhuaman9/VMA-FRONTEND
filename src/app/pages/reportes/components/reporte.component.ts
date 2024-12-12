@@ -243,7 +243,7 @@ export class ReporteComponent implements OnInit {
     this.chartDataNumeroTotalUND = data.map(item => item.cantidad);
   }
 
-  //DHR GRAF6
+ 
   private cargarDatosUNDInspeccionados = (data: BarChartBasicoDto[]): void => {
     this.chartUNDInspeccionadosData = [];
     this.chartUNDInspeccionadosLabels = data.map(item => item.label);

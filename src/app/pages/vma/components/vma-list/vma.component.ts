@@ -59,7 +59,7 @@ export class VmaComponent implements OnInit {
   isRoleAdmin : boolean ;
   isRoleConsultor: boolean;
   isRoleConsultorSunass: boolean;
-  isRoleConsultorEPS: boolean;
+ // isRoleConsultorEPS: boolean;
 
   fichaRegistro: FichaRegistro | null = null;
   private isListadoPrimeraVezIniciado = false;
@@ -90,13 +90,13 @@ export class VmaComponent implements OnInit {
     this.buscar();
     this.isListadoPrimeraVezIniciado = true;
     const role = this.sessionService.obtenerRoleJwt().toUpperCase().trim();
-    const esUsuarioEPS =  this.sessionService.getTipoUsuario().includes('EPS');
+    //const esUsuarioEPS =  this.sessionService.getTipoUsuario().includes('EPS');
     const esUsuarioSUNASS =  this.sessionService.getTipoUsuario().includes('SUNASS');
 
     this.isRoleAdmin = role === ROL_ADMINISTRADOR_DF;
     this.isRoleConsultor= role === ROL_CONSULTOR;
     this.isRoleConsultorSunass = this.isRoleConsultor && esUsuarioSUNASS;
-    this.isRoleConsultorEPS = this.isRoleConsultor && esUsuarioEPS; //pendiente de usar
+   // this.isRoleConsultorEPS = this.isRoleConsultor && esUsuarioEPS; // por el momento DF no lo necesita
     this.isRoleRegistrador = role === ROL_REGISTRADOR;
 
 
@@ -291,7 +291,7 @@ export class VmaComponent implements OnInit {
     } else {
         this.selectedRegistrosVMA = [];
         this.first = 0;
-        this.rows = 10;
+        this.rows =10;
 
         if (this.table) {
           this.table.first = 0;

@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { InicioComponent } from './pages/inicio/inicio.component';
 import { LoginComponent } from './pages/login/login.component';
-import { ModulosComponent } from './pages/modulos/modulos.component';
 import { ReporteComponent } from 'src/app/pages/reportes/components/reporte.component';
 import { GuardService } from './_service/guard.service';
 import { AnexoGuard } from 'src/app/pages/anexos/anexo.guard';
@@ -15,6 +14,7 @@ import {CambiarPasswordGuard} from "./pages/usuarios/guards/cambiar-password.gua
 import {RecuperarPasswordComponent} from "./pages/anonimo/components/recuperar-password/recuperar-password.component";
 import { VmaGuard } from './pages/vma/vma.guard';
 import { RegistradorVmaGuard } from './pages/vma/components/registrar-vma/registrador-vma.guard';
+import { ModulosComponent } from './pages/modulos/modulos.component';
 
 const routes : Routes =
   [
@@ -68,7 +68,7 @@ const routes : Routes =
           {
             path : 'reporte', component : ReporteComponent, canActivate : [GuardService]
           }
-          //] , canActivate : [GuardService], data: { tituloModulo : 'Variables de gestión', menuOption : 'submenu-option-variable-gestion' }
+        
         ]
     },
     { path : '', redirectTo : 'login', pathMatch:'full'}

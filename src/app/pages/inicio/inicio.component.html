@@ -58,7 +58,7 @@
 
     <div class="content-wrapper">
       <!--<p-messages *ngIf="(this.diasFaltantes>= 0 && this.diasFaltantes<30) && isRoleRegistrador  && this.registroVMA" [(value)]="msgs1" [enableService]="false"></p-messages>-->
-      <p-messages *ngIf="(this.diasFaltantes>= 0 && this.diasFaltantes<30) && isRoleRegistrador && !this.registroVMA" [(value)]="msgs1" [enableService]="false"></p-messages>
+      <p-messages *ngIf=" isRoleRegistrador && !this.registroVMA" [(value)]="msgs1" [enableService]="false"></p-messages>
       
       <router-outlet></router-outlet>
     </div>

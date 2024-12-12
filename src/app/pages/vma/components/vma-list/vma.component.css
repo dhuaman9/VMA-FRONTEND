@@ -87,7 +87,7 @@
   margin-left: 20px;
   padding-left: 10px;
   color: #555;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .motivos li {
@@ -123,8 +123,4 @@
   padding-left: 20px; /* Añade espacio a la izquierda para los ítems de la lista */
 }
 
-.motivos li {
-  font-size: 12px;  /* Ajusta el tamaño de fuente de los ítems de la lista */
-  margin-bottom: 5px;  /* Añade un espacio entre los ítems */
-}
 

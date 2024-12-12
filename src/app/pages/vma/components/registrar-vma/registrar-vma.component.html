@@ -14,9 +14,7 @@
                   <p-accordionTab *ngFor="let seccion of seccionesForm().controls; let i = index" [formGroupName]="i" [header]="i+1+'. ' + seccion.get('titulo').value" ><!--[ngClass]="{'custom-active-tab': seccionActiva === i}" (click)="seleccionarSeccion(i)"-->
                     <div formArrayName="preguntas">
                       <div class="d-flex flex-column mb-3" *ngFor="let pregunta of preguntasForm(seccion).controls; let j = index" [formGroupName]="j">
-                        <!--<label class="mb-3" *ngIf="pregunta.get('tipoPregunta').value !== 'ARCHIVO'">
-                          {{(i+1)+"."+(j+1)+" "+pregunta.get('texto').value}}</label>  -->
-
+                      
                         <label class="mb-3" *ngIf="pregunta.get('tipoPregunta').value !== 'ARCHIVO'" 
                         [innerHTML]="getSafeHTML((i+1)+'.'+(j+1)+' '+pregunta.get('texto').value)"></label>
 
@@ -156,12 +154,10 @@
 
                 <!-- Mensaje de campos obligatorios -->
                 <div class="col-12 text-center mt-3"  *ngIf="isRoleRegistrador">
-                  <span>(*) : Indica que son datos obligatorios</span><!--style="color: red;"-->
-                  <!-- <span>(*) : Indica que son datos opcionales</span>  dhr pendiente x validar con DF-->  
-                 
+                  <span>(*) : Indica que son datos obligatorios</span>
+                
                 </div>
-                <!--<div [innerHTML]="maliciousHtml"></div> -->
-
+   
               </form>
 
             </div>

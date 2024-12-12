@@ -120,7 +120,7 @@ export class RegistrarUsuarioComponent implements OnInit {
       this.isRequired = true;
       this.perfiles = [
         { id: 3, description: ROL_REGISTRADOR },
-        { id: 4, description: ROL_CONSULTOR },
+        //{ id: 4, description: ROL_CONSULTOR },  //POR el momento DF, no lo necesita 
       ];
     }
   }
