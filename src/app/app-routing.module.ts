@@ -13,6 +13,7 @@ import { FichaRegistroGuard } from './pages/ficha-registro/ficha-registro.guard'
 import {CambiarPasswordComponent} from "./pages/usuarios/components/cambiar-password/cambiar-password.component";
 import {CambiarPasswordGuard} from "./pages/usuarios/guards/cambiar-password.guard";
 import {RecuperarPasswordComponent} from "./pages/anonimo/components/recuperar-password/recuperar-password.component";
+import {RolesExpectedGuard} from "./_service/roles-expected.guard";
 
 const routes : Routes =
   [
@@ -56,7 +57,7 @@ const routes : Routes =
             loadChildren: () => import('./pages/vma/vma.module').then(m => m.VmaModule)
           },
           {
-            path : 'reporte', component : ReporteComponent, canActivate : [GuardService]
+            path : 'reporte', component : ReporteComponent, data:{expectedRoles: [ROL_ADMINISTRADOR_DF, ROL_CONSULTOR]}, canActivate : [GuardService, RolesExpectedGuard]
           }
           //] , canActivate : [GuardService], data: { tituloModulo : 'Variables de gestión', menuOption : 'submenu-option-variable-gestion' }
         ]

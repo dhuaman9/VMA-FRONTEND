@@ -11,9 +11,9 @@ import Swal from 'sweetalert2';
 })
 export class RegistradorVmaGuard implements CanActivate {
   // expectedRol: string;
-  
+
   constructor(
-    private sessionService: SessionService, 
+    private sessionService: SessionService,
     private router: Router,
     private vmaService: VmaService) {
 
@@ -47,11 +47,11 @@ export class RegistradorVmaGuard implements CanActivate {
 
     return true;
   }
-  
+
 
   private onError = () => {
       Swal.fire('Ocurrió un error', 'Ocurrió un error al intentar ingresar al registro VMA', 'error');
-     // this.router.navigate(['/inicio/vma']);  // ? dhr  
+     // this.router.navigate(['/inicio/vma']);  // ? dhr
       return of(false);
   }
 }
