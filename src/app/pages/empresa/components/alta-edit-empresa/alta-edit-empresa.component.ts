@@ -27,6 +27,7 @@ import { REGIMEN_RAT, REGIMEN_NO_RAT,TIPO_EPS_PEQUEÑA, TIPO_EPS_MEDIANA,TIPO_EP
 export class AltaEditEmpresaComponent implements OnInit {
   //Objeto para validacion de Formulario
   registroForm: FormGroup;
+  tipoEmpresasLista: { label: string; value: any }[] = [];
 
   regimenOptions: any[] = [
     { label: REGIMEN_RAT, value: REGIMEN_RAT },
@@ -53,6 +54,8 @@ export class AltaEditEmpresaComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    this.cargarListaTipoEmpresas();
     this.registroForm = this.initFromGroup();
 
     if (this.config.data.idEmpresa > 0) {
@@ -211,4 +214,19 @@ export class AltaEditEmpresaComponent implements OnInit {
   private closeDialog(isOkAction: boolean) {
     this.ref.close(isOkAction);
   }
+
+  cargarListaTipoEmpresas(): void {
+    this.empresaService.findAllTipoEmpresas().subscribe(
+      (data: any[]) => {
+        this.tipoEmpresasLista = data.map((emp) => ({
+          label: emp.nombre,
+          value: emp.idTipoEmpresa,
+        }));
+      },
+      (error) => {
+        console.error('Error al obtener la lista de las empresas', error);
+      }
+    );
+  }
+
 }

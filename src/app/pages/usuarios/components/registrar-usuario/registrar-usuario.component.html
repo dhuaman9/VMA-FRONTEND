@@ -11,11 +11,11 @@
         <div class="p-fluid grid formgrid">
           <div class="field col-12 flex  justify-content-center">
             <p-radioButton name="tipo" value="SUNASS" formControlName="tipo" label="Sunass" (onClick)="onTipoUsuarioChange()" class="mr-4"></p-radioButton>  <!--  style="margin-right: 50px" , pendiente de ubicar este style en el css. sale error en la consola-->
-            <p-radioButton name="tipo" value="EPS" formControlName="tipo" label="Empresa EPS" (onClick)="onTipoUsuarioChange()" class="ml-4"></p-radioButton>
+            <p-radioButton name="tipo" value="EPS" formControlName="tipo" label="Empresa EP" (onClick)="onTipoUsuarioChange()" class="ml-4"></p-radioButton>
           </div>
           <!-- falta dar espacio, no funciona con br-->
           <div class="field col-12 md:col-4">
-            <label>Perfil <span style="color: #FA7272;" *ngIf="isFieldRequired('perfil')"> * </span></label>
+            <label>Perfil: <span style="color: #FA7272;" *ngIf="isFieldRequired('perfil')"> * </span></label>
                 <p-dropdown inputId="perfil" [options]="perfiles" optionLabel="description"
                     optionValue="id" placeholder="Seleccionar" formControlName="perfil"
                     [showClear]="true">
@@ -59,20 +59,20 @@
             </app-validate-inputs-form>
           </div>
           <div  *ngIf="mostrarCampo" class="field col-12 md:col-4" >
-            <label>EPS <span style="color: #FA7272;" *ngIf="isFieldRequired('selEmpresa')"> * </span></label>
+            <label>EP: <span style="color: #FA7272;" *ngIf="isFieldRequired('selEmpresa')"> * </span></label>
             <p-dropdown inputId="selEmpresa" [options]="empresasLista" placeholder="Seleccionar" formControlName="selEmpresa"
               [showClear]="true" [filter]="true">
             </p-dropdown>
             <app-validate-inputs-form [form]="registroForm" formInput='selEmpresa' labelInput="Empresa">
             </app-validate-inputs-form>
           </div>
-          <div class="field col-12 md:col-4">
+          <div *ngIf="mostrarCampo" class="field col-12 md:col-4">
             <label>Usuario <span style="color: #FA7272;" *ngIf="isFieldRequired('username')"> * </span></label>
             <input id="username" type="text" pInputText formControlName="username" maxlength="30" dirUserNameInput autocomplete="off"   [(ngModel)]="valorPrefixUsuario" (keydown)="enforcePrefix($event)"   />
             <app-validate-inputs-form [form]="registroForm" formInput='username' labelInput="Usuario">
             </app-validate-inputs-form>
           </div>
-          <div class="field col-12 md:col-4">
+          <div *ngIf="mostrarCampo" class="field col-12 md:col-4">
             <label>Contraseña <span style="color: #FA7272;" *ngIf="isFieldRequired('password')"> * </span></label>
             <input id="password" type="text" readonly pInputText formControlName="password" maxlength="255" minlength="8" autocomplete="off" />
             <app-validate-inputs-form [form]="registroForm" formInput='password' labelInput="Contraseña">

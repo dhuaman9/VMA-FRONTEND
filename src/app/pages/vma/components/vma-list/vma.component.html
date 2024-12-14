@@ -22,7 +22,7 @@
                 <div [ngSwitch]="field" >
                   <div>
                     <span class="p-float-label" *ngSwitchCase="'eps'">
-                      <p-dropdown inputId="selEmpresa" [options]="empresasLista" placeholder="Seleccionar EPS" formControlName="eps"
+                      <p-dropdown inputId="selEmpresa" [options]="empresasLista" placeholder="Seleccionar EP" formControlName="eps"
                                   [showClear]="true" [filter]="true"></p-dropdown>
                     </span>
                   </div>
@@ -42,7 +42,7 @@
                                         <p-calendar  [monthNavigator]="true"
                                                     [yearNavigator]="true"
                                                     [yearRange]="'2000:2500'" inputId="fechaInicio" id="fechaDesde" dateFormat="dd-mm-yy" formControlName="fechaDesde"></p-calendar>
-                      <label for="fechaDesde">Fecha Desde</label>
+                      <label for="fechaDesde">Fecha Desde:</label>
                     </span>
                   </div>
                   <div>
@@ -52,7 +52,7 @@
                                   [yearRange]="'2000:2500'" inputId="fechaHasta" id="fechaHasta" dateFormat="dd-mm-yy"  formControlName="fechaHasta" ></p-calendar>
                       <br>
                       <small *ngIf="filtroForm.get('fechaHasta').errors?.required" style="color: red;" >La fecha hasta es requerida</small>
-                      <label for="fechaHasta">Fecha Hasta</label>
+                      <label for="fechaHasta">Fecha Hasta:</label>
                     </span>
                   </div>
                 </div>
@@ -135,8 +135,8 @@
                         <!--<input type="checkbox" class="custom-checkbox" [formControl]="formCheckBox"> -->
                       </th>
                       <th style="text-align:center;width: 5%;">N°</th>
-                      <th style="width: 19%;">Empresa EPS</th>
-                      <th style="text-align:center;width: 13%;">Tamaño de la EPS</th>
+                      <th style="width: 19%;">Empresa EP</th>
+                      <th style="text-align:center;width: 13%;">Tamaño de la EP</th>
                       <th style="text-align:center;width: 10%;">Régimen</th>
                       <th style="text-align:center;width: 13%;">Estado</th>
                       <th style="width: 13%;">Fecha de registro</th>
@@ -152,7 +152,7 @@
 
                       <td style="text-align:center;">{{ri + 1}}</td>
                       <td>{{item.empresa?.nombre}}</td>
-                      <td style="text-align:center;">{{item.empresa.tipo}}</td>
+                      <td style="text-align:center;">{{item.empresa.tipo?.nombre}}</td>
                       <td style="text-align:center;">{{item.empresa.regimen}}</td>
                       <td style="text-align:center;">
                         <p-tag styleClass="p-mr-2"  [style]="{'font-size': '14px', 'width': '115px'}"

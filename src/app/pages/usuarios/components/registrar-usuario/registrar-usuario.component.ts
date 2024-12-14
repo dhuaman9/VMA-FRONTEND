@@ -67,7 +67,7 @@ export class RegistrarUsuarioComponent implements OnInit {
     //Entre 8 a 15 caracteres, no espacios, al menos una mayúscula, una minúscula, un número y un caracter especial (@$!%*?&.,#-_;)
     this.registroForm = this.formBuilder.group({
       tipo: [TIPO_EPS, Validators.required],
-      perfil: ['', Validators.required],
+      perfil: ['', Validators.required], //rol de usuario
       unidadOrganica: [''],
       nombres: ['', this.mostrarCamposSunass ? Validators.required : []],
       apellidos: ['', this.mostrarCamposSunass ? Validators.required : []],
@@ -130,8 +130,10 @@ export class RegistrarUsuarioComponent implements OnInit {
       this.registroForm.enable();
       let user = new User(this.registroForm.value);
       this.registroForm.disable();
+
       let role = new Role();
       role.idRole = this.registroForm.get('perfil').value;
+
       user.role = role;
       let empresa = new Empresa();
       empresa.idEmpresa = this.registroForm.get('selEmpresa').value;
