@@ -1,3 +1,4 @@
+import { TipoEmpresa } from "./tipoEmpresa";
 
 export class Empresa {
 
@@ -5,6 +6,7 @@ export class Empresa {
     nombre : string;
     regimen: string;
     tipo: string;
+    //tipo: TipoEmpresa;
     //estado : boolean;  // el area DF no lo necesita, por ahora.
 
 

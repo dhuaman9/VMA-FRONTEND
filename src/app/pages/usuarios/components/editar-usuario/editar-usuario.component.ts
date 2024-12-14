@@ -72,7 +72,6 @@ export class EditarUsuarioComponent implements OnInit {
       ],
       usuario: [''],
       username: [''],
-      //password: ['',Validators.pattern(PASSWORD_REGEX)], //si se desea ingresar manualmente cumpliendo el regex
       password: [''],
       telefono: [
         '',

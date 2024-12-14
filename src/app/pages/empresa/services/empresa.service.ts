@@ -5,6 +5,7 @@ import { Subject, throwError } from 'rxjs';
 import { Empresa } from 'src/app/pages/empresa/models/empresa';
 import { catchError, take, tap } from 'rxjs/operators';
 import { PageableResponse } from 'src/app/_model/pageableResponse';
+import { TipoEmpresa } from '../models/tipoEmpresa';
 
 @Injectable({
   providedIn: 'root',
@@ -48,6 +49,12 @@ export class EmpresaService {
 
   findAll() {
     return this.http.get<Empresa[]>(this.url + '/empresa/list', {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+      responseType: 'json',
+    });
+  }
+  findAllTipoEmpresas() {
+    return this.http.get<TipoEmpresa[]>(this.url + '/empresa/tipoEmpresas', {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
       responseType: 'json',
     });
