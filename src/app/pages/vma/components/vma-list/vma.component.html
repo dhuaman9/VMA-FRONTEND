@@ -73,7 +73,7 @@
         <!-- Botones:  Registrar  y  Descargar   excel -->
         <div *ngIf="isRoleRegistrador || isRoleAdmin || isRoleConsultorSunass" class="card pdn-15">
           <div class="card-header border-0"  style="display: flex; justify-content: space-between; align-items: center;">
-            <div style="display: flex; align-items: center; gap: 10px;"> 
+            <div style="display: flex; align-items: center; gap: 10px;">
               <button class="btn btn-success mt-2 mr-2" *ngIf="isRoleRegistrador"
                       (click)="redirectToForm()"
                       [disabled]="registroCompleto"
@@ -81,7 +81,7 @@
                       tooltipPosition="top">
                 <i class="pi pi-plus"></i> Ingresar Registro
               </button>
-              
+
             <span *ngIf="registroCompleto && isRoleRegistrador" class="registro-indisponible">
                 El boton no está habilitado por alguno de estos motivos:
                 <ul class="motivos">
@@ -90,7 +90,7 @@
                 </ul>
               </span>
 
-       
+
             </div>
             <div style="margin-left: auto;">
             <button pButton label="Descargar Reporte" pTooltip="Por defecto, se descargará todo el listado filtrado." tooltipPosition="top" class="p-button-success float-right" icon="pi pi-file-excel" iconPos="right"
@@ -152,7 +152,7 @@
 
                       <td style="text-align:center;">{{ri + 1}}</td>
                       <td>{{item.empresa?.nombre}}</td>
-                      <td style="text-align:center;">{{item.empresa.tipo?.nombre}}</td>
+                      <td style="text-align:center;">{{item.empresa.tipoEmpresa?.nombre}}</td>
                       <td style="text-align:center;">{{item.empresa.regimen}}</td>
                       <td style="text-align:center;">
                         <p-tag styleClass="p-mr-2"  [style]="{'font-size': '14px', 'width': '115px'}"

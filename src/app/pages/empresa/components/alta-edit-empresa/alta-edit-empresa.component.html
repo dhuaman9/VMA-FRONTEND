@@ -20,12 +20,12 @@
             </div>
             <div [class]="isEdition?'field col-12 md:col-3':'field col-12 md:col-4'">
               <label for="tipo" class="font-semibold w-6rem">Tipo <span style="color: #FA7272;" *ngIf="isFieldRequired('tipo')"> * </span></label>
-              <p-dropdown [options]="tipoOptions" formControlName="tipo" placeholder="Seleccionar Tipo"
-              optionLabel="label" optionValue="value"></p-dropdown>
-              <app-validate-inputs-form [form]="registroForm" formInput='tipo' labelInput="Tipo">
+              <p-dropdown [options]="tipoEmpresasLista" formControlName="tipoEmpresa" placeholder="Seleccionar Tipo"
+              optionLabel="nombre"></p-dropdown>
+              <app-validate-inputs-form [form]="registroForm" formInput='tipoEmpresa' labelInput="Tipo">
               </app-validate-inputs-form>
             </div>
-      
+
             <!--<div class="field col-12 md:col-2" *ngIf="isEdition">
               <p><label for="tipo" class="font-semibold w-6rem">Estado</label></p>
               <p-inputSwitch  formControlName="estado" id="estado" ></p-inputSwitch>
@@ -40,7 +40,7 @@
               </p-button>
           </div>
         </form>
-        
+
       </p-fieldset>
   </div>
 </div>

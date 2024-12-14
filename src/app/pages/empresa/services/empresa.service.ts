@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import {  HttpClient,  HttpHeaders, HttpErrorResponse,  HttpParams, } from '@angular/common/http';
-import { Subject, throwError } from 'rxjs';
+import {Observable, Subject, throwError} from 'rxjs';
 import { Empresa } from 'src/app/pages/empresa/models/empresa';
 import { catchError, take, tap } from 'rxjs/operators';
 import { PageableResponse } from 'src/app/_model/pageableResponse';
@@ -53,11 +53,15 @@ export class EmpresaService {
       responseType: 'json',
     });
   }
-  findAllTipoEmpresas() {
-    return this.http.get<TipoEmpresa[]>(this.url + '/empresa/tipoEmpresas', {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-      responseType: 'json',
-    });
+  // findAllTipoEmpresas() {
+  //   return this.http.get<TipoEmpresa[]>(this.url + '/empresa/tipo-empresas', {
+  //     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+  //     responseType: 'json',
+  //   });
+  // }
+
+  findAllTipoEmpresas(): Observable<TipoEmpresa[]> {
+    return this.http.get<TipoEmpresa[]>(`${this.url}/empresa/tipo-empresas`);
   }
 
   findAllPageable(page: number = 0, size: number = 10, filter: string = '') {
