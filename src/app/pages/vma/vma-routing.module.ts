@@ -9,7 +9,7 @@ import {RolesExpectedGuard} from "../../_service/roles-expected.guard";
 
 const routes: Routes = [
   {
-    path: '', component: VmaComponent
+    path: '', component: VmaComponent, data: { tituloModulo : 'Sistema de Valores Maximos Admisibles', expectedRoles: [ROL_ADMINISTRADOR_DF, ROL_CONSULTOR, ROL_REGISTRADOR]}, canActivate: [RolesExpectedGuard]
   },
   {
     path: "registrar-vma", component : RegistrarVmaComponent, data: { tituloModulo : 'Sistema de Valores Maximos Admisibles', expectedRole: ROL_REGISTRADOR }, canActivate: [RegistradorVmaGuard]
