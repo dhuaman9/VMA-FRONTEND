@@ -19,7 +19,7 @@ import { CuestionarioService } from 'src/app/_service/cuestionario.service';
 import { VmaService } from 'src/app/pages/vma/services/vma.service';
 import Swal from 'sweetalert2';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EMPTY, forkJoin, Observable, of, Subscription } from 'rxjs';
+import {EMPTY, forkJoin, Observable, of, Subscription, throwError} from 'rxjs';
 import { SessionService } from 'src/app/_service/session.service';
 import { UploadService } from 'src/app/_service/upload.service';
 import { catchError, finalize, switchMap, tap } from 'rxjs/operators';
@@ -214,10 +214,11 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
                   )
                 )
               ).pipe(
-                catchError(()=>{ 
+                catchError(()=>{
                   Swal.fire('Se registro la informacion, pero hubo error al subir archivos.');
-                  this.router.navigate(['/inicio/vma']);
-                  return EMPTY;
+                  this.vmaService.actualizarEstadoIncompleto(registroVMAId)
+                    .subscribe(() => this.router.navigate(['/inicio/vma']));
+                  return throwError(() => new Error('Error al subir los archivos.'));
                 } )
               );  //dhr
             }
@@ -255,10 +256,12 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
                   )
                 )
               ).pipe(
-                catchError(()=>{ 
+                catchError(()=>{
                   Swal.fire('Se registro la informacion, pero hubo error al subir archivos.');
-                  this.router.navigate(['/inicio/vma']);
-                  return EMPTY;
+
+                  this.vmaService.actualizarEstadoIncompleto(registroVMAId)
+                    .subscribe(() => this.router.navigate(['/inicio/vma']));
+                  return throwError(() => new Error('Error al subir los archivos.'));
                 } )
               );
             }
@@ -337,7 +340,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
         title: 'Existe un valor acumulado menor al parcial',
         text: '',
         icon: 'warning', // Mantiene el icono de advertencia
-        confirmButtonText: 'Aceptar', 
+        confirmButtonText: 'Aceptar',
       });
       return;
     }
@@ -345,7 +348,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
     this.addValidatorsToRespuesta(true);
 
     if (this.formularioValido) {
- 
+
       this.modalDatosRegistrador().then((result: any) => {
         if (result.isConfirmed && result.value) {
           this.guardar(true, result.value);
@@ -415,7 +418,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
 
   guardadoParcial(): void {
     this.addValidatorsToRespuesta(false);
-    if (this.formularioValido && !this.archivoInvalido) {  // && 
+    if (this.formularioValido && !this.archivoInvalido) {  // &&
       this.guardar(false, null);
 
     } else if(!this.formularioValido && this.archivoInvalido) {
@@ -756,7 +759,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
     }
   }
 
- 
+
   getSafeHTML(content: string) {
     const cleanHtml = DOMPurify.sanitize(content); // Limpia contenido
     return this.sanitizer.bypassSecurityTrustHtml(cleanHtml);
