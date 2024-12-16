@@ -16,6 +16,7 @@ import {
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { REGIMEN_RAT, REGIMEN_NO_RAT,TIPO_EPS_PEQUEÑA, TIPO_EPS_MEDIANA,TIPO_EPS_GRANDE, TIPO_EPS_SEDAPAL } from 'src/app/utils/var.constant';
+import {TipoEmpresa} from "../../models/tipoEmpresa";
 
 
 
@@ -27,7 +28,7 @@ import { REGIMEN_RAT, REGIMEN_NO_RAT,TIPO_EPS_PEQUEÑA, TIPO_EPS_MEDIANA,TIPO_EP
 export class AltaEditEmpresaComponent implements OnInit {
   //Objeto para validacion de Formulario
   registroForm: FormGroup;
-  //tipoEmpresasLista: { label: string; value: any }[] = [];
+  tipoEmpresasLista: TipoEmpresa[] = [];
 
   regimenOptions: any[] = [
     { label: REGIMEN_RAT, value: REGIMEN_RAT },
@@ -55,7 +56,7 @@ export class AltaEditEmpresaComponent implements OnInit {
 
   ngOnInit(): void {
 
-    //this.cargarListaTipoEmpresas();
+    this.cargarListaTipoEmpresas();
     this.registroForm = this.initFromGroup();
 
     if (this.config.data.idEmpresa > 0) {
@@ -67,10 +68,11 @@ export class AltaEditEmpresaComponent implements OnInit {
    * Funcion para el alta o edicion de una empresa
    */
   onCreateEmpresa() {
-    
+
     cleanSpaces(this.registroForm);
     if (this.registroForm.valid) {
       const empresa = this.registroForm.value as Empresa;
+      // empresa.tipoEmpresa = this.registroForm.get('')
       if (this.isEdition) {
         empresa.idEmpresa = this.config.data.idEmpresa;
         //empresa.nombre = this.registroForm.get('nombre').value.trimEnd();
@@ -144,9 +146,9 @@ export class AltaEditEmpresaComponent implements OnInit {
   }
 
   onAceptar() {
-   
+
     this.router.navigate(['/inicio/empresa']);
-    
+
   }
 
   onCancelAction() {
@@ -175,7 +177,7 @@ export class AltaEditEmpresaComponent implements OnInit {
         updateOn: 'change',
         validators: [Validators.required],
       }),
-      tipo: new FormControl('', {
+      tipoEmpresa: new FormControl(null, {
         updateOn: 'change',
         validators: [Validators.required],
       }),
@@ -199,7 +201,7 @@ export class AltaEditEmpresaComponent implements OnInit {
     this.empresaService.findById(idEmpresa).subscribe((remoteData) => {
       this.registroForm.patchValue({
         nombre: remoteData.nombre,
-        tipo: remoteData.tipo,
+        tipoEmpresa: remoteData.tipoEmpresa,
         regimen: remoteData.regimen.trim(),
        // estado: remoteData.estado,
       });
@@ -215,18 +217,11 @@ export class AltaEditEmpresaComponent implements OnInit {
     this.ref.close(isOkAction);
   }
 
-  /*cargarListaTipoEmpresas(): void {
+  cargarListaTipoEmpresas(): void {
     this.empresaService.findAllTipoEmpresas().subscribe(
-      (data: any[]) => {
-        this.tipoEmpresasLista = data.map((emp) => ({
-          label: emp.nombre,
-          value: emp.idTipoEmpresa,
-        }));
-      },
-      (error) => {
-        console.error('Error al obtener la lista de las empresas', error);
-      }
+      (data: TipoEmpresa[]) => this.tipoEmpresasLista = data,
+      (error) => console.error('Error al obtener la lista de las empresas', error)
     );
-  }*/
+  }
 
 }

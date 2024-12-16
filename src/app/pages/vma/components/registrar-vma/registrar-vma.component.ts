@@ -19,10 +19,10 @@ import { CuestionarioService } from 'src/app/_service/cuestionario.service';
 import { VmaService } from 'src/app/pages/vma/services/vma.service';
 import Swal from 'sweetalert2';
 import { ActivatedRoute, Router } from '@angular/router';
-import { forkJoin, Observable, of, Subscription } from 'rxjs';
+import { EMPTY, forkJoin, Observable, of, Subscription } from 'rxjs';
 import { SessionService } from 'src/app/_service/session.service';
 import { UploadService } from 'src/app/_service/upload.service';
-import { finalize, switchMap, tap } from 'rxjs/operators';
+import { catchError, finalize, switchMap, tap } from 'rxjs/operators';
 import {
   RADIO_BUTTON_NO,
   ESTADO_COMPLETO,
@@ -202,7 +202,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
       this.suscripcionRegistro = this.vmaService
         .updateRegistroVMA(this.idRegistroVMA, registroVMA)
         .pipe(
-          switchMap((registroVMAId) => {
+          switchMap( (registroVMAId) => {
             if (respuestasArchivo.length > 0) {
               return forkJoin(
                 respuestasArchivo.map((respuesta) =>
@@ -213,11 +213,18 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
                     respuesta.idRespuesta
                   )
                 )
-              );
+              ).pipe(
+                catchError(()=>{ 
+                  Swal.fire('Se registro la informacion, pero hubo error al subir archivos.');
+                  this.router.navigate(['/inicio/vma']);
+                  return EMPTY;
+                } )
+              );  //dhr
             }
 
             return of(null);
-          }),
+          }
+        ),
           finalize(() => (this.cargandoProceso$ = of(false)))
         )
         .subscribe(() => {
@@ -247,6 +254,12 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
                     respuesta.idRespuesta
                   )
                 )
+              ).pipe(
+                catchError(()=>{ 
+                  Swal.fire('Se registro la informacion, pero hubo error al subir archivos.');
+                  this.router.navigate(['/inicio/vma']);
+                  return EMPTY;
+                } )
               );
             }
             return of(null);
@@ -565,10 +578,13 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
           (tipoPregunta === TipoPregunta.ARCHIVO)
         ) {
           //|| pregunta.get('alternativas').get('requerido')
-          const validators = [];
+          let validators = [];
 
           if (agregarValidacion) {
             validators.push(Validators.required);
+            if (tipoPregunta === TipoPregunta.ARCHIVO && !pregunta.value.metadato.requerido ) {
+              validators = [];
+            }
           }
 
           if (tipoPregunta === TipoPregunta.ARCHIVO) {

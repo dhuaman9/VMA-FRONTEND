@@ -6,7 +6,7 @@ export class Empresa {
     nombre : string;
     regimen: string;
     tipo: string;
-    //tipo: TipoEmpresa;
+    tipoEmpresa: TipoEmpresa;
     //estado : boolean;  // el area DF no lo necesita, por ahora.
 
 
