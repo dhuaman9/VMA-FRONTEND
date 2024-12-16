@@ -1,5 +1,5 @@
-<div class="grid" style="height: 100%; overflow: auto;">
-  <div class="col-12" style="height: 100%;">
+<div class="grid">
+  <div class="col-12">
     <p-fieldset [legend]="titleHeader" [toggleable]="false"
     [style]="{'min-width': '40rem', 'height':'auto'}" [collapsed]="false" >
       <form [formGroup]="registroForm">
@@ -30,6 +30,7 @@
               <p><label for="tipo" class="font-semibold w-6rem">Estado</label></p>
               <p-inputSwitch  formControlName="estado" id="estado" ></p-inputSwitch>
             </div> -->
+
           </div>
           <div class="col-12 flex justify-content-center">
               <p-button type="button" label="Guardar" class="p-button-secondary p-button-success ml-1"

@@ -215,7 +215,12 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
                 )
               ).pipe(
                 catchError(()=>{
-                  Swal.fire('Se registro la informacion, pero hubo error al subir archivos.');
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Error al subir archivos.',
+                    text: 'Se ha registrado la información, pero ha ocurrido un error al subir los archivos. Por favor, inténtalo de nuevo más tarde o contacta a nuestro soporte técnico.',
+                    confirmButtonText: 'Aceptar'
+                  });
                   this.vmaService.actualizarEstadoIncompleto(registroVMAId)
                     .subscribe(() => this.router.navigate(['/inicio/vma']));
                   return throwError(() => new Error('Error al subir los archivos.'));
@@ -257,7 +262,12 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
                 )
               ).pipe(
                 catchError(()=>{
-                  Swal.fire('Se registro la informacion, pero hubo error al subir archivos.');
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Error al subir archivos.',
+                    text: 'Se ha registrado la información, pero ha ocurrido un error al subir los archivos. Por favor, inténtalo de nuevo más tarde o contacta a nuestro soporte técnico.',
+                    confirmButtonText: 'Aceptar'
+                  });
 
                   this.vmaService.actualizarEstadoIncompleto(registroVMAId)
                     .subscribe(() => this.router.navigate(['/inicio/vma']));

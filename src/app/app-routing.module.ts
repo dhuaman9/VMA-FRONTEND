@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { InicioComponent } from './pages/inicio/inicio.component';
 import { LoginComponent } from './pages/login/login.component';
-import { ReporteComponent } from 'src/app/pages/reportes/components/reporte.component';
 import { GuardService } from './_service/guard.service';
 import { AnexoGuard } from 'src/app/pages/anexos/anexo.guard';
 import {  ROL_ADMINISTRADOR_DF,ROL_CONSULTOR, ROL_ADMINISTRADOR_OTI,ROL_REGISTRADOR  } from 'src/app/utils/var.constant';
@@ -12,9 +11,8 @@ import { FichaRegistroGuard } from './pages/ficha-registro/ficha-registro.guard'
 import {CambiarPasswordComponent} from "./pages/usuarios/components/cambiar-password/cambiar-password.component";
 import {CambiarPasswordGuard} from "./pages/usuarios/guards/cambiar-password.guard";
 import {RecuperarPasswordComponent} from "./pages/anonimo/components/recuperar-password/recuperar-password.component";
-import { VmaGuard } from './pages/vma/vma.guard';
-import { RegistradorVmaGuard } from './pages/vma/components/registrar-vma/registrador-vma.guard';
 import { ModulosComponent } from './pages/modulos/modulos.component';
+import { ReporteGuard } from './pages/reportes/reporte.guard';
 
 const routes : Routes =
   [
@@ -55,18 +53,15 @@ const routes : Routes =
           {
             path: 'vma',
             canActivate : [GuardService ],
-           // canActivate : [GuardService, VmaGuard ],  //canActivate : [GuardService, VmaGuard ],
-           // data: {expectedRoles: [ROL_ADMINISTRADOR_DF,ROL_REGISTRADOR, ROL_CONSULTOR]},
-            loadChildren: () => import('./pages/vma/vma.module').then(m => m.VmaModule)
+           loadChildren: () => import('./pages/vma/vma.module').then(m => m.VmaModule)
           },
-          /*{
-            path: 'vma/registrar-vma',
-            canActivate : [GuardService, RegistradorVmaGuard ],  //dhr
-            data: {expectedRoles: [ROL_ADMINISTRADOR_DF,ROL_REGISTRADOR, ROL_CONSULTOR]},
-            loadChildren: () => import('./pages/vma/components/registrar-vma/registrovma.module').then(m => m.RegistroVmaModule)
-          },*/
+          
           {
-            path : 'reporte', component : ReporteComponent, canActivate : [GuardService]
+            path : 'reporte', 
+            canActivate : [GuardService, ReporteGuard],
+            data: {expectedRoles: [ROL_ADMINISTRADOR_DF, ROL_CONSULTOR]}, 
+            loadChildren: () => import('./pages/reportes/reporte.module').then(m => m.ReportesModule)
+
           }
         
         ]

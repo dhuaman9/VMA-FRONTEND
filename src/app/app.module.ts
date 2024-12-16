@@ -16,7 +16,6 @@ import { IConfig, NgxMaskModule } from 'ngx-mask';
 
 import { NgSelectModule } from '@ng-select/ng-select';
 import { interceptorProvider } from './_service/interceptor.service';
-import { ReporteComponent } from 'src/app/pages/reportes/components/reporte.component';
 import { AlphabeticInputDirective } from './utils/validate-inputs';
 import { TelefonoInputDirective } from './utils/validate-inputs';
 import { UserNameInputDirective } from './utils/validate-inputs';
@@ -36,6 +35,7 @@ import {MessageModule} from "primeng/message";
 import {SharedModule} from "./shared/shared.module";
 import {MenuModule} from "primeng/menu";
 import { RecuperarPasswordComponent } from './pages/anonimo/components/recuperar-password/recuperar-password.component';
+import { ReporteComponent } from './pages/reportes/components/reporte.component';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
 
