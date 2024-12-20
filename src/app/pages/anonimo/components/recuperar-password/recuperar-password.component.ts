@@ -46,7 +46,7 @@ export class RecuperarPasswordComponent implements OnInit {
   private onSuccess = (token: TokenPassword): void => {
     this.token = token;
     this.tokenExpirado = new Date() > new Date(token.fechaExpiracion);
-    console.log(new Date(token.fechaExpiracion) > new Date())
+    //console.log(new Date(token.fechaExpiracion) > new Date());
   }
 
   cambiarPassword(): void {

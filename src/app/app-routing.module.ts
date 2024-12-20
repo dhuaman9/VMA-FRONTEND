@@ -52,7 +52,7 @@ const routes : Routes =
           },
           {
             path: 'vma',
-            canActivate : [GuardService ],
+            canActivate : [GuardService],
            loadChildren: () => import('./pages/vma/vma.module').then(m => m.VmaModule)
           },
           

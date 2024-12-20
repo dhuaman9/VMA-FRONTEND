@@ -62,6 +62,7 @@ export class InterceptorService implements HttpInterceptor {
 
               this.sessionService.cerrarSession();
               throw new Error('Token expirado');
+              //return throwError(() => new Error('Token expirado'));
             }
           }
         }
@@ -90,7 +91,8 @@ export class InterceptorService implements HttpInterceptor {
           });
         }
 
-        return throwError(error);
+        //return throwError(error);
+        return throwError(() => error);
       })
     );
   }

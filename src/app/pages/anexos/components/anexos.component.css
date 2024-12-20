@@ -1,34 +1,34 @@
 .report-item {
-    display: flex;
-    align-items: center;
-    padding: .5rem;
-    width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  width: 100%;
+}
 
-    img {
-        width: 75px;
-        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-        margin-right: 1rem;
-    }
+.report-item img {
+  width: 75px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  margin-right: 1rem;
+}
 
-    .report-list-detail {
-        flex: 1 1 0;
-    }
+.report-item .report-list-detail {
+  flex: 1 1 0;
+}
 
-    .report-list-action {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-    }
+.report-item .report-list-action {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
 
-    .report-category-icon {
-        vertical-align: middle;
-        margin-right: .5rem;
-    }
+.report-item .report-category-icon {
+  vertical-align: middle;
+  margin-right: 0.5rem;
+}
 
-    .report-category {
-        vertical-align: middle;
-        line-height: 1;
-    }
+.report-item .report-category {
+  vertical-align: middle;
+  line-height: 1;
 }
 
 .combobox-anio{
@@ -49,37 +49,34 @@
 }
 
 @media screen and (max-width: 576px) {
-    .report-item {
-        flex-wrap: wrap;
+  .report-item {
+    flex-wrap: wrap;
+  }
 
-        .image-container {
-            width: 100%;
-            text-align: center;
-        }
+  .report-item .image-container {
+    width: 100%;
+    text-align: center;
+  }
 
-        img {
-            margin: 0 0 1rem 0;
-            width: 100px;
-        }
-    }
+  .report-item img {
+    margin: 0 0 1rem 0;
+    width: 100px;
+  }
 }
 
-.anexo ::ng-deep p-accordion p-accordiontab {
+.anexo ::ng-deep p-accordion p-accordiontab .p-accordion-header-link {
+  /* color de los tabs */
+  background: #5ec417 !important;
+  border: 1px solid #5ec417 !important;
+}
 
-    /*color de los tabs*/
-    .p-accordion-header-link {
-      background: #5ec417 !important;
-      border: 1px solid #5ec417 !important;
-    }
-  
-    /*color del la sombra en los bordes*/
-    .p-accordion-header:not(.p-disabled) .p-accordion-header-link:focus {
-      box-shadow: 0 0 0 0.2rem #a6ffa6 !important;
-    }
-  
-    /*color del seleccionado*/
-    .p-highlight .p-accordion-header-link {
-      background: #58bf10 !important;
-      border: 1px solid #58bf10 !important;
-    }
-  }
+.anexo ::ng-deep p-accordion p-accordiontab .p-accordion-header:not(.p-disabled) .p-accordion-header-link:focus {
+  /* color de la sombra en los bordes */
+  box-shadow: 0 0 0 0.2rem #a6ffa6 !important;
+}
+
+.anexo ::ng-deep p-accordion p-accordiontab .p-highlight .p-accordion-header-link {
+  /* color del seleccionado */
+  background: #58bf10 !important;
+  border: 1px solid #58bf10 !important;
+}

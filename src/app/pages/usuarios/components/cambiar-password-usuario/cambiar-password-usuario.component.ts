@@ -66,7 +66,7 @@ export class CambiarPasswordUsuarioComponent implements OnInit {
   };
 
   private onError = (error: any): Observable<never> => {
-    let mensajeError = 'Ocurrió un error inesperado';
+    let mensajeError = 'No existe token para actualizar el usuario. Debe volver a crear el usuario.';
     if (error && error.error && error.error.code === 'BAD_REQUEST') {
       mensajeError = error.error.message;
     }

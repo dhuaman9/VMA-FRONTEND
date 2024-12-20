@@ -1,16 +1,15 @@
-:host {
-  .input-text {
-      width: 350px;
-  }
+:host .input-text {
+  width: 350px;
+}
 
-  .input-number {
-      width: 200px;;
-  }
+:host .input-number {
+  width: 200px;
+}
 
-  .disabled-choose-button .p-button, .disabled-choose-button {
-    pointer-events: none;
-    opacity: 0.5;
-  }
+:host .disabled-choose-button .p-button,
+:host .disabled-choose-button {
+  pointer-events: none;
+  opacity: 0.5;
 }
 
 :host ::ng-deep .p-accordion .p-accordion-header:not(.p-highlight):not(.p-disabled):hover .p-accordion-header-link {

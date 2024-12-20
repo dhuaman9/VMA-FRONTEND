@@ -23,7 +23,8 @@ export class FichaRegistroComponent implements OnInit {
   showResultados = false;
   isEdition = false;
   fichaRegistro : FichaRegistro;
-  ListFichasRegistro: FichaRegistro[];
+  //ListFichasRegistro: FichaRegistro[];
+  ListFichasRegistro: FichaRegistro[] = [];
   registroForm: FormGroup;
 
   displayModaAdvice = false;
@@ -66,25 +67,23 @@ export class FichaRegistroComponent implements OnInit {
     
   }
 
-  onQueryPageFicha() {   //paramsPag: ParamsPagination
-   // console.log("paramsPag",paramsPag);
+  onQueryPageFicha() {   
     this.fichaRegistroService.findAll().subscribe(
-     
-      (data:any) => {
-      this.ListFichasRegistro= (data.content || data).map((item: FichaRegistro,index: number)=>({
-        ...item,
-        index: index + 1
-      }));
-      this.showResultados = true;
-      this.totalRecords = data.totalElements || this.ListFichasRegistro.length;
-      this.isLoading = false;
-      },
-      error => {
-        console.error('No se encontro datos de fichas de registros', error);
-      }
-  );
+      
+        (data:any) => {
+        this.ListFichasRegistro= (data.content || data).map((item: FichaRegistro,index: number)=>({
+          ...item,
+          index: index + 1
+        }));
+        this.showResultados = true;
+        this.totalRecords = data.totalElements || this.ListFichasRegistro.length;
+        this.isLoading = false;
+        },
+        error => {
+          console.error('No se encontro datos de fichas de registros', error);
+        }
+    );
   }
-
 
   onFilterTableGlobal(table: Table, event:any){
 

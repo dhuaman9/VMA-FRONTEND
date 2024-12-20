@@ -26,8 +26,9 @@ export class LoginComponent implements OnInit {
     private loginService  : LoginService,
     private sessionService : SessionService
   ) {
-    //const tipoUsuarioSunass : boolean = (this.sessionService.getTipoUsuario().includes('SUNASS'));
-    //const tipoUsuarioEPS : boolean = (this.sessionService.getTipoUsuario().includes('EPS'));
+    
+
+
   }
 
   ngOnInit(): void {
@@ -35,8 +36,10 @@ export class LoginComponent implements OnInit {
     this.user = "";
     this.password ="";
 
+   
   }
 
+  
   verificarFrm(){
     let result = true;
 

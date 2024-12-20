@@ -40,6 +40,8 @@ import DOMPurify from 'dompurify';
   providers: [MessageService],
 })
 export class RegistrarVmaComponent implements OnInit, OnDestroy {
+  
+  public accionEnCurso = false; //dhr
   cuestionario: Cuestionario;
 
   registroCompleto: boolean = false; //cambiar por statusRegistroVMA
@@ -122,6 +124,13 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
     isGuardadoCompleto: boolean,
     datosRegistrador: DatosUsuariosRegistrador
   ) {
+
+    if (this.accionEnCurso) {
+      return; // Previene múltiples ejecuciones
+    }
+    this.accionEnCurso = true; // Marca la acción como en curso
+
+
     if (!isGuardadoCompleto && this.validarAlternativas()) {
       Swal.fire({
         title: 'Existe un valor acumulado menor al parcial',
@@ -129,6 +138,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
         icon: 'warning',
         confirmButtonText: 'Aceptar',
       });
+      this.accionEnCurso = false; // Libera la acción
       return;
     }
 
@@ -215,23 +225,30 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
                 )
               ).pipe(
                 catchError(()=>{
+                 // this.subidaArchivoConError = true; // Indica que hubo un error
                   Swal.fire({
                     icon: 'error',
                     title: 'Error al subir archivos.',
-                    text: 'Se ha registrado la información, pero ha ocurrido un error al subir los archivos. Por favor, inténtalo de nuevo más tarde o contacta a nuestro soporte técnico.',
+                    text: 'Se ha registrado la información, pero ha ocurrido un error al subir los archivos. Por favor, inténtalo nuevamente más tarde o contacta al soporte técnico.',
                     confirmButtonText: 'Aceptar'
                   });
                   this.vmaService.actualizarEstadoIncompleto(registroVMAId)
                     .subscribe(() => this.router.navigate(['/inicio/vma']));
                   return throwError(() => new Error('Error al subir los archivos.'));
-                } )
+                } 
+              )
               );  //dhr
             }
-
             return of(null);
           }
         ),
-          finalize(() => (this.cargandoProceso$ = of(false)))
+          finalize(
+            //() => (this.cargandoProceso$ = of(false))
+            () => {
+              this.cargandoProceso$ = of(false);
+              this.accionEnCurso = false; // Libera la acción después de completar
+            }
+          )
         )
         .subscribe(() => {
           console.log('metodo guardar -');
@@ -262,6 +279,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
                 )
               ).pipe(
                 catchError(()=>{
+                  //this.subidaArchivoConError = true; // Indica que hubo un error
                   Swal.fire({
                     icon: 'error',
                     title: 'Error al subir archivos.',
@@ -276,6 +294,10 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
               );
             }
             return of(null);
+          }),
+          finalize(() => {
+            this.cargandoProceso$ = of(false);
+            this.accionEnCurso = false; // Libera la acción después de completar
           })
         )
         .subscribe(() => {
@@ -428,7 +450,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
 
   guardadoParcial(): void {
     this.addValidatorsToRespuesta(false);
-    if (this.formularioValido && !this.archivoInvalido) {  // &&
+    if (this.formularioValido && !this.archivoInvalido) {
       this.guardar(false, null);
 
     } else if(!this.formularioValido && this.archivoInvalido) {
