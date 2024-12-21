@@ -40,7 +40,7 @@ import DOMPurify from 'dompurify';
   providers: [MessageService],
 })
 export class RegistrarVmaComponent implements OnInit, OnDestroy {
-  
+
   public accionEnCurso = false; //dhr
   cuestionario: Cuestionario;
 
@@ -235,7 +235,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
                   this.vmaService.actualizarEstadoIncompleto(registroVMAId)
                     .subscribe(() => this.router.navigate(['/inicio/vma']));
                   return throwError(() => new Error('Error al subir los archivos.'));
-                } 
+                }
               )
               );  //dhr
             }
@@ -623,7 +623,11 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
           }
 
           if (tipoPregunta === TipoPregunta.ARCHIVO) {
-            validators.push(this.agregarValidadorARespuesta(pregunta.value));
+            let validatorFn = this.agregarValidadorARespuesta(pregunta.value);
+
+            if(validatorFn) {
+              validators.push(validatorFn);
+            }
           }
 
           respuestaControl.setValidators(validators);
