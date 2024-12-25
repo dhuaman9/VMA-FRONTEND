@@ -40,7 +40,7 @@ import DOMPurify from 'dompurify';
   providers: [MessageService],
 })
 export class RegistrarVmaComponent implements OnInit, OnDestroy {
-
+  
   public accionEnCurso = false; //dhr
   cuestionario: Cuestionario;
 
@@ -235,7 +235,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
                   this.vmaService.actualizarEstadoIncompleto(registroVMAId)
                     .subscribe(() => this.router.navigate(['/inicio/vma']));
                   return throwError(() => new Error('Error al subir los archivos.'));
-                }
+                } 
               )
               );  //dhr
             }
