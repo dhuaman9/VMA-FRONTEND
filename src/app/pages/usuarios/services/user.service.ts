@@ -104,9 +104,7 @@ export class UserService {
 
   update(user: User) : Observable<any>  {
 
-   /* return this.http.put<User>(this.url+'/usuario', user, {
-       headers: new HttpHeaders().set('Content-Type', 'application/json')
-    });*/
+  
     return this.http.put<any>(this.url +'/usuario', user, {
       headers: new HttpHeaders().set('Content-Type', 'application/json')
      }).pipe(catchError(this.handleError) // Manejo de errores
@@ -138,16 +136,7 @@ export class UserService {
     return this.http.get<any>(`${this.url}/modulo/findmodules`, this.httpOptions);
   }
 
-  /*findOficinas() {
 
-    this.httpOptions = {
-      headers : new HttpHeaders({
-        'Content-type' : 'application/json'
-      }),
-      responseType : 'json'
-    };
-    return this.http.get<any>(`${this.url}/oficina/findall`, this.httpOptions);
-  }*/
 
   searchUsers(page: number, size: number, search: string): Observable<any> {
     return this.http.get(`${this.url}/usuario?page=${page}&size=${size}&search=${search}`);

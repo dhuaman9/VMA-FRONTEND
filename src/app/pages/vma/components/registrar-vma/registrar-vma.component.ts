@@ -41,7 +41,7 @@ import DOMPurify from 'dompurify';
 })
 export class RegistrarVmaComponent implements OnInit, OnDestroy {
   
-  public accionEnCurso = false; //dhr
+  public accionEnCurso = false;
   cuestionario: Cuestionario;
 
   registroCompleto: boolean = false; //cambiar por statusRegistroVMA
@@ -64,8 +64,6 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
   isVmaVigente: boolean;
   archivoInvalido: boolean;
 
- // maliciousHtml: String;
-
   constructor(
     private router: Router,
     private fb: FormBuilder,
@@ -82,10 +80,12 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    /*Escucha los parámetros de la URL actual. 
+    Si la URL contiene un parámetro llamado id, se asigna a la variable idRegistroVMA.*/
     this.activatedRoute.params.subscribe((params) => {
       this.idRegistroVMA = params['id'];
 
-      if (this.idRegistroVMA) {
+      if (this.idRegistroVMA) {  // ? como es este flujo?
         this.vmaService
           .findById(this.idRegistroVMA)
           .pipe(
@@ -103,8 +103,9 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
               this.buildForm();
             })
           )
-          .subscribe();
-      } else {
+          .subscribe(); //  ? fin 
+
+      } else {  // si no hay un idRegistroVMA en los parámetros, cargara el cuestionario mas reciente
         this.cuestionarioService
           .findCuestionarioByIdMax()
           .subscribe((response: any) => {
@@ -116,14 +117,8 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
     });
   }
 
-  isFile(value: any): boolean {
-    return value instanceof File;
-  }
-
-  guardar(
-    isGuardadoCompleto: boolean,
-    datosRegistrador: DatosUsuariosRegistrador
-  ) {
+ 
+  guardar(  isGuardadoCompleto: boolean,  datosRegistrador: DatosUsuariosRegistrador  ) {
 
     if (this.accionEnCurso) {
       return; // Previene múltiples ejecuciones
@@ -142,11 +137,11 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.cargandoProceso$ = of(true);
+    this.cargandoProceso$ = of(true);  // Crea un Observable que emite el valor true inmediatamente. Es como decir "empecemos un indicador de carga"
     const preguntasArray = this.formularioGeneral.value.secciones.map(
       (seccion) => seccion.preguntas
     );
-    let preguntas: Pregunta[] = preguntasArray.reduce(
+    let preguntas: Pregunta[] = preguntasArray.reduce(  // con reduce,  Junta todas las preguntas de todas las secciones en un solo array para procesarlas más fácil.
       (acc, cur) => acc.concat(cur),
       []
     );
@@ -201,7 +196,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
 
     const registroVMA = new RegistroVmaRequest();
     registroVMA.registroValido = isGuardadoCompleto;
-    // registroVMA.idEmpresa = 1;   //temporal, hasta definir
+
     registroVMA.respuestas = respuestas;
 
     if (isGuardadoCompleto && datosRegistrador) {
@@ -237,13 +232,12 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
                   return throwError(() => new Error('Error al subir los archivos.'));
                 } 
               )
-              );  //dhr
+              );
             }
             return of(null);
           }
         ),
           finalize(
-            //() => (this.cargandoProceso$ = of(false))
             () => {
               this.cargandoProceso$ = of(false);
               this.accionEnCurso = false; // Libera la acción después de completar
@@ -251,7 +245,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
           )
         )
         .subscribe(() => {
-          console.log('metodo guardar -');
+        
           this.router.navigate(['/inicio/vma']);
           Swal.fire({
             title: isGuardadoCompleto
@@ -259,7 +253,6 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
               : 'Se ha realizado el guardado Progresivo', // Registro actualizado
             icon: 'success',
             confirmButtonText: 'Aceptar',
-            //allowOutsideClick: false  //evita hacer click fuera del alert
           }).then((result) => {});
         });
     } else {
@@ -279,8 +272,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
                 )
               ).pipe(
                 catchError(()=>{
-                  //this.subidaArchivoConError = true; // Indica que hubo un error
-                  Swal.fire({
+                   Swal.fire({
                     icon: 'error',
                     title: 'Error al subir archivos.',
                     text: 'Se ha registrado la información, pero ha ocurrido un error al subir los archivos. Por favor, inténtalo de nuevo más tarde o contacta a nuestro soporte técnico.',
@@ -306,17 +298,19 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
     }
   }
 
+  isFile(value: any): boolean {
+    return value instanceof File;
+  }
+
   onSuccess(isGuardadoCompleto: boolean) {
     console.log('metodo onsuccess -');
     Swal.fire({
       title: isGuardadoCompleto
         ? 'Registro completado'
         : 'Se ha realizado el guardado Progresivo', //'Registro actualizado'
-      // text:  isGuardadoCompleto? 'Su información ha sido registrada y enviada.' : 'Registrado guardado parcialmente',
-      icon: 'success',
-      confirmButtonText: 'Aceptar',
-      // allowOutsideClick: false    //evita hacer click fuera del alert
-    });
+       icon: 'success',
+       confirmButtonText: 'Aceptar',
+      });
 
     this.router.navigate(['/inicio/vma']);
     this.vmaService.sendRegistroCompleto(true);
@@ -328,7 +322,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
     );
     formControl.setValidators(this.agregarValidadorARespuesta(pregunta));
     formControl.updateValueAndValidity();
-    formControl.markAsPristine();
+    formControl.markAsPristine();  //para que sirve?
   }
 
   onFileChange(event: any, formControl: AbstractControl): void {
@@ -397,7 +391,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
     }
   }
 
-  modalDatosRegistrador() {
+  modalDatosRegistrador() { // se construye el modal para guardar los datos del registrador
     return Swal.fire({
       title:
         'Para completar el registro VMA, es necesario que ingrese los siguientes datos:',
@@ -612,7 +606,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
           (tipoPregunta === TipoPregunta.RADIO && respuestaControl) ||
           (tipoPregunta === TipoPregunta.ARCHIVO)
         ) {
-          //|| pregunta.get('alternativas').get('requerido')
+       
           let validators = [];
 
           if (agregarValidacion) {
@@ -762,14 +756,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
     });
   }
 
-  onBackToList() {
-    this.router.navigate(['/inicio/vma']).then(() => {
-      // es para forzar la recarga del listado por el momento.
-      window.location.reload();
-    });
-    //  this.router.navigate(['/inicio/vma']);
-  }
-
+ 
   onRadioButtonChange(seccion: AbstractControl, valor: string): void {
     const formArray = seccion.get('preguntas') as FormArray;
     if (valor === RADIO_BUTTON_NO || !valor) {

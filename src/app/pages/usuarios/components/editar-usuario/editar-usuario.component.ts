@@ -278,7 +278,6 @@ export class EditarUsuarioComponent implements OnInit {
   }
 
   validateAlfabetico(event: Event) {
-    // dhr: se usa ?
     const inputElement = event.target as HTMLInputElement;
     inputElement.value = inputElement.value.replace(
       /[^a-zA-ZáéíóúÁÉÍÓÚñÑüÜ]/g,

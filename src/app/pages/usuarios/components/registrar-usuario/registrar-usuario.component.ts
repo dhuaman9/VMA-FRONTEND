@@ -115,7 +115,7 @@ export class RegistrarUsuarioComponent implements OnInit {
         { id: 2, description: ROL_ADMINISTRADOR_DF },
         { id: 4, description: ROL_CONSULTOR },
       ];
-      this.isRequired = false; // dhr se usa?
+      this.isRequired = false;
     } else if (this.registroForm.get('tipo').value === TIPO_EPS) {
       this.isRequired = true;
       this.perfiles = [

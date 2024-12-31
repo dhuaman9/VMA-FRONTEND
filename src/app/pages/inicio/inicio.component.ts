@@ -95,7 +95,8 @@ export class InicioComponent implements OnInit {
           }
         ];
 
-      }else {
+      }
+      /*else {
         // Maneja el caso en el que no hay días faltantes
         this.msgs1 = [
           {
@@ -104,7 +105,7 @@ export class InicioComponent implements OnInit {
             detail: 'No hay días restantes para el registro.'
           }
         ];
-      }
+      }*/
     }, error => {
       console.error('Error al obtener los días faltantes', error);
     });
@@ -129,7 +130,7 @@ export class InicioComponent implements OnInit {
   redimensiona(){
     attachEventsToPushMenu();
   }
-//dhr , no deberia
+
   cerrarSession1(){
     this.sessionService.cerrarSession();
     return false;   //este metodo está asociada a un evento, como un clic al botón, y el enlace tiene un atributo href o algún otro comportamiento por default, return false evita que dicho comportamiento ocurra.
