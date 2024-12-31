@@ -42,7 +42,7 @@ export class RegisterEditFichaComponent implements OnInit {
 
   ngOnInit(): void {
 
-   
+
     const startYear = 2024;  // año desde que se publica y/o se registrara informacion de vma
     const currentYear = new Date().getFullYear(); // Año actual
     for (let year = startYear; year <= currentYear; year++) {
@@ -65,7 +65,7 @@ export class RegisterEditFichaComponent implements OnInit {
   console.log('this.registroForm.valid',this.registroForm.valid, this.registroForm.value);
 
   if(this.registroForm.valid){
-    
+
     const ficha = this.prepareFichaData();
 
     if(this.isEdition){
@@ -89,7 +89,7 @@ export class RegisterEditFichaComponent implements OnInit {
         this.closeDialog(true);
          Swal.fire({
            title: 'Error',
-           text: error,
+           text: error.error.BAD_REQUEST,
            icon: 'error',
            confirmButtonText: 'Aceptar',
            confirmButtonColor: '#d22c21'
@@ -118,7 +118,7 @@ export class RegisterEditFichaComponent implements OnInit {
         this.closeDialog(true);
          Swal.fire({
            title: 'Error',
-           text: error,
+           text: error.error.BAD_REQUEST,
            icon: 'error',
            confirmButtonText: 'Aceptar',
            confirmButtonColor: '#d22c21'

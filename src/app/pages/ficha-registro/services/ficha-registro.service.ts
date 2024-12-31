@@ -14,7 +14,7 @@ import { of } from 'rxjs';
 export class FichaRegistroService{
 
     url: string = `${environment.HOST}`;
-    
+
     //token: string = sessionStorage.getItem(environment.TOKEN_NAME);
     token: string = localStorage.getItem(environment.TOKEN_NAME);
     httpOptions : any;
@@ -34,7 +34,7 @@ export class FichaRegistroService{
     }
 
     findById(id: number){
-   
+
         this.httpOptions = {
             headers : new HttpHeaders({
                 'Content-type' : 'application/json'
@@ -57,14 +57,14 @@ export class FichaRegistroService{
     create(ficha: FichaRegistro) : Observable<any>  {
         return this.http.post<FichaRegistro>(this.url+'/fichas', ficha, {
             headers: new HttpHeaders().set('Content-Type', 'application/json')
-            }).pipe(catchError(this.handleError) // Manejo de errores
+            }
         );
      }
 
     update(ficha: FichaRegistro){
         return this.http.put<FichaRegistro>(this.url+'/fichas', ficha, {
         headers: new HttpHeaders().set('Content-Type', 'application/json')
-        }).pipe(catchError(this.handleError) // Manejo de errores
+        }
         );
     }
 

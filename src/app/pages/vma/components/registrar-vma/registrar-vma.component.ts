@@ -40,7 +40,7 @@ import DOMPurify from 'dompurify';
   providers: [MessageService],
 })
 export class RegistrarVmaComponent implements OnInit, OnDestroy {
-  
+
   public accionEnCurso = false;
   cuestionario: Cuestionario;
 
@@ -80,7 +80,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    /*Escucha los parámetros de la URL actual. 
+    /*Escucha los parámetros de la URL actual.
     Si la URL contiene un parámetro llamado id, se asigna a la variable idRegistroVMA.*/
     this.activatedRoute.params.subscribe((params) => {
       this.idRegistroVMA = params['id'];
@@ -103,7 +103,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
               this.buildForm();
             })
           )
-          .subscribe(); //  ? fin 
+          .subscribe(); //  ? fin
 
       } else {  // si no hay un idRegistroVMA en los parámetros, cargara el cuestionario mas reciente
         this.cuestionarioService
@@ -117,7 +117,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
     });
   }
 
- 
+
   guardar(  isGuardadoCompleto: boolean,  datosRegistrador: DatosUsuariosRegistrador  ) {
 
     if (this.accionEnCurso) {
@@ -147,6 +147,9 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
     );
     const respuestas: RespuestaDTO[] = [];
     const respuestasArchivo: RespuestaDTO[] = [];
+    /**
+     * Aquí filtramos todas las preguntas que tengan UNA RESPUESTA, esto incluye a todos los tipos de pregunta
+     * **/
     preguntas = preguntas.filter(
       (pregunta) =>
         (pregunta.respuesta !== null && pregunta.respuesta !== '') ||
@@ -154,6 +157,10 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
           pregunta.alternativas.length > 0)
     );
     preguntas.forEach((pregunta) => {
+
+      /**
+       * Dependiendo del TIPOPREGUNTA se mapea a RESPUESTADTO
+       * **/
       if (
         pregunta.tipoPregunta === TipoPregunta.NUMERICO &&
         pregunta.alternativas.length > 0
@@ -203,11 +210,20 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
       registroVMA.datosUsuarioRegistradorDto = datosRegistrador;
     }
 
+    /**
+     * Si existe idRegistroVMA, editamos
+     * **/
     if (this.idRegistroVMA) {
       this.suscripcionRegistro = this.vmaService
         .updateRegistroVMA(this.idRegistroVMA, registroVMA)
         .pipe(
+          /**
+           * Cuando termina la petición updateRegistroVMA(), empezamos a subir los archivos 1 x 1, haciendo una petición a uploadFile()
+           * **/
           switchMap( (registroVMAId) => {
+            /**
+             * Solo se ejecuta esto si existen archivos a subir
+             * **/
             if (respuestasArchivo.length > 0) {
               return forkJoin(
                 respuestasArchivo.map((respuesta) =>
@@ -230,7 +246,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
                   this.vmaService.actualizarEstadoIncompleto(registroVMAId)
                     .subscribe(() => this.router.navigate(['/inicio/vma']));
                   return throwError(() => new Error('Error al subir los archivos.'));
-                } 
+                }
               )
               );
             }
@@ -245,7 +261,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
           )
         )
         .subscribe(() => {
-        
+
           this.router.navigate(['/inicio/vma']);
           Swal.fire({
             title: isGuardadoCompleto
@@ -256,10 +272,19 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
           }).then((result) => {});
         });
     } else {
+      /**
+       * Si no existe idRegistroVMA, creamos 1 nuevo
+       * **/
       this.suscripcionRegistro = this.vmaService
         .saveRegistroVMA(registroVMA)
         .pipe(
+          /**
+           * Cuando termina la petición saveRegistroVMA(), empezamos a subir los archivos 1 x 1, haciendo una petición a uploadFile()
+           * **/
           switchMap((registroVMAId) => {
+            /**
+             * Solo se ejecuta esto si existen archivos a subir
+             * **/
             if (respuestasArchivo.length > 0) {
               return forkJoin(
                 respuestasArchivo.map((respuesta) =>
@@ -361,6 +386,10 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
   }
 
   guardadoCompleto(): void {
+    /**
+     * this.validarAlternativas() valida las alternativas númericas(Parcial, acumulado)
+     * Si está OK, contiuna, si no, para y muestra alerta
+     **/
     if (this.validarAlternativas()) {
       Swal.fire({
         title: 'Existe un valor acumulado menor al parcial',
@@ -370,11 +399,16 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
       });
       return;
     }
-
+    /**
+     * Agrega o remueve validaciones y verifica si el formulario está OK mediante this.formularioValido
+     */
     this.addValidatorsToRespuesta(true);
 
     if (this.formularioValido) {
-
+      /**
+       * Si el formulario es válido y es guardado completo entonces, se muestra el modal
+       * para guardar al REGISTRADOR y por último llamar al método guardar
+      **/
       this.modalDatosRegistrador().then((result: any) => {
         if (result.isConfirmed && result.value) {
           this.guardar(true, result.value);
@@ -443,10 +477,16 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
   }
 
   guardadoParcial(): void {
+    /**
+     * Agregamos o quitamos validacion y validamos si el formulario está OK o si archivoInvalido(tipos de archivos permitidos) está OK
+     * **/
     this.addValidatorsToRespuesta(false);
+
+    //Si el formulario es válido y los archivos seleccionados son los correctos guardamos el registroVma
     if (this.formularioValido && !this.archivoInvalido) {
       this.guardar(false, null);
 
+      //Si el formulario es inválido(NO TIPO ARCHIVO) y los archivos son incorrectos mostramos su alerta correspondiente
     } else if(!this.formularioValido && this.archivoInvalido) {
 
       Swal.fire({
@@ -475,6 +515,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
     return respuesta;
   }
 
+  //Método para validar las alternativas(PARCIAL, ACUMULADO), si corresponde
   private validarAlternativasNumericas() {
     return (group: AbstractControl) => {
       const alternativas = (group.get('alternativas') as FormArray)?.controls;
@@ -495,6 +536,9 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
     };
   }
 
+  /**
+   * Método para validar las alternativas (ACUMULADO, PARCIAL)
+   * **/
   private validarAlternativas(): boolean {
     let hasErrors = false;
 
@@ -587,6 +631,13 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Este método se usa para agregar o remover validaciones, dependiendo del parámetro (agregarValidacion), a los formcontrols del formulario.
+   * Además, indica si el formulario es válido o no, dependiendo (formularioValido), si en la iteración encuentra un formcontrol inválido, setea a (this.formularioValido = false)
+   * Se itera las secciones para luego iterar las preguntas para saber de qué tipo son.
+   * Si la pregunta es tipo ARCHIVO, se mantienen sus validaciones de tipos de archivos permitidos.
+   *
+   * **/
   private addValidatorsToRespuesta(agregarValidacion: boolean) {
     const secciones = this.formularioGeneral.get('secciones') as FormArray;
     this.archivoInvalido=false;
@@ -606,16 +657,18 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
           (tipoPregunta === TipoPregunta.RADIO && respuestaControl) ||
           (tipoPregunta === TipoPregunta.ARCHIVO)
         ) {
-       
+
           let validators = [];
 
           if (agregarValidacion) {
             validators.push(Validators.required);
+            //Si es tipo de archivo y es no es requerido en su metada, no se le agrega la validación Required
             if (tipoPregunta === TipoPregunta.ARCHIVO && !pregunta.value.metadato.requerido ) {
               validators = [];
             }
           }
 
+          //Si es tipo Archivo, agregamos sus validaciones, si corresponde, del metadato para saber que tipos de documento permite(xlxs, word, pdf)
           if (tipoPregunta === TipoPregunta.ARCHIVO) {
             let validatorFn = this.agregarValidadorARespuesta(pregunta.value);
 
@@ -637,6 +690,10 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
           //if (respuestaControl.)
         }
 
+        /**
+         * Esta sección es solo para preguntas que tengan alternativas
+         * Verifica las respuestas de las alternativas son válidas, dependiendo si el param agregarValidacion es true o false
+         * **/
         const alternativas = pregunta.get('alternativas') as FormArray;
         alternativas.controls.forEach((alternativa) => {
           const respuestaAlternativaControl = alternativa.get('respuesta');
@@ -756,7 +813,7 @@ export class RegistrarVmaComponent implements OnInit, OnDestroy {
     });
   }
 
- 
+
   onRadioButtonChange(seccion: AbstractControl, valor: string): void {
     const formArray = seccion.get('preguntas') as FormArray;
     if (valor === RADIO_BUTTON_NO || !valor) {

@@ -5,3 +5,11 @@
 .p-fieldset {
     height: 100%;
 }
+
+::ng-deep .p-dialog {
+  overflow: visible !important;
+}
+
+::ng-deep .p-dialog-content {
+  overflow: visible !important;
+}
