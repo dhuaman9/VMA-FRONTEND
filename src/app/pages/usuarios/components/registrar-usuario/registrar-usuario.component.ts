@@ -152,7 +152,7 @@ export class RegistrarUsuarioComponent implements OnInit {
         (error) => {
           Swal.fire({
             title: 'Error',
-            text: error,
+            text: error.error.message,
             icon: 'error',
             confirmButtonText: 'Aceptar',
             confirmButtonColor: '#d22c21',
@@ -208,7 +208,7 @@ export class RegistrarUsuarioComponent implements OnInit {
 
   private setEnableDisableIputs() {
     if (this.registroForm.get('tipo').value === TIPO_SUNASS) {
-      this.mostrarCampo = false; //por ejemplo se va ocultar el campo EPS
+      this.mostrarCampo = false; //es para   ocultar los  campo  de usuarios EPS, al dar clic en Sunass
       this.mostrarCamposSunass = true;
       this.isDropUsersDisable = false;
       this.registroForm.get('unidadOrganica').disable();

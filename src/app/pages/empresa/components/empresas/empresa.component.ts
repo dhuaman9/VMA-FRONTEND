@@ -142,7 +142,7 @@ private openModalAddEditEmpresa(idEmpresa: number, titleModal: string){
       this.loadEmpresasLazy({ first: 0, rows: this.size });
     }
 
-   
+
   });
 
 }

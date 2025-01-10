@@ -40,7 +40,7 @@ export class InterceptorService implements HttpInterceptor {
     }
 
     let intReq = req;
-    const token = localStorage.getItem(environment.TOKEN_NAME); 
+    const token = localStorage.getItem(environment.TOKEN_NAME);
 
     intReq = this.addToken(req, token);
 
@@ -82,7 +82,7 @@ export class InterceptorService implements HttpInterceptor {
             confirmButtonText: 'Aceptar',
           });
         } else {// si es otro error desconocido, lo detectara como 500
-         
+
           Swal.fire({
             icon: 'error',
             title: 'Error del servidor.',
@@ -92,7 +92,7 @@ export class InterceptorService implements HttpInterceptor {
         }
 
         //return throwError(error);
-        return throwError(() => error);
+        return throwError(error);
       })
     );
   }

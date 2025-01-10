@@ -158,7 +158,7 @@ export class InicioComponent implements OnInit {
       },
       {
         route : "ficha-registro",
-        label : "Apertura de Fichas de Registro VMA",
+        label : "Apertura de Fechas de Registro VMA",
         icon : "pi pi-calendar-plus",
         activo: esAdministradorDF
       },

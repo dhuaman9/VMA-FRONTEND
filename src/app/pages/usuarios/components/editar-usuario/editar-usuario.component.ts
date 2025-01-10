@@ -151,8 +151,7 @@ export class EditarUsuarioComponent implements OnInit {
       usuario: userData.username,
       username: userData.username,
       telefono: userData.telefono,
-      estado: userData.estado,
-      //password: userData.passwordPlain  //dhr no se usaria, porque se expondria la clave
+      estado: userData.estado
     });
   }
 
@@ -232,13 +231,12 @@ export class EditarUsuarioComponent implements OnInit {
             confirmButtonText: 'Aceptar',
             confirmButtonColor: '#28a745', // color verde
           }).then((result) => {
-            //?
           });
         },
         (error) => {
           Swal.fire({
             title: 'Error',
-            text: error,
+            text: error.error.message,
             icon: 'error',
             confirmButtonText: 'Aceptar',
           });
@@ -288,7 +286,7 @@ export class EditarUsuarioComponent implements OnInit {
 
   private setEnableDisableIputs() {
     if (this.registroForm.get('tipo').value === TIPO_SUNASS) {
-      this.mostrarCampo = false; //por ejemplo se va ocultar el campo EPS
+      this.mostrarCampo = false; //es para   ocultar los  campo  de usuarios EPS, al dar clic en Sunass
       this.mostrarCamposSunass = true;
       this.isDropUsersDisable = false;
       this.registroForm.get('unidadOrganica').disable();

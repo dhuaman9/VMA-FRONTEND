@@ -42,7 +42,7 @@ export class RegisterEditFichaComponent implements OnInit {
 
   ngOnInit(): void {
 
-   
+
     const startYear = 2024;  // año desde que se publica y/o se registrara informacion de vma
     const currentYear = new Date().getFullYear(); // Año actual
     for (let year = startYear; year <= currentYear; year++) {
@@ -65,7 +65,7 @@ export class RegisterEditFichaComponent implements OnInit {
   console.log('this.registroForm.valid',this.registroForm.valid, this.registroForm.value);
 
   if(this.registroForm.valid){
-    
+
     const ficha = this.prepareFichaData();
 
     if(this.isEdition){
@@ -75,7 +75,7 @@ export class RegisterEditFichaComponent implements OnInit {
 
     Swal.fire({
           icon: "success",
-          title: 'Se actualizó la Ficha de registro correctamente',
+          title: 'Se actualizó la fecha de registro correctamente',
           showConfirmButton: true,
           confirmButtonText: 'Aceptar',
           confirmButtonColor: '#28a745'
@@ -89,7 +89,7 @@ export class RegisterEditFichaComponent implements OnInit {
         this.closeDialog(true);
          Swal.fire({
            title: 'Error',
-           text: error,
+           text: error.error.message,
            icon: 'error',
            confirmButtonText: 'Aceptar',
            confirmButtonColor: '#d22c21'
@@ -101,7 +101,7 @@ export class RegisterEditFichaComponent implements OnInit {
         this.closeDialog(true);
         Swal.fire({
           icon: "success",
-          title: 'Se registró la Ficha de registro correctamente',
+          title: 'Se registró las fechas de registro correctamente',
           showConfirmButton: true,
           confirmButtonText: 'Aceptar',
           confirmButtonColor: '#28a745', // color verde
@@ -109,7 +109,6 @@ export class RegisterEditFichaComponent implements OnInit {
         }).then((result) => {
           if (result.isConfirmed) {
             this.router.navigate(['/inicio/ficha-registro']).then(() => {
-             window.location.reload();
             }); // se redirige al listado de fichas
           }
         });
@@ -118,7 +117,7 @@ export class RegisterEditFichaComponent implements OnInit {
         this.closeDialog(true);
          Swal.fire({
            title: 'Error',
-           text: error,
+           text: error.error.message,
            icon: 'error',
            confirmButtonText: 'Aceptar',
            confirmButtonColor: '#d22c21'

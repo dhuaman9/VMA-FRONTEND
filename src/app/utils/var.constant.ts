@@ -23,6 +23,7 @@ export const ROL_CONSULTOR='CONSULTOR';
 export const ESTADO_COMPLETO='COMPLETO';
 export const ESTADO_INCOMPLETO='INCOMPLETO';
 export const ESTADO_SIN_REGISTRO='SIN REGISTRO';
+export const ANIO_APERTURA_VMA=2024;
 
 //elementos HTML
 export const RADIO_BUTTON_SI="SI";

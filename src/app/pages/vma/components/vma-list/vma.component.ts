@@ -24,7 +24,6 @@ import {isVmaVigente} from "../../vma.utils";
 })
 export class VmaComponent implements OnInit {
 
-  activeState: boolean[] = [true, false, false];  // dhr , se usa?
 
   estados: string[];  //  arreglo con los estados disponibles : completo ,incompleto y sin registro
   

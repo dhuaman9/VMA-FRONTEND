@@ -17,6 +17,8 @@ import html2canvas from 'html2canvas';
 Chart.register(ChartDataLabels);
 import { of,forkJoin } from 'rxjs';
 import Swal from 'sweetalert2';
+import { ANIO_APERTURA_VMA } from 'src/app/utils/var.constant';
+
 
 @Component({
   selector: 'app-reporte',
@@ -28,8 +30,10 @@ export class ReporteComponent implements OnInit {
   filterText: string = '';
   title = 'GFG';
   isLoading = false;
-  years: any[];
+
+  years: { label: string; value: number }[];
   selectedYear: number;
+
   chartDataNumeroEP: number[];
   chartLabelsNumeroEP: string[] = [];
 
@@ -150,12 +154,14 @@ export class ReporteComponent implements OnInit {
     private reporteService: ReporteService,
     private cdr: ChangeDetectorRef
   ) {
-    this.initializeYears();
+   // this.initializeYears();
   }
 
   ngOnInit(): void {
 
-    this.setDefaultYear();//se carga el año actual
+    this.initializeYears();
+    this.applyFilter();
+    
   }
 
   private cargarDatosBarChartSiNo = (registrosSiNoChart: ChartDto[]): void => {
@@ -285,7 +291,7 @@ export class ReporteComponent implements OnInit {
       }));
   }
 
-  //10 UND que cuentan con caja de registro
+  // grafico 10,  UND que cuentan con caja de registro
   private cargarDatosUNDConCajaRegistro = (data: BarChartBasicoDto[]): void => {
     this.chartPorcentajeUNDConCajaRegistroData = [];
     this.chartPorcentajeUNDConCajaRegistroLabels = data.map(item => item.label);
@@ -296,7 +302,7 @@ export class ReporteComponent implements OnInit {
     });
   }
 
-   //11  Porcentaje de UND a los que se realizó la toma de muestra inopinada
+   // grafico 11,  Porcentaje de UND a los que se realizó la toma de muestra inopinada
    private cargarDatosUNDTomaMuestraInopinada = (data: BarChartBasicoDto[]): void => {
     this.chartPorcentajeUNDTomaMuestraInopinadaData = [];
     this.chartPorcentajeUNDTomaMuestraInopinadaLabels = data.map(item => item.label);
@@ -307,14 +313,14 @@ export class ReporteComponent implements OnInit {
     });
   }
 
-   //12 Porcentaje de toma de muestra inopinada, según tamaño de la EP
+   // grafico 12 ,  Porcentaje de toma de muestra inopinada, según tamaño de la EP
 
   private cargarDatosTotalMuestrasInopinadas = (data: PieChartBasicoDto[]): void => {
     this.chartLabelsPorcentajeUNDConCajaRegistro = data.map(item => item.label);
     this.chartDataPorcentajeUNDConCajaRegistro = data.map(item => item.cantidad);
   }
 
-  //13  Porcentaje de UND que sobrepasan algún(os) parámetro(s) del Anexo N° 1
+  // grafico 13  Porcentaje de UND que sobrepasan algún(os) parámetro(s) del Anexo N° 1
   private cargarUNDSobrepasanParametrosAnexo1 = (data: BarChartBasicoDto[]): void => {
     this.chartPorcentajeUNDSobrepasanParametroAnexo1Data = [];
     this.chartPorcentajeUNDSobrepasanParametroAnexo1Labels = data.map(item => item.label);
@@ -325,8 +331,7 @@ export class ReporteComponent implements OnInit {
     });
   }
 
-
-  //graf 14   Porcentaje de UND a los que se ha facturado por concepto de Pago adicional por exceso de concentración
+  //grafico 14   Porcentaje de UND a los que se ha facturado por concepto de Pago adicional por exceso de concentración
   private cargarUNDFacturasPagoAdicional = (data: BarChartBasicoDto[]): void => {
     this.chartPorcentajeUNDFacturaronPagoAdicionalData = [];
     this.chartPorcentajeUNDFacturaronPagoAdicionalLabels = data.map(item => item.label);
@@ -358,7 +363,6 @@ export class ReporteComponent implements OnInit {
       data: data.map(item => item.value)
     });
   }
-
 
   // grafico 17  Porcentaje de UND a los que les ha otorgado un plazo adicional (hasta 18 meses) con el fin de implementar las acciones de mejora y acreditar el cumplimiento de los VMA, según tamaño de la EP.
   private cargarPorcentajesUNDPlazoAdicionalOtorgado = (data: BarChartBasicoDto[]): void => {
@@ -417,7 +421,6 @@ export class ReporteComponent implements OnInit {
     });
   }
 
-
   // grafico 23  Costo anual por conexión incurrido en la identificación, inspección e inscripción de los UND
   private cargarDatosCostoAnualIncurrido = (data: BarChartBasicoDto[]): void => {
 
@@ -441,7 +444,6 @@ export class ReporteComponent implements OnInit {
       backgroundColor: '#36a2eb',
       data: data.barChartData.map(item => item.value)
     });
-
 
   }
 
@@ -470,26 +472,35 @@ export class ReporteComponent implements OnInit {
     });
   }
 
-
-  private initializeYears(): void {
-
-    const startYear = 2024; // año desde que se publica y/o se registrara informacion de vma
-    const currentYear = new Date().getFullYear();
-    this.years = [];
-    for (let year = currentYear; year >= startYear; year--) {
-      this.years.push({ label: year.toString(), value: year });
+    private initializeYears(): void {
+      const startYear = ANIO_APERTURA_VMA; // Año inicial de  registros vma : 2024
+      const currentYear = new Date().getFullYear();
+      
+      // Determinar el año predeterminado (año anterior al actual)
+      const defaultYear = currentYear - 1;
+    
+      // Crear la lista de años desde el año anterior al actual hasta el año inicial
+      this.years = [];
+      for (let year = defaultYear; year >= startYear; year--) {
+        this.years.push({ label: year.toString(), value: year });
+      }
+    
+      // Establecer el año seleccionado por defecto como el año anterior al actual
+      this.selectedYear = defaultYear;
     }
-
-  }
 
   applyFilter(): void {
     this.cleanDataChart();
     this.reloadOpenedTabs();
   }
 
-  private setDefaultYear() {
-    this.selectedYear = new Date().getFullYear();
-  }
+
+  /*private setDefaultYear(): void {
+    // Seleccionar el año predeterminado como el primer valor de la lista generada
+    if (this.years && this.years.length > 0) {
+      this.selectedYear = this.years[0].value;
+    }
+  }*/
 
   filterTabs(header: string, content: string): boolean {
     if (!this.filterText) {
@@ -630,9 +641,9 @@ export class ReporteComponent implements OnInit {
     });
 
     Swal.fire({
-      title: "Cargando...",
+      title: "Descargando...",
       html: `
-    <div>Se está generando el reporte de graficos estadísticos.</div>
+    <div>Se está descargando el reporte de graficos estadísticos.</div>
     <div style="width: 100%; background-color: #f3f3f3; border-radius: 5px; margin-top: 10px;">
       <div id="progress-bar"
         style="width: 0%; height: 20px; background-color: #4caf50; border-radius: 5px;"></div>

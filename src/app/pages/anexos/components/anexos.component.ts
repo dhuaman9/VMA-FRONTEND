@@ -15,7 +15,7 @@ import { AnexoCostoTotalesIncurridos } from 'src/app/pages/anexos/models/anexo-c
 import { AnexoIngresos } from 'src/app/pages/anexos/models/anexo-ingresos';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
-import { BOOLEAN, NUMBER_REGEX } from 'src/app/utils/var.constant';
+import { BOOLEAN, NUMBER_REGEX , ANIO_APERTURA_VMA  } from 'src/app/utils/var.constant';
 
 @Component({
   selector: 'app-anexos',
@@ -60,8 +60,9 @@ export class AnexosComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.initializeYears();
     this.applyFilter();
-    this.setDefaultYear();
+   // this.setDefaultYear();
   }
 
   downloadPDF(headers: string[], dataList: any[], nroAnexo: number): void {
@@ -122,16 +123,23 @@ export class AnexosComponent implements OnInit, OnDestroy {
     return '';
   }
 
-  initializeYears(): void {
-    // this.setDefaultYear();
-
-    const startYear = 2024; // año desde que se publica y/o se registrara informacion de vma
-    const currentYear = new Date().getFullYear(); //año actual
+  private initializeYears(): void {
+    const startYear = ANIO_APERTURA_VMA; // Año inicial de  registros vma : 2024
+    const currentYear = new Date().getFullYear();
+    
+    // Determinar el año predeterminado (año anterior al actual)
+    const defaultYear = currentYear - 1;
+  
+    // Crear la lista de años desde el año anterior al actual hasta el año inicial
     this.years = [];
-    for (let year = currentYear; year >= startYear; year--) {
+    for (let year = defaultYear; year >= startYear; year--) {
       this.years.push({ label: year.toString(), value: year });
     }
+  
+    // Establecer el año seleccionado por defecto como el año anterior al actual
+    this.selectedYear = defaultYear;
   }
+
 
   applyFilter(): void {
     this.cleanData();

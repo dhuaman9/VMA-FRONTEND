@@ -80,38 +80,17 @@ export class UserService {
 
 
   create(user: User) : Observable<any>  {
-     return this.http.post<any>(this.url +'/usuario', user, {
+     return this.http.post<User>(this.url +'/usuario', user, {
       headers: new HttpHeaders().set('Content-Type', 'application/json')
-     }).pipe(catchError(this.handleError) // Manejo de errores
-     );
-  }
-
-  private handleError(error: HttpErrorResponse) {
-    let errorMessage = 'Ocurrió un error inesperado';
-    if (error.error instanceof ErrorEvent) {
-      // Error del lado del cliente o de la red
-      errorMessage = `Error: ${error.error.message}`;
-    } else {
-      // El backend retornó un código de error y el mensaje
-      if (error.error && error.error.message) {
-        errorMessage = error.error.message;
-      } else {
-        errorMessage = `Error ${error.status}: ${error.message}`;
-      }
-    }
-    return throwError(errorMessage);
+     });
   }
 
   update(user: User) : Observable<any>  {
 
-  
-    return this.http.put<any>(this.url +'/usuario', user, {
+    return this.http.put<User>(this.url +'/usuario', user, {
       headers: new HttpHeaders().set('Content-Type', 'application/json')
-     }).pipe(catchError(this.handleError) // Manejo de errores
-     );
+     });
   }
-
-
 
   findById(id: number){
     this.httpOptions = {

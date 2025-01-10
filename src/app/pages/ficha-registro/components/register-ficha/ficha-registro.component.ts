@@ -103,12 +103,12 @@ export class FichaRegistroComponent implements OnInit {
 
  addFichaRegistro() {
     this.isEdition = false;
-    this.openModalAddEditFicha(0, 'Aperturar Ficha de Registro VMA');
+    this.openModalAddEditFicha(0, 'Aperturar Fecha de Registro VMA');
   }
  
   onEditFichaRegistro(idFichaRegistro: number) {
     this.isEdition = true;
-    this.openModalAddEditFicha(idFichaRegistro, 'Actualizar Ficha de Registro VMA');
+    this.openModalAddEditFicha(idFichaRegistro, 'Actualizar Fechas de Registro VMA');
   }
 
 
@@ -135,10 +135,10 @@ export class FichaRegistroComponent implements OnInit {
         let msj = "";
         if(this.isEdition){
          // this.modalMessage = 'Se editó la ficha de registro de manera correcta';
-          msj = "Se editó la ficha de registro de manera correcta";
+          msj = "Se editó las fechas de registro VMA.";
         } else {
          // this.modalMessage = 'Se registró la ficha de registro de manera correcta';
-          msj = "Se registró la ficha de registro de manera correcta";
+          msj = "Se registró las fechas de registro VMA.";
           this.onAccept();
         }
         
